@@ -7,6 +7,15 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-column-gap: .8125rem;
+
+    @media (max-width: 768px) {
+      grid-template-columns: repeat(2, 1fr);
+      grid-gap: .8125rem;
+    }
+
+    @media (min-width: 320px) and (max-width: 425px) {
+      grid-template-columns: 1fr;
+    }
   }
 
   &__item {

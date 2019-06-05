@@ -6,6 +6,16 @@
   &__wrapper {
     display: flex;
     justify-content: space-between;
+    width: 100%;
+
+    @media (max-width: 768px) {
+      text-align: center;
+      flex-direction: column-reverse;
+    }
+
+    @media (min-width: 320px) and (max-width: 425px) {
+      text-align: left;
+    }
   }
 
   &__list {
@@ -14,7 +24,15 @@
 
   &__item {
     display: inline-block;
-    margin-right: 1.25rem;
+
+    &:not(:last-child) {
+      margin-right: 1.25rem;
+
+      @media (min-width: 320px) and (max-width: 425px) {
+        grid-template-columns: 1fr;
+        margin-right: .25rem;
+      }
+    }
   }
 
   &__link {

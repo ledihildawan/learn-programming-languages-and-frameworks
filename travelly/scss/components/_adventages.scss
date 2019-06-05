@@ -5,8 +5,11 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-column-gap: 4.375rem;
-
     list-style: none;
+
+    @media (max-width: 576px) {
+      grid-template-columns: 1fr;
+    }
   }
 
   &__title {
@@ -14,6 +17,7 @@
     font-family: typeface(sans-serif);
     text-transform: uppercase;
     font-size: 1rem;
+    font-weight: 700;
   }
 
   &__desc {

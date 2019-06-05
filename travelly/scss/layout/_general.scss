@@ -3,12 +3,23 @@ input[type="submit"] {
   cursor: pointer;
 }
 
-
 .container {
   width: 1200px;
   margin: 0 auto;
   padding-left: 15px;
   padding-right: 15px;
+
+  @media (max-width: 1024px) {
+    width: 996px;
+  }
+
+  @media (max-width: 768px) {
+    width: 720px;
+  }
+
+  @media (max-width: 576px) {
+    width: 540px;
+  }
 }
 
 .section {
@@ -26,6 +37,10 @@ input[type="submit"] {
       text-transform: initial;
       font-size: 3.25rem;
       font-weight: 300;
+
+      @media (max-width: 576px) {
+        font-size: 2rem;
+      }
     }
   }
 }
