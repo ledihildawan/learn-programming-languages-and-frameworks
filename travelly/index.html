@@ -12,7 +12,7 @@
   
   <link rel="stylesheet" href="./css/main.css" />
 
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
 
 </head>
 <body>
@@ -47,7 +47,7 @@
         <h2 class="section__title">Top Destinatons</h2>
         <p>Some of the top destinations for your next summer adventure.</p>
         <ul class="top-destination__list">
-          <li class="top-destination__item">
+          <li class="top-destination__item" id="top-destination-1">
             <div class="top-destination__media">
               <img class="top-destination__image" src="./img/top-destination-1.jpg" alt="Australia" />
               <p class="top-destination__price">$1,095</p>
@@ -57,7 +57,7 @@
               <p class="top-destination__desc">Become inspired to travel to Australia. Discover fantastic things to do & places to go.</p>
             </div>
           </li>
-          <li class="top-destination__item">
+          <li class="top-destination__item" id="top-destination-2">
             <div class="top-destination__media">
               <img class="top-destination__image" src="./img/top-destination-2.jpg" alt="Ancient South America" />
               <p class="top-destination__price">$1,295</p>
@@ -67,7 +67,7 @@
               <p class="top-destination__desc">Become inspired to travel to South America. Discover fantastic things to do & places to go.</p>
             </div>
           </li>
-          <li class="top-destination__item">
+          <li class="top-destination__item" id="top-destination-3">
             <div class="top-destination__media">
               <img class="top-destination__image" src="./img/top-destination-3.jpg" alt="Modern North America" />
               <p class="top-destination__price">$695</p>
@@ -77,7 +77,7 @@
               <p class="top-destination__desc">Become inspired to travel to North America. Discover fantastic things to do & places to go.</p>
             </div>
           </li>
-          <li class="top-destination__item">
+          <li class="top-destination__item" id="top-destination-4">
             <div class="top-destination__media">
               <img class="top-destination__image" src="./img/top-destination-4.jpg" alt="Classic Europe" />
               <p class="top-destination__price">$295</p>
@@ -91,7 +91,7 @@
       </div>
     </section>
 
-    <section class="section adventage">
+    <section class="section adventage" id="adventage">
       <div class="container">
         <h2 class="section__title sr-only">adventages</h2>
         <p class="section__title section__title--large">Before you go</p>
@@ -112,7 +112,7 @@
       </div>
     </section>
 
-    <section class="section newsletter">
+    <section class="section newsletter" id="newsletter">
       <p class="section__title">Get Hottest Deals To Your Inbox</p>
       <form class="newsletter__form">
         <input type="text" class="newsletter__input" placeholder="Email address" />
@@ -139,5 +139,59 @@
       </div>
     </div>
   </footer>
+
+  <script src="https://unpkg.com/scrollreveal"></script>
+
+  <script>
+    ScrollReveal().reveal('.section',{
+      delay: 500,
+      duration: 1000
+    });
+
+    ScrollReveal().reveal('#top-destination-1',{
+      delay: 1200,
+      duration: 1000,
+      origin: 'left',
+      distance: '96px',
+      reset: true
+    });
+
+    ScrollReveal().reveal('#top-destination-2',{
+      delay: 1300,
+      duration: 1000,
+      origin: 'top',
+      distance: '96px',
+      reset: true
+    });
+
+    ScrollReveal().reveal('#top-destination-3',{
+      delay: 1400,
+      duration: 1000,
+      origin: 'bottom',
+      distance: '96px',
+      reset: true
+    });
+
+    ScrollReveal().reveal('#top-destination-4',{
+      delay: 1200,
+      duration: 1000,
+      origin: 'right',
+      distance: '96px',
+      reset: true
+    });
+
+    ScrollReveal().reveal('#adventage',{
+      delay: 1000,
+      origin: 'left',
+      distance: '1000px',
+      easing: 'cubic-bezier(.81,.48,.13,.81)'
+    });
+
+    ScrollReveal().reveal('#newsletter',{
+      delay: 1000,
+      origin: 'right',
+      distance: '1000px',
+    });
+  </script>
 </body>
 </html>

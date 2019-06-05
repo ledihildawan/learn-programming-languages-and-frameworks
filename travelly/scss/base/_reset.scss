@@ -4,7 +4,6 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  color: inherit;
   font-family: inherit;
   letter-spacing: 0.01618em;
 }
@@ -19,7 +18,7 @@ html {
 }
 
 body {
-  color: color(body);
+  color: color(text) !important;
   font-family: typeface(sans-serif-2);
   font-feature-settings: "liga" on;
   line-height: 1.5;

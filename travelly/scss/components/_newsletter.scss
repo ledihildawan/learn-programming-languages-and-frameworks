@@ -6,6 +6,10 @@
     margin-top: 1.875rem;
     display: flex;
     justify-content: center;
+
+    @media (min-width: 320px) and (max-width: 425px) {
+      padding: .5rem .8125rem;
+    }
   }
 
   &__input {
