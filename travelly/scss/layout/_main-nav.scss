@@ -1,0 +1,23 @@
+.main-nav {
+
+  &__toggle {
+    all: unset;
+    height: 1.5rem;
+    width: 1.5rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+
+    span {
+      display: block;
+      background: #fff;
+      height: 3px;
+      width: inherit;
+
+      &:not(:last-child) {
+        margin-bottom: 4px;
+      }
+    }
+  }
+}

@@ -1,0 +1,31 @@
+button,
+input[type="submit"] {
+  cursor: pointer;
+}
+
+
+.container {
+  width: 1200px;
+  margin: 0 auto;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.section {
+  padding: 3.75rem 0 4.375rem;
+
+  &__title {
+    margin-bottom: .8125rem;
+    color: color(heading);
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-family: typeface(sans-serif);
+
+    &--large {
+      text-transform: initial;
+      font-size: 3.25rem;
+      font-weight: 300;
+    }
+  }
+}

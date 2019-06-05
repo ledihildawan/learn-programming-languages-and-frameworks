@@ -1,0 +1,65 @@
+.top-destination {
+  background: #eee;
+  
+  &__list {
+    margin-top: 2.125rem;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-column-gap: .8125rem;
+  }
+
+  &__item {
+    background: #fff;
+    box-shadow: 0 2px 0 #e1e0d8;
+  }
+
+  &__media {
+    height: 200px;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(180deg, rgba(30, 30, 30, .2) 60%, rgba(30, 30, 30, .6));
+    }
+  }
+
+  &__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top left;
+  }
+
+  &__price {
+    position: absolute;
+    bottom: .875rem;
+    right: .875rem;
+    font-weight: 700;
+    color: #fff;
+    font-size: .75rem;
+  }
+
+  &__body {
+    padding: 1.25rem;
+  }
+
+  &__title {
+    font-size: .875rem;
+    margin-bottom: 1.25rem;
+    font-size: .8125rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-family: typeface(sans-serif);
+  }
+
+  &__desc {
+    font-size: .8125rem;
+  }
+}

@@ -1,0 +1,36 @@
+.newsletter {
+  padding-top: 0;
+  text-align: center;
+
+  &__form {
+    margin-top: 1.875rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  &__input {
+    width: 20.375rem;
+    border: 0;
+    outline: 0;
+    background: #eee;
+    padding: .875rem .75rem;
+    color: color(heading);
+  }
+
+  &__button {
+    all: unset;
+    width: 9.5em;
+    text-align: center;
+    background: #fd4f32;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: 700;
+    transition: background .2s;
+
+    &:hover,
+    &:focus,
+    &:active {
+      background: darken(#fd4f32, 8%);
+    }
+  }
+}

@@ -1,0 +1,44 @@
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+  background: url(./../../img/bg-hero.jpg) center/cover no-repeat;
+
+  &__title {
+    color: #fff;
+    font-size: 3.25rem;
+    margin-bottom: 1.75rem;
+  }
+
+  &__form {
+    display: flex;
+
+    &__input {
+      width: 20.375rem;
+      padding: .875rem .8125rem;
+      border: 0;
+      outline: 0;
+      color: color(heading);
+    }
+
+    &__button {
+      all: unset;
+      width: 7.625rem;
+      background: #fd4f32;
+      color: #fff;
+      font-weight: 700;
+      text-align: center;
+      text-transform: uppercase;
+      transition: background .4s;
+
+      &:hover,
+      &:focus,
+      &:active {
+        background: darken(#fd4f32, 8%);
+      }
+    }
+  }
+}

@@ -1,0 +1,27 @@
+.main-footer {
+  background: #eee;
+  padding: .9375rem;
+  font-size: .875rem;
+
+  &__wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__list {
+    list-style: none;
+  }
+
+  &__item {
+    display: inline-block;
+    margin-right: 1.25rem;
+  }
+
+  &__link {
+    text-decoration: none;
+    color: color(heading);
+    text-transform: uppercase;
+    font-family: typeface(sans-serif);
+    font-weight: 700;
+  }
+}
