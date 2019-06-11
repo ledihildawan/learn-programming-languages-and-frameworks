@@ -1,0 +1,24 @@
+.btn-primary {
+  display: inline-flex;
+  margin-top: 3.125rem;
+  width: 255px;
+  height: 70px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-color: $clr-secondary;
+  text-decoration: none;
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 0.9375rem 1.8125rem rgba($clr-secondary, 0.68);
+  transition: background 0.2s;
+
+  &:hover,
+  &:focus {
+    background: #f75838;
+  }
+
+  &:active {
+    background: #f63c17;
+  }
+}

@@ -1,0 +1,57 @@
+.main-footer {
+  padding-top: 200px;
+  overflow: hidden;
+  position: relative;
+
+  &__image {
+    background: url(./../img/footer-img.png) center/cover no-repeat;
+    height: 317px;
+    width: 474px;
+    position: absolute;
+    bottom: -52px;
+    right: -111px;
+    transform: rotate(-34deg);
+  }
+
+  &__wrapper {
+    @include container;
+  }
+
+  &__nav {
+    width: 611px;
+    border-top: 1px solid rgba(112, 112, 112, 0.18);
+    border-bottom: 1px solid rgba(112, 112, 112, 0.18);
+    padding: 15px 0;
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+  }
+
+  &__site-list {
+    list-style: none;
+    display: flex;
+
+    a {
+      padding: 0 16px;
+      display: inline-block;
+      text-decoration: none;
+
+      &:last-child {
+        padding-left: 0;
+      }
+    }
+  }
+
+  &__logo {
+    margin-right: 61px;
+  }
+}
+
+.copyright {
+  margin-top: 78px;
+  padding-bottom: 24px;
+
+  small {
+    font-size: 16px;
+  }
+}

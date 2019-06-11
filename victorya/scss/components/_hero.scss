@@ -1,0 +1,94 @@
+.hero {
+  min-height: 798px;
+  background: url("./../img/food-pattern.png"),
+    url("./../img/hero-bg.jpg") center/cover no-repeat;
+
+  &__wrapper {
+    @include container;
+  }
+
+  &__content {
+    padding-top: 18.0625rem;
+  }
+
+  &__title {
+    margin-bottom: 1.625rem;
+    color: #255a7e;
+    font-size: 3.5625rem;
+    font-weight: 300;
+  }
+
+  &__desc {
+    color: #0c3653;
+    font-weight: 600;
+    opacity: 0.71;
+  }
+
+  &__group {
+    margin-top: 2.5625rem;
+    display: flex;
+    align-items: center;
+  }
+
+  &__btn-cta {
+    @extend %btn;
+    width: 12.75rem;
+    height: 4.375rem;
+    background-color: $clr-secondary;
+    box-shadow: 0 0.9375rem 1.8125rem rgba($clr-secondary, 0.68);
+    color: #fff;
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin-right: 2.5rem;
+    transition: background 0.2s;
+
+    &:hover,
+    &:focus {
+      background: #f75838;
+    }
+
+    &:active {
+      background: #f63c17;
+    }
+  }
+
+  &__play {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    color: rgba(12, 54, 83, 0.51);
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+
+  &__play-icon {
+    display: inline-flex;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 2.5rem;
+    width: 62px;
+    height: 60px;
+    border-radius: 50%;
+    background: $clr-secondary;
+    text-decoration: none;
+    color: #fff;
+    box-shadow: 0 0.9375rem 1.8125rem rgba($clr-secondary, 0.68);
+    transition: background 0.2s;
+
+    &:hover,
+    &:focus {
+      background: #f75838;
+    }
+
+    &:active {
+      background: #f63c17;
+    }
+
+    svg {
+      width: 16px;
+      height: 19px;
+      fill: #fff;
+    }
+  }
+}

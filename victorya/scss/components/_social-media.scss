@@ -1,0 +1,28 @@
+.social-media {
+  &__list {
+    list-style: none;
+    display: flex;
+    align-items: center;
+  }
+
+  &__item {
+    padding: 0 1rem;
+
+    &:first-child {
+      padding-left: 0;
+    }
+  }
+
+  &__link {
+    svg {
+      width: 20px;
+      height: 21px;
+      fill: #cad2d6;
+      transition: fill 0.2s;
+    }
+
+    &:hover svg {
+      fill: #0b314b;
+    }
+  }
+}

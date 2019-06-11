@@ -1,0 +1,80 @@
+.newsletter {
+  margin-top: 182px;
+  text-align: center;
+  position: relative;
+
+  .section__title {
+    margin-bottom: 57px;
+  }
+
+  &__wrapper {
+    @include container;
+  }
+
+  .elipse-group {
+    width: 242px;
+    height: 242px;
+    background: url("./../img/elipse-group.svg");
+    position: absolute;
+    top: -100px;
+    left: 100px;
+    z-index: -1;
+  }
+
+  .elipse-group-2 {
+    width: 242px;
+    height: 242px;
+    background: url("./../img/elipse-group.svg");
+    position: absolute;
+    bottom: -100px;
+    right: 100px;
+    z-index: -1999;
+  }
+
+  &__form {
+    width: 1055.64px;
+    height: 338.36px;
+    margin: auto;
+    box-shadow: 0 17px 16px rgba(235, 241, 245, 0.55);
+    position: relative;
+    z-index: 99;
+    background: #fff;
+
+    &__group {
+      width: 751.64px;
+      margin: auto;
+      display: flex;
+
+      input {
+        width: 487.64px;
+        height: 93.36px;
+        border: 0;
+        outline: 0;
+        padding: 32px;
+        font-size: 24px;
+      }
+
+      button {
+        all: unset;
+        cursor: pointer;
+        width: 262.64px;
+        font-style: 24px;
+        background: $clr-secondary;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 24px;
+
+        svg {
+          margin-left: 18px;
+          fill: #fff;
+          width: 24px;
+          height: 24px;
+        }
+      }
+    }
+  }
+}
