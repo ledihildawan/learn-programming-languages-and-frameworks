@@ -67,6 +67,15 @@
     bottom: 0;
     right: 0;
 
+    &:hover,
+    &:focus {
+      background: #f75838;
+    }
+
+    &:active {
+      background: #f63c17;
+    }
+
     svg {
       width: 19.25px;
       height: 12.38px;
