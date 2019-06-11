@@ -1,7 +1,19 @@
 .newsletter {
-  margin-top: 182px;
+  padding-top: 182px;
+  padding-bottom: 92px;
   text-align: center;
   position: relative;
+  overflow: hidden;
+
+  &__pattern {
+    position: absolute;
+    top: -122px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1406.23px;
+    height: 734.31px;
+    background: url("./../img/newsletter-pattern.png") center/cover no-repeat;
+  }
 
   .section__title {
     margin-bottom: 57px;
@@ -39,6 +51,8 @@
     position: relative;
     z-index: 99;
     background: #fff;
+    padding: 52px 162px;
+    border-radius: 13px;
 
     &__group {
       width: 751.64px;
@@ -67,6 +81,15 @@
         justify-content: center;
         font-weight: 800;
         font-size: 24px;
+
+        &:hover,
+        &:focus {
+          background: #f75838;
+        }
+
+        &:active {
+          background: #f63c17;
+        }
 
         svg {
           margin-left: 18px;

@@ -1,16 +1,14 @@
 .main-footer {
-  padding-top: 200px;
-  overflow: hidden;
+  padding-top: 73px;
   position: relative;
 
   &__image {
-    background: url(./../img/footer-img.png) center/cover no-repeat;
-    height: 317px;
-    width: 474px;
     position: absolute;
-    bottom: -52px;
-    right: -111px;
-    transform: rotate(-34deg);
+    background: url("./../img/footer-img-1.png") center/cover no-repeat;
+    width: 460px;
+    height: 457px;
+    bottom: 0;
+    right: 0;
   }
 
   &__wrapper {
@@ -35,6 +33,16 @@
       padding: 0 16px;
       display: inline-block;
       text-decoration: none;
+      transition: color 0.2s;
+
+      &:hover,
+      &:focus {
+        color: $clr-primary;
+      }
+
+      &:active {
+        color: $clr-primary;
+      }
 
       &:last-child {
         padding-left: 0;
