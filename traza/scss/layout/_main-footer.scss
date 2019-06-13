@@ -1,0 +1,39 @@
+.main-footer {
+  padding: 1rem 0;
+
+  &__wrapper {
+    @include container;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+  }
+
+  .copyright {
+    font-size: 1rem;
+  }
+}
+
+.social-list {
+  margin-top: 0.25rem;
+  list-style: none;
+  display: flex;
+
+  &__item {
+    padding: 0.5rem;
+
+    a {
+      display: block;
+    }
+
+    svg {
+      width: 2rem;
+      height: 2rem;
+      fill: #5f6368;
+      transition: all 0.2s;
+
+      &:hover {
+        fill: #52489c;
+      }
+    }
+  }
+}

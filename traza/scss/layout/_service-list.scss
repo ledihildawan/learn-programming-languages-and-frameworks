@@ -1,0 +1,10 @@
+.service-list {
+  margin-top: 2rem;
+  list-style: none;
+
+  &__item {
+    &:not(:last-child) {
+      margin-bottom: 2rem;
+    }
+  }
+}

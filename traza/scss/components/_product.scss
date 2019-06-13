@@ -1,0 +1,27 @@
+.product-section {
+  background: url(./../../img/product-photo-1559912963-5f53a1c1c7dc.jpg)
+    center/cover no-repeat;
+  color: #fff;
+
+  .section__title {
+    color: #fff;
+  }
+}
+
+.product-list {
+  list-style: none;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+
+  &__item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.25rem;
+
+    svg {
+      width: 1rem;
+      margin-right: 0.5rem;
+      fill: #fff;
+    }
+  }
+}

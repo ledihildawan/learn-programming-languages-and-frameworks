@@ -1,0 +1,21 @@
+.btn {
+  all: unset;
+  display: inline-block;
+  border: 0;
+  outline: 0;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  padding: 0.75rem 1.125rem;
+  border-radius: 0.25rem;
+}
+
+.btn-primary {
+  background: #52489c;
+  color: #fff;
+}
+
+.btn-outline-primary {
+  border: 3px solid #fff;
+  color: #fff;
+}

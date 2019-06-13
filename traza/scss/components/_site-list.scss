@@ -1,0 +1,21 @@
+.site-list {
+  height: 100%;
+  border-top: 3px solid rgba(0, 0, 0, 0.07);
+  border-bottom: 3px solid rgba(0, 0, 0, 0.07);
+  @include container;
+  background: #fff;
+  list-style: none;
+
+  &__item {
+  }
+
+  &__link {
+    display: block;
+    text-decoration: none;
+    padding: 0.75rem 0;
+
+    &--active {
+      font-weight: bold;
+    }
+  }
+}

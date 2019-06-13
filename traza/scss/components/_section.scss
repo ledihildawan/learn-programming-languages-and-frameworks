@@ -1,0 +1,12 @@
+.section {
+  padding: 2.5rem 0;
+
+  &__wrapper {
+    @include container;
+  }
+
+  &__title {
+    margin-bottom: 0.5rem;
+    text-transform: capitalize;
+  }
+}

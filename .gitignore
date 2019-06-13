@@ -9,6 +9,7 @@
 *.indd
 *.prproj
 *.aep
+*.xd
 
 ### Node ###
 # Logs

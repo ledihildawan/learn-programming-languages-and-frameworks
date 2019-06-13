@@ -1,0 +1,54 @@
+.testimonial {
+  &__grid {
+    margin-top: 2rem;
+  }
+
+  &__box {
+    margin-bottom: 1rem;
+    background: #fbfaff;
+    padding: 1rem;
+    border-radius: 0.25rem;
+  }
+
+  &__media {
+    position: relative;
+    height: 4.5rem;
+    width: 4.5rem;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: linear-gradient(
+        -45deg,
+        rgba(#52489c, 0.4),
+        rgba(#52489c, 0.1)
+      );
+    }
+  }
+
+  &__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    background-blend-mode: overlay;
+  }
+
+  cite {
+    display: block;
+    margin-top: 0.25rem;
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  &__author {
+    text-decoration: none;
+  }
+}

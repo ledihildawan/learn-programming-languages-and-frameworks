@@ -1,0 +1,40 @@
+.main-nav {
+  position: absolute;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  opacity: 0;
+  clip: rect(0 0 0 0);
+  clip-path: polygon(0px 0px, 0px 0px, 0px 0px);
+  white-space: nowrap;
+}
+
+.main-nav.open {
+  all: unset;
+  position: absolute;
+  z-index: -1;
+  // height: initial;
+  height: 100vh;
+  top: 50px;
+  left: 0;
+  right: 0;
+  opacity: 1;
+  transform: translateY(19px);
+  transition: transform 0.2s;
+}
+
+.main-nav.open::before {
+  content: "";
+  position: absolute;
+  top: -15px;
+  right: 3px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 24px 24px 24px;
+  border-color: transparent transparent rgba(0, 0, 0, 0.07) transparent;
+  z-index: -1;
+}

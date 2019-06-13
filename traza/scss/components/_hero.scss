@@ -1,0 +1,38 @@
+.hero {
+  min-height: 480px;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(
+      125deg,
+      rgba(#52489c, 0.75) 60%,
+      rgba(#52489c, 0.2)
+    ),
+    url(./../../img/hero-bg-photo-1556761175-b413da4baf72.jpg) center/cover
+      no-repeat;
+
+  &__wrapper {
+    @include container;
+  }
+}
+
+.hero-content {
+  margin-top: 4rem;
+
+  &__title {
+    margin-bottom: 1rem;
+    color: #fff;
+    font-size: 3rem;
+  }
+
+  &__subtitle {
+    margin-bottom: 2rem;
+    color: #ddd;
+    font-size: 1.125rem;
+  }
+
+  &__btn-cta {
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+}

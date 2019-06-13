@@ -1,0 +1,26 @@
+.section-culture {
+  background: #fbfaff;
+}
+
+.culture-list {
+  margin-top: 2rem;
+  list-style: none;
+
+  &__item {
+    &:not(:last-child) {
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+.culture {
+  &__icon {
+    width: 3rem;
+    height: 3rem;
+    margin-bottom: 0.25rem;
+  }
+
+  &__title {
+    margin-bottom: 0.5rem;
+  }
+}

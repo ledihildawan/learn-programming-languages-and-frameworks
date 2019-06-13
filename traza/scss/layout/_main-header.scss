@@ -1,0 +1,27 @@
+.main-header {
+  position: absolute;
+  z-index: 999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px 0;
+  background: #fff;
+  transition: all 0.2s;
+
+  &__wrapper {
+    @include container;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.main-header.sticky {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px 0;
+  background: #fff;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.07);
+}
