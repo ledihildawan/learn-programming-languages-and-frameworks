@@ -484,7 +484,8 @@ h6 {
       rgba(82, 72, 156, 0.75) 60%,
       rgba(82, 72, 156, 0.2)
     ),
-    url(./img/hero-bg-photo-1556761175-b413da4baf72.jpg) center/cover no-repeat;
+    url(./../img/hero-bg-photo-1556761175-b413da4baf72.jpg) center/cover
+      no-repeat;
 }
 .hero__wrapper {
   padding-right: 15px;
@@ -529,8 +530,8 @@ h6 {
   margin-bottom: 0.5rem;
 }
 .product-section {
-  background: url(./img/product-photo-1559912963-5f53a1c1c7dc.jpg) center/cover
-    no-repeat;
+  background: url(./../img/product-photo-1559912963-5f53a1c1c7dc.jpg)
+    center/cover no-repeat;
   color: #fff;
 }
 .product-section .section__title {
