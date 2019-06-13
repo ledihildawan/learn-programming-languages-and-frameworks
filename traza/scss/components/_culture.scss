@@ -1,14 +1,25 @@
 .section-culture {
-  background: #fbfaff;
+  background: #f3f2f8;
 }
 
 .culture-list {
   margin-top: 2rem;
   list-style: none;
 
+  @include for-tablet {
+    margin-top: 4rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 1rem;
+  }
+
   &__item {
     &:not(:last-child) {
       margin-bottom: 1rem;
+
+      @include for-tablet {
+        margin-bottom: initial;
+      }
     }
   }
 }

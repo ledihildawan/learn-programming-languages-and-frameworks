@@ -10,11 +10,11 @@ window.addEventListener("DOMContentLoaded", () => {
     this.classList.toggle("active");
   });
 
-  siteListLinksArr.forEach(siteListLink => {
-    siteListLink.addEventListener("click", function() {
-      mainNav.classList.toggle("open");
-    });
-  });
+  // siteListLinksArr.forEach(siteListLink => {
+  //   siteListLink.addEventListener("click", function() {
+  //     mainNav.classList.toggle("open");
+  //   });
+  // });
 
   window.addEventListener("scroll", function() {
     if (this.scrollY > 1) {

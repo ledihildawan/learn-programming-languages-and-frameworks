@@ -10,6 +10,11 @@
   clip: rect(0 0 0 0);
   clip-path: polygon(0px 0px, 0px 0px, 0px 0px);
   white-space: nowrap;
+
+  @include for-small-desktop {
+    all: unset;
+    position: static;
+  }
 }
 
 .main-nav.open {
@@ -23,18 +28,6 @@
   right: 0;
   opacity: 1;
   transform: translateY(19px);
+  background: #fff;
   transition: transform 0.2s;
-}
-
-.main-nav.open::before {
-  content: "";
-  position: absolute;
-  top: -15px;
-  right: 3px;
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 0 24px 24px 24px;
-  border-color: transparent transparent rgba(0, 0, 0, 0.07) transparent;
-  z-index: -1;
 }

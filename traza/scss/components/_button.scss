@@ -8,11 +8,21 @@
   text-decoration: none;
   padding: 0.75rem 1.125rem;
   border-radius: 0.25rem;
+  transition: all 0.2s;
 }
 
 .btn-primary {
   background: #52489c;
   color: #fff;
+
+  &:focus,
+  &:hover {
+    background: lighten(#52489c, 8%);
+  }
+
+  &:active {
+    background: darken(#52489c, 4%);
+  }
 }
 
 .btn-outline-primary {

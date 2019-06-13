@@ -1,13 +1,48 @@
 .testimonial {
+  @include for-tablet {
+    .section__title,
+    .section__subtitle {
+      text-align: center;
+    }
+  }
+
   &__grid {
     margin-top: 2rem;
+
+    @include for-tablet {
+      margin-top: 4rem;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, min-content);
+      align-items: start;
+      grid-gap: 1rem;
+    }
   }
 
   &__box {
+    overflow: hidden;
     margin-bottom: 1rem;
     background: #fbfaff;
     padding: 1rem;
     border-radius: 0.25rem;
+
+    @include for-tablet {
+      background: #fff;
+      box-shadow: 0 4px 8px rgba(#52489c, 0.07);
+      text-align: center;
+    }
+
+    &:first-child {
+      @include for-tablet {
+        grid-column: 1 / -1;
+      }
+    }
+
+    &:last-child {
+      @include for-tablet {
+        grid-column: 2 / -1;
+      }
+    }
   }
 
   &__media {
@@ -15,7 +50,7 @@
     height: 4.5rem;
     width: 4.5rem;
     overflow: hidden;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
 
     &::after {
       content: "";
@@ -27,9 +62,14 @@
       border-radius: 50%;
       background: linear-gradient(
         -45deg,
-        rgba(#52489c, 0.4),
-        rgba(#52489c, 0.1)
+        rgba(#52489c, 0.75),
+        rgba(#52489c, 0.07)
       );
+    }
+
+    @include for-tablet {
+      margin-left: auto;
+      margin-right: auto;
     }
   }
 
@@ -41,9 +81,39 @@
     background-blend-mode: overlay;
   }
 
+  &__text {
+    position: relative;
+
+    @include for-tablet {
+      width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
+  &__text::before {
+    content: "“";
+    position: absolute;
+    top: -2.25rem;
+    left: -0.75rem;
+    opacity: 0.16;
+    font-size: 4rem;
+    transform: rotate(-16deg);
+  }
+
+  &__text::after {
+    content: "”";
+    position: absolute;
+    top: -2.25rem;
+    right: -0.75rem;
+    opacity: 0.16;
+    font-size: 4rem;
+    transform: rotate(-16deg);
+  }
+
   cite {
     display: block;
-    margin-top: 0.25rem;
+    margin-top: 0.75rem;
     font-style: normal;
     font-weight: 600;
   }

@@ -1,20 +1,47 @@
 .site-list {
   height: 100%;
-  border-top: 3px solid rgba(0, 0, 0, 0.07);
-  border-bottom: 3px solid rgba(0, 0, 0, 0.07);
   @include container;
   background: #fff;
   list-style: none;
 
+  @include for-small-desktop {
+    all: unset;
+    list-style: none;
+    display: flex;
+  }
+
   &__item {
+    @include for-small-desktop {
+      &:not(:last-child) {
+        margin-right: 2rem;
+      }
+    }
   }
 
   &__link {
     display: block;
     text-decoration: none;
     padding: 0.75rem 0;
+    height: 100%;
+    transition: color 0.2s;
+
+    &:focus,
+    &:hover {
+      color: lighten(#5f6368, 8%);
+    }
+
+    &:active {
+      color: darken(#5f6368, 16%);
+    }
+
+    @include for-small-desktop {
+      display: inline-block;
+      padding: 0;
+      height: 100%;
+    }
 
     &--active {
+      color: #000;
       font-weight: bold;
     }
   }

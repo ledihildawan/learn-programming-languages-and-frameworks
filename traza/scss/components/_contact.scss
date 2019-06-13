@@ -2,6 +2,14 @@
   padding: 3rem 0;
   background: #52489c;
 
+  @include for-tablet {
+    text-align: center;
+  }
+
+  @include for-medium-desktop {
+    padding: 4.25rem;
+  }
+
   .section__title {
     color: #fff;
   }

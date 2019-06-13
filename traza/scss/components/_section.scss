@@ -1,12 +1,27 @@
 .section {
   padding: 2.5rem 0;
 
+  @include for-tablet {
+    padding: 3rem 0;
+  }
+
+  @include for-medium-desktop {
+    padding: 6.25rem;
+  }
+
   &__wrapper {
     @include container;
   }
 
   &__title {
     margin-bottom: 0.5rem;
-    text-transform: capitalize;
+
+    @include for-tablet {
+      margin-bottom: 1rem;
+    }
+
+    @include for-medium-desktop {
+      font-size: 2.618rem;
+    }
   }
 }
