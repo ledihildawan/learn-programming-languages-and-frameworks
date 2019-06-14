@@ -9,6 +9,10 @@
     grid-gap: 1rem;
   }
 
+  @include for-small-desktop {
+    grid-gap: 2rem;
+  }
+
   &__item {
     &:not(:last-child) {
       margin-bottom: 2rem;

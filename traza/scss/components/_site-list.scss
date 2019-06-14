@@ -24,10 +24,11 @@
     padding: 0.75rem 0;
     height: 100%;
     transition: color 0.2s;
+    color: lighten(#5f6368, 4%);
 
     &:focus,
     &:hover {
-      color: lighten(#5f6368, 8%);
+      color: lighten(#5f6368, 16%);
     }
 
     &:active {

@@ -1,6 +1,7 @@
 .section-project {
   &__title {
     margin-top: 2rem;
+    margin-bottom: 0.5rem;
   }
 }
 
@@ -23,7 +24,12 @@
 
 .project {
   &__title {
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  &__info {
+    font-weight: 300;
+    color: lighten(#5f6368, 16%);
   }
 
   &__link {
@@ -33,6 +39,15 @@
     text-decoration: none;
     font-weight: 700;
     color: #52489c;
+
+    &:focus,
+    &:hover {
+      opacity: 0.6;
+    }
+
+    &:active {
+      opacity: 0.87;
+    }
 
     svg {
       margin-left: 0.25rem;

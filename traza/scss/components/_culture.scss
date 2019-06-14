@@ -34,4 +34,9 @@
   &__title {
     margin-bottom: 0.5rem;
   }
+
+  &__info {
+    font-weight: 300;
+    color: lighten(#5f6368, 16%);
+  }
 }

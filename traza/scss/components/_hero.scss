@@ -7,7 +7,8 @@
       rgba(#52489c, 0.75) 60%,
       rgba(#52489c, 0.2)
     ),
-    url(./../../img/jan-henckens-311341-unsplash.jpg) center/cover no-repeat;
+    url(./../../img/jan-henckens-311341-unsplash.jpg) center/cover no-repeat
+      fixed;
 
   @include for-tablet {
     min-height: 560px;
@@ -46,5 +47,6 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.04em;
+    box-shadow: 8px 16px 32px rgba(0, 0, 0, 0.07);
   }
 }

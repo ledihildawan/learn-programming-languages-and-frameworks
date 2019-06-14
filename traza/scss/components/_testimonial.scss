@@ -1,4 +1,6 @@
 .testimonial {
+  overflow: hidden;
+
   @include for-tablet {
     .section__title,
     .section__subtitle {
@@ -38,9 +40,21 @@
       }
     }
 
+    &:nth-of-type(3) {
+      visibility: hidden;
+
+      @include for-small-desktop {
+        visibility: visible;
+      }
+    }
+
     &:last-child {
       @include for-tablet {
         grid-column: 2 / -1;
+      }
+
+      @include for-small-desktop {
+        grid-column: initial;
       }
     }
   }
@@ -83,6 +97,8 @@
 
   &__text {
     position: relative;
+    font-weight: 400;
+    z-index: 1;
 
     @include for-tablet {
       width: fit-content;
@@ -94,31 +110,36 @@
   &__text::before {
     content: "“";
     position: absolute;
-    top: -2.25rem;
-    left: -0.75rem;
-    opacity: 0.16;
-    font-size: 4rem;
+    top: -1.5rem;
+    left: -0.5rem;
+    opacity: 0.07;
+    font-size: 3.2rem;
     transform: rotate(-16deg);
+    font-weight: 600;
+    z-index: -1;
   }
 
   &__text::after {
     content: "”";
     position: absolute;
-    top: -2.25rem;
-    right: -0.75rem;
-    opacity: 0.16;
-    font-size: 4rem;
+    top: -1.5rem;
+    right: -1rem;
+    opacity: 0.07;
+    font-size: 3.2rem;
     transform: rotate(-16deg);
+    font-weight: 600;
+    z-index: -1;
   }
 
   cite {
     display: block;
     margin-top: 0.75rem;
     font-style: normal;
-    font-weight: 600;
   }
 
   &__author {
     text-decoration: none;
+    color: lighten(#5f6368, 24%);
+    font-style: italic;
   }
 }

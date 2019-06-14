@@ -28,6 +28,19 @@
 .btn-outline-primary {
   border: 3px solid #fff;
   color: #fff;
+  transition: background 0.2s, color, transform;
+
+  &:focus,
+  &:hover {
+    background: #fff;
+    color: #52489c;
+    transform: scale(1.1067);
+  }
+
+  &:active {
+    background: #52489c;
+    color: #fff;
+  }
 }
 
 .gotoup {
