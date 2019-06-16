@@ -38,9 +38,17 @@
   right: 0;
   width: 960px;
   height: 1583px;
-  background: url(/img/half-circle.svg);
+  background: url(/img/half-circle.svg) no-repeat;
 
   @include mq(lg) {
+    width: 658px;
+    background: url(/img/half-circle-lg.svg) no-repeat;
+  }
+
+  @include mq(sm) {
+    width: 374px;
+    right: -6px;
+    background: url(/img/half-circle-sm.svg) no-repeat;
   }
 }
 
@@ -51,17 +59,36 @@
   right: -97px;
   width: 1256px;
   height: 1382px;
-  background: url(/img/ui-wireframe.png);
+  background: url(/img/ui-wireframe.png) no-repeat;
+
+  @include mq(lg) {
+    right: 0;
+    width: 685px;
+    height: 1215px;
+    background: url(/img/ui-wireframe-lg.png) no-repeat;
+  }
+
+  @include mq(sm) {
+    display: none;
+  }
 }
 
 .line-circle-1 {
   position: absolute;
-  z-index: -999;
+  z-index: -998;
   top: 1700px;
   left: -850px;
   width: 3255px;
   height: 2508px;
-  background: url(/img/line-circle-1.svg);
+  background: url(/img/line-circle-1.svg) no-repeat;
+
+  @include mq(lg) {
+    top: 1580px;
+  }
+
+  @include mq(sm) {
+    display: none;
+  }
 }
 
 .line-circle-2 {
@@ -71,5 +98,13 @@
   right: -576px;
   width: 1280px;
   height: 1567px;
-  background: url(/img/line-circle-2.png);
+  background: url(/img/line-circle-2.png) no-repeat;
+
+  @include mq(lg) {
+    top: 3459px;
+  }
+
+  @include mq(sm) {
+    display: none;
+  }
 }

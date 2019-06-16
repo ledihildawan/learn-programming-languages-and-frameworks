@@ -12,6 +12,14 @@
     margin-bottom: 1.833333333333333rem;
     font-size: 4.166666666666667rem;
     font-weight: 900;
+
+    @include mq(lg) {
+      font-size: 2.888888888888889rem;
+    }
+
+    @include mq(sm) {
+      font-size: 2rem;
+    }
   }
 
   &__desc {
@@ -36,6 +44,15 @@
     background: #fff;
     transition: color 0.2s;
 
+    @include mq(lg) {
+      width: 20rem;
+    }
+
+    @include mq(sm) {
+      width: 11rem;
+      margin-right: 0.5rem;
+    }
+
     &:focus {
       color: $baltic-sea;
     }
@@ -54,6 +71,10 @@
     font-weight: 300;
     cursor: pointer;
     transition: background 0.2s;
+
+    @include mq(lg) {
+      width: 10rem;
+    }
 
     &:focus,
     &:hover {

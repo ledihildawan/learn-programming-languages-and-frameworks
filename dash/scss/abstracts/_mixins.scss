@@ -1,6 +1,6 @@
 @mixin mq($value) {
   @if ($value == "lg") {
-    @media (max-width: 1366px) {
+    @media (min-width: 1025px) and (max-width: 1440px) {
       @content;
     }
   } @else if ($value == "md") {
@@ -11,7 +11,7 @@
     @media (max-width: 1024px) {
       @content;
     }
-  } @else if ($value == "s") {
+  } @else if ($value == "xs") {
     @media (max-width: 768px) {
       @content;
     }
@@ -26,7 +26,17 @@
   margin-left: auto;
 
   @include mq(lg) {
-    // width: 1170px;
+    width: 1170px;
+  }
+
+  @include mq(sm) {
+    width: 100%;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  @include mq(xs) {
+    // max-width: 720px;
   }
 }
 

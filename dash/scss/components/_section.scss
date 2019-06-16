@@ -8,6 +8,10 @@
   &__title {
     font-size: 2.777777777777778rem;
 
+    @include mq(sm) {
+      font-size: 2rem;
+    }
+
     &--center {
       text-align: center;
     }
@@ -18,11 +22,20 @@
   &__list {
     width: 43.94444444444444rem;
     display: grid;
-    grid-template-columns: repeat(3, minmax(min-content, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     grid-gap: 4.555555555555556rem 5.277777777777778rem;
     justify-items: start;
     align-items: center;
     list-style: none;
+
+    @include mq(sm) {
+      width: 100%;
+      place-items: center;
+    }
+
+    @include mq(sm) {
+      grid-gap: 3rem 2rem;
+    }
   }
 }
 
@@ -37,6 +50,11 @@
     grid-gap: 4.555555555555556rem;
     list-style: none;
     text-align: center;
+
+    @include mq(sm) {
+      width: 100%;
+      grid-template-columns: 1fr;
+    }
   }
 
   &__icon {
@@ -60,11 +78,32 @@
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 10.11111111111111rem;
 
+    @include mq(lg) {
+      grid-gap: 0;
+    }
+
+    @include mq(sm) {
+      grid-gap: 0;
+      grid-template-columns: 1fr;
+    }
+
     &--2 {
       grid-gap: 7.055555555555556rem;
 
+      @include mq(sm) {
+        grid-gap: 0;
+      }
+
       .why__column--one {
         margin-left: 11.77777777777778rem;
+
+        @include mq(lg) {
+          margin-left: 8.5rem;
+        }
+
+        @include mq(sm) {
+          margin-left: 0;
+        }
 
         .why__title {
           margin-top: 3.277777777777778rem;
@@ -76,6 +115,10 @@
   &__title {
     margin-top: 7.722222222222222rem;
     margin-bottom: 0.8333333333333333rem;
+
+    @include mq(sm) {
+      margin-top: 0;
+    }
   }
 
   &__desc {
@@ -108,8 +151,11 @@
 }
 
 .testimonial {
-  padding-top: 0;
   padding-bottom: 11.11111111111111rem;
+
+  @include mq(lg) {
+    padding-top: 11.11111111111111rem;
+  }
 
   &__list {
     width: 63rem;
@@ -120,6 +166,11 @@
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 1.666666666666667rem;
     list-style: none;
+
+    @include mq(sm) {
+      width: 100%;
+      grid-template-columns: 1fr;
+    }
   }
 
   &__card {
@@ -127,11 +178,16 @@
     padding: 2.777777777777778rem 1.833333333333333rem;
     background-color: #fff;
     box-shadow: 0 2.777777777777778rem 5.5rem rgba(#1f485d, 0.1);
-    transition: transform 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s;
 
     &:hover {
       transform: translateY(20px);
       box-shadow: 0 5.555555555555556rem 5.5rem rgba(#1f485d, 0.2);
+
+      @include mq(sm) {
+        transform: translateY(0);
+        box-shadow: 0 2.777777777777778rem 5.5rem rgba(#1f485d, 0.1);
+      }
     }
 
     &::after {
@@ -142,7 +198,7 @@
       width: 50%;
       height: 7px;
       background-color: #fd5353;
-      transition: width 0.2s 0.2s;
+      transition: width 0.2s linear;
     }
 
     &:hover::after {
