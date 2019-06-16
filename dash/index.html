@@ -21,7 +21,7 @@
         <a class="main-header__logo">
           <img src="img/dash-logo.png" alt="Dash logo" />
         </a>
-        <button class="main-header__cta" type="button">Try Free</button>
+        <a class="main-header__cta" type="button" href="#tryfree">Try Free</a>
       </div>
     </header>
     <!-- End of .main-header -->
@@ -53,6 +53,7 @@
 
       <section class="section partner">
         <div class="section__wrapper">
+          <h2 class="sr-only">Partners</h2>
           <ul class="partner__list">
             <li class="partner__item">
               <img
@@ -124,7 +125,7 @@
             management software
           </h2>
           <ul class="adventage__list">
-            <li class="adventage__item">
+            <li class="adventage__item wow bounceIn" data-wow-delay="0.3s">
               <img src="img/adventage-icon-1.svg" class="adventage__icon" />
               <h3 class="adventage__title">Keep tasks in one place</h3>
               <p class="adventage__desc">
@@ -132,7 +133,7 @@
                 track tasks to stay on schedule
               </p>
             </li>
-            <li class="adventage__item">
+            <li class="adventage__item wow bounceIn" data-wow-delay="0.5s">
               <img src="img/adventage-icon-2.svg" class="adventage__icon" />
               <h3 class="adventage__title">Prioritize your work</h3>
               <p class="adventage__desc">
@@ -140,7 +141,7 @@
                 important or require more time, so
               </p>
             </li>
-            <li class="adventage__item">
+            <li class="adventage__item wow bounceIn" data-wow-delay="0.7s">
               <img src="img/adventage-icon-3.svg" class="adventage__icon" />
               <h3 class="adventage__title">Improve collaboration</h3>
               <p class="adventage__desc">
@@ -155,13 +156,16 @@
       <section class="section why">
         <div class="section__wrapper">
           <div class="why__column">
-            <div class="why__column--1">
+            <div class="why__column--1 wow fadeInLeftBig" data-wow-delay="0.3s">
               <img
                 src="img/ui-1.png"
                 alt="User Interface DASH screenshoot one"
               />
             </div>
-            <div class="why__column--2">
+            <div
+              class="why__column--2 wow fadeInRightBig"
+              data-wow-delay="0.3s"
+            >
               <h2 class="section__title why__title">
                 Why do you need<br />task management<br />software?
               </h2>
@@ -181,7 +185,10 @@
             </div>
           </div>
           <div class="why__column why__column--2">
-            <div class="why__column--one">
+            <div
+              class="why__column--one wow fadeInLeftBig"
+              data-wow-delay="0.3s"
+            >
               <h2 class="section__title why__title">
                 Seamless Team<br />Workflow & Efficient<br />Task Management
               </h2>
@@ -199,7 +206,10 @@
                 />
               </a>
             </div>
-            <div class="why__column--two">
+            <div
+              class="why__column--two wow fadeInRightBig"
+              data-wow-delay="0.3s"
+            >
               <img
                 src="img/ui-2.png"
                 alt="User Interface DASH screenshoot two"
@@ -215,7 +225,10 @@
             What client are saying
           </h2>
           <ul class="testimonial__list">
-            <li class="testimonial__item testimonial__card">
+            <li
+              class="testimonial__item testimonial__card wow fadeIn"
+              data-wow-delay="0.3s"
+            >
               <div class="testimonial__rating">
                 <img src="img/stars.svg" alt="stars" />
               </div>
@@ -242,7 +255,10 @@
                 </footer>
               </blockquote>
             </li>
-            <li class="testimonial__item testimonial__card">
+            <li
+              class="testimonial__item testimonial__card wow fadeIn"
+              data-wow-delay="0.5s"
+            >
               <div class="testimonial__rating">
                 <img src="img/stars.svg" alt="stars" />
               </div>
@@ -269,7 +285,10 @@
                 </footer>
               </blockquote>
             </li>
-            <li class="testimonial__item testimonial__card">
+            <li
+              class="testimonial__item testimonial__card wow fadeIn"
+              data-wow-delay="0.7s"
+            >
               <div class="testimonial__rating">
                 <img src="img/stars.svg" alt="stars" />
               </div>
@@ -308,7 +327,7 @@
           See why millions of people across 195<br />countries use DASH.
         </p>
 
-        <form action="#" class="try-free">
+        <form action="#" class="try-free" id="tryfree">
           <input
             class="try-free__input"
             placeholder="name@company.com"
@@ -320,8 +339,12 @@
     </footer>
 
     <div class="half-circle"></div>
-    <div class="ui-wireframe"></div>
+    <div class="ui-wireframe wow fadeInRightBig" data-wow-delay="0.7s"></div>
     <div class="line-circle-1"></div>
     <div class="line-circle-2"></div>
+
+    <script src="js/jquery.js"></script>
+    <script src="js/wow.js"></script>
+    <script src="js/main.js"></script>
   </body>
 </html>

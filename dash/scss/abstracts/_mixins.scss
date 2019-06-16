@@ -30,13 +30,12 @@
   }
 
   @include mq(sm) {
-    width: 100%;
     padding-left: 15px;
     padding-right: 15px;
   }
 
   @include mq(xs) {
-    // max-width: 720px;
+    width: 100%;
   }
 }
 
