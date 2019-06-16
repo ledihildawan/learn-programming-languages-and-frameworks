@@ -1,0 +1,59 @@
+.section-project {
+  &__title {
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+  }
+}
+
+.project-list {
+  margin-top: 1.25rem;
+  margin-bottom: 1rem;
+
+  &__item {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: flex-start;
+
+    svg {
+      width: 1.4375rem;
+      height: 1.4375rem;
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+.project {
+  &__title {
+    margin-bottom: 0.5rem;
+  }
+
+  &__info {
+    font-weight: 300;
+    color: lighten(#5f6368, 16%);
+  }
+
+  &__link {
+    margin-top: 2rem;
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    font-weight: 700;
+    color: #52489c;
+
+    &:focus,
+    &:hover {
+      opacity: 0.6;
+    }
+
+    &:active {
+      opacity: 0.87;
+    }
+
+    svg {
+      margin-left: 0.25rem;
+      width: 1rem;
+      height: 1rem;
+      fill: #52489c;
+    }
+  }
+}

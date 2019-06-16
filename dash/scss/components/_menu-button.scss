@@ -1,0 +1,70 @@
+.menu-button {
+  all: unset;
+  display: block;
+  cursor: pointer;
+
+  @include for-small-desktop {
+    display: none;
+  }
+
+  &__wrapper {
+    height: 1.5rem;
+    width: 1.5rem;
+    padding: 0.125rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  &__line {
+    width: 100%;
+    height: 3px;
+    background: #000;
+    transition: all 0.2s;
+
+    &--2 {
+      width: 70%;
+    }
+  }
+
+  &:active {
+    opacity: 0.87;
+  }
+
+  &:hover,
+  &:focus {
+    opacity: 0.6;
+  }
+}
+
+.menu-button.active {
+  &:hover,
+  &:active,
+  &:focus {
+    opacity: 1;
+  }
+
+  .menu-button__wrapper {
+    position: relative;
+  }
+
+  .menu-button__line {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateX(-50%, -50%);
+  }
+
+  .menu-button__line--1 {
+    transform: rotate(45deg);
+  }
+
+  .menu-button__line--3 {
+    transform: rotate(-45deg);
+  }
+
+  .menu-button__line--2 {
+    opacity: 0;
+    width: 0;
+  }
+}

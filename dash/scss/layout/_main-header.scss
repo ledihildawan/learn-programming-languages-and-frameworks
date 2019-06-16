@@ -1,0 +1,61 @@
+.main-header {
+  &__wrapper {
+    @include container;
+    height: 174px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__cta {
+    @include resetApperance;
+    @include centerBtn;
+    width: 8.166666666666667rem;
+    height: 3.222222222222222rem;
+    border: 2px solid $white;
+    border-radius: 1.611111111111111rem;
+    color: $white;
+    font-weight: 700;
+    cursor: pointer;
+  }
+}
+
+.half-circle {
+  position: absolute;
+  z-index: -999;
+  top: 0;
+  right: 0;
+  width: 960px;
+  height: 1583px;
+  background: url(/img/half-circle.svg);
+}
+
+.ui-wireframe {
+  position: absolute;
+  z-index: -998;
+  top: 252px;
+  right: -97px;
+  width: 1256px;
+  height: 1382px;
+  background: url(/img/ui-wireframe.png);
+}
+
+.line-circle-1 {
+  position: absolute;
+  z-index: -999;
+  top: 1700px;
+  left: -850px;
+  width: 3255px;
+  height: 2508px;
+  background: url(/img/line-circle-1.svg);
+}
+
+.line-circle-2 {
+  position: absolute;
+  z-index: -999;
+  top: 3513px;
+  right: -576px;
+  width: 1280px;
+  height: 1567px;
+  background: url(/img/line-circle-2.png);
+}

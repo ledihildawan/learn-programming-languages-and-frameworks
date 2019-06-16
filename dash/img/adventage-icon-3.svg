@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="124" height="103" viewBox="0 0 124 103">
+  <defs>
+    <filter id="Rectangle_536" x="0" y="0" width="124" height="103" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_238" data-name="Group 238" transform="translate(-1278.909 -1827)">
+    <g id="Group_221" data-name="Group 221" transform="translate(761.909)">
+      <g transform="matrix(1, 0, 0, 1, 517, 1827)" filter="url(#Rectangle_536)">
+        <rect id="Rectangle_536-2" data-name="Rectangle 536" width="106" height="85" rx="11" transform="translate(9 6)" fill="#fff"/>
+      </g>
+      <rect id="Rectangle_538" data-name="Rectangle 538" width="44" height="8" rx="4" transform="translate(540.091 1877)" fill="#fd3400" opacity="0.1"/>
+      <rect id="Rectangle_539" data-name="Rectangle 539" width="54.333" height="8" rx="4" transform="translate(540 1895)" fill="#fd3400" opacity="0.1"/>
+    </g>
+    <g id="Group_223" data-name="Group 223" transform="translate(11)">
+      <circle id="Ellipse_19" data-name="Ellipse 19" cx="6" cy="6" r="6" transform="translate(1307 1841)" fill="#f1f1f1"/>
+      <circle id="Ellipse_20" data-name="Ellipse 20" cx="11" cy="11" r="11" transform="translate(1302 1848)" fill="#f1f1f1"/>
+      <circle id="Ellipse_21" data-name="Ellipse 21" cx="6" cy="6" r="6" transform="translate(1307 1853)" fill="#fff"/>
+    </g>
+    <g id="Group_222" data-name="Group 222">
+      <circle id="Ellipse_19-2" data-name="Ellipse 19" cx="6" cy="6" r="6" transform="translate(1307 1841)" fill="#fd5353"/>
+      <circle id="Ellipse_20-2" data-name="Ellipse 20" cx="11" cy="11" r="11" transform="translate(1302 1848)" fill="#fd5353"/>
+      <circle id="Ellipse_21-2" data-name="Ellipse 21" cx="6" cy="6" r="6" transform="translate(1307 1853)" fill="#fff"/>
+      <circle id="Ellipse_22" data-name="Ellipse 22" cx="2" cy="2" r="2" transform="translate(1311 1845)" fill="#fff"/>
+    </g>
+    <circle id="Ellipse_23" data-name="Ellipse 23" cx="2" cy="2" r="2" transform="translate(1322 1847)" fill="#fff"/>
+  </g>
+</svg>

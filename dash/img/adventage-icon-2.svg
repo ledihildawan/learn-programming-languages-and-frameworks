@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="124" height="103" viewBox="0 0 124 103">
+  <defs>
+    <filter id="Rectangle_536" x="0" y="0" width="124" height="103" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_220" data-name="Group 220" transform="translate(-517 -1827)">
+    <g transform="matrix(1, 0, 0, 1, 517, 1827)" filter="url(#Rectangle_536)">
+      <rect id="Rectangle_536-2" data-name="Rectangle 536" width="106" height="85" rx="11" transform="translate(9 6)" fill="#fff"/>
+    </g>
+    <rect id="Rectangle_537" data-name="Rectangle 537" width="36.891" height="7.5" rx="3.75" transform="translate(535 1849)" fill="#fd5353"/>
+    <rect id="Rectangle_546" data-name="Rectangle 546" width="36.891" height="7.5" rx="3.75" transform="translate(535 1865)" fill="#fd5353" opacity="0.18"/>
+    <rect id="Rectangle_551" data-name="Rectangle 551" width="36.891" height="7.5" rx="3.75" transform="translate(586 1865)" fill="#fd5353" opacity="0.18"/>
+    <rect id="Rectangle_547" data-name="Rectangle 547" width="36.891" height="7.5" rx="3.75" transform="translate(535 1881)" fill="#fd5353" opacity="0.18"/>
+    <rect id="Rectangle_550" data-name="Rectangle 550" width="36.891" height="7.5" rx="3.75" transform="translate(586 1881)" fill="#fd5353" opacity="0.18"/>
+    <rect id="Rectangle_548" data-name="Rectangle 548" width="36.891" height="7.5" rx="3.75" transform="translate(535 1897)" fill="#fd5353" opacity="0.18"/>
+    <rect id="Rectangle_549" data-name="Rectangle 549" width="36.891" height="7.5" rx="3.75" transform="translate(586 1897)" fill="#fd5353" opacity="0.18"/>
+    <rect id="Rectangle_545" data-name="Rectangle 545" width="36.891" height="7.5" rx="3.75" transform="translate(586 1849)" fill="#fd5353"/>
+  </g>
+</svg>

@@ -1,0 +1,5 @@
+.hero {
+  &__wrapper {
+    @include container;
+  }
+}

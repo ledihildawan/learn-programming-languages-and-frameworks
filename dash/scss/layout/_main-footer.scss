@@ -1,0 +1,41 @@
+.main-footer {
+  position: relative;
+  overflow: hidden;
+  height: 35.83333333333333rem;
+  border-top: 1px solid #e6e6e6;
+  display: grid;
+  place-items: center;
+
+  &::before {
+    content: "";
+    position: absolute;
+    z-index: -999;
+    top: 0;
+    left: 0;
+    width: 178px;
+    height: 645px;
+    background: url(/img/shape-1.svg);
+  }
+
+  &__wrapper {
+    @include container;
+  }
+
+  &__title {
+    margin-bottom: 1.111111111111111rem;
+    text-align: center;
+  }
+
+  &__desc {
+    color: $baltic-sea;
+    font-size: 1.5rem;
+    font-weight: 300;
+    text-align: center;
+  }
+
+  .try-free {
+    width: 37rem;
+    margin-right: auto;
+    margin-left: auto;
+  }
+}

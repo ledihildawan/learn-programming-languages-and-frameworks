@@ -1,0 +1,79 @@
+.btn {
+  all: unset;
+  display: inline-block;
+  border: 0;
+  outline: 0;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  padding: 0.75rem 1.125rem;
+  border-radius: 0.25rem;
+  transition: all 0.2s;
+}
+
+.btn-primary {
+  background: #52489c;
+  color: #fff;
+
+  &:focus,
+  &:hover {
+    background: lighten(#52489c, 8%);
+  }
+
+  &:active {
+    background: darken(#52489c, 4%);
+  }
+}
+
+.btn-outline-primary {
+  border: 3px solid #fff;
+  color: #fff;
+  transition: background 0.2s, color, transform;
+
+  &:focus,
+  &:hover {
+    background: #fff;
+    color: #52489c;
+    transform: scale(1.1067);
+  }
+
+  &:active {
+    background: #52489c;
+    color: #fff;
+  }
+}
+
+.gotoup {
+  opacity: 0;
+  visibility: hidden;
+  position: fixed;
+  bottom: 30px;
+  right: 32px;
+  height: 32px;
+  width: 32px;
+  border-radius: 4px;
+  padding: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #52489c;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(#52489c, 0.4);
+  cursor: pointer;
+  transition: background 0.2s, box-shadow, opacity;
+
+  &:focus,
+  &:hover {
+    background: lighten(#52489c, 16%);
+    box-shadow: 0 8px 32px rgba(#52489c, 0.8);
+  }
+
+  &:active {
+    background: darken(#52489c, 8%);
+    box-shadow: 0 8px 32px rgba(#52489c, 0.6);
+  }
+
+  svg {
+    fill: #fff;
+  }
+}

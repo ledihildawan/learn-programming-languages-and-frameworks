@@ -1,0 +1,19 @@
+.client {
+  &__wrapper {
+    @include container;
+  }
+}
+
+.client-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 1rem;
+  align-items: center;
+  justify-items: center;
+
+  @include for-tablet {
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 2rem;
+  }
+}

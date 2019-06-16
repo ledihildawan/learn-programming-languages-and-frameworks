@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="124" height="103" viewBox="0 0 124 103">
+  <defs>
+    <filter id="Rectangle_536" x="0" y="0" width="124" height="103" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_219" data-name="Group 219" transform="translate(-517 -1827)">
+    <g transform="matrix(1, 0, 0, 1, 517, 1827)" filter="url(#Rectangle_536)">
+      <rect id="Rectangle_536-2" data-name="Rectangle 536" width="106" height="85" rx="11" transform="translate(9 6)" fill="#fff"/>
+    </g>
+    <rect id="Rectangle_537" data-name="Rectangle 537" width="44.333" height="7" rx="3.5" transform="translate(572 1852)" fill="#fd5353"/>
+    <rect id="Rectangle_543" data-name="Rectangle 543" width="74.333" height="7" rx="3.5" transform="translate(542 1869)" fill="#fd5353" opacity="0.3"/>
+    <rect id="Rectangle_544" data-name="Rectangle 544" width="74.333" height="7" rx="3.5" transform="translate(542 1886)" fill="#fd5353" opacity="0.3"/>
+    <rect id="Rectangle_541" data-name="Rectangle 541" width="13.333" height="5" rx="2.5" transform="translate(544.028 1849.627) rotate(30)" fill="#fd5353"/>
+    <rect id="Rectangle_542" data-name="Rectangle 542" width="24.333" height="5" rx="2.5" transform="matrix(0.643, -0.766, 0.766, 0.643, 548.769, 1857.507)" fill="#fd5353"/>
+  </g>
+</svg>
