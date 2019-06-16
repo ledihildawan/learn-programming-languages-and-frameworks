@@ -1,7 +1,33 @@
+@mixin mq($value) {
+  @if ($value == "lg") {
+    @media (max-width: 1366px) {
+      @content;
+    }
+  } @else if ($value == "md") {
+    @media (max-width: 1280px) {
+      @content;
+    }
+  } @else if ($value == "sm") {
+    @media (max-width: 1024px) {
+      @content;
+    }
+  } @else if ($value == "s") {
+    @media (max-width: 768px) {
+      @content;
+    }
+  } @else {
+    @error "Please insert value one of these: lg, md, sm, s";
+  }
+}
+
 @mixin container {
   width: 1612px;
   margin-right: auto;
   margin-left: auto;
+
+  @include mq(lg) {
+    // width: 1170px;
+  }
 }
 
 @mixin resetApperance {

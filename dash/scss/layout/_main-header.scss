@@ -17,6 +17,17 @@
     color: $white;
     font-weight: 700;
     cursor: pointer;
+    transition: backgorund 0.2s, color, 0.2s, opacity 0.2;
+
+    &:focus,
+    &:hover {
+      background: #fff;
+      color: $carnation;
+    }
+
+    &:active {
+      opacity: 0.87;
+    }
   }
 }
 
@@ -28,12 +39,15 @@
   width: 960px;
   height: 1583px;
   background: url(/img/half-circle.svg);
+
+  @include mq(lg) {
+  }
 }
 
 .ui-wireframe {
   position: absolute;
   z-index: -998;
-  top: 252px;
+  top: 140px;
   right: -97px;
   width: 1256px;
   height: 1382px;
@@ -53,7 +67,7 @@
 .line-circle-2 {
   position: absolute;
   z-index: -999;
-  top: 3513px;
+  top: 3572px;
   right: -576px;
   width: 1280px;
   height: 1567px;

@@ -11,11 +11,13 @@
     margin-top: 6.5rem;
     margin-bottom: 1.833333333333333rem;
     font-size: 4.166666666666667rem;
+    font-weight: 900;
   }
 
   &__desc {
     font-size: 1.111111111111111rem;
     margin-bottom: 4.5rem;
+    font-weight: 700;
   }
 }
 
@@ -50,5 +52,16 @@
     color: #fff;
     font-family: $ff-secondary;
     font-weight: 300;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &:focus,
+    &:hover {
+      background: lighten($carnation, 8%);
+    }
+
+    &:active {
+      background: darken($carnation, 8%);
+    }
   }
 }
