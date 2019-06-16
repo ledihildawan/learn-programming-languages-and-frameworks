@@ -14,6 +14,18 @@
   }
 }
 
+.partner {
+  &__list {
+    width: 43.94444444444444rem;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(min-content, 1fr));
+    grid-gap: 4rem 5.277777777777778rem;
+    justify-items: start;
+    align-items: center;
+    list-style: none;
+  }
+}
+
 .adventage {
   &__list {
     width: 60.83333333333333rem;
