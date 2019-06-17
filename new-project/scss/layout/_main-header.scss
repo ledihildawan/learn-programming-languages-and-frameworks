@@ -1,0 +1,42 @@
+.main-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding-top: 2.1875rem;
+  padding-bottom: 2.1875rem;
+
+  &__wrapper {
+    @extend .container;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.main-nav {
+}
+
+.site-list {
+  list-style: none;
+  display: flex;
+
+  &__item {
+    &:not(:last-of-type) {
+      margin-right: 2rem;
+    }
+
+    &:not(:last-child)::after {
+      padding-left: 2rem;
+      content: ".";
+    }
+  }
+
+  &__link {
+    color: inherit;
+    font-weight: 700;
+    font-size: 0.8125rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+}

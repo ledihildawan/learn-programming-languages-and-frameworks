@@ -1,4 +1,7 @@
 // Global
+$base-url: "/";
+
+// work overlay 282f35
 
 // Breaking point max-width
 // 479
@@ -10,17 +13,22 @@
 // 768
 // 992
 
-// Colors
+// Color Names
 $baltic-sea: #1e1c24;
 $white: #fff;
 $carnation: #fd5353;
 
-$clr-heading: $baltic-sea;
-$clr-body: #b1aaaa;
-$clr-link: $baltic-sea;
+// Color
+$clr-brand: #64c29e;
+$clr-bg: $white;
+$clr-heading: #353738;
+$clr-body: #848789;
+$clr-link: $clr-brand;
 
 // Typography
-$ff-primary: Muli, sans-serif;
+$ff-primary: Lato, sans-serif;
 $ff-secondary: Montserrat, serif;
 $ff-scale: 1.125;
-$ff-size: 112.5%;
+$ff-size: 100%;
+
+// Layout
