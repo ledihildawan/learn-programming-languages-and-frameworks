@@ -306,6 +306,33 @@
     text-align: center;
     text-transform: uppercase;
   }
+
+  &__discover {
+    text-align: center;
+    padding-top: 4.6875rem;
+    padding-bottom: 4.6875rem;
+    background: #282f35;
+  }
+
+  &__btn {
+    @include resetApperance;
+    border: 1px solid #94979a;
+    padding: 1.25rem 3.4375rem;
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-decoration: none !important;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+
+    &:focus,
+    &:hover {
+      background: #fff;
+      color: #45ae86;
+    }
+  }
 }
 
 .newsletter {
@@ -331,7 +358,7 @@
     margin-right: auto;
     margin-left: auto;
     display: flex;
-  
+
     @include mq(xs) {
       width: initial;
       height: initial;
@@ -347,7 +374,7 @@
     color: #cdcdcd;
     font-size: 1.25rem;
     font-style: italic;
-    transition: color .2s;
+    transition: color 0.2s;
 
     @include mq(xs) {
       width: initial;
@@ -385,8 +412,8 @@
     }
 
     @include mq(xs) {
-      padding-top: .5rem;
-      padding-bottom: .5rem;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
     }
 
     &:focus,
