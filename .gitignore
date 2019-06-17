@@ -102,5 +102,6 @@ typings/
 *.css.map
 *.sass.map
 *.scss.map
+*.scss
 
 # End of https://www.gitignore.io/api/node,sass,adobe
