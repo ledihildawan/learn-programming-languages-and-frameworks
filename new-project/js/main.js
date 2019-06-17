@@ -31,9 +31,11 @@ $(document).ready(function() {
 
       setTimeout(() => {
         $(".newsletter .container")
-          .append("<h3>Now you are on the list! Thank for have been joined.</h3>")
+          .append(
+            "<h3>Now you are on the list! Thank for have been joined.</h3>"
+          )
           .css({
-            "text-align": "center",
+            "text-align": "center"
           });
 
         $(".newsletter h3")
@@ -70,5 +72,36 @@ $(document).ready(function() {
   newsletterForm.addEventListener("submit", function(e) {
     e.preventDefault();
     validate();
+  });
+
+  // Sticky Main Navbar
+  window.addEventListener("scroll", function() {
+    if (window.scrollY > 1) {
+      document.querySelector(".main-header").classList.add("sticky");
+    } else {
+      document.querySelector(".main-header").classList.remove("sticky");
+    }
+  });
+
+  // Show Mobile Navbar
+  const mobileNavBar = document.querySelector(".main-nav-mobile");
+  const menuBtn = document.querySelector(".menu-btn");
+  const closeMobileNav = document.querySelector(".main-nav-mobile__close");
+
+  menuBtn.addEventListener("click", function() {
+    if (mobileNavBar.classList.contains("close")) {
+      mobileNavBar.classList.remove("close");
+      mobileNavBar.classList.add("open");
+    } else {
+      mobileNavBar.classList.remove("open");
+      mobileNavBar.classList.add("close");
+    }
+  });
+
+  closeMobileNav.addEventListener("click", function() {
+    if (mobileNavBar.classList.contains("open")) {
+      mobileNavBar.classList.add("close");
+      mobileNavBar.classList.remove("open");
+    }
   });
 });

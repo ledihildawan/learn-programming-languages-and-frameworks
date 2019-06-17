@@ -7,6 +7,13 @@
     @extend .container;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+
+    @include mq(xs) {
+      grid-template-columns: 1fr;
+      grid-gap: 2rem;
+      justify-items: center;
+      text-align: center;
+    }
   }
 
   &__author {
@@ -15,6 +22,10 @@
     align-items: center;
     font-style: italic;
     font-size: 0.875rem;
+
+    @include mq(xs) {
+      justify-self: initial;
+    }
   }
 
   &__logo {
