@@ -1,12 +1,14 @@
 $(document).ready(function() {
-  const wow = new WOW({
-    boxClass: "wow",
-    animateClass: "animated",
-    offset: 0,
-    mobile: false,
-    live: true
-  });
-  wow.init();
+  if (window.innerWidth > 1024) {
+    const wow = new WOW({
+      boxClass: "wow",
+      animateClass: "animated",
+      offset: 0,
+      mobile: false,
+      live: true
+    });
+    wow.init();
+  }
 
   $(".owl-carousel").owlCarousel({
     items: 1,
@@ -18,7 +20,6 @@ $(document).ready(function() {
 
   function validateEmail(email) {
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    console.log(re.test(email));
     return re.test(email);
   }
 
@@ -31,15 +32,14 @@ $(document).ready(function() {
 
       setTimeout(() => {
         $(".newsletter .container")
-          .append(
-            "<h3>Now you are on the list! Thank for have been joined.</h3>"
-          )
-          .css({
-            "text-align": "center"
-          });
+          .append("<h3>Now you are on the list! Thank for have been joined.</h3>");
 
         $(".newsletter h3")
-          .css("color", "#64c29e")
+          .css({
+            "color": "#64c29e",
+            "text-align": "center",
+            "line-height": "1.5"
+          })
           .hide()
           .fadeIn(1000);
       }, 1000);

@@ -14,7 +14,7 @@
   </head>
   <body>
     <!-- .main-haader -->
-    <header class="main-header wow fadeIn" id="shop" data-wow-delay="0.3s" data-wow-duration="1s">
+    <header class="main-header">
       <div class="main-header__wrapper">
         <nav class="main-nav main-nav--left">
           <ul class="main-nav__list site-list">
@@ -83,11 +83,11 @@
     <main class="home">
       <h1 class="visually-hidden">YUBO</h1>
       <!-- .hero -->
-      <div class="hero wow fadeIn" data-wow-delay="0.5s" data-wow-duration="1s"></div>
+      <div class="hero"></div>
       <!-- End of .hero -->
 
       <!-- .about-us -->
-      <section class="section about-us wow fadeIn" data-wow-delay="0.3s" data-wow-duration="1s" id="about-us">
+      <section class="section about-us" id="about-us">
         <div class="container">
           <img class="section__icon" src="images/icon-chain.png" alt="Icon chain" />
           <h2 class="section__title">A new generation of vintage bike</h2>
@@ -108,13 +108,11 @@
         <h2 class="visually-hidden">Work</h2>
         <div class="work__one">
           <img
-            class="work__image work__image--1 wow fadeInLeftBig"
+            class="work__image work__image--1"
             src="images/work-1.jpg"
             alt="Work 1 Images"
-            data-wow-delay="0.3s"
-            data-wow-duration="1s"
           />
-          <div class="work__content wow fadeInRightBig" data-wow-delay="0.5s" data-wow-duration="1s">
+          <div class="work__content">
             <img
               src="images/icon-frame-bike.png"
               alt="Icon frame bike"
@@ -131,15 +129,14 @@
             <div class="work__line"></div>
           </div>
           <img
-            class="work__image work__image--2 wow fadeInRightBig" data-wow-delay="0.7s"
+            class="work__image work__image--2"
             src="images/work-1-2.jpg"
             alt="Work 1.2 Images"
-            data-wow-duration="1s"
           />
         </div>
 
         <div class="work__two">
-          <div class="work__content wow fadeInLeftBig" data-wow-delay="0.3s" data-wow-duration="1s">
+          <div class="work__content">
             <img
               src="images/icon-pedal.png"
               alt="Icon pedal"
@@ -155,30 +152,24 @@
             </p>
           </div>
           <img
-            class="work__image work__image--1 wow fadeInRightBig"
+            class="work__image work__image--1"
             src="images/work-2.jpg"
             alt="Work 2 Images"
-            data-wow-delay="0.5s"
-            data-wow-duration="1s"
           />
           <img
-            class="work__image work__image--2 wow fadeInLeftBig"
+            class="work__image work__image--2"
             src="images/work-2-2.jpg"
             alt="Work 2.2 Images"
-            data-wow-delay="0.7s"
-            data-wow-duration="1s"
           />
         </div>
 
         <div class="work__three">
           <img
-            class="work__image work__image--1 wow fadeInLeftBig"
+            class="work__image work__image--1"
             src="images/work-3.jpg"
             alt="Work 3 Images"
-            data-wow-delay="0.3s"
-            data-wow-duration="1s"
           />
-          <div class="work__content wow fadeIn" data-wow-delay="0.5s" data-wow-duration="1s">
+          <div class="work__content">
             <img
               src="images/icon-fork.png"
               alt="Icon fork"
@@ -194,25 +185,21 @@
             </p>
           </div>
           <img
-            class="work__image work__image--2 wow fadeIn"
+            class="work__image work__image--2"
             src="images/work-3-2.jpg"
             alt="Work 3.2 Images"
-            data-wow-delay="1s"
-            data-wow-duration="1s"
           />
           <img
-            class="work__image work__image--3 wow fadeInRightBig"
+            class="work__image work__image--3"
             src="images/work-3-3.jpg"
             alt="Work 3.3 Images"
-            data-wow-delay="0.7s"
-            data-wow-duration="1s"
           />
         </div>
       </section>
       <!-- End of .work -->
 
       <!-- .twitter -->
-      <section class="section twitter wow fadeIn" id="shop" data-wow-delay="0.3s" data-wow-duration="1s">
+      <section class="section twitter">
         <div class="container">
           <img
             src="images/icon-twitter.png"
@@ -265,7 +252,7 @@
       <!-- End of .twitter -->
 
       <!-- .shop -->
-      <section class="section shop wow fadeIn" id="shop" data-wow-delay="0.3s" data-wow-duration="1s">
+      <section class="section shop" id="shop">
         <div class="shop__grid">
           <div class="shop__item shop__item--1">
             <img src="images/shop-1.jpg" alt="Leather Seats" class="shop__image" />
@@ -331,7 +318,7 @@
       <!-- End of .shop -->
 
       <!-- .newsletter -->
-      <section class="section newsletter wow fadeIn" data-wow-delay="0.3s" data-wow-duration="1s">
+      <section class="section newsletter">
         <div class="container">
           <img src="images/YUBO-logo.png" alt="YUBO Logo">
           <h2 class="section__title">Stay on the saddle!</h2>
@@ -348,7 +335,7 @@
     <!-- End of .home -->
 
     <!-- .main-footer -->
-    <footer class="main-footer wow fadeIn" id="shop" data-wow-delay="0.3s" data-wow-duration="1s">
+    <footer class="main-footer">
       <div class="main-footer__wrapper">
         <address class="main-footer__details details">
           <span class="details__company">AOD New York</span><br>
