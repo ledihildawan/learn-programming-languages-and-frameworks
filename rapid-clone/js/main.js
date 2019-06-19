@@ -14,7 +14,7 @@ $(document).ready(function () {
     items: 2,
     loop: true,
     autoplay: true,
-    margin: 24
+    margin: 32
   });
 
   // // Vanilla
