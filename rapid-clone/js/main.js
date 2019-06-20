@@ -14,7 +14,19 @@ $(document).ready(function () {
     items: 2,
     loop: true,
     autoplay: true,
-    margin: 32
+    margin: 32,
+    responsive: {
+      768: {
+        items: 4
+      }
+    }
+  });
+
+  $(".testimonial__list").owlCarousel({
+    items: 1,
+    loop: true,
+    autoplay: true,
+    center: true,
   });
 
   // // Vanilla
@@ -106,4 +118,22 @@ $(document).ready(function () {
   //     mobileNavBar.classList.remove("open");
   //   }
   // });
+
+  var $portfolioList = $(".portfolio__list").isotope({
+    itemSelector: ".portfolio__item",
+  });
+
+  $(".portfolio__filter").on("click", "h3", function (e) {
+    var filterValue = $(this).attr('data-filter');
+    $portfolioList.isotope({ filter: filterValue });
+  })
+
+  $(".portfolio__filter").each(function (i, filter) {
+    var $filter = $(filter);
+    $filter.on("click", "h3", function (e) {
+      $filter.find(".active").removeClass("active");
+      var $filterTitle = $(e.currentTarget);
+      $filterTitle.addClass("active");
+    })
+  });
 });

@@ -103,7 +103,7 @@
                     </div>
                     <div class="column__2">
                         <h2 class="section__title">About Us</h2>
-                        <p class="section__subtitle">
+                        <p class="section__subtitle section__subtitle--italic">
                             Odio sed id eos et laboriosam consequatur eos earum soluta.
                         </p>
                         <p>
@@ -369,16 +369,112 @@
 
         <!-- .portfolio -->
         <section class="section portfolio">
-            <div class="section__wrapper">
-                <h2 class="section__title">Our Portfolio</h2>
-            </div>
+            <ul class="section__wrapper">
+                <h2 class="section__title section__title--center">Our Portfolio</h2>
+                <ul class="portfolio__filter filter">
+                    <li class="filter__category">
+                        <h3 class="filter__title active" data-filter="*">All</h3>
+                    </li>
+                    <li class="filter__category">
+                        <h3 class="filter__title" data-filter=".app">App</h3>
+                    </li>
+                    <li class="filter__category">
+                        <h3 class="filter__title" data-filter=".card">Card</h3>
+                    </li>
+                    <li class="filter__category">
+                        <h3 class="filter__title" data-filter=".web">Web</h3>
+                    </li>
+                </ul>
+
+                <div class="portfolio__list row">
+                    <div class="portfolio__item app col-sm-6 col-md-4" data-category="app">
+                        <img src="./images/app1.jpg" alt="App 1" class="portfolio__image" />
+                    </div>
+                    <div class="portfolio__item app col-sm-6 col-md-4" data-category="app">
+                        <img src="./images/app2.jpg" alt="App 2" class="portfolio__image" />
+                    </div>
+                    <div class="portfolio__item app col-sm-6 col-md-4" data-category="app">
+                        <img src="./images/app3.jpg" alt="App 3" class="portfolio__image" />
+                    </div>
+                    <div class="portfolio__item card col-sm-6 col-md-4" data-category="card">
+                        <img src="./images/card1.jpg" alt="Card 1" class="portfolio__image" />
+                    </div>
+                    <div class="portfolio__item card col-sm-6 col-md-4" data-category="card">
+                        <img src="./images/card2.jpg" alt="Card 2" class="portfolio__image" />
+                    </div>
+                    <div class="portfolio__item card col-sm-6 col-md-4" data-category="card">
+                        <img src="./images/card3.jpg" alt="Card 3" class="portfolio__image" />
+                    </div>
+                    <div class="portfolio__item web col-sm-6 col-md-4" data-category="web">
+                        <img src="./images/web1.jpg" alt="Web 1" class="portfolio__image" />
+                    </div>
+                    <div class="portfolio__item web col-sm-6 col-md-4" data-category="web">
+                        <img src="./images/web2.jpg" alt="Web 2" class="portfolio__image" />
+                    </div>
+                    <div class="portfolio__item web col-sm-6 col-md-4" data-category="web">
+                        <img src="./images/web3.jpg" alt="Web 3" class="portfolio__image" />
+                    </div>
+                </div>
+                </div>
         </section>
         <!-- End of .portfolio -->
 
         <!-- .testimonial -->
         <section class="section testimonial">
             <div class="section__wrapper">
-                <h2 class="section__title">Testimonials<h2>
+                <h2 class="section__title section__title--center">Testimonials<h2>
+                        <div class="owl-carousel owl-theme testimonial__list">
+                            <blockqoute class="testimonial__item">
+                                <img src="./images/testimonial-1.jpg" alt="Saul Goodman picture profile"
+                                    class="testimonial__image" />
+                                <div class="testimonial__body">
+                                    <h3 class="testimonial__name">Saul Goodman</h3>
+                                    <p class="testimonial__title">CEO & Faunder</p>
+                                    <p class="testimonial__text">
+                                        Proin iaculis purus consequat sem cure digni ssim donec porttitora entum
+                                        suscipit rhoncus. Accusantium quam, ultricies eget id, aliquam eget nibh et.
+                                        Maecen aliquam, risus at semper.
+                                    </p>
+                                </div>
+                            </blockqoute>
+                            <blockqoute class="testimonial__item">
+                                <img src="./images/testimonial-2.jpg" alt="Sara Willson picture profile"
+                                    class="testimonial__image" />
+                                <div class="testimonial__body">
+                                    <h3 class="testimonial__name">Sara Willson</h3>
+                                    <p class="testimonial__title">Designer</p>
+                                    <p class="testimonial__text">
+                                        Export tempor illum tamen malis malis eram quae irure esse labore quem cillum
+                                        quid cillum eram malis quorum velit fore eram velit sunt aliqua noster fugiat
+                                        irure amet legam anim culpa.
+                                    </p>
+                                </div>
+                            </blockqoute>
+                            <blockqoute class="testimonial__item">
+                                <img src="./images/testimonial-3.jpg" alt="Jena Karlis picture profile"
+                                    class="testimonial__image" />
+                                <div class="testimonial__body">
+                                    <h3 class="testimonial__name">Jena Karlis</h3>
+                                    <p class="testimonial__title">Store Owner</p>
+                                    <p class="testimonial__text">
+                                        Enim nisi quem export duis labore cillum quae magna enim sint quorum nulla quem
+                                        veniam duis minim tempor labore quem eram duis noster aute amet eram fore quis
+                                        sint minim.
+                                    </p>
+                                </div>
+                            </blockqoute>
+                            <blockqoute class="testimonial__item">
+                                <img src="./images/testimonial-4.jpg" alt="Matt Barron picture profile"
+                                    class="testimonial__image" />
+                                <div class="testimonial__body">
+                                    <h3 class="testimonial__name">Matt Barron</h3>
+                                    <p class="testimonial__title">Freelancer</p>
+                                    <p class="testimonial__text">Fugiat enim eram quae cillum dolore dolor amet nulla
+                                        culpa multos export minim fugiat minim velit minim dolor enim duis veniam ipsum
+                                        anim magna sunt elit fore quem dolore labore illum veniam.</p>
+                                </div>
+                            </blockqoute>
+                        </div>
             </div>
         </section>
         <!-- End of .testimonail -->
@@ -386,10 +482,130 @@
         <!-- .team -->
         <section class="section team">
             <div class="section__wrapper">
-                <h2 class="section__title">Team</h2>
-                <p class="section__subtitle">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium
+                <h2 class="section__title section__title--center">Team</h2>
+                <p class="section__subtitle section__subtitle--center">Sed ut perspiciatis unde omnis iste natus error
+                    sit voluptatem accusantium
                     doloremque
                 </p>
+
+                <ul class="team__list">
+                    <li class="team__item team__card">
+                        <img src="./images/team-1.jpg" alt="Walter White" class="team__picture" />
+                        <div class="team__info">
+                            <h3 class="team__name">Walter White</h3>
+                            <p class="team__title">Chief Executive Officer</p>
+                            <ul class="team__social">
+                                <li>
+                                    <a href="#">
+                                        <img src="./images/logo-twitter.svg" alt="Twitter" />
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <img src="./images/logo-facebook.svg" alt="Facebook" />
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <img src="./images/logo-instagram.svg" alt="Instagram" />
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <img src="./images/logo-linkedin.svg" alt="LinkedIn" />
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="team__item team__card">
+                        <img src="./images/team-2.jpg" alt="Walter White" class="team__picture" />
+                        <div class="team__info">
+                            <h3 class="team__name">Sarah Jhonson</h3>
+                            <p class="team__title">Product Manager</p>
+                            <ul class="team__social">
+                                <li>
+                                    <a href="#">
+                                        <img src="./images/logo-twitter.svg" alt="Twitter" />
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <img src="./images/logo-facebook.svg" alt="Facebook" />
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <img src="./images/logo-instagram.svg" alt="Instagram" />
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <img src="./images/logo-linkedin.svg" alt="LinkedIn" />
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="team__item team__card">
+                        <img src="./images/team-3.jpg" alt="Walter White" class="team__picture" />
+                        <div class="team__info">
+                            <h3 class="team__name">William Anderson</h3>
+                            <p class="team__title">CTO</p>
+                            <ul class="team__social">
+                                <li>
+                                    <a href="#">
+                                        <img src="./images/logo-twitter.svg" alt="Twitter" />
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <img src="./images/logo-facebook.svg" alt="Facebook" />
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <img src="./images/logo-instagram.svg" alt="Instagram" />
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <img src="./images/logo-linkedin.svg" alt="LinkedIn" />
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="team__item team__card">
+                        <img src="./images/team-4.jpg" alt="Walter White" class="team__picture" />
+                        <div class="team__info">
+                            <h3 class="team__name">Amanda Jepson</h3>
+                            <p class="team__title">Accountant</p>
+                            <ul class="team__social">
+                                <li>
+                                    <a href="#">
+                                        <img src="./images/logo-twitter.svg" alt="Twitter" />
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <img src="./images/logo-facebook.svg" alt="Facebook" />
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <img src="./images/logo-instagram.svg" alt="Instagram" />
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <img src="./images/logo-linkedin.svg" alt="LinkedIn" />
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </section>
         <!-- End of .team -->
@@ -421,6 +637,51 @@
                     voluptatem accusantium
                     doloremque
                 </p>
+
+                <ul class="pricing__list">
+                    <li class="pricing__item pricing__card">
+                        <p class="pricing__price">
+                            <sup>$</sup>19
+                            <span>/month</span>
+                        </p>
+                        <h3 class="pricing__title">Basic Plan</h3>
+                        <ul class="pricing__adventage">
+                            <li class="pricing__adventageitem">Odio animi voluptates</li>
+                            <li class="pricing__adventageitem">Inventore quisquam et</li>
+                            <li class="pricing__adventageitem">Et perspiciatis suscipit</li>
+                            <li class="pricing__adventageitem">24/7 Support System</li>
+                        </ul>
+                        <a href="#" class="pricing__btn-cta">Choose Plan</a>
+                    </li>
+                    <li class="pricing__item pricing__card pricing__card--active">
+                        <p class="pricing__price">
+                            <sup>$</sup>29
+                            <span>/month</span>
+                        </p>
+                        <h3 class="pricing__title">Regular Plan</h3>
+                        <ul class="pricing__adventage">
+                            <li class="pricing__adventageitem">Odio animi voluptates</li>
+                            <li class="pricing__adventageitem">Inventore quisquam et</li>
+                            <li class="pricing__adventageitem">Et perspiciatis suscipit</li>
+                            <li class="pricing__adventageitem">24/7 Support System</li>
+                        </ul>
+                        <a href="#" class="pricing__btn-cta">Choose Plan</a>
+                    </li>
+                    <li class="pricing__item pricing__card">
+                        <p class="pricing__price">
+                            <sup>$</sup>39
+                            <span>/month</span>
+                        </p>
+                        <h3 class="pricing__title">Premium Plan</h3>
+                        <ul class="pricing__adventage">
+                            <li class="pricing__adventageitem">Odio animi voluptates</li>
+                            <li class="pricing__adventageitem">Inventore quisquam et</li>
+                            <li class="pricing__adventageitem">Et perspiciatis suscipit</li>
+                            <li class="pricing__adventageitem">24/7 Support System</li>
+                        </ul>
+                        <a href="#" class="pricing__btn-cta">Choose Plan</a>
+                    </li>
+                </ul>
             </div>
         </section>
         <!-- End of .pricing -->
@@ -586,7 +847,7 @@
     </footer>
     <!-- End of .main-footer -->
 
-    <script src="js/libs.js"></script> -->
+    <script src="js/libs.js"></script>
     <script src="js/main.js"></script>
 </body>
 
