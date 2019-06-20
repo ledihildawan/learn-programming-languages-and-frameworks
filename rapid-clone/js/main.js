@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(function () {
   // if (window.innerWidth > 1024) {
   //   const wow = new WOW({
   //     boxClass: "wow",
