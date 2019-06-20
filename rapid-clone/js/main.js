@@ -153,4 +153,40 @@ window.addEventListener("DOMContentLoaded", function () {
       $filterTitle.addClass("active");
     })
   });
+
+  const menuBtn = document.querySelector(".menu-btn");
+  const mainNavMobile = document.querySelector(".main-mobile-nav");
+  const mainHeader = document.querySelector(".main-header");
+  const navOverlay = document.querySelector(".nav-overlay");
+  const siteNavLink = document.querySelectorAll(".main-mobile-nav__link");
+  const siteNavLinkArr = Array.from(siteNavLink);
+
+  for (let siteNavLink of siteNavLinkArr) {
+    siteNavLink.addEventListener("click", () => {
+      navOverlay.classList.remove("active");
+      mainNavMobile.classList.remove("open");
+      if (window.scrollY < 1) {
+        mainHeader.classList.remove("sticky");
+      }
+    });
+  }
+
+  menuBtn.addEventListener("click", function () {
+    menuBtn.classList.toggle("open");
+
+    if (window.scrollY < 1) {
+      mainHeader.classList.toggle("sticky");
+    }
+
+    navOverlay.classList.toggle("active");
+    mainNavMobile.classList.toggle("open");
+  });
+
+  navOverlay.addEventListener("click", function () {
+    this.classList.remove("active");
+    mainNavMobile.classList.remove("open");
+    if (window.scrollY < 1) {
+      mainHeader.classList.remove("sticky");
+    }
+  });
 });
