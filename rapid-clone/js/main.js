@@ -168,6 +168,7 @@ window.addEventListener("DOMContentLoaded", function () {
       if (window.scrollY < 1) {
         mainHeader.classList.remove("sticky");
       }
+      menuBtn.classList.remove("open");
     });
   }
 
