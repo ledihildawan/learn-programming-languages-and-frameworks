@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
-    <title>Rapid Clone by bootstrapmade</title>
+    <title>Rapid - Clone</title>
 
     <!-- Resources -->
     <link
@@ -15,7 +15,7 @@
 
     <link rel="stylesheet" href="css/main.css" />
 
-    <!-- The Real Rapid Theme: https://bootstrapmade.com/demo/themes/Rapid/ -->
+    <!-- Rapid Theme by Bootstrap: https://bootstrapmade.com/demo/themes/Rapid/ -->
 
 </head>
 
@@ -23,12 +23,12 @@
     <!-- .main-header -->
     <header class="main-header">
         <div class="main-header__wrapper">
-            <h1 class="main-header__logo logo">
-                <a href="#" class="logo__type">RAPID</a>
-            </h1>
+            <a href="#" class="main-header__logo logo">
+                <h1 href="#" class="logo__type">RAPID</h1>
+            </a>
             <nav class="main-nav">
                 <ul class="main-nav__list site-list">
-                    <li class="site-list__item">
+                    <li class="site-list__item active">
                         <a class="site-list__link" href="#">Home</a>
                     </li>
                     <li class="site-list__item">
@@ -44,31 +44,35 @@
                         <a class="site-list__link" href="#team">Team</a>
                     </li>
                     <li class="site-list__item dropdown">
-                        <a class="site-list__link" href="#">
-                            Dropdown
-                            <ul class="dropdown__list">
-                                <li class="dropdown__item">
-                                    <a href="#" class="dropdown__link">Dropdown 1
-                                    </a>
-                                </li>
-                                <li class="dropdown__item">
-                                    <a href="#" class="dropdown__link">Dropdown 2</a>
-                                </li>
-                                <li class="dropdown__item">
-                                    <a href="#" class="dropdown__link">Dropdown 3</a>
-                                </li>
-                                <li class="dropdown__item">
-                                    <a href="#" class="dropdown__link">Dropdown 4</a>
-                                </li>
-                            </ul>
-                        </a>
+                        <a class="site-list__link" href="#">Dropdown</a>
+                        <ul class="dropdown__list">
+                            <li class="dropdown__item">
+                                <a href="#" class="dropdown__link">Dropdown 1
+                                </a>
+                            </li>
+                            <li class="dropdown__item">
+                                <a href="#" class="dropdown__link">Dropdown 2</a>
+                            </li>
+                            <li class="dropdown__item">
+                                <a href="#" class="dropdown__link">Dropdown 3</a>
+                            </li>
+                            <li class="dropdown__item">
+                                <a href="#" class="dropdown__link">Dropdown 4</a>
+                            </li>
+                        </ul>
                     </li>
                     <li class="site-list__item">
                         <a class="site-list__link" href="#contact">Contact Us</a>
                     </li>
                 </ul>
             </nav>
+            <div class="main-header__menu-btn menu-btn open">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </div>
+        <nav class="main-mobile-nav"></nav>
     </header>
     <!-- End of .main-header -->
 
@@ -98,8 +102,9 @@
             <div class="section__wrapper">
                 <div class="about__column column">
                     <div class="column__1">
-                        <img src="./images/about-img.jpg" alt="Woman standing with smile in the face"
-                            class="about__image" />
+                        <div class="about__image">
+                            <img src="./images/about-img.jpg" alt="Woman standing with smile in the face" />
+                        </div>
                     </div>
                     <div class="column__2">
                         <h2 class="section__title">About Us</h2>
@@ -286,19 +291,19 @@
                 <div class="statistic">
                     <div class="statistic__item">
                         <h3 class="statistic__title">Clients</h3>
-                        <p class="statistic__number">247</p>
+                        <p class="statistic__number counter">247</p>
                     </div>
                     <div class="statistic__item">
                         <h3 class="statistic__title">Projects</h3>
-                        <p class="statistic__number">421</p>
+                        <p class="statistic__number counter">421</p>
                     </div>
                     <div class="statistic__item">
                         <h3 class="statistic__title">Hours Of Support</h3>
-                        <p class="statistic__number">1,364</p>
+                        <p class="statistic__number counter">1,364</p>
                     </div>
                     <div class="statistic__item">
                         <h3 class="statistic__title">Hard Workers</h3>
-                        <p class="statistic__number">18</p>
+                        <p class="statistic__number counter">18</p>
                     </div>
                 </div>
                 <!-- End of .statistic -->
@@ -368,7 +373,7 @@
         <!-- End od .feature -->
 
         <!-- .portfolio -->
-        <section class="section portfolio">
+        <section class="section portfolio" id="portfolio">
             <ul class="section__wrapper">
                 <h2 class="section__title section__title--center">Our Portfolio</h2>
                 <ul class="portfolio__filter filter">
@@ -573,7 +578,7 @@
         <!-- End of .testimonail -->
 
         <!-- .team -->
-        <section class="section team">
+        <section class="section team" id="team">
             <div class="section__wrapper">
                 <h2 class="section__title section__title--center">Team</h2>
                 <p class="section__subtitle section__subtitle--center">Sed ut perspiciatis unde omnis iste natus error
@@ -939,6 +944,8 @@
         </div>
     </footer>
     <!-- End of .main-footer -->
+
+    <div class="nav-overlay"></div>
 
     <script src="js/libs.js"></script>
     <script src="js/main.js"></script>

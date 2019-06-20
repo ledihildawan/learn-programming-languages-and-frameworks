@@ -1,4 +1,4 @@
-$(function () {
+$(document).ready(function () {
   // if (window.innerWidth > 1024) {
   //   const wow = new WOW({
   //     boxClass: "wow",
@@ -18,6 +18,9 @@ $(function () {
     responsive: {
       768: {
         items: 4
+      },
+      900: {
+        items: 6
       }
     }
   });
@@ -25,8 +28,7 @@ $(function () {
   $(".testimonial__list").owlCarousel({
     items: 1,
     loop: true,
-    autoplay: true,
-    center: true,
+    autoplay: true
   });
 
   // // Vanilla
@@ -118,12 +120,27 @@ $(function () {
   //     mobileNavBar.classList.remove("open");
   //   }
   // });
+  $(".counter").counterUp({
+    delay: 10,
+    time: 1000
+  });
 
+  // Sticky Main Navbar
+  window.addEventListener("scroll", function () {
+    if (window.scrollY > 1) {
+      document.querySelector(".main-header").classList.add("sticky");
+    } else {
+      document.querySelector(".main-header").classList.remove("sticky");
+    }
+  });
+});
+
+window.addEventListener("DOMContentLoaded", function () {
   var $portfolioList = $(".portfolio__list").isotope({
     itemSelector: ".portfolio__item",
   });
 
-  $(".portfolio__filter").on("click", "h3", function (e) {
+  $(".portfolio__filter").on("click", "h3", function () {
     var filterValue = $(this).attr('data-filter');
     $portfolioList.isotope({ filter: filterValue });
   })
