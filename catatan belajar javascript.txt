@@ -77,3 +77,9 @@ if (condition) {
   // Do something
 }
 
+// switch(condition) {
+  case "":
+    break;
+  default:
+    break;
+}
