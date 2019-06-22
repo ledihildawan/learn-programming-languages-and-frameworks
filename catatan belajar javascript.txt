@@ -1,0 +1,79 @@
+JavaScript Basic
+
+Data Types
+Number
+String
+Boolean
+Null
+Undefined
+Objects
+Symbols
+
+Operation
+Arithmetic Operators
++
+-
+*
+/
+%
+++
+--
+
+Assignment Operators
++=
+-=
+*=
+/=
+%=
+
+String Operators
++
++=
+
+Comparison Operators
+==
+===
+!=
+!=
+>
+>=
+<
+<=
+
+Conditional (Ternary) Operator
+variablename = (condition) ? value1 : value2
+
+Logical Operators
+&&
+||
+!
+
+Control Flow
+{} // code block
+
+for (initialization; condition; final expression) {
+  // code
+}
+
+let initialize = 0;
+
+whilte (condition) {
+  // code
+  initialization++;
+}
+
+let i = 5;
+
+do {
+  console.log(i);
+  i++;
+} white (i < 5)
+
+if (condition) {
+  // Do something
+} else if (condition) {
+  // Do something
+} else {
+  // Do something
+}
+
