@@ -77,9 +77,40 @@ if (condition) {
   // Do something
 }
 
+// Switch statements
 // switch(condition) {
-  case "":
+  case condition:
+    // Do something
     break;
   default:
+    // Do something
     break;
 }
+
+
+variable scope & block scope
+// global scope:
+  age
+
+// local Scope:
+
+* you can change global variable in scope
+* you can change local variable while you in global scope
+
+let age = 30;
+
+if (true) {
+  let age = 40;
+  let name = 'shaun';
+  console.log("inside code block: ", age, name);
+
+  if (true) {
+    let age = 50;
+    console.log("inside 2nd code block: ", age);
+    var test = "hello";
+  }
+}
+
+var keyworad is not block scope
+
+console.log("outside code block: ", age, name, hello);
