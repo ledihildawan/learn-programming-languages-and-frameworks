@@ -1,0 +1,235 @@
+JavaScript Basic
+
+Data Types
+Number
+String
+Boolean
+Null
+Undefined
+Objects
+Symbols
+
+Operation
+Arithmetic Operators
++
+-
+*
+/
+%
+++
+--
+
+Assignment Operators
++=
+-=
+*=
+/=
+%=
+
+String Operators
++
++=
+
+Comparison Operators
+==
+===
+!=
+!=
+>
+>=
+<
+<=
+
+Conditional (Ternary) Operator
+variablename = (condition) ? value1 : value2
+
+Logical Operators
+&&
+||
+!
+
+Control Flow
+{} // code block
+
+for (initialization; condition; final expression) {
+  // code
+}
+
+let initialize = 0;
+
+whilte (condition) {
+  // code
+  initialization++;
+}
+
+let i = 5;
+
+do {
+  console.log(i);
+  i++;
+} white (i < 5)
+
+if (condition) {
+  // Do something
+} else if (condition) {
+  // Do something
+} else {
+  // Do something
+}
+
+// Switch statements
+// switch(condition) {
+  case condition:
+    // Do something
+    break;
+  default:
+    // Do something
+    break;
+}
+
+
+variable scope & block scope
+// global scope:
+  age
+
+// local Scope:
+
+* you can change global variable in scope
+* you can change local variable while you in global scope
+
+let age = 30;
+
+if (true) {
+  let age = 40;
+  let name = 'shaun';
+  console.log("inside code block: ", age, name);
+
+  if (true) {
+    let age = 50;
+    console.log("inside 2nd code block: ", age);
+    var test = "hello";
+  }
+}
+
+var keyworad is not block scope
+
+console.log("outside code block: ", age, name, hello);
+
+// function declaration
+function greet() {
+  console.log('hello there');
+}
+
+// function expression
+const speak = function() {
+  console.log("Good day!");
+};
+
+greet();
+greet();
+greet();
+
+speak();
+speak();
+speak();
+
+// Arrow function
+const calcArea = (radius) => {
+  return 3.14 * radius**2;
+}
+
+const calcArea = radius => 3.14 * radius**2;
+
+const greet = () => "Hello, world!";
+
+const bill = (products, tax) {
+  let total = 0;
+  for (let i = 0; i < products.length; i++) {
+    total += products[i] + products[i] * tax;
+  }
+  return total;
+}
+
+// callbacks & foreach
+const myFunc = callbackFunc => {
+  let value = 50;
+  callbackFunc(value);
+}
+
+myFunc(value => console.log(value));
+
+const li = document.querySelector(".people");
+
+const people = ["ledi", "tyan", "rizky", "joko", "bayu", "ali", "asdar"];
+let html = ``;
+
+people.forEach(person => html += <li>`Hello ${person}</li>`);
+
+// Object literals
+
+let objectName = {
+  key: value
+};
+
+const blogs = [
+  { title: "how to make cake", likes: 50 },
+  { title: "how to drop table in sql", likes: 200 }
+];
+
+let user = {
+  name: "crystal",
+  age: 30,
+  email: "crystal@thenetninja.co.uk",
+  location: "berlin",
+  blogs: ["why mac & cheese rules", "10 Things to make with marmite"],
+  login: function() {
+    console.log("the user logged in");
+  }
+};
+
+console.log(user);
+console.log(user.email);
+
+user.age = 35;
+console.log(user.age);
+
+const location = "location";
+
+console.log(user[location]);
+console.log(user.location);
+user["name"] = "chun-li";
+console.log(user["name"]);
+
+console.log(typeof user);
+
+user.login();
+
+const mario = "mario";
+name.toUpperCase();
+
+Primitive & Reference Types
+Primitive Types
+- numbers
+- strings
+- booleans
+- Null
+- Undefined
+- Symbols
+
+Reference Types
+- all typeof Objects
+  - object literals
+  - arrays
+  - functions
+  - dates
+  - all other objects
+
+Document Object Model (DOM) It's a heart of any kind of page manipulation.
+
+html (root node)
+
+title, h1, p // text node
+
+nodeList looks very much like an array but it's not an array can't use all the array method
+
+html collection use foreach array function use Array.form to get some Array method
