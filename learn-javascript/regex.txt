@@ -1,0 +1,13 @@
+^ - start
+$ - end
+. - any character
+
+^ninja$ - only match ninja
+^[a-z]$ - only match single letter a - z
+^[a-zA-Z]$ - only match single letter a - z or A - Z
+^[a-zA-Z]{6, 10}$ - only match start character a-z or A-Z from 6 to 10 character long
+^[a-zA-Z0-9]{6, 10}$ - only match start character a-z or A-Z or 0 - 9 from 6 to 10 character long
+^.{6,10}$ - match any character 6 to 10 character long
+^[a-z]{6,}$ - match at least six character lowercase
+
+String.search // return the integer. value 0 match, value -1 not match

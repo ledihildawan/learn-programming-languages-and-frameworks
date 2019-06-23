@@ -233,3 +233,7 @@ title, h1, p // text node
 nodeList looks very much like an array but it's not an array can't use all the array method
 
 html collection use foreach array function use Array.form to get some Array method
+
+traverse the DOM
+
+if you want to add event on child node just target the parentNode and use e.target for target to the child
