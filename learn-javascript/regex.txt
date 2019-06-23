@@ -10,4 +10,4 @@ $ - end
 ^.{6,10}$ - match any character 6 to 10 character long
 ^[a-z]{6,}$ - match at least six character lowercase
 
-String.search // return the integer. value 0 match, value -1 not match
+String.search // return the integer. value 0 match , value -1 not match
