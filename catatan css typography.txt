@@ -70,3 +70,24 @@ $mq-retina: "(-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi)";
       alt="Death Star 02">
   </div>
 </header>
+
+button.is-link
+    padding: 0;
+    outline: none;
+    border: none;
+    border-radius: 0;
+    background: none;
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: left;
+    box-shadow: none;
+    cursor: pointer;
+
+triangle
+  content: "";
+  position: absolute;
+  top: 0.5rem;
+  left: -13px;
+  border-top: 13px solid transparent;
+  border-bottom: 13px solid transparent;
+  border-right: 13px solid #f6f6f6;

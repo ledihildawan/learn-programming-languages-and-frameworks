@@ -1,0 +1,15 @@
+npm i gulp --save-dev
+
+gulpfile.js
+
+npm install gulp-sass gulp-plumber gulp-autoprefixer browser-sync gulp-sourcemaps --save-dev
+
+npm install --global gulp-cli
+
+npm init
+
+mansory.js
+
+npm install --save-dev gulp gulp-autoprefixer gulp-babel gulp-cheerio gulp-csso gulp-imagemin gulp-load-plugins gulp-plumber gulp-rename gulp-replace gulp-sass gulp-sourcemaps gulp-svg-sprite gulp-svgmin gulp-uglify gulp-webp imagemin-jpep-recompress imagemin-pngquant browser-sync @babel/present-env @babel/core del
+
+npm start: "npm run build && gulp serve"

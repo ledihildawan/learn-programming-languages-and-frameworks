@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    const scores = [
+      { player: "mario", score: 50 },
+      { player: "yoshi", score: 30 },
+      { player: "mario", score: 70 },
+      { player: "crystal", score: 60 }
+    ];
+
+    const totalScoreMario = scores.reduce((acc, curr) => {
+      if (curr.player === "mario") {
+        acc += curr.score;
+      }
+
+      return acc;
+    }, 0);
+
+    const scoreOver50 = scores.reduce((acc, curr) => {
+      if (curr.score > 50) {
+        return acc++;
+      }
+
+      return acc;
+    }, 0);
+  </script>
+</body>
+</html>

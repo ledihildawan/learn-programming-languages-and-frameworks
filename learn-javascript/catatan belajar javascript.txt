@@ -237,3 +237,9 @@ html collection use foreach array function use Array.form to get some Array meth
 traverse the DOM
 
 if you want to add event on child node just target the parentNode and use e.target for target to the child
+
+cari angka pertama terbesar
+const highScore = [0, 50, 80, 60, 1000, 20, 1, 5];
+const firstHighScore = highscore.find(score => score > 50);
+
+const sortHighScoreASC = highscore.sort((a, b) => b - a);
