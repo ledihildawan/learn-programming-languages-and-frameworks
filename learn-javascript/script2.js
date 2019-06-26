@@ -1,5 +1,7 @@
 var database = [
-  { username: "john", password: "john123" }
+  { username: "john", password: "john123" },
+  { username: "joko", password: "joko123" },
+  { username: "ledi", password: "ledi123" }
 ];
 
 var newsFeed = [
@@ -20,14 +22,36 @@ var newsFeed = [
 var username = prompt("What's your username?");
 var password = prompt("What's your password?");
 
-function signIn(username, password) {
-  if (username === database[0].username && password === database[0].password) {
-    return newsFeed;
-  } else if (username === database[0].username || password === database[0].password) {
-    return "Username or password doesn't match!";
-  } else {
-    return "account is not found";
+function isUserFound(username) {
+  for (var i = 0; i < database.length; i++) {
+    if (username === database[i].username) {
+      return true;
+    }
   }
+
+  return false;
 }
 
-signIn(usernameInput, passwordInput);
+function isValidUser(username, password) {
+  for (var i = 0; i < database.length; i++) {
+    if (username === database[i].username && password === database[i].password) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function signIn(username, password) {
+  if (isUserFound(username)) {
+    if (isValidUser(username, password)) {
+      return newsFeed;
+    } else {
+      return 'Wrong username or password';
+    }
+  }
+
+  return 'Account not found!';
+}
+
+signIn(username, password);
