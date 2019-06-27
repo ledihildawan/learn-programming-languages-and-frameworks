@@ -8,7 +8,13 @@ if (isHuman) {
   var isHuman = false;
 }
 
-// object - descraturing
+// object - Destructuring assignment
+const accout = {
+  job: "programmer"
+};
+
+const { job } = accout;
+
 const name = "cristiano ronaldo";
 const number = 7;
 
@@ -76,3 +82,44 @@ const newArray = array.forEach(num => double.push(num * 2));
 const dobuleMap = array.map(num => num * 2);
 const numAboveFive = array.filter(num => num > 5);
 const total = array.reduce((acc, curr) => acc + curr, 0);
+
+// Array just an object in the end of the day.
+
+// context vs scope
+this === window // true
+// this mean what is the object enveronment that where in right now
+// this just refers to object inside of
+
+// this/window.alert()
+
+// this
+const obejct4 = {
+  a: function() {
+    console.log(this);
+  }
+};
+
+// this is userful when we want to instatiaton object
+class Player {
+  constructor(name, type) {
+    this.name = name;
+    this.type = type;
+  }
+
+  introduce() {
+    console.log(`Hi I am ${this.name}, I'm a ${this.type}`);
+  }
+}
+
+class Football extends Player {
+  constructor(name, type) {
+    super(name, type);
+  }
+
+  goal() {
+    console.log(`What a beutiful GOAL form ${this.name}`);
+  }
+}
+
+const messi = new Player("Messi", "Second Striker");
+const goalComm = new Football("Roanldo", "Winger Forward");
