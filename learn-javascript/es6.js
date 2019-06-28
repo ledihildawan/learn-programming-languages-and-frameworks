@@ -1,59 +1,3 @@
-// let and const
-var isHuman = true;
-let score = 10;
-const fullName = "Messi";
-
-// if not block scope
-if (isHuman) {
-  var isHuman = false;
-}
-
-// object - Destructuring assignment
-const accout = {
-  job: "programmer"
-};
-
-const { job } = accout;
-
-const name = "cristiano ronaldo";
-const number = 7;
-
-const player = {
-  name,
-  number,
-  position: "Left Winger Forward"
-};
-
-// template string
-const sayAwesome = `This is ${"Awesome"}`;
-
-function sayHello(name = "ledi") {
-  return `Hello ${name}`;
-}
-
-sayHello();
-
-// Symbol
-const sym1 = Symbol("ledi");
-const sym2 = Symbol("ledi");
-
-sym1 === sym2
-
-// Arrow function
-const newFun = (num = 5) => num**2;
-
-// Advanced Functions
-const first = () => {
-  const greet = "Hi";
-  const second = () => {
-    alert(greet);
-  }
-  return second;
-}
-
-const newFunc = first();
-newFunc();
-
 // Closures - a function ran. The function executed. It's never going to executed again.
 // BUT it's going to remember that there are references to those variables
 // so the child scope always has access to the parent scope.
@@ -123,3 +67,27 @@ class Football extends Player {
 
 const messi = new Player("Messi", "Second Striker");
 const goalComm = new Football("Roanldo", "Winger Forward");
+
+let obj = {
+  name: "ronaldo",
+  age: 34,
+  club: "juventus"
+};
+
+let obj2 = {
+  username0: "ronaldo",
+  username1: "messi",
+  username2: "hazard"
+};
+
+// get key obj and also value
+Object.keys(obj).forEach((key, idx) => console.log(key, obj[key]));
+
+// get value obj
+Object.values(obj).forEach(val => console.log(val));
+
+// get obj and value within format an array
+Object.entries(obj).forEach(entrie => console.log(entrie));
+
+Object.entries(obj2).map(value => value[1] + value[0].slice(0,1));
+Object.entries(obj2).map(value => value[1] + value[0].slice(0,1).replace("u", ""));
