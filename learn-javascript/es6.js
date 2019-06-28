@@ -1,3 +1,6 @@
+// Destructuring Objects
+
+
 // Closures - a function ran. The function executed. It's never going to executed again.
 // BUT it's going to remember that there are references to those variables
 // so the child scope always has access to the parent scope.
