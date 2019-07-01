@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <title>Profile</title>
+
+  <link rel="stylesheet" href="mini-default.min.css">
+
+</head>
+<body>
+  <div id="app">
+    <button v-on:click="sayHi">Say Hi</button>
+    {{ fullName }}
+    <ul>
+      <li v-for="hoby in hobbies">
+        {{ hoby }}
+      </li>
+    </ul>
+  </div>
+  <script src="vue-1.0.25.min.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
