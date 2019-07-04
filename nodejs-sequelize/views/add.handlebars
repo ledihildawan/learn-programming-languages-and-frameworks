@@ -1,0 +1,32 @@
+<h1>Add</h1>
+<p>Your contact email will be shared with registered users to apply to your gig</p>
+
+{{#each errors}}
+  <p style="color: red">{{text}}</p>
+{{/each}}
+
+<form action="/gigs/add" method="post">
+  <div>
+    <label for="title">Gig Title</label><br>
+    <input type="text" name="title" id="title" placeholder="eg. Small Wordpress website, React developer" value={{title}}>
+  </div>
+  <div>
+    <label for="technologies">Technologies Needed</label><br>
+    <input type="text" name="technologies" id="technologies" placeholder="eg. javascript, react, PHP" value={{technologies}}>
+  </div>
+  <div>
+    <label for="budget">Budget (Leave blank for unknown)</label><br>
+    <input type="text" name="budget" id="budget" placeholder="eg. 500, 5000, 10000" value={{budget}}>
+  </div>
+  <div>
+    <label for="description">Description</label><br>
+    <textarea name="description" id="description" placeholder="Describe the details of gig">{{description}}</textarea>
+  </div>
+  <div>
+    <label for="email">Contact Email</label><br>
+    <input type="email" name="contact_email" id="email" placeholder="Enter an email"value={{contact_email}}>
+  </div>
+  <div>
+    <input type="submit" value="Add Gig">
+  </div>
+</form>

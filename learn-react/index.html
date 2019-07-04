@@ -1,0 +1,48 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+  <title>Component 1</title>
+
+  <script src="https://unpkg.com/react@16.0.0-rc.2/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@16.0.0-rc.2/umd/react-dom.development.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js"></script>
+
+</head>
+<body>
+  <div id="app"></div>
+
+  <script type="text/babel">
+    class HobbyList extends React.Component {
+      render() {
+        const hobbies = ['Sleeping', 'Eating', 'Cuddling']
+        return (
+          <ul>
+            { hobbies.map((h, i) => <li key={i}>{h}</li>) }
+          </ul>
+        )
+      }
+    }
+
+    class Pet extends React.Component {
+      render() {
+        const liStyle = { fontSize: '1.5em' }
+        return (
+          <div className="card">
+            <h2 className="name">Moxie</h2>
+            <img src="https://github.com/tigarcia/Moxie/raw/master/moxie.png" alt="moxie my cat" />
+            <h5>Hobbies:</h5>
+            <HobbyList />
+          </div>
+        )
+      }
+    }
+
+    ReactDOM.render(<Pet />, document.getElementById('app'))
+  </script>
+</body>
+</html>

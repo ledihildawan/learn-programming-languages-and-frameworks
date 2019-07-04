@@ -1,0 +1,139 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0 auto;
+  padding: 0 32px;
+  background: #f9fafb;
+  color: #777;
+  font-family: 'Poppins', sans-serif;
+}
+
+header {
+  margin-top: 60px;
+  display: flex;
+  border-radius: 7px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, .06);
+}
+
+input {
+  flex: 1;
+  border: 0;
+  border-top-left-radius: 7px;
+  border-bottom-left-radius: 7px;
+  padding: 16px 16px;
+  outline: 0;
+  color: inherit;
+  font-family: inherit;
+  transition: color .2s;
+}
+
+::placeholder {
+  color: #ccc;
+}
+
+button {
+  all: unset;
+  position: relative;
+  padding: 16px 32px;
+  border-top-right-radius: 7px;
+  border-bottom-right-radius: 7px;
+  background: linear-gradient(45deg, #dc8aaa, #f0a8ca);
+  cursor: pointer;
+  transition: all .2s;
+}
+
+button:hover {
+  background: linear-gradient(45deg, #bd6b8a, #da8fb2);
+}
+
+button svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 16px;
+  height: 16px;
+  fill: #fff;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+
+main {
+  margin-top: 40px;
+}
+
+.card {
+  display: none;
+  border-radius: 7px;
+  padding: 16px;
+  background: #fff;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, .06);
+}
+
+.card__body {
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+}
+
+h1 {
+  color: #534a72;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+h1 span {
+  display: inline-block;
+}
+
+.icon-place {
+  margin-left: 10px;
+  position: relative;
+}
+
+.icon-place svg {
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -75%);
+  fill: #ccc;
+}
+
+.weather-icon {
+  margin-right: 10px;
+}
+
+.weather-icon img {
+  width: 48px;
+  height: 48px;
+}
+
+.weather-condition {
+  margin-right: auto;
+  color: #534a72;
+}
+
+.weather-temp {
+  color: #999;
+}
+
+.error {
+  color: #ee9696;
+}

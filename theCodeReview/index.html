@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://necolas.github.io/normalize.css/8.0.1/normalize.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Space+Mono:400,400i,700,700i">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<header class="main-header">
+  <h1 class="brand text-center">The <span>&lt;</span>Code <span>&sol;&gt;</span> Review</h1>
+</header>
+
+<section class="section">
+  <div class="container">
+    <h2 class="section-title text-center">Signup for our newsletter</h2>
+    <p class="lead text-center h-mb-3">Get the latest news on how your code is doing right inbox</p>
+
+    <form action="" class="form h-bt-db-2 h-pt-5" method="post">
+      <fieldset>
+        <legend class="form-legend">Contact Information</legend>
+
+        <div class="form-group form-group-inline">
+          <label for="full-name">Full Name</label>
+          <input class="form-control" id="full-name" name="full_name" placeholder="Required" type="text" />
+        </div>
+
+        <div class="form-group form-group-inline">
+          <label for="email-address">Email Addresss</label>
+          <input class="form-control" id="email-address" name="email_address" placeholder="Required" type="email" />
+        </div>
+
+        <div class="form-group form-group-inline">
+          <label for="phone-number">Phone Number</label>
+          <input class="form-control" id="phone-number" name="phone_number" type="tel" />
+        </div>
+
+        <div class="form-group form-group-inline">
+          <label for="street-address">Street Address</label>
+          <input class="form-control" id="street-address" name="street_address" type="text" />
+        </div>
+
+        <div class="form-group form-group-inline">
+          <label for="city">City</label>
+          <input class="form-control" id="city" name="city" type="text" />
+        </div>
+
+        <div class="form-group form-group-inline">
+          <label for="state">State</label>
+          <select class="form-control" name="state" id="state">
+            <option value="alabama">Alabama</option>
+            <option value="california">California</option>
+            <option value="delaware">Delaware</option>
+            <option value="florida">Florida</option>
+            <option value="georgia">Georgia</option>
+            <option value="hawaii">Hawaii</option>
+            <option value="idaho">Idaho</option>
+            <option value="kansas">Kansas</option>
+            <option value="louisiana">Louisiana</option>
+            <option value="maine">Maine</option>
+            <option value="nebraska">Nebraska</option>
+            <option value="ohio">Ohio</option>
+            <option value="pennsylvania">Pennsylvania</option>
+            <option value="rhode_island">Rhode Island</option>
+            <option value="south_carolina">South Carolina</option>
+            <option value="tennessee">Tennessee</option>
+            <option value="utah">Utah</option>
+            <option value="vermont">Vermont</option>
+            <option value="washington">Washington</option>
+          </select>
+        </div>
+
+        <div class="form-group form-group-inline">
+          <label for="zip-code">Zip Code</label>
+          <input class="form-control form-control-half" id="zip-code" name="zip_code" type="text" />
+        </div>
+      </fieldset>
+
+      <fieldset class="h-mt-3">
+        <legend class="form-legend">Newsletter</legend>
+        <p>Select the newsletters you would like to recive</p>
+
+        <div class="form-group">
+          <input id="html-news" name="newsletters[]" type="checkbox" value="html_news" />
+          <label for="html-news">HTML News</label><br />
+          <input id="css-news" name="newsletters[]" type="checkbox" value="css_news" />
+          <label for="css-news">CSS News</label><br />
+          <input id="javascript-news" name="newsletters[]" type="checkbox" value="javascript_news" />
+          <label for="javascript-news">JavaScript News</label>
+        </div>
+
+        <p>Newsletter format</p>
+
+        <div class="form-group">
+          <input id="html" name="newsletter_format" type="radio" value="html" />
+          <label for="html">HTML</label><br />
+          <input id="plain-text" name="newsletter_format" type="radio" value="plain_text" />
+          <label for="plain-text">Plain text</label>
+        </div>
+
+        <div class="form-group">
+          <label for="other-topics">Other topics you'd like to hear about</label>   
+          <textarea class="form-control" id="other-topics" name="other_topics"></textarea>
+        </div>
+      </fieldset>
+
+      <div class="form-group h-mt-3">
+        <button class="btn btn-primary btn-full-width" type="submit">Sign Up</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<footer class="main-footer h-py-3">
+  <p class="copyright text-center">Copyright The Code Review</p>
+</footer>
+</body>
+</html>

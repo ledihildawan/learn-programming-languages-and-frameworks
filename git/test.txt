@@ -1,0 +1,8 @@
+git log
+git status
+git add "namefile" / .
+git commit -m "message"
+git checkout (HEAD)
+git revert --no-commit 213021830..HEAD
+git clone
+git push

@@ -1,0 +1,24 @@
+<% include partials/header %>
+  <div class="container">
+    <header class="main-header">
+      <h1>Movies Search App</h1>
+
+      <form action="/" method="get">
+        <input required name="s" type="search" placeholder="La la land" value="<%= title ? title : '' %>" />
+        <input type="submit" value="Search" />
+      </form>
+    </header>
+
+    <% if (movies) { %>
+      <section class="movie">
+        <% for (let i = 0; i < 8; i++) { %>
+          <% if (movies[i]['Poster'] !== 'N/A') { %>
+            <img class="movie__poster" src="<%= movies[i]['Poster'] %>" />
+          <% } %>
+        <% } %>
+      </section>
+    <% } else { %>
+      <h2>Not found</h2>
+    <% } %>
+  </div>
+<% include partials/footer %>

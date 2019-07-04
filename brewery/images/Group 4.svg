@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 243 139">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: #fff;
+        font-family: Poppins-Bold, Poppins;
+        font-weight: 700;
+      }
+
+      .cls-1 {
+        font-size: 75px;
+      }
+
+      .cls-2 {
+        font-size: 49px;
+        letter-spacing: 0.025em;
+      }
+    </style>
+  </defs>
+  <g id="Group_4" data-name="Group 4" transform="translate(-579 -103)">
+    <text id="LOCAL" class="cls-1" transform="translate(579 182)"><tspan x="0" y="0">LOCAL</tspan></text>
+    <text id="BREWERY" class="cls-2" transform="translate(581 225)"><tspan x="0" y="0">BREWERY</tspan></text>
+  </g>
+</svg>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Drum Kit #JavaScript30 1/30</title>
+
+  <style>
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-image:
+    radial-gradient( circle farthest-corner at 10% 20%,  rgba(48,49,142,.4) 0%, rgba(94,93,223,.6) 90% ),
+    url('https://images.unsplash.com/photo-1526933893123-220ba506e809?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80');
+  background-size: cover;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.keys {
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+}
+
+.key {
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+  font-size: 2rem;
+  transition: all .07s;
+}
+
+.playing {
+  color: rgba(48,49,142,1);
+}
+
+span {
+  font-size: 1rem;
+}
+
+  </style>
+</head>
+
+<body>
+  <div class="keys">
+    <div data-key="65" class="key">
+      <kbd>A</kbd>
+      <span class="sound">clap</span>
+    </div>
+    <div data-key="83" class="key">
+      <kbd>S</kbd>
+      <span class="sound">hithat</span>
+    </div>
+    <div data-key="68" class="key">
+      <kbd>D</kbd>
+      <span class="sound">kick</span>
+    </div>
+    <div data-key="70" class="key">
+      <kbd>F</kbd>
+      <span class="sound">openhat</span>
+    </div>
+    <div data-key="71" class="key">
+      <kbd>G</kbd>
+      <span class="sound">boom</span>
+    </div>
+    <div data-key="72" class="key">
+      <kbd>H</kbd>
+      <span class="sound">ride</span>
+    </div>
+    <div data-key="74" class="key">
+      <kbd>J</kbd>
+      <span class="sound">snare</span>
+    </div>
+    <div data-key="75" class="key">
+      <kbd>K</kbd>
+      <span class="sound">tom</span>
+    </div>
+    <div data-key="76" class="key">
+      <kbd>L</kbd>
+      <span class="sound">tink</span>
+    </div>
+  </div>
+
+  <audio data-key="65" src="https://palashmon.github.io/JavaScript30/Challenges/Day%2001%20-%20JavaScript%20Drum%20Kit/sounds/clap.wav"></audio>
+  <audio data-key="83" src="https://palashmon.github.io/JavaScript30/Challenges/Day%2001%20-%20JavaScript%20Drum%20Kit/sounds/closedhat.wav"></audio>
+  <audio data-key="68" src="https://palashmon.github.io/JavaScript30/Challenges/Day%2001%20-%20JavaScript%20Drum%20Kit/sounds/kick.wav"></audio>
+  <audio data-key="70" src="https://palashmon.github.io/JavaScript30/Challenges/Day%2001%20-%20JavaScript%20Drum%20Kit/sounds/openhat.wav"></audio>
+  <audio data-key="71" src="https://palashmon.github.io/JavaScript30/Challenges/Day%2001%20-%20JavaScript%20Drum%20Kit/sounds/boom.wav"></audio>
+  <audio data-key="72" src="https://palashmon.github.io/JavaScript30/Challenges/Day%2001%20-%20JavaScript%20Drum%20Kit/sounds/ride.wav"></audio>
+  <audio data-key="74" src="https://palashmon.github.io/JavaScript30/Challenges/Day%2001%20-%20JavaScript%20Drum%20Kit/sounds/snare.wav"></audio>
+  <audio data-key="75" src="https://palashmon.github.io/JavaScript30/Challenges/Day%2001%20-%20JavaScript%20Drum%20Kit/sounds/tom.wav"></audio>
+  <audio data-key="76" src="https://palashmon.github.io/JavaScript30/Challenges/Day%2001%20-%20JavaScript%20Drum%20Kit/sounds/tinkbell.wav"></audio>
+
+  <script>
+    // function playSound(e) {
+    //   const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+    //   const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+
+    //   if (!audio) return; // stop the function from running all together;
+    //   audio.currenTime = 0; // rewind to the start
+    //   audio.play();
+
+    //   key.classList.add('playing');
+    // }
+
+    // function removeTransition(e) {
+    //   if (e.propertyName !== 'color') return;
+    //   this.classList.remove('playing');
+    // }
+
+    // const keys = document.querySelectorAll('.key');
+
+    // keys.forEach(key => { key.addEventListener('transitionend', removeTransition)})
+    // window.addEventListener('keydown', playSound);
+
+
+    function playAudio(e) {
+      const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+      const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+
+      if (!audio) return;
+      audio.currentTime = 0;
+      audio.play();
+
+      key.classList.add('playing');
+    }
+
+    function removeTransition(e) {
+        if (e.propertyName !== 'color') return;
+        this.classList.remove('playing')
+    }
+
+    const keys = document.querySelectorAll('.key');
+
+    keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+    window.addEventListener('keydown', playAudio);
+  </script>
+</body>
+</html>

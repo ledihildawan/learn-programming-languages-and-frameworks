@@ -1,0 +1,4 @@
+heroku login
+heroku create
+heroku logs
+heroku run ls

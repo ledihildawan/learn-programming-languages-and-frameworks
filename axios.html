@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <title>AJAX with axios</title>
+
+  <!-- Resources -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+
+</head>
+<body> 
+  <button>Click</button>
+  <section id="comments"></section>
+
+  <script>
+    // axios basic
+    // const url = 'https://opentdb.com/api.php?amount=1';
+
+    // axios.get(url)
+    // .then(function(res) {
+    //   console.log(res.data.results[0].question);
+    // })
+    // .catch(function(e) {
+    //   console.log(e);
+    // });
+
+    const btn = document.querySelector('button');
+    const section = document.querySelector('#comments');
+    btn.addEventListener('click', sendRequest);
+
+    function sendRequest() {
+      axios.get('https://jsonplaceholder.typicode.com/comments', {
+        params: {
+          postId: 1
+        }
+      })
+      .then(addComments)
+      .catch(handleErrors);
+    }
+
+    function addComments(res) {
+      res.data.forEach(function(comment) {
+        appendComment(comment);
+      });
+    }
+
+    function appendComment(comment) {
+      const newP = document.createElement('p');
+      newP.innerText = comment.email;
+      section.appendChild(newP);
+    }
+ 
+    function handleErrors(err) {
+      if (err.response) {
+        console.log('Problem with response', err.response.status);
+      } else if (err.request) {
+        console.log('Problem with request!');
+      } else {
+        console.log('Error', err.message);
+      }
+    }
+  </script>
+</body>
+</html>

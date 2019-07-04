@@ -1,0 +1,36 @@
+mongo
+
+> help
+
+> show dbs
+
+> use demo // switched to db demo
+  
+  current db | collection name | action | data
+> db.dogs.insert({})
+
+// create collection to current db and insert data to collection dogs
+> db.dogs.insert({
+  name: 'John',
+  breed: 'Mutt'
+})
+
+// find spesific data in current db
+> db.dogs.find()
+> db.dogs.find({ name: 'John' })
+
+// update data collection
+db.dogs.update({
+  name: 'John'
+}, { breed: 'Labradoodle' }) // will overide all objects
+
+db.dogs.update({
+  name: 'John'
+}, {$set: { breed: 'Labradoodle', isCute: true } }) // not overide and add new data isCute
+
+db.dogs.remove({
+  breed: 'Mutt'
+})
+
+remove all data from current collection
+> db.collection.drop()

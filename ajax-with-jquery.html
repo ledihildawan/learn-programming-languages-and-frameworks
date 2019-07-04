@@ -1,0 +1,65 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <title>AJAX with jQuery</title>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+</head>
+<body>
+  <p></p>
+
+  <button id="btn">Bacon Button</button>
+
+  <script>
+    $('#btn').click(function() {
+      // .ajax
+      $.ajax({
+        method: 'GET',
+        url: 'https://baconipsum.com/api/?type=meat-and-filler',
+        dataType: 'json'
+      })
+      .done(function(data) {
+        $('p').text(data[0]);
+      })
+      .fail(function() {
+        console.log('error');
+      });
+
+      // Shorthand
+      $.get('https://api.github.com/users/colt')
+      .done(function(data) {
+        console.log(data);
+      })
+      .fail(function() {
+        console.log('ERROR!');
+      });
+
+      $.post('www.catsarecoolandsoaredogs.com', {
+        name: 'Charlie',
+        city: 'Florance'
+      })
+      .done(function(data) {
+        console.log('HI!');
+      })
+      .fail(function() {
+        console.log('ERROR!');
+      });
+
+      // Only for JSON format
+      $.getJSON('https://api.github.com/users/colt')
+      .done(function(data) {
+        console.log(data);
+      })
+      .fail(function() {
+        console.log('ERROR!')
+      });
+    });
+  </script>
+</body>
+</html>

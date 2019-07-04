@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700');
+
+:root {
+  --bg-darkgrey: #292929;
+  --bg-lightgrey: #f8f5f2;
+  --table-width: 768px;
+  --desktop-width: 1200px;
+}
+
+body {
+  min-width: 320px;
+  margin: 0;
+  padding: 0;
+
+  font-size: 18px;
+  line-height: 27px;
+  font-family: 'PT Sans Narrow', Arial, sans-serif;
+  color: #f7f4f1;
+  font-style: normal;
+  
+  background-color: var(--bg-darkgrey);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.page-header {
+  display: flex;
+  flex-direction: column;
+}
+
+.page-header__logo {
+  height: 85px;
+}
+
+.page-header__logo img {
+  width: 226px;
+  height: 85px;
+}
+
+@media (min-width: var(--table-width)) {
+  .page-header__logo {
+    order: 2;
+    height: 400px;
+  }
+}
+
+@media (min-width: var(--desktop-width)) {
+  .page-header__logo {
+    height: 648px;
+  }
+}
+
+.visually-hidden {
+  position: absolute;
+  
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  border: 0;
+  padding: 0;
+
+  white-space: no-wrap;
+
+  clip-path: inset(100%);
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+}

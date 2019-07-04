@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+
+span {
+  color: green;
+}
+
+  </style>
+
+</head>
+<body>
+  <div>Hello</div>
+  <div>Tesla</div>
+  <div>World</div>
+  <div>Hello</div>
+  <div>Yellow</div>
+
+  <script>
+
+var divs = document.querySelectorAll('div');
+var divsArray = [].slice.call(divs);
+
+console.dir(divs);
+
+divsContainHello = divsArray.filter(function(val) {
+  return val.innerText === 'Hello';
+});
+
+  </script>
+</body>
+</html>

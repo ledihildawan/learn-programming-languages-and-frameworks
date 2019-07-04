@@ -1,0 +1,89 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+
+  <title>Ron Swanson Quote Generator</title>
+
+  <!-- Resource -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+
+</head>
+<body>
+  <button id="xhr">XHR</button>
+  <button id="fetch">Fetch</button>
+  <button id="jquery">jQuery</button>
+  <button id="axios">Axios</button>
+
+  <p id="quotes"></p>
+
+  <script>
+    const p = document.querySelector('p');
+    const url = 'https://ron-swanson-quotes.herokuapp.com/v2/quotes';
+    const btnXHR = document.querySelector('#xhr');
+    const btnFetch = document.querySelector('#fetch');
+    const btnAxios = document.querySelector('#axios');
+
+    // XHR
+    btnXHR.addEventListener('click', function() {
+      const XHR = new XMLHttpRequest();
+
+      XHR.onreadystatechange = () => {
+        if (XHR.readyState === 4 && XHR.status === 200) {
+          const data = JSON.parse(XHR.responseText);
+          p.innerText = data;
+        }
+      }
+
+      XHR.open('GET', url);
+      XHR.send();
+    });
+
+    // Fetch
+    btnFetch.addEventListener('click', function() {
+      fetch(url)
+      .then(req => {
+        if (!req.ok) {
+          throw Error(404);
+        }
+        return req;
+      })
+      .then(res => res.json())
+      .then(data => {
+        p.innerText = data[0];
+      })
+      .catch(err => console.log(err));
+    });
+
+    // jQuery
+    $('#jquery').click(function() {
+      $.getJSON(url)
+      .done(function(res) {
+        $('#quotes').text(res[0]);
+      })
+      .fail(function() {
+        console.log('ERROR!');
+      });
+    });
+
+    // Axios
+    btnAxios.addEventListener('click', function() {
+      axios(url)
+      .then(function(res) {
+        p.innerText = res.data[0];
+      })
+      .catch(function(err) {
+        if (err.response) {
+          console.log('Problem with response', err.response.status);
+        } else if (err.request) {
+          console.log('Error with request!');
+        } else {
+          console.log('Error', err.message);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

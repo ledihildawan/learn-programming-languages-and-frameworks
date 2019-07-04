@@ -1,0 +1,141 @@
+
+
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+
+  <meta charset="UTF-8">
+  <link rel="shortcut icon" type="image/x-icon" href="https://static.codepen.io/assets/favicon/favicon-8ea04875e70c4b0bb41da869e81236e54394d63638a1ef12fa558a4a835f1164.ico" />
+  <link rel="mask-icon" type="" href="https://static.codepen.io/assets/favicon/logo-pin-f2d2b6d2c61838f7e76325261b7195c27224080bc099486ddd6dccb469b8e8e6.svg" color="#111" />
+  <title>CodePen - 6mjY0Ej6zn</title>
+  
+  
+  
+  
+      <style>
+      @import url("https://fonts.googleapis.com/css?family=Muli:300,400,700");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 100%;
+}
+
+body {
+  margin: 10% 20%;
+  font-family: 'Muli', sans-serif;
+  font-weight: 400;
+}
+
+.product {
+  height: 300px;
+  width: 300px;
+  position: relative;
+  overflow: hidden;
+}
+.product__image {
+  height: 100%;
+  width: 100%;
+}
+.product__image img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+.product__overlay {
+  position: absolute;
+  top: -300px;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  transition: all .25s ease;
+}
+.product:hover .product__overlay {
+  top: 0;
+}
+.product__details {
+  position: absolute;
+  top: -300px;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2em 1em;
+  color: white;
+  font-size: 1.0215rem;
+  letter-spacing: .0552rem;
+  line-height: 1.8rem;
+  text-align: center;
+  transition: all .25s ease;
+}
+.product:hover > .product__details {
+  top: 0;
+}
+.product__price {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  font-size: 2em;
+  font-weight: 700;
+}
+.product__currency {
+  vertical-align: super;
+  font-size: .5em;
+  line-height: normal;
+}
+
+.btn {
+  border: 2px solid transparent;
+  padding: 4px 23px;
+  color: black;
+  cursor: pointer;
+  font-size: .75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.btn--primary {
+  background-color: #fff;
+}
+.btn--primary:hover, .btn--primary:active {
+  background-color: #e6e6e6;
+}
+
+    </style>
+
+  
+  
+  
+  
+
+</head>
+
+<body translate="no" >
+
+  
+<div class="product">
+  <div class="product__image"><img src="https://burst.shopifycdn.com/photos/blue-t-shirt_925x.jpg?attachment=blue-t-shirt_925x.jpg" alt=""/></div>
+  <div class="product__overlay"></div>
+  <div class="product__details">
+    <p class="product__desc">Lorem ipsum dolor, sit amet consectetur adipisicing elit...</p>
+    <p class="product__price"><span class="product__currency">$</span>9.99</p><a class="btn btn--primary" href="#">Buy Now</a>
+  </div>
+</div>
+  
+  
+  
+  
+  
+
+  <script src="https://static.codepen.io/assets/editor/live/css_reload-2a5c7ad0fe826f66e054c6020c99c1e1c63210256b6ba07eb41d7a4cb0d0adab.js"></script>
+</body>
+
+</html>
+ 

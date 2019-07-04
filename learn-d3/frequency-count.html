@@ -1,0 +1,80 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Frequency Count</title>
+
+</head>
+<body>
+  <header>
+    <h1>Letter Analyzer</h1>
+    <form>
+      <input type="text" />
+      <button type="submit">Count the Letter!</button>
+      <button id="reset" type="button">Reset!</button>
+    </form>
+  </header>
+
+  <div>
+    <h2 id="phrase"></h2>
+    <h4 id="count"></h4>
+    <div id="letters"></div>
+  </div>
+
+  <script src="./d3.js"></script>
+  <script>
+    d3.select('form')
+      .on('submit', () => {
+        d3.event.preventDefault()
+        let input = d3.select('input')
+        let text = input.property('value')
+
+        let letters = d3.select('#letters')
+                        .selectAll('.letter')
+                        .data(getFrequencies(text))
+
+        letters
+            .classed('new', false)
+          .exit()
+          .remove()
+
+        letters
+          .enter()
+          .append('div')
+            .classed('letter', true)
+            .classed('new', true)
+          .merge(letters)
+            .style('width', '20px')
+            .style('line-height', '20px')
+            .style('margin-right', '5px')
+            .style('height', d => d.count * 20 + 'px')
+            .text(d => d.character)
+
+        d3.select('#phrase')
+            .text(`Analysis of: ${text}`)
+
+        d3.select('#count')
+            .text('(New characters: ' + letters.enter().nodes().length + ')')
+
+        input.property('value', '')
+      })
+
+    function getFrequencies(str) {
+      let sorted = str.split('').sort()
+      let data = []
+      
+      for (let i = 0; i < sorted.length; i++) {
+        let last = sorted[sorted.length - 1]
+        if (last && last.character === sorted[i]) {
+          last.count++
+        } else {
+          data.push({ character: sorted[i], count: 1 })
+        }
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <title>Login screen</title>
+
+  <meta name="author" content="Ledi Hildawan">
+
+  <link rel="stylesheet" href="./css/style.css">
+
+</head>
+<body>
+  <header class="header">
+    <nav class="main-nav">
+      <div class="container">
+        <div class="main-nav__inner">
+          <div class="main-nav__item">
+            <a href="#" class="main-nav__link main-nav__brand">LookUp</a>
+          </div>
+          <div class="main-nav__item">
+            <ul class="main-nav__menu">
+              <li class="main-nav__menu-item"><a href="#" class="main-nav__link">Login</a></li>
+              <li class="main-nav__menu-item"><a href="#" class="main-nav__link">Register</a></li>
+            </ul>
+          </div>
+          <div class="main-nav__hamburger">
+            <span class="main-nav__hamburger-line"></span>
+            <span class="main-nav__hamburger-line"></span>
+            <span class="main-nav__hamburger-line"></span>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <main class="main">
+    <div class="main__item">
+      <div class="main__background"></div>
+    </div>
+    <div class="main__item">
+      <h1 class="display-1">Welcome</h1>
+      <p>You have been here. How are you?</p>
+
+      <form class="form">
+        <div class="form__field">
+          <label for="username" class="sr-only">Username</label>
+          <input class="form__control" type="text" id="username" placeholder="Username">
+        </div>
+        <div class="form__field">
+          <label for="password" class="sr-only">Password</label>
+          <input class="form__control" type="password" id="password" placeholder="Password">
+        </div>
+        <div class="form__field">
+          <button class="btn btn--primary" type="submit">Login</button>
+        </div>
+      </form>
+
+      <p class="mb-2"><a href="#">Forgot password?</a></p>
+      <p>Not yet member? <a href="#">Register here.</a></p>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<header>
+  <h1>John Doe</h1>
+
+  <nav>
+    <ul>
+      <li><a href="#">Contact Me</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="hero">
+  <h2 class="hero-title">Welcome To My Blog</h2>
+  <p class="hero-subtitle">Nulla egestas eget lectus at volutpat. Curabitur at mi ex. Praesent lacinia sit amet elit vitae vehicula.</p>
+</section>
+
+<section class="articles">
+  <h2 class="section-title">Latest Articles</h2>
+
+  <article class="article">
+    <img src="https://dummyimage.com/550x400/1abc9c/fff.png&text=Image" alt="Article image" class="article-img">
+    <div class="article-lables">
+      <a href="#" class="article-label">Hack</a>
+    </div>
+    <h3 class="article-title">Whatever you do, do it well</h3>
+    <p class="article-description">Duis ut nibh mollis, iaculis massa sed, interdum tellus. In hac habitasse platea dictumst. Sed efficitur ultrices hendrerit. Mauris lobortis suscipit risus faucibus rutrum...</p>
+  </article>
+
+  <article class="article">
+    <img src="https://dummyimage.com/550x400/3498db/fff.png&text=Image" alt="Article image" class="article-img">
+    <div class="article-lables">
+      <a href="#" class="article-label">Motivation</a>
+    </div>
+    <h3 class="article-title">Motivation comes from working on things we care about</h3>
+    <p class="article-description">Proin sodales lobortis metus vel suscipit. In eget blandit quam. Donec rutrum nisl eget sem pretium...</p>
+  </article>
+
+  <article class="article">
+    <img src="https://dummyimage.com/550x400/34495e/fff.png&text=Image" alt="Article image" class="article-img">
+    <div class="article-lables">
+      <a href="#" class="article-label">Motivation</a>
+    </div>
+    <h3 class="article-title">You are enough just as you are</h3>
+    <p class="article-description">Cras lobortis consequat diam et vulputate. Sed tempus orci at euismod blandit. Aenean id maximus leo. Duis aliquam placerat metus sed molestie...</p>
+  </article>
+  
+  <article class="article">
+    <img src="https://dummyimage.com/550x400/f1c40f/fff.png&text=Image" alt="Article image" class="article-img">
+    <div class="article-lables">
+      <a href="#" class="article-label">Fun</a>
+    </div>
+    <h3 class="article-title">Just play. Have fun. Enjoy the game.</h3>
+    <p class="article-description">Praesent pharetra dui quis tincidunt bibendum. Mauris ex lectus, varius eget eros luctus, malesuada luctus tortor....</p>
+  </article>
+  
+  <a href="#" class="btn">Load More</a>
+</section>
+
+<footer>
+  <p>&copy; 2018 Copyrights. All Rights Reserved.</p>
+</footer>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="shortcut icon"
+      type="image/x-icon"
+      href="https://static.codepen.io/assets/favicon/favicon-8ea04875e70c4b0bb41da869e81236e54394d63638a1ef12fa558a4a835f1164.ico"
+    />
+    <link
+      rel="mask-icon"
+      type=""
+      href="https://static.codepen.io/assets/favicon/logo-pin-f2d2b6d2c61838f7e76325261b7195c27224080bc099486ddd6dccb469b8e8e6.svg"
+      color="#111"
+    />
+    <title>CodePen - klVAU5zD5m</title>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css?family=Niramit:700");
+
+      body {
+        margin: 5% 20%;
+        font-family: "Niramit", sans-serif;
+        background-color: #2c3e50;
+      }
+
+      div {
+        height: 0;
+        overflow: hidden;
+        transform: scaleY(0);
+        transform-origin: top;
+        transition: transform 0.4s;
+      }
+
+      #menu1:target,
+      #menu2:target,
+      #menu3:target {
+        transform: scaleY(1);
+        height: auto;
+        margin-top: 10px;
+        padding: 2em 1em;
+        background-color: #ecf0f1;
+        box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.6);
+      }
+
+      a {
+        display: block;
+        text-decoration: none;
+        text-transform: uppercase;
+        color: #fff;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+
+  <body translate="no">
+    <a href="#menu1">Menu1</a>
+    <div id="menu1">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate a
+      aperiam magni, rerum ratione dolorum reprehenderit quam totam quae.
+      Eligendi facere ipsam inventore recusandae in porro nihil, dolor deleniti
+      asperiores.
+    </div>
+
+    <a href="#menu2">Menu2</a>
+    <div id="menu2">
+      Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui quo ullam
+      fugiat pariatur esse accusantium nihil, aperiam laborum! Atque quos veniam
+      quae suscipit similique. Sunt iste nemo harum tenetur vitae?
+    </div>
+
+    <a href="#menu3">Menu3</a>
+    <div id="menu3">
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Earum eligendi
+      pariatur ut ratione accusamus similique molestias soluta optio sed aperiam
+      aliquid, molestiae explicabo necessitatibus, placeat eum porro perferendis
+      sit iure?
+    </div>
+
+    <script src="https://static.codepen.io/assets/editor/live/css_reload-2a5c7ad0fe826f66e054c6020c99c1e1c63210256b6ba07eb41d7a4cb0d0adab.js"></script>
+  </body>
+</html>

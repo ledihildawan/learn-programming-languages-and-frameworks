@@ -1,0 +1,75 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Random User Generator</title>
+
+  <style>
+  
+#name {
+  text-transform: capitalize;
+}
+
+  </style>
+
+</head>
+<body>
+  <img src="https://randomuser.me/api/portraits/men/95.jpg" alt="" id="avatar">
+  <h1 id="name">Jackson Fuller</h1>
+  <h2 id="username">jackson.fuller16</h2>
+  <p>Email: <span id="email">jackson.fuller16@example.com</span></p>
+  <p>City: <span id="city">Denmark</span></p>
+  <button id="btn">Next User</button>
+
+  <script>
+    const avatarID = document.querySelector('#avatar');
+    const nameID = document.querySelector('#name');
+    const usernameID = document.querySelector('#username');
+    const emailID = document.querySelector('#email');
+    const cityID = document.querySelector('#city');
+    const btn = document.querySelector('#btn');
+
+    const url = 'https://randomuser.me/api/';
+
+    function handleErrors(req) {
+      if (!req.ok) throw Error(req.status);
+      return req
+    }
+
+    function parseJSON(res) {
+      return res.json()
+    }
+
+    function updateProfile(data) {
+      const personInfo = data.results[0];
+
+      const avatar = personInfo.picture.large;
+      const name = `${personInfo.name.first} ${personInfo.name.last}`;
+      const username = personInfo.login.username;
+      const email = personInfo.email;
+      const city = personInfo.location.city;
+
+      avatarID.src = avatar;
+      nameID.textContent = name;
+      usernameID.textContent = username;
+      emailID.textContent = email;
+      cityID.textContent = city;
+    }
+
+    function displayErrors(err) {
+      return console.log(err)
+    }
+
+    btn.addEventListener('click', function() {
+      fetch(url)
+        .then(handleErrors)
+        .then(parseJSON)
+        .then(updateProfile)
+        .catch(displayErrors);
+    });
+  </script>
+</body>
+</html>

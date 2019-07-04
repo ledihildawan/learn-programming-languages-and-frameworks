@@ -1,0 +1,54 @@
+import React, { Component } from "react";
+import Navbar from "./Navbar";
+import Recipe from "./Recipe";
+import "./RecipeApp.css";
+
+class RecipeApp extends Component {
+  static defaultProps = {
+    recipes: [
+      {
+        img:
+          "https://cms.splendidtable.org/sites/default/files/styles/900x500/public/Spaghetti-Pic__Photocredit-David-Loftus-LEDE.jpg?itok=1TDfJf0M",
+        title: "Spaghetti",
+        ingredients: ["pasta", "8 cups water", "1 box spaghetti"],
+        instructions:
+          "Open jar of Spaghetti sauce. Bring to simmer. Boil water. Cook pasta until done. Combine pasta and sauce."
+      },
+      {
+        img:
+          "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/delish-milkshake-3-ways-still001-1-1527006537.jpg",
+        title: "Milkshake",
+        ingredients: ["2 Scoops Ice Cream", "8 ounces milk"],
+        instructions: "Combine ice cream and milk. Blend until creamy"
+      },
+      {
+        img:
+          "https://food.fnr.sndimg.com/content/dam/images/food/fullset/2015/12/11/0/FNK_All-the-Avocado-Toast_s4x3.jpg.rend.hgtvcom.616.462.suffix/1450059496131.jpeg",
+        title: "Avocado Toast",
+        ingredients: [
+          "2 slices of bread",
+          "1 avocado",
+          "1 tablespoon olive oil",
+          "1 pinch of salt",
+          "papper"
+        ],
+        instructions:
+          "Toast bread. Slice avocado and spread on bread. Add salt, oil, and papper to taste."
+      }
+    ]
+  };
+  render() {
+    return (
+      <div className="App">
+        <Navbar />
+        <div className="recipes mt-1">
+          {this.props.recipes.map((recipe, index) => (
+            <Recipe key={index} {...recipe} />
+          ))}
+        </div>
+      </div>
+    );
+  }
+}
+
+export default RecipeApp;

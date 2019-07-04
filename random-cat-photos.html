@@ -1,0 +1,34 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Random Cat Photos</title>
+
+  <!-- Resources -->
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+</head>
+<body>
+  <h1>Random Cat Photos</h1>
+  <button>Get Random Cat</button>
+  <!-- <img src="" alt="Cat photos" /> -->
+
+  <script>
+    const url = 'http://aws.random.cat/meow';
+
+    $('button').click(function() {
+      $.getJSON(url)
+      .done(function(data) {
+        $('body').append(`<img src="${data.file}" alt="Cat photos" width="200" />`);
+        // $('img').attr('src', data.file);
+      })
+      .fail(function() {
+        console.log('ERROR!');
+      });
+    });
+  </script>
+</body>
+</html>

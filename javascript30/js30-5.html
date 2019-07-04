@@ -1,0 +1,147 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  
+  <title>4&sol;&num;JavaScript30</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,400,600,700" rel="stylesheet" />
+
+  <style>
+
+html {
+  box-sizing: border-box;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 125%;
+  font-weight: 400;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+.panels {
+  min-height: 100vh;
+  overflow: hidden;
+  display: flex;
+}
+
+.panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  background-position: center;
+  background-size: cover;
+  transition:
+    font-size .7s cubic-bezier(.61, -.19, .7, -.11),
+    flex .7s cubic-bezier(.61, -.19, .7, -.11),
+    background .2s;
+}
+
+.panel p {
+  text-transform: uppercase;
+  font-size: 2rem;
+  color: #fff;
+}
+
+.panel > * { transition: all .2s; }
+.panel > *:first-child { transform: translateY(-100%); }
+.panel.open-active > *:first-child { transform: translateY(50px); }
+.panel > *:last-child { transform: translateY(100%); }
+.panel.open-active > *:last-child { transform: translateY(-50px); }
+
+.panel.open {
+  flex-grow: 5;
+  font-size: 4rem;
+}
+
+.panel1 {
+  background-image:
+    radial-gradient( circle 324px at 44.6% -69.3%,  rgba(238,22,146,0.4) 1.4%, rgba(246,207,248,.4) 100.7% ),
+    url('https://images.unsplash.com/photo-1546370688-1dda36355dee?ixlib=rb-1.2.1&auto=format&fit=crop&w=1462&q=80');
+}
+
+.panel2 {
+  background-image:
+    linear-gradient( 109.6deg,  rgba(94,242,150,.4) 11.2%, rgba(39,206,127,.4) 91.1% ),
+    url('https://images.unsplash.com/photo-1545803836-10aa6a44ee66?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1567&q=80');
+}
+
+.panel3 {
+  background-image:
+    radial-gradient( circle farthest-corner at 10% 20%,  rgba(48,49,142,.4) 0%, rgba(94,93,223,.4) 90% ),
+    url('https://images.unsplash.com/photo-1529910173308-89b53ef12f55?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1369&q=80');
+}
+
+.panel4 {
+  background-image:
+    radial-gradient( circle farthest-corner at 10% 20%,  rgba(255,221,51,.4) 100.2%, rgba(187,187,187,.4) 100.2% ),
+    url('https://images.unsplash.com/photo-1545218512-85bb9ddd68b4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1526&q=80');
+}
+
+.panel5 {
+  background-image:
+    radial-gradient( circle farthest-corner at 52.1% -29.6%,  rgba(144,17,105,.4) 0%, rgba(51,0,131,.4) 100.2% ),
+    url('https://images.unsplash.com/photo-1520034475321-cbe63696469a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80');
+}
+
+  </style>
+
+</head>
+<body>
+  <div class="panels">
+    <div class="panel panel1">
+      <p>Hey</p>
+      <p>Let's</p>
+      <p>Dance</p>
+    </div>
+    <div class="panel panel2">
+      <p>Give</p>
+      <p>Take</p>
+      <p>Receive</p>
+    </div>
+    <div class="panel panel3">
+      <p>Experience</p>
+      <p>It</p>
+      <p>Today</p>
+    </div>
+    <div class="panel panel4">
+      <p>Give</p>
+      <p>All</p>
+      <p>You can</p>
+    </div>
+    <div class="panel panel5">
+      <p>Life</p>
+      <p>In</p>
+      <p>Motion</p>
+    </div>
+  </div>
+
+  <script>
+
+const panels = document.querySelectorAll('.panel');
+
+function toggleOpen() {
+  this.classList.toggle('open');
+}
+
+function toggleActive(e) {
+  if (e.propertyName.includes('flex')) {
+    this.classList.toggle('open-active')
+  }
+}
+
+panels.forEach(panel => panel.addEventListener('click', toggleOpen));
+panels.forEach(panel => panel.addEventListener('transitionend', toggleActive));
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!doctype html>
+
+<html lang="en">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>My notes.</title>
+
+  <style>
+
+.preview {
+  color: green;
+}
+
+.hide {
+  display: none;
+}
+
+  </style>
+
+<body>
+  <h1>My notes.</h1>
+
+  <div id="notes">
+    <p class="note">Need to go to the store.</li>
+    <p class="note">What's the name of that movie with that guy?</li>
+    <p class="note">Here's another note.</p>
+  </div>
+
+  <p class="preview hide"></p>
+
+  <form id="new-note">
+    <input type="text" />
+    <button>Add Note</button>
+    <button id="remove" type="button">Remove All Notes</button>
+    <button id="lucky" type="button">I'm Feeling Lucky</button>
+  </form>
+
+  <script src="./d3.js"></script>
+  <script>
+  
+/**
+ * Selection Methods
+ * ---
+ * d3.select - single element
+ * d3.selectAll - multiple elements
+ * both accept a valid CSS selector
+ * 
+ * Accessing Nodes
+ * ---
+ * selection.nodes() - return an array of matching HTML elements
+ * selection.node() - return the first (non-null) HTML element
+ * 
+ * Manipulating Selections
+ * ---
+ * selection.style(property [, newValue / callback])
+ * selection.attr(attribute [, newValue / callback])
+ * selection.text([newValue / callback])
+ * selection.html([newValue / callback])
+ * selection.classed(classList [, shouldClassesBeSet / callback])
+ * 
+ * Adding event listeners
+ * ---
+ * selection.on(eventType, callback)
+ *
+ * The Event Object
+ * ---
+ * d3.event
+ * 
+ * Appending Elements
+ * ---
+ * section.append(tagName)
+ * 
+ * Accessing Properties
+ * ---
+ * selection.property(name [, newValue])
+ * 
+ * Removing Elements
+ * ---
+ * selection.remove() 
+ *
+ * Merging Selections
+ * ---
+ * Merges selection and other selection together into a new section.
+ * selection.merge(otherSelection)
+ *
+ * General Update Pattern
+ * 1. Grab the update selection, make any changes unique to that selection, and store the selection in a variable.
+ * 2. Grab the exit selection and remove any unnecessary elements.
+ * 3. Grab the enter selection and make any changes unique to that section
+ * 4. Merge the enter and update selections, and make any changes that you want to be shared across both selections.
+**/
+
+var input = d3.select('input')
+var preview = d3.select('.preview')
+
+d3.select('#new-note').on('submit', function() {
+  d3.event.preventDefault();
+
+  d3.select('#notes')
+    .append('p')
+      .classed('note', true)
+      .text(input.property('value'))
+
+  input.property('value', '')
+})
+
+d3.select('#remove')
+  .on('click', function() {
+    d3.selectAll('.note')
+      .remove()
+  })
+
+d3.select('#lucky')
+  .on('click', function() {
+    d3.selectAll('.note')
+      .style('font-size', function() {
+        return Math.random() * 100 + 'px'
+      })
+  })
+
+input.on('input', function() {
+  var note = d3.event.target.value
+  preview.text(note)
+    .classed('hide', note === '')
+})
+
+/**
+ * Data Joins and Enter Selections
+ * .data()
+ * .enter()
+ * .exit()
+ * 
+ * Key Functions
+ * section.data(dataArr, [, keyFunction])
+**/
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+.done {
+  color: #999;
+  text-decoration: line-through;
+}
+
+li span {
+  cursor: pointer;
+  opacity: 0;
+}
+
+li:hover span {
+  opacity: 1;
+}

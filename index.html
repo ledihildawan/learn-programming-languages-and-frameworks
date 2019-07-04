@@ -1,0 +1,115 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Line</title>
+
+  <style>
+
+body {
+  overflow: hidden;
+}
+
+.line {
+  position: absolute;
+  width: 1px;
+  background: #ddd;
+  height: 100vh;
+  z-index: -2;
+}
+
+.line-1 {
+  transform: translateX(200px);
+}
+
+.line-2 {
+  transform: translateX(400px);
+}
+
+.line-3 {
+  transform: translateX(600px);
+}
+
+.line-4 {
+  transform: translateX(800px);
+}
+
+.line-5 {
+  transform: translateX(1000px);
+}
+
+.line-6 {
+  transform: translateX(1200px);
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Poppins;
+}
+
+.box-1 {
+  position: absolute;
+  top: 300px;
+  left: 125px;
+  width: 400px;
+  height: 120px;
+  background: #fbfbfb;
+  opacity: .25;
+}
+
+h1 {
+  position: relative;
+  font-size: 3rem;
+  left: 120px;
+  top: 80px;
+  color: rgb(229, 160, 160);
+  opacity: 1;
+}
+
+.navbar {
+  position: absolute;
+  top: 20px;
+  left: calc(100% - 30%);
+  width: 300px;
+}
+
+.navbar-list {
+  list-style: none;
+  display: flex;
+  justify-content: space-around;
+}
+
+  </style>
+
+</head>
+<body>
+  <nav class="navbar">
+    <ul class="navbar-list">
+      <li class="navbar-item">Home</li>
+      <li class="navbar-item">About</li>
+      <li class="navbar-item">Contact</li>
+    </ul>
+  </nav>
+
+  <div class="box-1">
+    <h1>Ledi Hildawan</h1>
+  </div>
+
+  <div class="line line-1"></div>
+  <div class="line line-2"></div>
+  <div class="line line-3"></div>
+  <div class="line line-4"></div>
+  <div class="line line-5"></div>
+  <div class="line line-6"></div>
+</body>
+</html>

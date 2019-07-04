@@ -1,0 +1,72 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  
+  <title>Clock</title>
+
+  <!-- Script tags including react -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.1/react.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/15.3.1/react-dom.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.38/browser.min.js"></script>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script type="text/babel">
+    class Clock extends React.Component {
+      constructor(props) {
+        super(props); // ALWAYS required
+
+        const currentTime = new Date();
+        this.state = {
+          hours: currentTime.getHours(),
+          minutes: currentTime.getMinutes(),
+          seconds: currentTime.getSeconds(),
+          ampm: currentTime.getHours() > 12 ? 'pm' : 'am'
+        };
+
+        this.setTimer(); // start up the timeout
+      }
+
+      setTimer() {
+        setTimeout(this.updateClock.bind(this), 1000);
+      }
+
+      updateClock() {
+        const currentTime = new Date();
+        this.setState({
+          hours: currentTime.getHours(),
+          minutes: currentTime.getMinutes(),
+          seconds: currentTime.getSeconds(),
+          ampm: currentTime.getHours() > 12 ? 'pm' : 'am'
+        }, this.setTimer);
+      }
+
+      render() {
+        const {hours, minutes, seconds, ampm} = this.state;
+        return (
+          <div className="clock">
+            {
+              hours == 0 ? 12 :
+                (hours > 12) ?
+                  hours - 12 : hours
+            }:{
+              minutes > 9 ? minutes : `0${minutes}`
+            }:{
+              seconds > 9 ? seconds : `0${seconds}`
+            } {ampm}
+          </div>
+        );
+      }
+    }
+
+    var mount = document.querySelector('#app');
+
+    ReactDOM.render(<Clock />, mount);
+    
+    // ReactDOM.render(<what>, <where>)
+  </script>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <title>Modal Login</title>
+  <style>
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #ccc;
+      font-family: Poppins;
+    }
+
+    * {
+      font-family: inherit;
+    }
+
+    .modal {
+      position: fixed;
+      top: 100px;
+      left: 50%;
+      right: 50%;
+      transform: translateX(-50%);
+      background: #fff;
+      padding: 1rem;
+      min-width: 300px;
+      box-shadow: 4px 4px 10px rgba(0, 0, 0, .2);
+      animation: bounce .51s;
+    }
+
+    .modal-close {
+      border: 0;
+      top: 0;
+      background: #fff;
+      position: absolute;
+      right: -50px;
+      width: 32px;
+      height: 32px;
+      text-indent: -10000px;
+      box-shadow: 4px 4px 10px rgba(0, 0, 0, .2);
+      cursor: pointer;
+      outline: 0;
+    }
+
+    .modal-close::before,
+    .modal-close::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 20%;
+      width: 20px;
+      height: 3px;
+      background: #000;
+    }
+
+    .modal-close::before {
+      transform: rotate(45deg);
+    }
+
+    .modal-close::after {
+      transform: rotate(-45deg);
+    }
+
+    .modal-description {
+      color: #777;
+    }
+
+    .modal-hide {
+      display: none;
+    }
+
+    .modal-description {
+      margin-top: 10px;
+      margin-bottom: 20px;
+    }
+
+    .sr-only {
+      position: absolute;
+      top: 0;
+      left: 0;
+      color: transparent;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px 16px;
+      border: 0;
+      border-bottom: 2px solid rgb(238, 107, 67);
+      outline: 0;
+    }
+
+    form p:last-of-type {
+      margin-top: 20px;
+    }
+
+    form button {
+      margin-top: 30px;
+      width: 100%;
+      padding: 10px 16px;
+      cursor: pointer;
+      background: rgb(238, 107, 67);
+      border: none;
+      color: #fff;
+      outline: 0;
+    }
+
+    .modal-error {
+      animation: shake .6s;
+    }
+
+    @keyframes bounce {
+      0% { transform: translate(-50%, -200px); }
+      70% { transform: translate(-50%, 30px); }
+      90% { transform: translate(-50%, -10px); }
+      100% { transform: translate(-50%, 0); }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+      20%, 40%, 60%, 80% { transform: translateX(10px); }
+    }
+  </style>
+</head>
+<body>
+  <section class="modal modal-login">
+    <h2>Login</h2>
+    <p class="modal-description">Lorem ipsum dolor sit amet consectetur</p>
+    <form action="" class="login-form" method="post">
+      <p>
+        <label class="sr-only" for="user-login">User</label>
+        <input type="text" id="user-login" name="login" placeholder="User" />
+      </p>
+      <p>
+        <label class="sr-only" for="user-password">Password</label>
+        <input type="password" id="user-password" name="password" placeholder="Password" />
+      </p>
+      <button class="button" type="submit">Login</button>
+    </form>
+    <button class="modal-close" type="button">close</button>
+  </section>
+  <script>
+    const modal = document.querySelector('.modal');
+    const close = document.querySelector('.modal-close');
+    const form = document.querySelector('form');
+
+    const username = document.querySelector('#user-login');
+    const password = document.querySelector('#user-password');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      if (!username.value || !password.value) {
+        modal.classList.add('modal-error');
+      } else {
+        console.log(`${username.value} ${password.value}`);
+      }
+    });
+
+    close.addEventListener('click', function(e) {
+      modal.classList.add('modal-hide');
+      modal.classList.remove('modal-error');
+    });
+  </script>
+</body>
+</html>

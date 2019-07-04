@@ -1,0 +1,148 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Ajax Type Ahead with fetch()</title>
+
+  <!-- Resources -->
+  <link href="https://fonts.googleapis.com/css?family=Muli:300,400,600,700" rel="stylesheet" />
+
+  <style>
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  padding: 2rem 0;
+  background: #f7faf9;
+  font-family: 'Muli', sans-serif;
+}
+
+input {
+  outline: 0;
+  display: block;
+  width: 100%;
+  margin: 0 0 1rem;
+  border: 5px solid #1abc9c;
+  padding: 1rem;
+  color: inherit;
+  font: inherit;
+  box-shadow: 2px 4px 10px rgba(0, 0, 0, .4);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.name {
+  text-transform: capitalize;
+  font-weight: 600;
+}
+
+.population {
+  font-weight: 300;
+}
+
+.hl {
+  background: #1abc9c;
+  color: white;
+}
+
+.suggestions {
+  list-style: none;
+}
+
+.suggestions li {
+  padding: 1.5rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 5px solid #1abc9c;
+  box-shadow: 2px 4px 10px rgba(0, 0, 0, .2);
+  background: #fff;
+}
+
+.suggestions li:not(:last-child) {
+  margin-bottom: 1rem;
+}
+
+  </style>
+
+</head>
+<body>
+  <div class="container">
+    <form>
+      <input type="search" placeholder="New York" />
+    </form>
+
+    <ul class="suggestions"></ul>
+  </div>
+
+  <script>
+    const searchInput = document.querySelector('input[type="search"]');
+    const suggestions = document.querySelector('.suggestions');
+
+    const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+
+    const cities = [];
+
+    fetch(endpoint)
+      .then(req => {
+        if (!req.ok) {
+          throw Error(404);
+        }
+        return req
+      }) 
+      .then(res => res.json())
+      .then(data => data.forEach(city => cities.push(city)))
+      .catch(err => console.log(err));
+
+    function findMatches(wordToMatch, cities) {
+      return cities.filter(place => {
+        // here we need to figure out if the city or state matches what was searched
+        const regex = new RegExp(wordToMatch, 'gi');
+        return place.city.match(regex) || place.state.match(regex);
+      });
+    }
+
+    function numberWithCommas(x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+    function displayMatches() {
+      const matchArray = findMatches(this.value, cities);
+      const html = matchArray.map(place => {
+        const regex = new RegExp(this.value, 'gi');
+        const cityName = place.city.replace(regex, `<span class="hl">${this.value.toLowerCase()}</span>`);
+        const stateName = place.city.replace(regex, `<span class="hl">${this.value.toLowerCase()}</span>`);
+        return `
+          <li>
+            <span class="name">${cityName}, ${stateName}</span>
+            <span class="population">${numberWithCommas(place.population)}</span>
+          </li>
+        `;
+      }).join('');
+      
+      if (this.value.length > 0) {
+        suggestions.innerHTML = html;
+        suggestions.style.display = 'block';
+      } else {
+        suggestions.style.display = 'none';
+      }
+    }
+
+    searchInput.addEventListener('change', displayMatches);
+    searchInput.addEventListener('keyup', displayMatches);
+  </script>
+</body>
+</html>

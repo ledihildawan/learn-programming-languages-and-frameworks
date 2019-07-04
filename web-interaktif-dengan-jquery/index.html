@@ -1,0 +1,188 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+
+  <title>web interaktif dengan jquery</title>
+
+  <style>
+
+#alaligo-image {
+  position: absolute;
+}
+
+#keyboard-arrow {
+  position: relative;
+  float: right;
+  margin-right: 200px;
+}
+
+#keyboard-arrow div {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+#is-top {
+  border-left: 25px solid transparent;
+  border-right: 25px solid transparent;
+  border-bottom: 25px solid black;
+}
+
+#is-down {
+  top: 80px;
+  border-left: 25px solid transparent;
+  border-right: 25px solid transparent;
+  border-top: 25px solid black;
+}
+
+#is-right {
+  top: 30px;
+  left: 60px;
+  border-left: 25px solid black;
+  border-top: 25px solid transparent;
+  border-bottom: 25px solid transparent;
+}
+
+#is-left {
+  top: 30px;
+  right: 10px;
+  border-right: 25px solid black;
+  border-top: 25px solid transparent;
+  border-bottom: 25px solid transparent;
+}
+
+#friends {
+  position: relative;
+  margin-left: 300px;
+}
+
+.boss-notes {
+  display: none;
+  position: absolute;
+  background-color: blue;
+  color: white;
+  padding: 5px;
+  font-size: 20px;
+}
+
+  </style>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+</head>
+<body>
+  <img id="alaligo-image" src="./assets/alaligo-default.png" alt="" width="200" />
+
+  <div id="keyboard-arrow">
+    <div id="is-top"></div>
+    <div id="is-down"></div>
+    <div id="is-right"></div>
+    <div id="is-left"></div>
+  </div>
+
+  <div id="friends">
+    <img src="./assets/boss.png" alt="" id="friend-image" width="150" />
+    <div class="boss-notes">
+      <p>Hello, where are you going?</p>
+    </div>
+  </div>
+  
+  <script>
+
+$(document).ready(function() {
+  const alaligo = $('#alaligo-image')
+  const friend = $('#friend-image')
+  const moveRange = 50
+
+  $(document).on('keydown', function(event) {
+    switch (event.keyCode) {
+      // 37 -> left
+      case 37:
+        move('is-left')
+        break
+      // 38 -> top
+      case 38:
+        move('is-top')
+        break
+      // 39 -> right
+      case 39:
+        move('is-right')
+        break
+      // 40 -> bottom
+      case 40:
+        move('is-down')
+        break
+      default:
+        break
+    }
+
+    detectCollition()
+  })
+
+  function move(direction) {
+    switch (direction) {
+      case 'is-left':
+        alaligo
+          .animate({left: alaligo.position().left - moveRange})
+          .attr('src', './assets/alaligo-left.png')
+
+        $('#' + direction).css('border-right-color', 'red')
+        break
+      case 'is-right':
+        alaligo
+          .animate({left: alaligo.position().left + moveRange})
+          .attr('src', './assets/alaligo-right.png')
+
+        $('#' + direction).css('border-left-color', 'red')
+        break
+      case 'is-top':
+        alaligo
+          .animate({top: alaligo.position().top - moveRange})
+          .attr('src', './assets/alaligo-top.png')
+
+        $('#' + direction).css('border-bottom-color', 'red')
+        break
+      case 'is-down':
+        alaligo
+          .animate({top: alaligo.position().top + moveRange})
+          .attr('src', './assets/alaligo-down.png')
+
+        $('#' + direction).css('border-top-color', 'red')
+        break
+      default:
+        break
+    }
+  }
+
+  function detectCollition() {
+    const x1 = alaligo.offset().left
+    const y1 = alaligo.offset().top
+    const x2 = friend.offset().left
+    const y2 = friend.offset().top
+
+    if (
+      (y1 + alaligo.outerHeight(true)) < y2 || y1 > (y2 + friend.outerHeight(true)) ||
+      (x1 + alaligo.outerWidth(true)) < x2 || x1 > (x2 + friend.outerWidth(true))
+    )
+      $('.boss-notes').css('display', 'none')
+    else
+      $('.boss-notes').css('display', 'block')
+  }
+
+  $(document).on('keyup', function() {
+    // default image
+    alaligo.attr('src', './assets/alaligo-default.png')
+
+    // reset feedback keyboard arrow color
+    $('#is-left').css('border-right-color', 'black')
+    $('#is-right').css('border-left-color', 'black')
+    $('#is-top').css('border-bottom-color', 'black')
+    $('#is-down').css('border-top-color', 'black')
+  })
+})
+
+  </script>
+</body>
+</html>

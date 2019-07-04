@@ -1,0 +1,85 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Vanilla Scroll</title>
+
+  <style>
+
+body {
+  margin: 0;
+  height: 100vh;
+  font-size: 5em;
+  font-family: 'Poppins';
+  font-weight: bold;
+  overflow-x: hidden;
+}
+
+section {
+  height: 100%;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  justify-content: center;
+  align-items: center;
+  place-items: center;
+  height: 100vh;
+}
+
+span {
+  display: block;
+  background: black;
+  height: 200px;
+  width: 200px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  border-radius: 50%;
+}
+
+.scroll {
+  transform: all .4s ease;
+}
+
+  </style>
+</head>
+<body>
+  <section>
+    <ul>
+      <li class="scroll" data-rateY="-2" data-direction="vertical">par</li>
+      <li class="scroll">al</li>
+      <li class="scroll" data-rateY="2" data-direction="vertical">lax</li>
+    </ul>
+
+    <span class="scroll" data-rateY="1" data-rateX="2" data-direction="horizontal"></span>
+  </section>
+  <section></section>
+
+  <script>
+  
+    window.addEventListener('scroll', function(e) {
+      const target = document.querySelectorAll('.scroll');
+
+      for (let i = 0; i < target.length; i++) {
+        let posY = window.pageYOffset * target[i].dataset.ratey;
+        let posX = window.pageYOffset * target[i].dataset.ratex;
+
+        if (target[i].dataset.direction === 'vertical') {
+          target[i].style.transform = `translate3d(0px, ${posY}px, 0px)`;
+        } else {
+          target[i].style.transform = `translate3d(${posX}px, ${posY}px, 0px)`;
+        }
+      }
+    });
+
+  </script>
+</body>
+</html>

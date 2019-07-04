@@ -1,0 +1,55 @@
+HTML/CSS Developer
+
+flat design principles
+            examples
+            trend
+            color trends
+
+psychology of color
+
+1. Normalize styles
+
+    1. normalize.css
+
+2. Base styles
+
+    Sectioning Elements [address, article, aside, body, footer, header, nav, section]
+    Heading and Text Elements [h1-h6, figure, figcaption, p, pre]
+    Anchor Tags
+    Text Semantics [data, dfn, em, i, kdb, s, strong, sub, sup, time, code, abbr, b, cite, u]
+    Lists
+    Grouping Elements [div, main, span]
+    Tables [table, caption, colgroup, col, tbody, thead, tfoot, tr, td, th]
+    Forms [form, label, input, button, select, datalist, optgroup, option, text-area, output, progress, meter, fieldset, legend]
+    Images [img, picture]
+
+    1. form.css
+    2. headings.css
+    3. images.css
+    4. lists.css
+    5. tables.css
+    6. etc
+
+3. Styles for commponents and their contaners
+
+    1. alert.css
+    2. buttons.css
+    3. carousels.css
+    4. dropdowns.css
+    5. modals.css
+    6. etc
+
+4. Structural styles
+
+    1. layout-checkout.css
+    2. layout-sidebar
+    3. layout-primary
+    4. layout-settings
+
+5. Utility styles
+
+    1. utility.css
+
+6. Browser-spesific styles
+
+    1. ie8.css

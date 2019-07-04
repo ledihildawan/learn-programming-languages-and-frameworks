@@ -102,7 +102,7 @@
       </div>
     </section>
 
-    <section class="c-features">
+    <section class="c-features" data-aos="slide-left" data-aos-delay="300" data-aos-duration="700">
       <h2 class="u-visually-hidden">Features</h2>
      <div class="c-features__grid">
       <div class="c-features__box">
@@ -149,7 +149,7 @@
         <h2 class="c-why-us__title">Why Choose Us?</h2>
         <p class="c-why-us__desc">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
         <div class="c-why-us__grid">
-          <div class="c-why-us__benefits">
+          <div class="c-why-us__benefits" data-aos="fade-left" data-aos-delay="700" data-aos-duration="700">
             <div class="c-why-us__content">
               <div class="c-why-us__circle-icon">
                 <i class="ion-scissors"></i>
@@ -166,9 +166,9 @@
             </div>
           </div>
 
-          <img src="img/doctor.png" alt="Doctor" class="c-why-us__image" />
+          <img src="img/doctor.png" alt="Doctor" class="c-why-us__image"  data-aos="zoom-in" data-aos-delay="500" />
 
-          <div class="c-why-us__benefits">
+          <div class="c-why-us__benefits" data-aos="fade-right" data-aos-delay="700" data-aos-duration="700">
             <div class="c-why-us__content">
               <div class="c-why-us__circle-icon">
                 <i class="ion-search"></i>
@@ -193,25 +193,25 @@
       <div class="o-container c-statistics__wrapper">
         <div class="c-statistics__item">
           <img src="img/statistics-icon-1.png" alt="Happy customers icon" class="c-statistics__icon" />
-          <p class="c-statistics__num">1000+</p>
+          <p class="c-statistics__num"><span>1000</span>+</p>
           <div class="c-statistics__line"></div>
           <p class="c-statistics__name">Happy<br />Customers</p>
         </div>
         <div class="c-statistics__item">
           <img src="img/statistics-icon-2.png" alt="Top Hospitality icon" class="c-statistics__icon" />
-          <p class="c-statistics__num">2017</p>
+          <p class="c-statistics__num"><span>2017</span></p>
           <div class="c-statistics__line"></div>
           <p class="c-statistics__name">Top<br />Hospitality</p>
         </div>
         <div class="c-statistics__item">
           <img src="img/statistics-icon-3.png" alt="Innovative approach icon" class="c-statistics__icon" />
-          <p class="c-statistics__num">1105</p>
+          <p class="c-statistics__num"><span>1105</span></p>
           <div class="c-statistics__line"></div>
           <p class="c-statistics__name">Innovative<br />Approach</p>
         </div>
         <div class="c-statistics__item">
           <img src="img/statistics-icon-4.png" alt="Lung replacement icon" class="c-statistics__icon" />
-          <p class="c-statistics__num">1000+</p>
+          <p class="c-statistics__num"><span>1000</span>+</p>
           <div class="c-statistics__line"></div>
           <p class="c-statistics__name">Lung<br />Replacement</p>
         </div>
@@ -297,12 +297,24 @@
         <p class="c-gallery__desc">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
 
         <div class="c-gallery__list">
-          <img src="img/gallery-1.png" alt="Gallery 1" class="c-gallery__item" />
-          <img src="img/gallery-2.png" alt="Gallery 2" class="c-gallery__item" />
-          <img src="img/gallery-3.png" alt="Gallery 3" class="c-gallery__item" />
-          <img src="img/gallery-4.png" alt="Gallery 4" class="c-gallery__item" />
-          <img src="img/gallery-5.png" alt="Gallery 5" class="c-gallery__item" />
-          <img src="img/gallery-6.png" alt="Gallery 6" class="c-gallery__item" />
+          <a href="img/gallery-1.png" data-lightbox="roadtrip" data-title="Gallery 1">
+            <img src="img/gallery-1.png" alt="Gallery 1" class="c-gallery__item" />
+          </a>
+          <a href="img/gallery-2.png" data-lightbox="roadtrip" data-title="Gallery 2">
+            <img src="img/gallery-2.png" alt="Gallery 2" class="c-gallery__item" />
+          </a>
+          <a href="img/gallery-3.png" data-lightbox="roadtrip" data-title="Gallery 3">
+            <img src="img/gallery-3.png" alt="Gallery 3" class="c-gallery__item" />
+          </a>
+          <a href="img/gallery-4.png" data-lightbox="roadtrip" data-title="Gallery 4">
+            <img src="img/gallery-4.png" alt="Gallery 4" class="c-gallery__item" />
+          </a>
+          <a href="img/gallery-5.png" data-lightbox="roadtrip" data-title="Gallery 5">
+            <img src="img/gallery-5.png" alt="Gallery 5" class="c-gallery__item" />
+          </a>
+          <a href="img/gallery-6.png" data-lightbox="roadtrip" data-title="Gallery 6">
+            <img src="img/gallery-6.png" alt="Gallery 6" class="c-gallery__item" />
+          </a>
         </div>
       </div>
     </section>
@@ -357,7 +369,7 @@
       </div>
     </section>
 
-    <section class="c-offers">
+    <section class="c-offers"  data-aos="slide-right" data-aos-delay="500" data-aos-duration="600">
       <div class="o-container c-offers__wrapper">
         <h2 class="c-offers__title">New Patient Special Offer Complimentary Consultan</h2>
         <a href="#" class="c-offers__btn">Read More</a>
@@ -425,5 +437,26 @@
     </div>
     <p class="c-main-footer__copyright">Copyright © 2017. PSDFreebies.com  | Best PSD Template for freelancer and agencies</p>
   </footer>
+
+  <script src="js/aos.js"></script>
+  <script src="js/jquery.js"></script>
+  <script src="js/waypoints.js"></script>
+  <script src="js/counter.js"></script>
+  <script src="js/lightbox.js"></script>
+  <script>
+    AOS.init({
+      once: false
+    });
+
+    $('.c-statistics__num span').counterUp({
+      delay: 10,
+      time: 1000
+    });
+
+    lightbox.option({
+      positionFromTop: 100,
+      disableScrolling: true
+    });
+  </script>
 </body>
 </html>

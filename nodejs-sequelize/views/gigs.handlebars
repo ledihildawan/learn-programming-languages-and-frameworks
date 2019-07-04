@@ -1,0 +1,15 @@
+<h1>Gigs template</h1>
+
+{{#each gigs}}
+  <h3>{{title}}</h3>
+  <p>{{description}}</p>
+  <ul>
+    <li>Budget: {{budget}}</li>
+    <li><a href="mailto:{{contact_email}}">Apply Now</a></li>
+  </ul>
+  <div class="tech">
+    <small>Techologies Needed: <span>{{technologies}}</span></small>
+  </div>
+{{else}}
+  <p>No gigs available</p>
+{{/each}}
