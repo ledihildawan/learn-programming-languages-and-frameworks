@@ -1,1 +1,223 @@
-<!DOCTYPE html><html lang=en><meta charset=UTF-8><meta content="width=device-width,initial-scale=1"name=viewport><meta content="ie=edge"http-equiv=X-UA-Compatible><title>Ninja Quiz</title><link href=https://unpkg.com/nes.css@2.2.0/css/nes.min.css rel=stylesheet><style>@font-face{font-family:Kongtext;src:url(kongtext.ttf)}body{padding:2rem 1rem;font-family:Kongtext;max-width:1024px;margin:0 auto}main{margin-top:2rem}form>div{margin-top:3rem}button{width:100%}.main-header{display:flex;justify-content:space-between;align-items:center}.score{display:none;font-size:2rem}</style><header class=main-header><h1>Premier League Quiz</h1><p class=score>0</header><main><div class=nes-container><h2>On with the questions...</h2><form name=football-quiz><div class="nes-container with-title"><h3 class=title>1. Which Premier League winner’s father played rugby for Wales?</h3><div><label><input class=nes-radio name=q1 type=radio value=A> <span>Ryan Giggs</span></label></div><div><label><input class=nes-radio name=q1 type=radio value=B> <span>James Milner</span></label></div></div><div class="nes-container with-title"><h3 class=title>2. What year did the Premier League start?</h3><div><label><input class=nes-radio name=q2 type=radio value=A> <span>1982</span></label></div><div><label><input class=nes-radio name=q2 type=radio value=B> <span>1992</span></label></div></div><div class="nes-container with-title"><h3 class=title>3. Who was the first sponsor of the Premier League?</h3><div><label><input class=nes-radio name=q3 type=radio value=A> <span>Carling</span></label></div><div><label><input class=nes-radio name=q3 type=radio value=B> <span>Fly Emirates</span></label></div></div><div class="nes-container with-title"><h3 class=title>4. In what season did Roman Abramovich take over Chelsea?</h3><div><label><input class=nes-radio name=q4 type=radio value=A> <span>2000/01</span></label></div><div><label><input class=nes-radio name=q4 type=radio value=B> <span>2003/04</span></label></div></div><div class="nes-container with-title"><h3 class=title>5. Which player holds the record for the most goals in consecutive Premier League games?</h3><div><label><input class=nes-radio name=q5 type=radio value=A> <span>Jamie Vardy</span></label></div><div><label><input class=nes-radio name=q5 type=radio value=B> <span>Sergio Aguero</span></label></div></div><div class="nes-container with-title"><h3 class=title>6. Kevin Phillips won the Golden Boot in 1999/2000, who was the next English player to do so?</h3><div><label><input class=nes-radio name=q6 type=radio value=A> <span>Wayne Rooney</span></label></div><div><label><input class=nes-radio name=q6 type=radio value=B> <span>Harry Kane</span></label></div></div><div class="nes-container with-title"><h3 class=title>7. Which player holds the record for most consecutive Premier League appearances (310)?</h3><div><label><input class=nes-radio name=q7 type=radio value=A> <span>Brad Friedel</span></label></div><div><label><input class=nes-radio name=q7 type=radio value=B> <span>Steven Gerrad</span></label></div></div><div class="nes-container with-title"><h3 class=title>8. What was significant about Mario Balotelli’s only assist in the Premier League for Manchester City?</h3><div><label><input class=nes-radio name=q8 type=radio value=A> <span>It was for Joe Hart’s title-winning goal vs Liverpool</span></label></div><div><label><input class=nes-radio name=q8 type=radio value=B> <span>It was for Sergio Aguero’s title-winning goal vs QPR</span></label></div></div><div class="nes-container with-title"><h3 class=title>9. Who scored the first ‘perfect hat-trick’ (left foot, right foot, and header) in the Premier League?</h3><div><label><input class=nes-radio name=q9 type=radio value=A> <span>Jimmy Floyd Hasselbaink</span></label></div><div><label><input class=nes-radio name=q9 type=radio value=B> <span>Cristiano Ronaldo</span></label></div></div><div class="nes-container with-title"><h3 class=title>10. What player scored four goals in 12 minutes after coming on as a sub versus Nottingham Forest?</h3><div><label><input class=nes-radio name=q10 type=radio value=A> <span>Diego Costa</span></label></div><div><label><input class=nes-radio name=q10 type=radio value=B> <span>Ole Gunnar Solskjaer</span></label></div></div><div><button class="btn-custom is-primary nes-btn"type=submit>Submit</button></div></form></div></main><script>const footballQuizForm=document.forms["football-quiz"],scoreHTML=document.querySelector(".score"),correctAnswers=["A","B","A","B","A","B","A","B","A","B"];function displayScore(a){scoreHTML.style.display="block";let b=0;const c=setInterval(()=>{scoreHTML.textContent=b+"%",b===a?clearInterval(c):b++},10)}footballQuizForm.addEventListener("submit",a=>{a.preventDefault();const b=[];let c=0;Array.from(footballQuizForm).forEach(a=>{"INPUT"===a.tagName&&a.checked&&b.push(a.value)}),b.forEach((a,b)=>{a===correctAnswers[b]&&(c+=10)}),scrollTo(0,0),displayScore(c)});</script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Ninja Quiz</title>
+  <link href="https://unpkg.com/nes.css@2.2.0/css/nes.min.css" rel="stylesheet" />
+
+  <style>
+  
+@font-face {
+  font-family: "Kongtext";
+  src: url("kongtext.ttf");
+}
+
+body {
+  padding: 2rem 1rem;
+  font-family: Kongtext;
+  max-width: 1024px;
+  margin: 0 auto;
+}
+
+main {
+  margin-top: 2rem;
+}
+
+form > div {
+  margin-top: 3rem;
+}
+
+button {
+  width: 100%;
+}
+
+.main-header {  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.score {
+  display: none;
+  font-size: 2rem;
+}
+
+button.nes-btn.is-primary.btn-custom {
+  /* background: #38003c; */
+}
+  
+  </style>
+</head>
+<body>
+  <header class="main-header">
+    <h1>Premier League Quiz</h1>
+    <p class="score">0</p>
+  </header>
+
+  <main>
+    <div class="nes-container">
+      <h2>On with the questions...</h2>
+
+      <form name="football-quiz">        
+        <div class="nes-container with-title">
+          <h3 class="title">1. Which Premier League winner’s father played rugby for Wales?</h3>
+          <div>
+            <label>
+              <input type="radio" class="nes-radio" name="q1" value="A" />
+              <span>Ryan Giggs</span>
+            </label>
+          </div>
+          <div>
+            <label>
+              <input type="radio" class="nes-radio" name="q1" value="B" />
+              <span>James Milner</span>
+            </label>
+          </div>
+        </div>
+        <div class="nes-container with-title">
+          <h3 class="title">2. What year did the Premier League start?</h3>
+          <div>
+            <label>
+              <input type="radio" class="nes-radio" name="q2" value="A" />
+              <span>1982</span>
+            </label>
+          </div>
+          <div>
+            <label>
+              <input type="radio" class="nes-radio" name="q2" value="B" />
+              <span>1992</span>
+            </label>
+          </div>
+        </div>
+        <div class="nes-container with-title">
+          <h3 class="title">3. Who was the first sponsor of the Premier League?</h3>
+          <div>
+            <label>
+              <input type="radio" class="nes-radio" name="q3" value="A" />
+              <span>Carling</span>
+            </label>
+          </div>
+          <div>
+            <label>
+              <input type="radio" class="nes-radio" name="q3" value="B" />
+              <span>Fly Emirates</span>
+            </label>
+          </div>
+        </div>
+        <div class="nes-container with-title">
+          <h3 class="title">4. In what season did Roman Abramovich take over Chelsea?</h3>
+          <div>
+            <label>
+              <input type="radio" class="nes-radio" name="q4" value="A" />
+              <span>2000/01</span>
+            </label>
+          </div>
+          <div>
+            <label>
+              <input type="radio" class="nes-radio" name="q4" value="B" />
+              <span>2003/04</span>
+            </label>
+          </div>
+        </div>
+        <div class="nes-container with-title">
+          <h3 class="title">5. Which player holds the record for the most goals in consecutive Premier League games?</h3>
+          <div>
+            <label>
+              <input type="radio" class="nes-radio" name="q5" value="A" />
+              <span>Jamie Vardy</span>
+            </label>
+          </div>
+          <div>
+            <label>
+              <input type="radio" class="nes-radio" name="q5" value="B" />
+              <span>Sergio Aguero</span>
+            </label>
+          </div>
+        </div>
+        <div class="nes-container with-title">
+          <h3 class="title">6. Kevin Phillips won the Golden Boot in 1999/2000, who was the next English player to do so?</h3>
+          <div>
+            <label>
+              <input type="radio" class="nes-radio" name="q6" value="A" />
+              <span>Wayne Rooney</span>
+            </label>
+          </div>
+          <div>
+            <label>
+              <input type="radio" class="nes-radio" name="q6" value="B" />
+              <span>Harry Kane</span>
+            </label>
+          </div>
+        </div>
+        <div class="nes-container with-title">
+          <h3 class="title">7. Which player holds the record for most consecutive Premier League appearances (310)?</h3>
+          <div>
+            <label>
+              <input type="radio" class="nes-radio" name="q7" value="A" />
+              <span>Brad Friedel</span>
+            </label>
+          </div>
+          <div>
+            <label>
+              <input type="radio" class="nes-radio" name="q7" value="B" />
+              <span>Steven Gerrad</span>
+            </label>
+          </div>
+        </div>
+        <div class="nes-container with-title">
+          <h3 class="title">8. What was significant about Mario Balotelli’s only assist in the Premier League for Manchester City?</h3>
+          <div>
+            <label>
+              <input type="radio" class="nes-radio" name="q8" value="A" />
+              <span>It was for Joe Hart’s title-winning goal vs Liverpool</span>
+            </label>
+          </div>
+          <div>
+            <label>
+              <input type="radio" class="nes-radio" name="q8" value="B" />
+              <span>It was for Sergio Aguero’s title-winning goal vs QPR</span>
+            </label>
+          </div>
+        </div>
+        <div class="nes-container with-title">
+          <h3 class="title">9. Who scored the first ‘perfect hat-trick’ (left foot, right foot, and header) in the Premier League?</h3>
+          <div>
+            <label>
+              <input type="radio" class="nes-radio" name="q9" value="A" />
+              <span>Jimmy Floyd Hasselbaink</span>
+            </label>
+          </div>
+          <div>
+            <label>
+              <input type="radio" class="nes-radio" name="q9" value="B" />
+              <span>Cristiano Ronaldo</span>
+            </label>
+          </div>
+        </div>
+        <div class="nes-container with-title">
+          <h3 class="title">10. What player scored four goals in 12 minutes after coming on as a sub versus Nottingham Forest?</h3>
+          <div>
+            <label>
+              <input type="radio" class="nes-radio" name="q10" value="A" />
+              <span>Diego Costa</span>
+            </label>
+          </div>
+          <div>
+            <label>
+              <input type="radio" class="nes-radio" name="q10" value="B" />
+              <span>Ole Gunnar Solskjaer</span>
+            </label>
+          </div>
+        </div>
+        <div>
+          <button type="submit" class="nes-btn is-primary btn-custom">Submit</button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

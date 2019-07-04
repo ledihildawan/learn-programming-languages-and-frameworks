@@ -1,1 +1,197 @@
-<!DOCTYPE html><html lang="en"><head> <meta charset="UTF-8"/> <meta name="viewport" content="width=device-width, initial-scale=1.0"/> <meta http-equiv="X-UA-Compatible" content="ie=edge"/> <title>travelly</title> <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Open+Sans:400,700&display=swap" rel="stylesheet"> <link rel="stylesheet" href="./css/main.css"/> <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/></head><body> <header class="main-header"> <div class="container"> <div class="main-header__wrapper"> <a href="#"> <img class="main-header__logo" src="./img/travelly-logo.png" alt="travelly-logo"/> </a> <div class="main-nav"> <button class="main-nav__toggle" type="button"> <span></span> <span></span> <span></span> </button> </div></div></div></header> <main class="main"> <seciton class="hero"> <p class="hero__title">Where will you go next?</p><div class="hero__form"> <input type="text" class="hero__form__input" placeholder="Start typing..."/> <input type="submit" value="Go" class="hero__form__button"/> </div></seciton> <section class="section top-destination"> <div class="container"> <h2 class="section__title">Top Destinatons</h2> <p>Some of the top destinations for your next summer adventure.</p><ul class="top-destination__list"> <li class="top-destination__item" id="top-destination-1"> <div class="top-destination__media"> <img class="top-destination__image" src="./img/top-destination-1.jpg" alt="Australia"/> <p class="top-destination__price">$1,095</p></div><div class="top-destination__body"> <h3 class="top-destination__title">Amzaing Australia</h3> <p class="top-destination__desc">Become inspired to travel to Australia. Discover fantastic things to do & places to go.</p></div></li><li class="top-destination__item" id="top-destination-2"> <div class="top-destination__media"> <img class="top-destination__image" src="./img/top-destination-2.jpg" alt="Ancient South America"/> <p class="top-destination__price">$1,295</p></div><div class="top-destination__body"> <h3 class="top-destination__title">Ancient South America</h3> <p class="top-destination__desc">Become inspired to travel to South America. Discover fantastic things to do & places to go.</p></div></li><li class="top-destination__item" id="top-destination-3"> <div class="top-destination__media"> <img class="top-destination__image" src="./img/top-destination-3.jpg" alt="Modern North America"/> <p class="top-destination__price">$695</p></div><div class="top-destination__body"> <h3 class="top-destination__title">Modern North America</h3> <p class="top-destination__desc">Become inspired to travel to North America. Discover fantastic things to do & places to go.</p></div></li><li class="top-destination__item" id="top-destination-4"> <div class="top-destination__media"> <img class="top-destination__image" src="./img/top-destination-4.jpg" alt="Classic Europe"/> <p class="top-destination__price">$295</p></div><div class="top-destination__body"> <h3 class="top-destination__title">Classic Europe</h3> <p class="top-destination__desc">Become inspired to travel to Europe. Discover fantastic things to do & places to go.</p></div></li></ul> </div></section> <section class="section adventage" id="adventage"> <div class="container"> <h2 class="section__title sr-only">adventages</h2> <p class="section__title section__title--large">Before you go</p><ul class="adventage__list"> <li class="adventage__item"> <h2 class="adventage__title">Visa & Documents</h2> <p class="adventage__desc">There are some things you should take care of before going to your next adventure. We’ll help you to get required visas and documents needed.</p></li><li class="adventage__item"> <h2 class="adventage__title">Accomodation</h2> <p class="adventage__desc">There are some things you should take care of before going to your next adventure. We’ll help you to get required visas and documents needed.</p></li><li class="adventage__item"> <h2 class="adventage__title">Transportation</h2> <p class="adventage__desc">There are some things you should take care of before going to your next adventure. We’ll help you to get required visas and documents needed.</p></li></ul> </div></section> <section class="section newsletter" id="newsletter"> <p class="section__title">Get Hottest Deals To Your Inbox</p><form class="newsletter__form"> <input type="text" class="newsletter__input" placeholder="Email address"/> <input type="submit" value="Subscribe" class="newsletter__button"/> </form> </section> </main> <footer class="main-footer"> <div class="container"> <div class="main-footer__wrapper"> <div class="main-footer__copyright"> <p>Copyright &copy; 2014 Travelly. All Rights Reserved. Designed for Despreneur.</p></div><nav class="main-footer__nav"> <ul class="main-footer__list"> <li class="main-footer__item"><a href="#" class="main-footer__link">Home</a></li><li class="main-footer__item"><a href="#" class="main-footer__link">About</a></li><li class="main-footer__item"><a href="#" class="main-footer__link">Blog</a></li><li class="main-footer__item"><a href="#" class="main-footer__link">Press</a></li><li class="main-footer__item"><a href="#" class="main-footer__link">Contact</a></li></ul> </nav> </div></div></footer> <script src="https://unpkg.com/scrollreveal"></script> <script>ScrollReveal().reveal('.section',{delay: 500, duration: 1000}); ScrollReveal().reveal('#top-destination-1',{delay: 1200, duration: 1000, origin: 'left', distance: '96px', reset: true}); ScrollReveal().reveal('#top-destination-2',{delay: 1300, duration: 1000, origin: 'top', distance: '96px', reset: true}); ScrollReveal().reveal('#top-destination-3',{delay: 1400, duration: 1000, origin: 'bottom', distance: '96px', reset: true}); ScrollReveal().reveal('#top-destination-4',{delay: 1200, duration: 1000, origin: 'right', distance: '96px', reset: true}); ScrollReveal().reveal('#adventage',{delay: 1000, origin: 'left', distance: '1000px', easing: 'cubic-bezier(.81,.48,.13,.81)'}); ScrollReveal().reveal('#newsletter',{delay: 1000, origin: 'right', distance: '1000px',}); </script></body></html>
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+  <title>travelly</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Open+Sans:400,700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="./css/main.css" />
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+
+</head>
+<body>
+  <header class="main-header">
+    <div class="container">
+      <div class="main-header__wrapper">
+        <a href="#">
+          <img class="main-header__logo" src="./img/travelly-logo.png" alt="travelly-logo" />
+        </a>
+        <div class="main-nav">
+          <button class="main-nav__toggle" type="button">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <seciton class="hero">
+      <p class="hero__title">Where will you go next?</p>
+      <div class="hero__form">
+        <input type="text" class="hero__form__input" placeholder="Start typing..." />
+        <input type="submit" value="Go" class="hero__form__button" />
+      </div>
+    </seciton>
+
+    <section class="section top-destination">
+      <div class="container">
+        <h2 class="section__title">Top Destinatons</h2>
+        <p>Some of the top destinations for your next summer adventure.</p>
+        <ul class="top-destination__list">
+          <li class="top-destination__item" id="top-destination-1">
+            <div class="top-destination__media">
+              <img class="top-destination__image" src="./img/top-destination-1.jpg" alt="Australia" />
+              <p class="top-destination__price">$1,095</p>
+            </div>
+            <div class="top-destination__body">
+              <h3 class="top-destination__title">Amzaing Australia</h3>
+              <p class="top-destination__desc">Become inspired to travel to Australia. Discover fantastic things to do & places to go.</p>
+            </div>
+          </li>
+          <li class="top-destination__item" id="top-destination-2">
+            <div class="top-destination__media">
+              <img class="top-destination__image" src="./img/top-destination-2.jpg" alt="Ancient South America" />
+              <p class="top-destination__price">$1,295</p>
+            </div>
+            <div class="top-destination__body">
+              <h3 class="top-destination__title">Ancient South America</h3>
+              <p class="top-destination__desc">Become inspired to travel to South America. Discover fantastic things to do & places to go.</p>
+            </div>
+          </li>
+          <li class="top-destination__item" id="top-destination-3">
+            <div class="top-destination__media">
+              <img class="top-destination__image" src="./img/top-destination-3.jpg" alt="Modern North America" />
+              <p class="top-destination__price">$695</p>
+            </div>
+            <div class="top-destination__body">
+              <h3 class="top-destination__title">Modern North America</h3>
+              <p class="top-destination__desc">Become inspired to travel to North America. Discover fantastic things to do & places to go.</p>
+            </div>
+          </li>
+          <li class="top-destination__item" id="top-destination-4">
+            <div class="top-destination__media">
+              <img class="top-destination__image" src="./img/top-destination-4.jpg" alt="Classic Europe" />
+              <p class="top-destination__price">$295</p>
+            </div>
+            <div class="top-destination__body">
+              <h3 class="top-destination__title">Classic Europe</h3>
+              <p class="top-destination__desc">Become inspired to travel to Europe. Discover fantastic things to do & places to go.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section adventage" id="adventage">
+      <div class="container">
+        <h2 class="section__title sr-only">adventages</h2>
+        <p class="section__title section__title--large">Before you go</p>
+        <ul class="adventage__list">
+          <li class="adventage__item">
+            <h2 class="adventage__title">Visa & Documents</h2>
+            <p class="adventage__desc">There are some things you should take care of before going to your next adventure. We’ll help you to get required visas and documents needed.</p>
+          </li>
+          <li class="adventage__item">
+            <h2 class="adventage__title">Accomodation</h2>
+            <p class="adventage__desc">There are some things you should take care of before going to your next adventure. We’ll help you to get required visas and documents needed.</p>
+          </li>
+          <li class="adventage__item">
+            <h2 class="adventage__title">Transportation</h2>
+            <p class="adventage__desc">There are some things you should take care of before going to your next adventure. We’ll help you to get required visas and documents needed.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section newsletter" id="newsletter">
+      <p class="section__title">Get Hottest Deals To Your Inbox</p>
+      <form class="newsletter__form">
+        <input type="text" class="newsletter__input" placeholder="Email address" />
+        <input type="submit" value="Subscribe" class="newsletter__button" />
+      </form>
+    </section>
+  </main>
+
+  <footer class="main-footer">
+    <div class="container">
+      <div class="main-footer__wrapper">
+        <div class="main-footer__copyright">
+          <p>Copyright &copy; 2014 Travelly. All Rights Reserved. Designed for Despreneur.</p>
+        </div>
+        <nav class="main-footer__nav">
+          <ul class="main-footer__list">
+            <li class="main-footer__item"><a href="#" class="main-footer__link">Home</a></li>
+            <li class="main-footer__item"><a href="#" class="main-footer__link">About</a></li>
+            <li class="main-footer__item"><a href="#" class="main-footer__link">Blog</a></li>
+            <li class="main-footer__item"><a href="#" class="main-footer__link">Press</a></li>
+            <li class="main-footer__item"><a href="#" class="main-footer__link">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/scrollreveal"></script>
+
+  <script>
+    ScrollReveal().reveal('.section',{
+      delay: 500,
+      duration: 1000
+    });
+
+    ScrollReveal().reveal('#top-destination-1',{
+      delay: 1200,
+      duration: 1000,
+      origin: 'left',
+      distance: '96px',
+      reset: true
+    });
+
+    ScrollReveal().reveal('#top-destination-2',{
+      delay: 1300,
+      duration: 1000,
+      origin: 'top',
+      distance: '96px',
+      reset: true
+    });
+
+    ScrollReveal().reveal('#top-destination-3',{
+      delay: 1400,
+      duration: 1000,
+      origin: 'bottom',
+      distance: '96px',
+      reset: true
+    });
+
+    ScrollReveal().reveal('#top-destination-4',{
+      delay: 1200,
+      duration: 1000,
+      origin: 'right',
+      distance: '96px',
+      reset: true
+    });
+
+    ScrollReveal().reveal('#adventage',{
+      delay: 1000,
+      origin: 'left',
+      distance: '1000px',
+      easing: 'cubic-bezier(.81,.48,.13,.81)'
+    });
+
+    ScrollReveal().reveal('#newsletter',{
+      delay: 1000,
+      origin: 'right',
+      distance: '1000px',
+    });
+  </script>
+</body>
+</html>
