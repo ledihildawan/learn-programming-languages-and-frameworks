@@ -77,6 +77,12 @@ function deleteListItem(e) {
 
     localStorage.setItem('tasks', JSON.stringify(tasks));
     e.target.parentElement.remove();
+
+    message({
+      message: 'data deleted',
+      className: 'alert-warning',
+      duration: 4000
+    });
   }
 
   // Edit item
@@ -120,6 +126,12 @@ function addListItem(title) {
   localStorage.setItem('tasks', JSON.stringify(tasks));
   const sameTitle = tasks.filter(task => task.title === title)[0];
   ul.insertAdjacentElement('afterbegin', listTemplate(sameTitle));
+
+  message({
+    message: 'data added',
+    className: 'alert-success',
+    duration: 4000
+  });
 }
 
 function generateList(tasksArray) {
@@ -139,10 +151,13 @@ form.addEventListener('submit', function (e) {
 
   if (!title) {
     itemTitle.classList.add('is-invalid');
+
+    setTimeout(() => {
+      itemTitle.classList.remove('is-invalid');
+    }, 4000);
   } else {
     addListItem(title);
     itemTitle.classList.remove('is-invalid');
-    itemTitle.placeholder = title;
     form.reset();
   }
 });
