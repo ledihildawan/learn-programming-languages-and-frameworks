@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <title>sailair</title>
+
+</head>
+<body>
+  <a href="#" id="logOut">Log Out</a>
+
+  <form id="signUp">
+    <label for="signUpEmail">Email</label>
+    <input type="email" id="signUpEmail">
+    <label for="password">Password</label>
+    <input type="password" id="signUpPassword">
+    <button>Sign Up</button>
+  </form>
+
+  <form id="signIn">
+    <label for="email">Email</label>
+    <input type="email" id="signInEmail">
+    <label for="password">Password</label>
+    <input type="password" id="signInPassword">
+    <button>Sign In</button>
+  </form>
+  
+  <script src="https://www.gstatic.com/firebasejs/6.2.4/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.2.4/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.2.4/firebase-firestore.js"></script>
+
+  <script>
+    var firebaseConfig = {
+      apiKey: "AIzaSyAddFAh04r93IaoxW1BXbksyvXb9dBz9Wg",
+      authDomain: "sailair.firebaseapp.com",
+      databaseURL: "https://sailair.firebaseio.com",
+      projectId: "sailair",
+      storageBucket: "",
+      messagingSenderId: "135676269358",
+      appId: "1:135676269358:web:86b094c4730e1b17"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+  </script>
+  <script src="app.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Countdown Timer</title>
+</head>
+<body>
+  <div class="timer">
+    <div class="timer__controls">
+      <button data-time="20" class="timer__button">20 Secs</button>
+      <button data-time="300" class="timer__button">Work 5</button>
+      <button data-time="900" class="timer__button">Quick 15</button>
+      <button data-time="1200" class="timer__button">Snack 20</button>
+      <button data-time="3600" class="timer__button">Lunch Break</button>
+      <form name="customForm">
+        <label for="minutes">Minutes</label>
+        <input id="minutes" type="text" name="minutes" placeholder="Enter Minutes">
+      </form>
+    </div>
+    <div class="display">
+      <h1 class="display__time-left"></h1>
+      <p class="display__end-time"></p>
+    </div>
+  </div>
+
+  <script>
+    const buttons = document.querySelectorAll('[data-time]');
+    const customForm = document.forms['customForm']
+
+    const timer = (function () {
+      let countDown;
+      let timerDisplay;
+      let endTime;
+      let alarmSound;
+
+      function init(settings) {
+        timerDisplay = document.querySelector(settings.timeLeftSelector);
+        endTime = document.querySelector(settings.timeEndSelector);
+
+        if (settings.alarmSound) {
+          alarmSound = new Audio(settings.alarmSound);
+        }
+      }
+
+      function start(seconds) {
+        if (!timerDisplay || !endTime) return console.log('Please init module first.');
+        if (!seconds || typeof seconds !== 'number') return console.log('Please provide seconds.');
+
+        // Rest timer
+        clearInterval(countDown);
+
+        // Reset sound
+        if (alarmSound) {
+          alarmSound.pause();
+          alarmSound.currentTime = 0;
+        }
+
+        const now = Date.now();
+        const then = now + seconds * 1000;
+
+        displayTimeLeft(seconds);
+        displayEndTime(then);
+
+        countDown = setInterval(_ => {
+          const secondLeft = Math.round((then - Date.now()) / 1000);
+
+          if (secondLeft < 0) {
+            clearInterval(countDown);
+            playSound();
+            return;
+          }
+
+          displayTimeLeft(secondLeft);
+        }, 1000);
+      }
+
+      function displayTimeLeft(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const reminderSeconds = seconds % 60;
+
+        const display = `${minutes}:${reminderSeconds < 10 ? '0' : ''}${reminderSeconds}`;
+        document.title = display;
+        timerDisplay.textContent = display;
+      }
+
+      function displayEndTime(timestamp) {
+        const end = new Date(timestamp);
+        let hours = end.getHours();
+        let minutes = end.getMinutes();
+        let seconds = end.getSeconds();
+
+        endTime.textContent = `Be back at ${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+      }
+
+      function stop() {
+
+      }
+
+      function playSound() {
+        alarmSound.play();
+      }
+
+      return {
+        init,
+        start,
+        stop
+      }
+    })();
+
+    // Init timer
+    timer.init({
+      timeLeftSelector: '.display__time-left',
+      timeEndSelector: '.display__end-time',
+      alarmSound: './old-fashioned-school-bell-daniel_simon.mp3'
+    });
+
+    // Start timer by click
+    function startTimer(e) {
+      const seconds = parseInt(this.dataset.time);
+      timer.start(seconds);
+    }
+
+    buttons.forEach(button => button.addEventListener('click', startTimer));
+
+    customForm.addEventListener('submit', e => {
+      e.preventDefault();
+
+      const minutes = parseInt(customForm.elements.minutes.value);
+      const seconds = minutes * 60;
+      timer.start(seconds);
+    });
+  </script>
+</body>
+</html>
