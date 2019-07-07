@@ -1,3 +1,4 @@
+// 1
 function Person(firstName, lastName, age) {
   this.firstName = firstName;
   this.lastName = lastName;
@@ -30,3 +31,27 @@ Customer.prototype.greeting = function () {
 }
 
 const joko = new Customer('joko', 'permono', '1234567890', 'premium');
+
+// 2
+class Team {
+  constructor(name) {
+    this.name = name;
+  }
+}
+
+class HockyTeam extends Team {
+  constructor(name) {
+    super(name);
+    
+    this.type = "Hockey";
+  }
+
+  scoreGoal() {
+    console.log("he shoots, he scores");
+  }
+}
+
+const wings = new HockyTeam('Red Wings');
+
+console.log(wings.name);
+wings.scoreGoal();
