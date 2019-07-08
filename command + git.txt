@@ -1,0 +1,74 @@
+ls
+pwd
+cd
+cls
+mkdir
+touch
+mv
+cp
+rm
+rm -r
+clear
+
+
+open?
+open -a "application name"
+
+/ root
+~ user
+. current location
+
+
+git clone
+git add
+git commit -m "message"
+git push
+git pull
+git status
+git brach
+git checkout
+git merge
+
+// NPM
+
+npm init
+npm install -g
+npm run
+npm cache clean --force
+
+* - latest version
+
+// express
+
+express nameproject
+
+// jade
+extends
+block
+
+() - attribute
+#{} - print variable
+element= print variable
+
+
+// mongodb
+mongo - enter the envi mongodb
+
+show dbs
+use nameDatabase
+
+show collection
+db.createcollection('name');
+
+// insert data to collection
+db.nameCollection.insert({ key: value });
+
+// update with set
+db.nameCollection.update(
+  { conditional },
+  {
+    $set: {
+      key: value
+    }
+  }
+)

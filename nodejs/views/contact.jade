@@ -1,0 +1,30 @@
+extends layout
+
+block content
+  form(
+    action="/contact/send"
+    method="POST"
+  )
+    div
+      label(for="name") Name
+      input(
+        type="text"
+        id="name"
+        name="name"
+        placeholder="Enter name"
+      )
+    div
+      label(for="email") Email
+      input(
+        type="text"
+        id="email"
+        name="email"
+        placeholder="Enter email"
+      )
+    div
+      label(for="message") Message
+      textarea(
+        name="message",
+        id="message"
+      )
+    button(type="submit") Submit
