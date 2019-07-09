@@ -47,6 +47,7 @@ extends
 block
 
 () - attribute
+  () expression
 #{} - print variable
 element= print variable
 
@@ -72,3 +73,9 @@ db.nameCollection.update(
     }
   }
 )
+
+// eslint
+--init
+
+// libraries
+toastr
