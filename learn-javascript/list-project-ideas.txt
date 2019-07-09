@@ -1,0 +1,9 @@
+static webpage
+blog
+community events
+bookstore
+simpleChat
+FindDoc
+Portfolio
+recipebook
+album music manager
