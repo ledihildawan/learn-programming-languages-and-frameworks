@@ -17,6 +17,8 @@ array.pop(); // 4
 
 var newArray = array.slice(1, 3); // [2, 3];
 
+console.log(newArray);
+
 // Create new array and return only type of value is string
 console.log(array.filter(function(value) {
   return typeof value === "string";
