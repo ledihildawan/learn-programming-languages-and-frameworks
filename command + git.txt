@@ -35,6 +35,9 @@ npm init
 npm install -g
 npm run
 npm cache clean --force
+npm update -g
+npm uninstall
+npm ls -g
 
 * - latest version
 

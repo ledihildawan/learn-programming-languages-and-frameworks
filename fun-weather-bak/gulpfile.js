@@ -3,7 +3,7 @@ global.$ = {
   gp: require('gulp-load-plugins')(),
   browserSync: require('browser-sync').create(),
   del: require('del'),
-  imageminJpegRecompress: require('imagein-jpeg-recompress'),
+  imageminJpegRecompress: require('imagemin-jpeg-recompress'),
   pngquant: require('imagemin-pngquant'),
   path: {
     config: require('./gulp/config'),
