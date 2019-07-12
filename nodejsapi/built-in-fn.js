@@ -31,3 +31,23 @@ firstElementChild
 lastElementChild
 nextElementSibling
 parentElement
+
+// event
+window.onload = function() {
+  console.log("window loaded!");
+};
+
+btn.onclick = function() {
+  console.log("Clicked!");
+};
+
+// event 2
+function eventLoad() {
+  console.log("window loaded");
+}
+
+function clicked() {
+  console.log("Clicked!");
+}
+
+btn.addEventListener("click", clicked);

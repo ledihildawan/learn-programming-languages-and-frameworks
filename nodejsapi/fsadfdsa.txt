@@ -1,0 +1,34 @@
+font recomendation
+
+// headline
+proxima nova bold 48px
+freight sans bold ~
+futura bold 36px
+harmonia sans 48px
+graphik ~
+ff meta serif bold ~
+robot black ~
+jubilat semibold ~
+interstate bold ~
+
+// subtitle
+proxima nova regular 24px
+~
+trade gothic next regular ~
+graphik regular ~
+~
+myriad pro regular ~
+roboto regular ~
+proxima nova regular ~
+interstate light ~
+
+// button
+proxima nova bold 20px
+~
+trade gothic next bold ~
+graphik semibold ~
+graphik semibold 18px
+myriad pro semibold 20px
+roboto bold ~
+proxima nova bold ~
+interstate regular ~
