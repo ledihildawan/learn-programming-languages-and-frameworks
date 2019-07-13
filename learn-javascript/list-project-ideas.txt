@@ -11,3 +11,5 @@ weather
 convert price
 newsletter sign up
 quiz app
+note taking
+todos

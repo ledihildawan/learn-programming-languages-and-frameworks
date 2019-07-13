@@ -1,7 +1,6 @@
 ls
 pwd
 cd
-cls
 mkdir
 touch
 mv
