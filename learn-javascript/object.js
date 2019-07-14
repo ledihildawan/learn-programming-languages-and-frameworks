@@ -120,3 +120,6 @@ myAccount.addIncome("Sale Template", 750000);
 myAccount.addIncome("Sponsor", 2500000);
 
 console.log(myAccount.getAccountSummary());
+
+//  uuid
+// moment

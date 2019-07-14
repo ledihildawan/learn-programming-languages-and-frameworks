@@ -13,3 +13,5 @@ newsletter sign up
 quiz app
 note taking
 todos
+recipe app
+gunting kertas batu

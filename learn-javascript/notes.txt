@@ -1,0 +1,21 @@
+Truthy - values that resolve to true in boolean context
+Falsy - values that resolve to false in boolean context
+
+When NOT to use an Arrow Function?
+- When you really need `this`
+- When you need a method to bind an object
+- When you need to add a prototype method
+- When you need arguments object
+
+nodemon
+babel-jest
+babel-core
+regenerator-runtime
+babel-cli
+babel-preset-env --save-dev
+
+PORT=8055 nodemon --inspact ./index.js --exec babel-node --presets es2015
+
+express
+mongoose
+jest

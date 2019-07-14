@@ -1,22 +1,31 @@
-ls
+// command line
+
+/ root
+~ user / home
+. current location
+..
+
+ls -options (- l,a)
 pwd
 cd
 mkdir
 touch
 mv
 cp
+
 rm
 rm -r
-clear
+rm -rf
 
+chmod
+
+clear
+man
 
 open?
 open -a "application name"
 
-/ root
-~ user
-. current location
-
+// git
 
 git clone
 git add

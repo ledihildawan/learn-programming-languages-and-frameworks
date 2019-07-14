@@ -1,0 +1,17 @@
+netlify
+surge
+
+babel src/index.js --out-file /public/scritps/bundle.js --presets env --watch
+live-server public
+
+npm install babel-cli live-server
+
+npm install webpack webpack-cli babel-loader babel-cli babel-presets-env live-server webpack-dev-server babel-polyfill babel-plugin-transform-object-rest-spread
+
+webpack-dev-servers --mode-development
+webpack --mode production
+
+
+validator
+uuid
+moment

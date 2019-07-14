@@ -1,13 +1,33 @@
 const uglifyjs = require('uglify-webpack-plugin');
+const path = require('path');
 
 module.exports = {
-  entry: 'app.js',
+  entry: {
+    index: ['babel-polyfill', './src/app.js'],
+    eidt: ['babel-polyfill', './src/edit.js']
+  },
   output: {
-    filename: 'bundle.js'
+    path: path.resolve(__dirname, 'public/scripts'),
+    filename: '[name]-bundle.js'
   },
-  resolve: {
-    modules: [__dirname]
+  module: {
+    rules: [{
+      test: /\.js$/,
+      exclude: /node_modules/,
+      use: {
+        loader: 'babel-loader',
+        options: {
+          presets: ['env'],
+          plugins: ['transform-object-rest-spread']
+        }
+      }
+    }]
   },
+  devServer: {
+    contentBase: path.resolve(__dirname, 'public'),
+    publicPath: '/scripts/'
+  },
+  devtool: 'source-map',
   plugins: [
     new uglifyjs({})
   ]
