@@ -5,19 +5,23 @@
 # Variables can be: assigned to other variables, reassigned at any time, assigned at the same time as other variables
 # Variables must start with a letter or underscore, the rest of the name must consist of letters, numbers, or underscores and names are case-sensitive
 
-age = 22
-first_name = "ledi"
-middle_name = None
-last_name = "hildawan"
-merried = False
-
 # Data types in any assignment, the assigned value must always be a valid data type.
 # bool  | True or False values
 # int   | an integer (1, 2, 3)
 # str   | (string) a sequence of Unicode characters, e.g. "Ledi"
 # list  | an ordered sequence of values of other data types, e.g. [1, 2, 3] or ["a", "b", "C"]
 # dict  | a collection of key: values, e.g. {"first_name": "ledi", "last_name": "hildawan"}
-
 # Dynamic Typing is high flexible about reassigning variables to different types
-
 # The special value: None
+# Escape string: \', \n, \\, \"
+# String Concatenation is combining multipe strings together. +, +=
+# Converting Data Types?
+
+age = 22
+first_name = "ledi"
+middle_name = None
+last_name = "hildawan"
+merried = False
+
+print(f"{first_name} {last_name}")
+print(first_name[0])
