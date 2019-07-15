@@ -24,3 +24,40 @@ switch (role) {
     console.log('Unknow User!');
     break;
 }
+
+
+for (let i = 0; i < 5; i++) {
+  console.log('Hello world');
+}
+
+let i = 0;
+while (i < 10) {
+  console.log(i);
+  i++;
+}
+
+do {
+  console.log(i);
+  i++;
+} while (i < 10);
+
+
+const person = {
+  name: "ledi",
+  age: 22
+};
+
+for (let key in person) {
+  console.log(key, person[key]);
+}
+
+const colors = ['red', 'green', 'blue'];
+for (let color in colors) {
+  console.log(colors[color]);
+}
+
+for (let color of colors) {
+  console.log(color);
+}
+
+// break, continue
