@@ -1,0 +1,20 @@
+<div class="loader"></div>
+
+<style>
+    .loader {
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(to bottom, #cb60b3 50%, #a80077 100%);
+        animation: jump 1.5s ease-out infinite alternate;
+    }
+
+    @keyframes jump {
+        from {
+            transform: translateY(0);
+        }
+        to {
+            transform: translateY(-50px);
+        }
+    }
+</style>

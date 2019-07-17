@@ -123,3 +123,25 @@ console.log(myAccount.getAccountSummary());
 
 //  uuid
 // moment
+
+// Factory function
+function createCircle(redius) {
+  return {
+    radius,
+    draw() {
+      console.log('draw');
+    }
+  }
+}
+
+const myCircle = createCircle(1);
+
+// Constructor function
+function Circle(radius) {
+  this.radius = radius;
+  thid.draw = function () {
+    console.log('draw');
+  }
+}
+
+const circle = new Circle(10);

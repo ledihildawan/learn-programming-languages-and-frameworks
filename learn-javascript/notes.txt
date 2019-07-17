@@ -19,3 +19,6 @@ PORT=8055 nodemon --inspact ./index.js --exec babel-node --presets es2015
 express
 mongoose
 jest
+
+gatsby new nameProject
+gatsby develop

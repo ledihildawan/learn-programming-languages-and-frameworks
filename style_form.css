@@ -1,0 +1,127 @@
+html {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overflow-x: hidden;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+body {
+  background: #4f3a65;
+  font-family: acumin-pro, sans-serif;
+}
+
+p {
+  line-height: 1.618em;
+  margin-bottom: 1.15rem;
+  color: rgba(0, 0, 0, .87);
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover,
+a:focus {
+  text-decoration: underline;
+}
+
+.form {
+  padding: 1rem 1.5rem;
+}
+
+.form__title {
+  font-size: 1.5rem;
+  text-align: center;
+  margin-bottom: .25rem;
+  font-weight: 700;
+}
+
+.form__description {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.form__group {
+  margin: 1rem 0;
+}
+
+.form__label {
+  display: block;
+  color: rgba(0, 0, 0, .60);
+  font-size: .875rem;
+}
+
+.form__control {
+  width: 100%;
+  padding: .5rem 0;
+  border: 0;
+  outline: 0;
+  font-size: 1rem;
+  border-bottom: 1px solid rgb(226, 221, 231);
+  font-family: acumin-pro, sans-serif;
+}
+
+.btn {
+  appearance: none;
+  border: 0;
+  text-align: center;
+  display: inline-block;
+  padding: .75rem 0;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.btn--block {
+  display: block;
+  width: 100%;
+}
+
+.btn--primary {
+  background: #4f3a65;
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: .67px;
+  transition: background .2s;
+}
+
+.btn--primary:focus,
+.btn--primary:hover {
+  background: #684d85;
+}
+
+.signup {
+  max-width: 360px;
+  margin: 2rem auto 1rem;
+  background: #fff;
+}
+
+.signup p:last-of-type {
+  font-size: .875rem;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.c-white {
+  color: #fff;
+}
+
+.c-secondary {
+  color: #ffbd39;
+}
+
+.my-2 {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
