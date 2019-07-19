@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .accordian__body {
+      max-height: 0;
+      overflow: hidden;
+      transition: all .4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    li.open .accordian__body {
+      max-height: 320px;
+      transition: all .4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .accordian__header {
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="accordian">
+    <ul>
+      <li>
+        <div class="accordian__header">
+          <h2 class="accordian__title">Q1</h2>
+        </div>
+        <div class="accordian__body">
+          <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quas eum quae porro facilis voluptate assumenda, temporibus nobis id ullam! Qui tempora consequatur laborum nostrum distinctio sint tempore voluptatum doloribus odio.</p>
+        </div>
+      </li>
+      <li>
+        <div class="accordian__header">
+          <h2 class="accordian__title">Q2</h2>
+        </div>
+        <div class="accordian__body">
+          <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quas eum quae porro facilis voluptate assumenda, temporibus nobis id ullam! Qui tempora consequatur laborum nostrum distinctio sint tempore voluptatum doloribus odio.</p>
+        </div>
+      </li>
+      <li>
+        <div class="accordian__header">
+          <h2 class="accordian__title">Q3</h2>
+        </div>
+        <div class="accordian__body">
+          <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quas eum quae porro facilis voluptate assumenda, temporibus nobis id ullam! Qui tempora consequatur laborum nostrum distinctio sint tempore voluptatum doloribus odio.</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <script>
+    const accordianItems = document.querySelectorAll('li');
+
+    function toggleAccordian() {
+      this.classList.toggle('open');
+    }
+
+    accordianItems.forEach(accordianItem => accordianItem.addEventListener('click', toggleAccordian));
+  </script>
+</body>
+</html>

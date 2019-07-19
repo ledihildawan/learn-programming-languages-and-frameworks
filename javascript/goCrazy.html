@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <style>
+    button {
+      position: relative;
+      transition: .5s;
+    }
+  </style>
+</head>
+<body>
+  <button>Click Me</button>
+
+  <script>
+    const button = document.querySelector('button');
+
+    button.addEventListener("click", function () {
+      const offsetX = Math.round(Math.random() * (innerWidth - this.clientWidth));
+      const offsetY = Math.round(Math.random() * (innerHeight - this.clientHeight));
+      
+      this.style.top = offsetY + 'px';
+      this.style.left = offsetX + 'px';
+    });
+  </script>
+</body>
+</html>

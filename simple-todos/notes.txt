@@ -1,0 +1,25 @@
+meteor
+meteor create
+meteor npm install
+meteor mongo
+meteor reset
+meteor list
+meteor add
+meteor remove
+
+// mongodb
+db.collection.action()
+
+db.players.find()
+db.players.find().sort()
+db.players.insert()
+db.players.delete()
+db.players.update()
+
+$set
+$inc
+sort
+
+// libraries
+numeraljs
+reactflipmove

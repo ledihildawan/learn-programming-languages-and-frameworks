@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+</head>
+<body>
+  <input type="number" id="price" value="10">
+  <input type="range" max="10" min="1" step="1" id="quantity" value="1">
+  <label for="quantity" id="quantityLabel">1</label>
+
+  <div id="total">10.00</div>
+
+  <script>
+    const priceInput = document.querySelector('#price');
+    const quantityInput = document.querySelector('#quantity');
+    const quantityLabel = document.querySelector('#quantityLabel');
+    const total = document.querySelector('#total');
+
+    function calc() {
+      const price = Number(priceInput.value);
+      const quantity = Number(quantityInput.value);
+
+      total.innerText = (price * quantity).toFixed(2);
+    }
+
+    function updateLabel() {
+      quantityLabel.innerText = quantityInput.value;
+      calc();
+    }
+
+    quantityInput.addEventListener('change', calc);
+    quantityInput.addEventListener('mousemove', updateLabel);
+    priceInput.addEventListener('mouseup', calc)
+  </script>
+</body>
+</html>

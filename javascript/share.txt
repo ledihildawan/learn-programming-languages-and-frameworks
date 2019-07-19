@@ -1,0 +1,9 @@
+// Variable
+// Data types
+// Operator
+// If, else if, else
+// Switch
+// Function
+// Array
+// Object
+// For, While, Do while

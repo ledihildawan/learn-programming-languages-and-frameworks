@@ -1,3 +1,6 @@
+const names = ['john', 'jane', 'mark'];
+const years = new Array(1990, 1969, 1948);
+
 // var todos = [];
 // var message = [];
 
