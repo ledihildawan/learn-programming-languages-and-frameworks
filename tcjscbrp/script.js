@@ -129,6 +129,7 @@ console.log(x);
 /****************************************
  * Coding Challenge 1
  */
+/*
 var markWeight = 55;
 var markHeight = 150;
 var johnWeight = 60;
@@ -143,3 +144,63 @@ var johnBMIGreatherThanMarkBMI = !markBMIGreatherThanJohnBMI;
 
 console.log("Is Mark's BMI higher than John's ", markBMIGreatherThanJohnBMI);
 console.log("Is John's BMI higher than Mark's ", johnBMIGreatherThanMarkBMI);
+*/
+
+/****************************************
+ * If / else statements
+ */
+/*
+var firstName = "John";
+var civilStatus = "single";
+
+if (civilStatus === "married") {
+  console.log(firstName + " is married!");
+} else {
+  console.log(firstName + " will hopefully marry soon");
+}
+
+var isMarried = true;
+if (isMarried) {
+  console.log(firstName + " is married!");
+} else {
+  console.log(firstName + " will hopefully marry soon");
+}
+
+var markWeight = 55;
+var markHeight = 150;
+var johnWeight = 60;
+var johnHeight = 170;
+
+var markBMI = markWeight / markHeight ** 2;
+var johnBMI = johnWeight / johnHeight ** 2;
+console.log(markBMI, johnBMI);
+
+var markBMIGreatherThanJohnBMI = markBMI > johnBMI;
+var johnBMIGreatherThanMarkBMI = !markBMIGreatherThanJohnBMI;
+
+console.log("Is Mark's BMI higher than John's ", markBMIGreatherThanJohnBMI);
+console.log("Is John's BMI higher than Mark's ", johnBMIGreatherThanMarkBMI);
+
+if (markBMI > johnBMI) {
+  console.log("Mark's BMI higher than John's");
+} else {
+  console.log("John's BMI higher than Mark's");
+}
+*/
+
+/****************************************
+ * Boolean logic
+ */
+
+var firstName = "John";
+var age = 20;
+
+if (age < 13) {
+  console.log(firstName + " is a boy.");
+} else if (age >= 13 && age < 20) {
+  console.log(firstName + " is a teenager.");
+} else if (age >= 20 && age < 30) {
+  console.log(firstName + " is a young man.");
+} else {
+  console.log(firstName + " is a man.");
+}
