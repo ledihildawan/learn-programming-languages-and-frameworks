@@ -288,15 +288,15 @@ if (height === "0") {
 /****************************************
  * Codding Challenge 2
  */
-
+/*
 var johnsTeamScore, mikesTeamScore, marysTeamScore;
 
 johnsTeamScore = 89;
-johnsTeamScore += 120;
+johnsTeamScore += 128;
 johnsTeamScore += 103;
 
 mikesTeamScore = 116;
-mikesTeamScore += 94;
+mikesTeamScore += 98;
 mikesTeamScore += 123;
 
 marysTeamScore = 97;
@@ -307,21 +307,97 @@ var johnsTeamScoreAvg = johnsTeamScore / 3;
 var mikesTeamScoreAvg = mikesTeamScore / 3;
 var marysTeamScoreAvg = marysTeamScore / 3;
 
+console.log(johnsTeamScoreAvg, mikesTeamScoreAvg, marysTeamScoreAvg);
+
 if (
   johnsTeamScoreAvg > mikesTeamScoreAvg &&
   johnsTeamScoreAvg > marysTeamScoreAvg
 ) {
-  console.log("John's team is the winner!");
+  console.log(
+    "John's team is the winner! With " + johnsTeamScoreAvg + " point(s)."
+  );
 } else if (
   mikesTeamScoreAvg > johnsTeamScoreAvg &&
   mikesTeamScoreAvg > marysTeamScoreAvg
 ) {
-  console.log("Mike's team is the winner!");
+  console.log(
+    "Mike's team is the winner! With " + mikesTeamScoreAvg + " point(s)."
+  );
 } else if (
   marysTeamScoreAvg > johnsTeamScoreAvg &&
   marysTeamScoreAvg > mikesTeamScoreAvg
 ) {
-  console.log("Mary's team is the winner!");
+  console.log(
+    "Mary's team is the winner! With " + marysTeamScoreAvg + " point(s)."
+  );
+  console.log();
 } else {
   console.log("Draw. That's the bored game i ever see");
 }
+*/
+
+/****************************************
+ * Functions
+ */
+/*
+function calculateAge(birthYear) {
+  return 2018 - birthYear;
+}
+
+var ageJohn = calculateAge(1990);
+var ageMike = calculateAge(1948);
+var ageJane = calculateAge(1969);
+
+console.log(ageJohn, ageMike, ageJane);
+
+function yearsUntilRetirement(year, firstName) {
+  var age = calculateAge(year);
+  var retirement = 65 - age;
+
+  if (retirement > 0) {
+    console.log(firstName + " retires in " + retirement + " years.");
+  } else {
+    console.log(firstName + " is already retired.");
+  }
+}
+
+yearsUntilRetirement(1990, "John");
+yearsUntilRetirement(1949, "Jane");
+yearsUntilRetirement(1800, "Dores");
+*/
+
+/****************************************
+ * Functions
+ */
+/*
+// Function declaration
+// function whatDoYouDo(job, firstName)
+
+// Function expression
+var whatDoYouDo = function(job, firstName) {
+  var output = firstName + " ";
+
+  switch (job) {
+    case "teacher":
+      output += "teach kids how to code";
+      break;
+    case "driver":
+      output += "drives a cab in Lisbon";
+      break;
+    case "designer":
+      output += "designs beautiful websites";
+      break;
+    default:
+      output += "does something else";
+      break;
+  }
+
+  return output;
+};
+
+console.log(whatDoYouDo("designer", "Ledi"));
+console.log(whatDoYouDo("retired", "Asdar"));
+console.log(whatDoYouDo("teacher", "Ali"));
+console.log(whatDoYouDo("retired", "Bayu"));
+console.log(whatDoYouDo("designer", "Hakim"));
+*/
