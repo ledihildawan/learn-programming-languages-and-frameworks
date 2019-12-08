@@ -401,3 +401,287 @@ console.log(whatDoYouDo("teacher", "Ali"));
 console.log(whatDoYouDo("retired", "Bayu"));
 console.log(whatDoYouDo("designer", "Hakim"));
 */
+
+/****************************************
+ * Arrays
+ */
+/*
+// Initialize new array
+var names = ["John", "Mark", "Jane"];
+var years = new Array(1990, 1968, 1948);
+
+console.log(names[2]);
+console.log(names.length);
+
+// Mutate array data
+names[1] = "Ben";
+names[names.length] = "Marry";
+console.log(names);
+
+// Different data types
+var john = ["John", "Smith", 1990, "teacher", false];
+
+john.push("blue");
+john.unshift("Mr.");
+console.log(john);
+
+john.pop();
+john.pop();
+john.shift();
+console.log(john);
+
+console.log(
+  john.indexOf("designer") === -1
+    ? "John is NOT a designer"
+    : "John IS a desinger"
+);
+*/
+
+/****************************************
+ * Coding Challange 3
+ */
+/*
+function tipCalculaor(bill) {
+  var percentage;
+
+  if (bill < 50) {
+    percentage = 0.2;
+  } else if (bill >= 50) {
+    percentage = 0.15;
+  } else {
+    percentage = 0.1;
+  }
+
+  return percentage * bill;
+}
+
+function totalPaid(bill, tip) {
+  return bill + tip;
+}
+
+var bills = [124, 48, 268];
+var tips = [];
+
+tips.push(
+  tipCalculaor(bills[0]),
+  tipCalculaor(bills[1]),
+  tipCalculaor(bills[2])
+);
+
+var finalValue = [
+  totalPaid(bills[0], tips[0]),
+  totalPaid(bills[1], tips[1]),
+  totalPaid(bills[2], tips[2])
+];
+
+console.log(tips, finalValue);
+*/
+
+/****************************************
+ * Objects and properties
+ */
+/*
+// Object literal
+var john = {
+  firstName: "John",
+  lastName: "Smith",
+  birthYear: 1990,
+  family: ["jane", "mark", "bob", "emily"],
+  job: "teacher",
+  isMarried: false
+};
+
+console.log(john.firstName);
+console.log(john["lastName"]);
+var x = "birthYear";
+console.log(john[x]);
+
+john.job = "designer";
+john["isMarried"] = true;
+console.log(john);
+
+// New object syntax
+var jane = new Object();
+jane.firstName = "Jane";
+jane.birthYear = 1969;
+jane["lastName"] = "Smith";
+console.log(jane);
+*/
+
+/****************************************
+ * Objects and methods
+ */
+/*
+var john = {
+  firstName: "John",
+  lastName: "Smith",
+  birthYear: 1990,
+  family: ["jane", "mark", "bob", "emily"],
+  job: "teacher",
+  isMarried: false,
+  calcAge: function() {
+    this.age = 2018 - this.birthYear;
+  }
+};
+
+john.calcAge();
+console.log(john);
+*/
+
+/****************************************
+ * Coding Challenge 4
+ */
+/*
+var john = {
+  fullName: "John",
+  mass: 100,
+  height: 160,
+  calcBMI: function() {
+    this.BMI = this.mass / this.height ** 2;
+  }
+};
+
+var mark = {
+  fullName: "Mark",
+  mass: 72,
+  height: 150,
+  calcBMI: function() {
+    this.BMI = this.mass / this.height ** 2;
+  }
+};
+
+john.calcBMI();
+mark.calcBMI();
+
+var johnBMI = john.BMI;
+var markBMI = mark.BMI;
+
+if (johnBMI > markBMI) {
+  console.log("BMI John is higher than Mark BMI, " + johnBMI);
+} else if (markBMI > johnBMI) {
+  console.log("BMI Mark is higher than John BMI, " + markBMI);
+} else {
+  console.log("John and Mark have the same BMI");
+}
+*/
+
+/****************************************
+ * Loop and iteration
+ */
+/*
+// Foor loop
+for (var i = 1; i <= 20; i += 2) {
+  console.log(i);
+}
+
+// i = 0; 0 <= 20 true; log i to console, i += 2
+// i = 3; 3 <= 20 true; log i to console, i += 2
+// ...
+// i = 19; 19 <= 20 true; log i to console, i += 2
+// i = 22; 22 <= 20 FALSE, exit loop
+
+var john = ["John", "Smith", 1990, "designer", false, "blue"];
+
+for (var i = 0; i < john.length; i++) {
+  console.log(john[i]);
+}
+
+// While loop
+var i = 0;
+while (i < john.length) {
+  console.log(john[i]);
+  i++;
+}
+
+// continue and break statements
+var john = ["John", "Smith", 1990, "designer", false, "blue"];
+
+for (var i = 0; i < john.length; i++) {
+  if (typeof john[i] !== "string") continue;
+  console.log(john[i]);
+}
+
+for (var i = 0; i < john.length; i++) {
+  if (typeof john[i] !== "string") break;
+  console.log(john[i]);
+}
+
+// Looping backwards
+for (var i = john.length - 1; i >= 0; i--) {
+  console.log(john[i]);
+}
+*/
+
+/****************************************
+ * Coding Challenge 5
+ */
+
+var john = {
+  bills: [124, 48, 268, 180],
+  calcTips: function() {
+    this.tips = [];
+    this.paidAmounts = [];
+
+    var bills = this.bills;
+    var paidAmounts = this.paidAmounts;
+    var tips = this.tips;
+
+    for (var i = 0; i < bills.length; i++) {
+      var bill = bills[i];
+      var percentage;
+
+      if (bill < 100) percentage = 0.2;
+      else if (bill >= 100 && bill <= 300) percentage = 0.1;
+      else perentage = 0.25;
+
+      tips[i] = bill * percentage;
+      paidAmounts[i] = bill + tips[i];
+    }
+  }
+};
+
+var mark = {
+  bills: [124, 48, 268, 180],
+  calcTips: function() {
+    this.tips = [];
+    this.paidAmounts = [];
+
+    var bills = this.bills;
+    var paidAmounts = this.paidAmounts;
+    var tips = this.tips;
+
+    for (var i = 0; i < bills.length; i++) {
+      var bill = bills[i];
+      var percentage;
+
+      if (bill < 100) percentage = 0.2;
+      else if (bill >= 100 && bill <= 300) percentage = 0.1;
+      else perentage = 0.25;
+
+      tips[i] = bill * percentage;
+      paidAmounts[i] = bill + tips[i];
+    }
+  }
+};
+
+john.calcTips();
+mark.calcTips();
+
+function calcAvg(numbers) {
+  var sum = 0;
+  for (var i = 0; i < numbers.length; i++) sum += numbers[i];
+  return sum / numbers.length;
+}
+
+var avgJohnTip = calcAvg(john.tips);
+var avgMarkTip = calcAvg(mark.tips);
+
+console.log(avgJohnTip, avgMarkTip);
+
+if (avgJohnTip > avgMarkTip) {
+  console.log("John has bigger average tip than Mark " + avgJohnTip);
+} else if (avgMarkTip > avgJohnTip) {
+  console.log("Mark has bigger average tip than John " + avgMarkTip);
+} else {
+  console.log("John and Mark has the same avg tip");
+}
