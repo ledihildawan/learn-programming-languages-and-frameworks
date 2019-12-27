@@ -59,11 +59,34 @@ var onFormSubmit = function onFormSubmit(e) {
   if (option) {
     app.options.push(option);
     e.target.elements.option.value = "";
-    renderAftersubmitted();
+    render();
   }
 };
 
+var onRemoveAll = function onRemoveAll(e) {
+  app.options = [];
+  render();
+};
+
+var makeDecision = function makeDecision() {
+  var randomNum = Math.floor(Math.random() * app.options.length);
+  var option = app.options[randomNum];
+  alert(option);
+};
+
+var isNoOptions = function isNoOptions() {
+  return app.options.length === 0;
+};
+
 var appRoot = document.getElementById("app");
+
+var numbers = [23311, 745232, 8652343];
+var visibility = false;
+
+var toggleVisilibity = function toggleVisilibity() {
+  visibility = !visibility;
+  render();
+};
 
 // const renderCounterApp = () => {
 //   const templateTwo = (
@@ -84,7 +107,7 @@ var appRoot = document.getElementById("app");
 
 // renderCounterApp();
 
-var renderAftersubmitted = function renderAftersubmitted() {
+var render = function render() {
   var template = React.createElement(
     "div",
     null,
@@ -113,18 +136,33 @@ var renderAftersubmitted = function renderAftersubmitted() {
       app.options.length
     ),
     React.createElement(
+      "button",
+      { disabled: isNoOptions(), onClick: makeDecision },
+      "What Shoult I Do?"
+    ),
+    React.createElement(
+      "button",
+      { onClick: onRemoveAll },
+      "Remove All Options"
+    ),
+    numbers.map(function (number, index) {
+      return React.createElement(
+        "p",
+        { key: index },
+        "Number: ",
+        number
+      );
+    }),
+    React.createElement(
       "ol",
       null,
-      React.createElement(
-        "li",
-        null,
-        "Item One"
-      ),
-      React.createElement(
-        "li",
-        null,
-        "Item Two"
-      )
+      app.options.map(function (option, index) {
+        return React.createElement(
+          "li",
+          { key: index },
+          option
+        );
+      })
     ),
     React.createElement(
       "form",
@@ -135,10 +173,26 @@ var renderAftersubmitted = function renderAftersubmitted() {
         { type: "submit" },
         "Submit"
       )
+    ),
+    React.createElement(
+      "h2",
+      null,
+      "Visibility Toggle"
+    ),
+    React.createElement(
+      "button",
+      { onClick: toggleVisilibity },
+      visibility ? "Hidden" : "Show",
+      " details"
+    ),
+    visibility && React.createElement(
+      "p",
+      null,
+      "Lorem, ipsum dolor sit amet consectetur adipisicing elit."
     )
   );
 
   ReactDOM.render(template, appRoot);
 };
 
-renderAftersubmitted();
+render();

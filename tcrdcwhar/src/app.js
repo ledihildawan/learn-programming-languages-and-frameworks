@@ -57,11 +57,34 @@ const onFormSubmit = e => {
   if (option) {
     app.options.push(option);
     e.target.elements.option.value = "";
-    renderAftersubmitted();
+    render();
   }
 };
 
+const onRemoveAll = e => {
+  app.options = [];
+  render();
+};
+
+const makeDecision = () => {
+  const randomNum = Math.floor(Math.random() * app.options.length);
+  const option = app.options[randomNum];
+  alert(option);
+};
+
+const isNoOptions = () => {
+  return app.options.length === 0;
+};
+
 const appRoot = document.getElementById("app");
+
+const numbers = [23311, 745232, 8652343];
+let visibility = false;
+
+const toggleVisilibity = () => {
+  visibility = !visibility;
+  render();
+};
 
 // const renderCounterApp = () => {
 //   const templateTwo = (
@@ -82,7 +105,7 @@ const appRoot = document.getElementById("app");
 
 // renderCounterApp();
 
-const renderAftersubmitted = () => {
+const render = () => {
   const template = (
     <div>
       <h1>{app.title}</h1>
@@ -93,18 +116,33 @@ const renderAftersubmitted = () => {
         <p>No options</p>
       )}
       <p>{app.options.length}</p>
+      <button disabled={isNoOptions()} onClick={makeDecision}>
+        What Shoult I Do?
+      </button>
+      <button onClick={onRemoveAll}>Remove All Options</button>
+      {numbers.map((number, index) => (
+        <p key={index}>Number: {number}</p>
+      ))}
       <ol>
-        <li>Item One</li>
-        <li>Item Two</li>
+        {app.options.map((option, index) => (
+          <li key={index}>{option}</li>
+        ))}
       </ol>
       <form onSubmit={onFormSubmit}>
         <input type="text" name="option" />
         <button type="submit">Submit</button>
       </form>
+      <h2>Visibility Toggle</h2>
+      <button onClick={toggleVisilibity}>
+        {visibility ? "Hidden" : "Show"} details
+      </button>
+      {visibility && (
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
+      )}
     </div>
   );
 
   ReactDOM.render(template, appRoot);
 };
 
-renderAftersubmitted();
+render();
