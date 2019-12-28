@@ -1,198 +1,98 @@
 "use strict";
 
-console.log("App.js is running!");
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var app = {
-  title: "Indecision App",
-  subtitle: "Put your life in the hands of a computer",
-  options: []
-};
-// const template = (
-//   <div>
-//     <h1>{app.title}</h1>
-//     {app.subtitle && <p>{app.subtitle}</p>}
-//     {app.options.length > 0 ? <p>Here are your options</p> : <p>No options</p>}
-//     <ol>
-//       <li>Item One</li>
-//       <li>Item Two</li>
-//     </ol>
-//   </div>
-// );
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-// const user = {
-//   name: "Ledi",
-//   age: 22,
-//   location: "Samarinda"
-// };
-// function getLocation(location) {
-//   if (location) {
-//     return <p>Location: {location}</p>;
-//   }
-// }
-// const templateTwo = (
-//   <div>
-//     <h1>{user.name ? user.name : "Anonymous"}</h1>
-//     {user.age && user.age >= 18 && <p>Age: {user.age}</p>}
-//     {getLocation(user.location)}
-//   </div>
-// );
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-// let count = 0;
-// const addOne = () => {
-//   count++;
-//   renderCounterApp();
-// };
-// const minusOne = () => {
-//   count--;
-//   renderCounterApp();
-// };
-// const reset = () => {
-//   count = 0;
-//   renderCounterApp();
-// };
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var onFormSubmit = function onFormSubmit(e) {
-  e.preventDefault();
+var Visible = function (_React$Component) {
+  _inherits(Visible, _React$Component);
 
-  var option = e.target.elements.option.value;
+  function Visible(props) {
+    _classCallCheck(this, Visible);
 
-  if (option) {
-    app.options.push(option);
-    e.target.elements.option.value = "";
-    render();
+    var _this = _possibleConstructorReturn(this, (Visible.__proto__ || Object.getPrototypeOf(Visible)).call(this, props));
+
+    _this.state = {
+      visibility: false
+    };
+    _this.visibilityToggle = _this.visibilityToggle.bind(_this);
+    return _this;
   }
-};
 
-var onRemoveAll = function onRemoveAll(e) {
-  app.options = [];
-  render();
-};
+  _createClass(Visible, [{
+    key: "visibilityToggle",
+    value: function visibilityToggle() {
+      var _this2 = this;
 
-var makeDecision = function makeDecision() {
-  var randomNum = Math.floor(Math.random() * app.options.length);
-  var option = app.options[randomNum];
-  alert(option);
-};
+      this.setState(function () {
+        return {
+          visibility: !_this2.state.visibility
+        };
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return React.createElement(
+        "div",
+        null,
+        React.createElement(
+          "h1",
+          null,
+          "Visibility Toggle"
+        ),
+        React.createElement(
+          "button",
+          { onClick: this.visibilityToggle },
+          this.state.visibility ? "Hide" : "Show",
+          " details"
+        ),
+        this.state.visibility && React.createElement(
+          "p",
+          null,
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto excepturi, saepe vel reiciendis officiis eos asperiores, expedita iste dolore laboriosam consectetur facere. Officia ipsam nemo eos quam animi temporibus nisi."
+        )
+      );
+    }
+  }]);
 
-var isNoOptions = function isNoOptions() {
-  return app.options.length === 0;
-};
+  return Visible;
+}(React.Component);
 
-var appRoot = document.getElementById("app");
+ReactDOM.render(React.createElement(Visible, null), document.getElementById("app"));
 
-var numbers = [23311, 745232, 8652343];
-var visibility = false;
+// const appRoot = document.getElementById("app");
 
-var toggleVisilibity = function toggleVisilibity() {
-  visibility = !visibility;
-  render();
-};
+// let visibility = false;
 
-// const renderCounterApp = () => {
-//   const templateTwo = (
+// const visibilityToggle = () => {
+//   visibility = !visibility;
+//   render();
+// };
+
+// const render = () => {
+//   const jsx = (
 //     <div>
-//       <h1>Count: {count}</h1>
-//       <button onClick={addOne}>+1</button>
-//       <button onClick={minusOne}>-1</button>
-//       <button onClick={reset}>reset</button>
-//       <form onSubmit={onFormSubmit}>
-//         <input type="text" name="option" />
-//         <button type="submit">Submit</button>
-//       </form>
+//       <h1>Visibility Toggle</h1>
+//       <button onClick={visibilityToggle}>
+//         {visibility ? "Hide" : "Show"} details
+//       </button>
+//       {visibility && (
+//         <p>
+//           Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto
+//           excepturi, saepe vel reiciendis officiis eos asperiores, expedita iste
+//           dolore laboriosam consectetur facere. Officia ipsam nemo eos quam
+//           animi temporibus nisi.
+//         </p>
+//       )}
 //     </div>
 //   );
 
-//   ReactDOM.render(templateTwo, appRoot);
+//   ReactDOM.render(jsx, appRoot);
 // };
 
-// renderCounterApp();
-
-var render = function render() {
-  var template = React.createElement(
-    "div",
-    null,
-    React.createElement(
-      "h1",
-      null,
-      app.title
-    ),
-    app.subtitle && React.createElement(
-      "p",
-      null,
-      app.subtitle
-    ),
-    app.options.length > 0 ? React.createElement(
-      "p",
-      null,
-      "Here are your options"
-    ) : React.createElement(
-      "p",
-      null,
-      "No options"
-    ),
-    React.createElement(
-      "p",
-      null,
-      app.options.length
-    ),
-    React.createElement(
-      "button",
-      { disabled: isNoOptions(), onClick: makeDecision },
-      "What Shoult I Do?"
-    ),
-    React.createElement(
-      "button",
-      { onClick: onRemoveAll },
-      "Remove All Options"
-    ),
-    numbers.map(function (number, index) {
-      return React.createElement(
-        "p",
-        { key: index },
-        "Number: ",
-        number
-      );
-    }),
-    React.createElement(
-      "ol",
-      null,
-      app.options.map(function (option, index) {
-        return React.createElement(
-          "li",
-          { key: index },
-          option
-        );
-      })
-    ),
-    React.createElement(
-      "form",
-      { onSubmit: onFormSubmit },
-      React.createElement("input", { type: "text", name: "option" }),
-      React.createElement(
-        "button",
-        { type: "submit" },
-        "Submit"
-      )
-    ),
-    React.createElement(
-      "h2",
-      null,
-      "Visibility Toggle"
-    ),
-    React.createElement(
-      "button",
-      { onClick: toggleVisilibity },
-      visibility ? "Hidden" : "Show",
-      " details"
-    ),
-    visibility && React.createElement(
-      "p",
-      null,
-      "Lorem, ipsum dolor sit amet consectetur adipisicing elit."
-    )
-  );
-
-  ReactDOM.render(template, appRoot);
-};
-
-render();
+// render();
