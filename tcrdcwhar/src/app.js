@@ -1,101 +1,33 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import IndecisionApp from "./components/IndecisionApp";
+import "normalize.css/normalize.css";
+import "./styles/styles.scss";
 
-import Header from "./components/Header";
-import Action from "./components/Action";
-import Options from "./components/Options";
-import AddOption from "./components/AddOption";
+ReactDOM.render(<IndecisionApp />, document.getElementById("app"));
 
-class IndecisionApp extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      options: props.options
-    };
-    this.handleAddOption = this.handleAddOption.bind(this);
-    this.handleRemoveAllOptions = this.handleRemoveAllOptions.bind(this);
-    this.handlePick = this.handlePick.bind(this);
-    this.handleRemoveOption = this.handleRemoveOption.bind(this);
+class OldSyntax {
+  constructor() {
+    this.name = "Mike";
+    this.getGreeting = this.getGreeting.bind(this);
   }
 
-  componentDidMount() {
-    try {
-      const json = localStorage.getItem("options");
-      const options = JSON.parse(json);
-
-      if (options) {
-        this.setState(() => ({ options }));
-      }
-    } catch (error) {
-      // Do nothing at all
-    }
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.options.length !== this.state.options.length) {
-      const json = JSON.stringify(this.state.options);
-      localStorage.setItem("options", json);
-    }
-  }
-
-  componentWillUnmount() {
-    console.log("componentWillUnmount");
-  }
-
-  handlePick() {
-    const randomNumber = Math.floor(Math.random() * this.state.options.length);
-    const option = this.state.options[randomNumber];
-    alert(option);
-  }
-
-  handleHasOptions() {
-    return Boolean(this.state.options.length);
-  }
-
-  handleRemoveAllOptions() {
-    this.setState(() => ({ options: [] }));
-  }
-
-  handleRemoveOption(optionToRemove) {
-    this.setState(prevState => ({
-      options: prevState.options.filter(option => optionToRemove !== option)
-    }));
-  }
-
-  handleAddOption(option) {
-    if (!option) {
-      return "Enter valid value to add item";
-    } else if (this.state.options.indexOf(option) > -1) {
-      return "This option already exists";
-    }
-
-    this.setState(prevState => ({ options: prevState.options.concat(option) }));
-  }
-
-  render() {
-    const title = "Indecision";
-    const subtitle = "Put your life in the hands of a computer";
-
-    return (
-      <div>
-        <Header title={title} subtitle={subtitle} />
-        <Action
-          handlePick={this.handlePick}
-          hasOptions={this.handleHasOptions()}
-        />
-        <Options
-          handleRemoveAllOptions={this.handleRemoveAllOptions}
-          handleRemoveOption={this.handleRemoveOption}
-          options={this.state.options}
-        />
-        <AddOption handleAddOption={this.handleAddOption} />
-      </div>
-    );
+  getGreeting() {
+    return `Hi. My name is ${this.name}`;
   }
 }
 
-IndecisionApp.defaultProps = {
-  options: []
-};
+const oldSyntax = new OldSyntax();
+const getGreeting = oldSyntax.getGreeting;
+console.log(getGreeting());
 
-ReactDOM.render(<IndecisionApp />, document.getElementById("app"));
+class NewSyntax {
+  name = "Jen";
+  getGreeting = () => {
+    return `Hi. My name is ${this.name}`;
+  };
+}
+
+const newSyntax = new NewSyntax();
+const newGetGreeting = newSyntax.getGreeting;
+console.log(newGetGreeting());
