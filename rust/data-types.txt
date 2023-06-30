@@ -1,0 +1,35 @@
+// Boolean: true, false
+// Integer: 1, 2, 50, 99, -2
+// Double or Float: 1.1, 5.5, 200.0001, 2.0
+// Character: 'A', 'B', 'c'
+// String: "Hello", "string", "this is a string", "it's 42"
+
+let two = 2;
+let hello = "hello"
+let j = 'j';
+let my_half = 0.5;
+let mut my_name = "Ledi";
+let quite_program = false;
+let your_half = my_half;
+
+fn add(a: i32, b: i32) -> i32 {
+  a + b
+}
+
+let x = add(1, 1);
+let y = add(3, 0);
+let z = add(x, 1);
+
+let life = 42;
+
+println!("Hello");
+println("{:?}", life);
+println("{:?} {:?}", life, life);
+
+let a = 99;
+
+if a < 99 {
+  println!("Big number");
+} else {
+  println!("Small number");
+}
