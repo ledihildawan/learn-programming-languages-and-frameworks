@@ -8,7 +8,7 @@ import {
   onAuthStateChangedListener,
   createUserDocumentFromAuth,
 } from './utils/firebase.util';
-import { setCurrentUser } from './store/user.action';
+import { setCurrentUser } from './store/user/user.action';
 
 function App() {
   const dispatch = useDispatch();

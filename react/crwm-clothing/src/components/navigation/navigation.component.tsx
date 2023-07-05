@@ -1,8 +1,7 @@
 import { ReactComponent as CorwnLogo } from '../../assets/crown.svg';
+
+import { useSelector } from 'react-redux';
 import { useContext } from 'react';
-import { UserContext } from '../../contexts/user.context';
-import { CartContext } from '../../contexts/cart.context';
-import { signOutUser } from '../../utils/firebase.util';
 import {
   NavigationContainer,
   LogoContainer,
@@ -10,12 +9,19 @@ import {
   NavLink,
 } from './navigation.styles';
 
+import { UserContext } from '../../contexts/user.context';
+import { CartContext } from '../../contexts/cart.context';
+import { signOutUser } from '../../utils/firebase.util';
+
 import CartIcon from '../cart-icon/cart-icon.component';
 import CartDropdown from '../cart-dropdown/cart-dropdown.component';
 
+import { selectCurrentUser } from '../../store/user/user.selector';
+
 function NavigationComponent() {
-  const { currentUser } = useContext(UserContext);
   const { isCartOpen } = useContext(CartContext);
+
+  const currentUser = useSelector(selectCurrentUser);
 
   return (
     <>

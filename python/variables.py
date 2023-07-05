@@ -63,6 +63,11 @@ print(selfish[:5])  # 01234
 print(selfish[::2])  # 0246
 print(selfish[-1])  # 7
 
+username = input('Username:')
+password = input('Passwod:')
+
+print(f"{username}, your password is {'*' * len(password)} is {len(password)} letter long.")
+
 # list
 # tuple
 # set
