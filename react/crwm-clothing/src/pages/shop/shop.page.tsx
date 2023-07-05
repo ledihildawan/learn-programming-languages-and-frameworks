@@ -1,13 +1,13 @@
 import './shop.styles.scss';
 
-import { useContext } from 'react';
+import { useSelector } from 'react-redux';
 
-import { CategoriesContext } from '../../contexts/categories.context';
+import { selectCategoriesMap } from '../../store/categories/categories.selector';
 
 import CategoryPreview from '../../components/category-preview/category-preview.component';
 
 export default function ShopPage() {
-  const { categoriesMap } = useContext(CategoriesContext);
+  const categoriesMap = useSelector(selectCategoriesMap);
 
   return (
     <div className="shop-container">
