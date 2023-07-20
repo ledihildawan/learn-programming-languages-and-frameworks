@@ -92,14 +92,18 @@
       <!-- Password -->
       <div class="mb-3">
         <label class="inline-block mb-2">Password</label>
-        <vee-field
-          name="password"
-          type="password"
-          class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-          placeholder="Password"
-        />
+        <vee-field name="password" :bails="false" v-slot="{ field, errors }">
+          <input
+            type="password"
+            placeholder="Password"
+            class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
+            v-bind="field"
+          />
+          <div class="text-red-600" v-for="(error, $eIdx) in errors" :key="`error-{$eIdx}`">
+            {{ error }}
+          </div>
+        </vee-field>
       </div>
-      <ErrorMessage class="text-red-600" name="password"></ErrorMessage>
       <!-- Confirm Password -->
       <div class="mb-3">
         <label class="inline-block mb-2">Confirm Password</label>
@@ -148,6 +152,7 @@
 
 <script lang="ts">
 import { mapState, mapWritableState } from 'pinia'
+
 import useModalStore from '@/stores/modal'
 import Modal from '@/components/shared/Modal.vue'
 
@@ -163,7 +168,7 @@ export default {
         name: 'required|min:3|max:100|alpha_spaces',
         email: 'required|min:3|max:100|email',
         age: 'required|min_value:18|max_value:100',
-        password: 'required|min_value:8',
+        password: 'required|min:9|max:100',
         confirm_password: 'confirmed:@password',
         country: 'required',
         tos: 'required'

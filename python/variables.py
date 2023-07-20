@@ -54,6 +54,9 @@ last_name = 'Hildawan'
 full_name = first_name + ' ' + last_name
 
 print(full_name)
+print(full_name.lower())
+print(full_name.upper())
+print(full_name.capitalize())
 print(f'Hi {full_name}')
 
 selfish = '01234567'
@@ -73,8 +76,20 @@ li = [1, 2, 3, 4, 5]
 li2 = ['a', 'b', 'c']
 li3 = [1, 2, 'a', True]
 
-amazon_cart = ['notebooks', 'sunglasses']
+amazon_cart = ['notebooks', 'sunglasses', 'toys', 'grapes']
 print(amazon_cart[1])
+print(amazon_cart[0::2])
+new_cart = amazon_cart[:]
+new_cart[0] = 'gum'
+print(new_cart)
+
+matrix = [
+    [1, 0, 1],
+    [0, 1, 0],
+    [0, 1, 1],
+]
+
+print(matrix[0[1]])
 
 # tuple
 # set

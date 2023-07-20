@@ -10,7 +10,6 @@ import {
   getCategoriesAndDocuments,
 } from './utils/firebase.util';
 import { setCurrentUser } from './store/user/user.action';
-import { setCategoriesMap } from './store/categories/categories.action';
 
 function App() {
   const dispatch = useDispatch();
@@ -25,14 +24,6 @@ function App() {
     });
 
     return unsubscribe;
-  }, []);
-
-  useEffect(() => {
-    const getCategoriesMap = async () => {
-      dispatch(setCategoriesMap(await getCategoriesAndDocuments()));
-    };
-
-    getCategoriesMap();
   }, []);
 
   return <RouterProvider router={router} />;
