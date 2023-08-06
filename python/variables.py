@@ -27,20 +27,24 @@ user_IQ -= 75
 
 print(user_IQ)
 
+birth_year = input("What year were you born?")
+age = 2023 - int(birth_year)
+print(f"Your age is {age}")
+
 # bool
 name = "Ledi"
 is_cool = False
 is_cool = True
 
-birth_year = input("What year were you born?")
-age = 2023 - int(birth_year)
-print(f"Your age is {age}")
+print(bool("Ledi"))
+pirnt(ord('1'))
+print("e" in name)
 
 # str
 print(type("Hi hello there 24!"))
 
-username = 'supercoder'
-password = 'supersecret'
+username = 'supercoder'.replace('supercoder', 'superadmin')
+password = '                             supersecret            '.strip(' ')
 long_string = '''
 WOW
 O O
@@ -52,6 +56,7 @@ print(long_string)
 first_name = 'Ledi'
 last_name = 'Hildawan'
 full_name = first_name + ' ' + last_name
+indexOfH = last_name.find('H')
 
 print(full_name)
 print(full_name.lower())
@@ -90,6 +95,13 @@ matrix = [
 ]
 
 print(matrix[0[1]])
+print(len(amazon_cart))
+amazon_cart.append('disc');
+amazon_cart.inert(2, 'jeans')
+amazon_cart.extends(['axe', 'table'])
+amazon_cart.pop(2)
+amazon_cart.remove('axe')
+amazon_cart.clear()
 
 # tuple
 # set
