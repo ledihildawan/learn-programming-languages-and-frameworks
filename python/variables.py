@@ -37,7 +37,7 @@ is_cool = False
 is_cool = True
 
 print(bool("Ledi"))
-pirnt(ord('1'))
+print(ord('1'))
 print("e" in name)
 
 # str
