@@ -109,7 +109,7 @@ print(2 in li)
 print('i' in 'My name is X')
 print(li.count(2))
 print(sorted(li))
-
+print(list(range(101)))
 
 # tuple
 # set
