@@ -103,6 +103,14 @@ amazon_cart.pop(2)
 amazon_cart.remove('axe')
 amazon_cart.clear()
 
+print(li.index(2))
+print(li in (2))
+print(2 in li)
+print('i' in 'My name is X')
+print(li.count(2))
+print(sorted(li))
+
+
 # tuple
 # set
 # dict
