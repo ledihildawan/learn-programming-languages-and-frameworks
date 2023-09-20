@@ -94,19 +94,61 @@ matrix = [
     [0, 1, 1],
 ]
 
-print(matrix[0[1]])
+print(matrix[0][1])
 print(len(amazon_cart))
 amazon_cart.append('disc');
-amazon_cart.inert(2, 'jeans')
-amazon_cart.extends(['axe', 'table'])
+amazon_cart.insert(2, 'jeans')
+amazon_cart.extend(['axe', 'table'])
 amazon_cart.pop(2)
 amazon_cart.remove('axe')
 amazon_cart.clear()
 
+print(li.index(2))
+print(li in [2])
+print(2 in li)
+print('i' in 'My name is X')
+print(li.count(2))
+print(sorted(li))
+print(list(range(101)))
+
+a, *other = li;
+print(li)
+
 # tuple
 # set
 # dict
+directory = {
+    'a': [1, 2, 3],
+    'b': 'hello',
+    'x': True
+}
 
+my_list = [
+    {
+        'a': [1, 2, 3],
+        'b': 'hello',
+        'x': True
+    },
+    {
+        'a': [1, 2, 3],
+        'b': 'hello',
+        'x': True
+    },
+]
+
+print(directory['b'])
+print(directory.get('c', 22))
+print('x' in directory)
+print(True in directory.values())
+print('b' in directory.keys())
+
+directory2 = directory.copy()
+
+print(directory.items())
+directory.clear()
+print(directory)
+print(directory2.pop('x'))
+directory2.update({ 'x': 'test '})
 # Classes (Custom Types)
 
 # SuperCar
