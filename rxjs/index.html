@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>rxjs</title>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js"
+      integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+  </head>
+  <body>
+    <script>
+      const observable = new rxjs.Observable((subscriber) => {
+        const id = setInterval(() => {
+          subscriber.next('test');
+          console.log('leak');
+        }, 1000);
+
+        subscriber.next('Hello world');
+        subscriber.next('test');
+
+        // subscriber.complete();
+
+        subscriber.next('next');
+
+        return () => {
+          clearInterval(id);
+        };
+      });
+
+      const subscription = observable.subscribe({
+        next: (value) => {
+          console.log(value);
+        },
+        complete: () => console.log('complete called!'),
+        error: (err) => console.error(err),
+      });
+
+      setTimeout(() => {
+        subscription.unsubscribe();
+      }, 4000);
+    </script>
+  </body>
+</html>
