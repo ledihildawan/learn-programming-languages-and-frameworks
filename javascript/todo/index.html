@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Todo List</title>
+
+    <script
+      src="https://kit.fontawesome.com/3c281742c8.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <section class="tasks-wrap mt-5">
+      <div class="container">
+        <div class="card mb-3">
+          <div class="card-header">Add todo</div>
+          <div class="card-body">
+            <form name="addTodoItem">
+              <div class="form-group">
+                <label for="todoText">Text</label>
+                <input type="text" class="form-control" id="todoText" />
+                <div class="invalid-feedback">Please enter some text</div>
+              </div>
+              <button class="btn btn-primary" type="submit">Add</button>
+            </form>
+          </div>
+        </div>
+        <div class="card mb-3 list-card">
+          <div class="card-header">Task list</div>
+          <div class="card-body">
+            <div class="alert alert-info empty-alert">Empty</div>
+            <ul class="list-group"></ul>
+          </div>
+        </div>
+        <button class="btn btn-primary clear-btn">Clear list</button>
+      </div>
+    </section>
+  </body>
+
+  <script src="js/id.js"></script>
+  <script src="js/tasks.js"></script>
+  <script src="js/localstorage.js"></script>
+  <script src="js/notification.js"></script>
+  <script src="js/observer.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+</html>
