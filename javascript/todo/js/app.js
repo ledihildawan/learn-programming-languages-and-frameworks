@@ -2,21 +2,21 @@ const ui = UI;
 const tasks = Tasks.getInstance();
 
 const localstorage = Localstorage;
-const notification = Notification;
+const info = Info;
 const addTaskObserver = new EventObserver();
 const removeTaskObserver = new EventObserver();
 const removeAllTaskObserver = new EventObserver();
 
 addTaskObserver.subscribe(localstorage.update);
-addTaskObserver.subscribe(notification.show);
+addTaskObserver.subscribe(info.show);
 addTaskObserver.subscribe(ui.checkList);
 
 removeTaskObserver.subscribe(localstorage.update);
-removeTaskObserver.subscribe(notification.show);
+removeTaskObserver.subscribe(info.show);
 removeTaskObserver.subscribe(ui.checklist);
 
 removeAllTaskObserver.subscribe(localstorage.update);
-removeAllTaskObserver.subscribe(notification.show);
+removeAllTaskObserver.subscribe(info.show);
 removeAllTaskObserver.subscribe(ui.checklist);
 
 const ul = document.querySelector('.list-group');
@@ -27,12 +27,11 @@ const clearBtn = document.querySelector('.clear-btn');
 window.addEventListener('load', (e) => {
   const ls = localstorage.getTasks();
 
-  if (ls.length) {
-    return ui.checkList();
-  }
-
   ls.forEach((task) => {
-    tasks.addTask(task).then((oneTask) => ui.addTask(oneTask));
+    tasks.addTask(task).then((oneTask) => {
+      ui.addTask(oneTask);
+      ui.checkList();
+    });
   });
 });
 

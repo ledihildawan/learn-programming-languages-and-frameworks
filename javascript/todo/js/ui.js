@@ -26,9 +26,9 @@ const UI = (() => {
     li.remove();
   };
 
-  const checkList = () => {
+  function checkList() {
     emptyAlert.style.display = ul.children.length ? 'none' : 'block';
-  };
+  }
 
   const deleteAll = () => {
     ul.innerHTML = '';
