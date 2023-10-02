@@ -100,7 +100,6 @@ db.flightData.deleteMany({ marker: "toDelete" });
 
 ## Atomic Operators
 
-ObjectId
 $set
 $gt
 $jsonSchema
@@ -119,3 +118,24 @@ $expr
 $cond
 $elemMatch
 $slice
+$unset
+$rename
+$sort
+$addToSet
+$min
+$max
+$near
+$geometry
+$geoWithin
+$match
+$group
+$concat
+$project
+$unwind
+
+## Functions
+
+ObjectId()
+NumberInt()
+NumberLong()
+NumberDecimal()
