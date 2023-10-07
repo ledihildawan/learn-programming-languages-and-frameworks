@@ -13,6 +13,13 @@
   </head>
   <body>
     <script>
+      // const observable = new rxjs.Observable();
+
+      // observable.pipe(
+      //   firstOperator(),
+      //   secondOperator(),
+      // ).subscribe();
+
       const observable = new rxjs.Observable((subscriber) => {
         const id = setInterval(() => {
           subscriber.next('test');
