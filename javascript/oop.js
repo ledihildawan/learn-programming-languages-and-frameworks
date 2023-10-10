@@ -50,17 +50,18 @@ if ('radius' in circle3) {
 
 // Exercise - Stopwatch
 function Stopwatch() {
-  let id = null;
+  const initialTime = { h: 0, m: 0, s: 0, ms: 0 };
 
-  const time = {
-    h: 0,
-    m: 0,
-    s: 0,
-    ms: 0,
-  };
+  let id = null;
+  let time = initialTime;
+  let isReset = false;
 
   Object.defineProperty(this, 'duration', {
     get() {
+      if (isReset) {
+        return 0;
+      }
+
       let value = '';
 
       if (time.h !== 0) {
@@ -99,10 +100,18 @@ function Stopwatch() {
 
       time.ms += 1;
     }, milliseconds);
+    isReset = false;
   };
 
   this.stop = function () {
     clearInterval(id);
+  };
+
+  this.reset = function () {
+    time = initialTime;
+    isReset = true;
+
+    this.stop();
   };
 }
 
@@ -110,3 +119,4 @@ const sw = new Stopwatch();
 
 sw.start();
 sw.stop();
+sw.reset();
