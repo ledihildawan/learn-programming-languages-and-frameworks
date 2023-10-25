@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "react-native-2",
-    "slug": "react-native-2",
+    "name": "sticker-smash",
+    "slug": "sticker-smash",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

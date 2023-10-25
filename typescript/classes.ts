@@ -32,3 +32,18 @@ const james = new Person(logger);
 james.logger.msg = 'Hi';
 
 const cat = new Animal(logger);
+
+export class Fruit {
+  constructor(
+    public name: string,
+    protected sweetness: number = 50,
+    private isEdible = false
+  ) {
+    this.name = name;
+    this.sweetness = sweetness;
+  }
+
+  public get tasty() {
+    return this.sweetness > 60;
+  }
+}
