@@ -26,3 +26,32 @@ for num in range(0, 100, 2):
 
 for num in range(10, 1, -1):
   print(num)
+
+for item in [1, 2, 3, 4, 5]:
+  for x in ['a', 'b', 'c']:
+    print(item, x)
+
+# Iterable - list, directory, tuple, set, string
+
+picture = [
+  [1, 1, 1, 1],
+  [0, 1, 1, 0]
+]
+
+for row in picture:
+  for pixel in row:
+    if (pixel == 1):
+      print('*', end = '')
+    else:
+      print(' ', end = '')
+  print('')
+
+some_list = ['a', 'b', 'c', 'b', 'd', 'm', 'n', 'n']
+duplicates = []
+
+for item in some_list:
+  if some_list.count(item) > 1:
+    if item not in duplicates:
+      duplicates.append(item)
+
+print(duplicates)
