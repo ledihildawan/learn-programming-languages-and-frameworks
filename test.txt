@@ -1,0 +1,18 @@
+{
+  "C#": 3,
+  "JavaScript": 3,
+  "TypeScript": 3,
+  "Python": 2,
+  "Go": 2,
+  "Java": 2,
+  "Elixir": 1,
+  "Swift": 1,
+  "C": 1,
+  "Rust": 1
+}
+
+
+Namespace
+Precedence
+Mutable
+Scope
