@@ -37,9 +37,26 @@ undefined; // used to indicate a value is not currently present (although `undef
 10 % 2;
 30 % 2;
 18.5 % 7;
+2 ** 8;
+1 + 3 * 2;
+(1 + 3) * 2;
+
+Math.floor(5 / 3);
+Math.floor(-5 / 3);
+Math.floor(5.0 / 3.0);
+Math.floor(-5.0 / 3.0);
+
 1 << 2;
 !true;
 !false;
+true && false;
+false || true;
+true + true;
+true * 8;
+false - 5;
+0 == true;
+2 > false;
+(2 == false - 5) != true;
 1 === 1;
 2 === 1;
 1 !== 1;
@@ -48,6 +65,19 @@ undefined; // used to indicate a value is not currently present (although `undef
 1 > 10;
 2 <= 2;
 2 >= 2;
+1 < 2 && 2 < 3;
+2 < 3 && 3 < 2;
+1 < 2 < 3;
+2 < 3 < 2;
+
+Boolean(0);
+Boolean('');
+Boolean([]);
+Boolean({});
+Boolean(new Set());
+Boolean(4);
+Boolean(-6);
+
 'Hello ' + 'world';
 '1, 2, ' + 3;
 'Hello ' + ['world', '!'];
@@ -63,11 +93,16 @@ null === undefined;
 'Hello world'.substring(0, 5);
 'Hello'.length;
 
+let fullName = 'Ledi Hildawan';
+
 ///////////////////////////////////
 // 2. Variables, Arrays and Objects
 
 // JavaScript is dynamically typed, so you don't need to specify type.
 // Assignment uses a single `=` character.
+
+console.log("I'm JavaScript. Nice to meet you!");
+const inputStrinVal = prompt('Enter some data: ');
 
 const pi = 3.14;
 
@@ -78,6 +113,8 @@ someVar += 5;
 someVar *= 10;
 someVar++;
 someVar--;
+
+0 > 1 ? 'Yey!' : 'Nay!';
 
 // Arrays are ordered lists of values, of any type.
 const myArray = ['Hello', 45, true];
