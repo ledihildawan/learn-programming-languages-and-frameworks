@@ -99,14 +99,28 @@ some_var *= 10
 
 "Yey!" if 0 > 1 else "Nay!"
 
-myArray = ['Hello', 45, True]
+my_array = ['Hello', 45, True]
 
-myArray[1]
-myArray.append('World')
-len(myArray)
+my_array[1]
+my_array.append('World')
+len(my_array)
 
-myArray[3] = 'Hello'
+my_array[3] = 'Hello'
 
-some_var = myArray.pop()
+some_var = my_array.pop()
 
-myArray0 = [32, False, 'py', '12', 56, '90']
+my_array_0 = [32, False, 'py', '12', 56, '90']
+
+';'.join(map(str, my_array_0))
+my_array_0[1:4]
+my_array_0 = my_array_0[:2] + ['wr' + 'ld'] + my_array_0[6:]
+
+my_array_0[-1]
+my_array_0[:3]
+my_array_0[::2]
+my_array_0[::-1]
+
+# Use any combination of these to make advanced slices
+# li[start:end:step]
+
+li2 = my_array_0[:]
