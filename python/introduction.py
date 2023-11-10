@@ -113,7 +113,7 @@ my_array_0 = [32, False, 'py', '12', 56, '90']
 
 ';'.join(map(str, my_array_0))
 my_array_0[1:4]
-my_array_0 = my_array_0[:2] + ['wr' + 'ld'] + my_array_0[6:]
+my_array_0 = my_array_0[:2] + ['wr', 'ld'] + my_array_0[6:]
 
 my_array_0[-1]
 my_array_0[:3]
@@ -124,3 +124,14 @@ my_array_0[::-1]
 # li[start:end:step]
 
 li2 = my_array_0[:]
+
+del li2[2]
+
+# li2.remove(2)
+li2.insert(1, 2)
+li2.index('ld')
+
+my_array_0 + li2
+my_array_0.extend(li2)
+
+'ld' in my_array_0

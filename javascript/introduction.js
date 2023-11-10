@@ -140,11 +140,20 @@ myArray0.slice(1, 4);
 myArray0.splice(2, 4, 'wr', 'ld');
 
 myArray0[myArray0.length - 1];
-myArray0.filter((el, idx) => idx < 3);
-myArray0.filter((el, idx) => idx % 2 === 0);
+myArray0.filter((_, idx) => idx < 3);
+myArray0.filter((_, idx) => idx % 2 === 0);
 myArray0.reverse();
 
 const li2 = [...myArray0];
+
+li2.filter((_, idx) => idx !== 2);
+li2.filter((el) => el !== 'wr');
+li2.splice(1, 0, 2);
+li2.at(2);
+li2.findIndex((el) => el === 'ld');
+li2.concat(myArray0);
+li2.splice(li2.length, 0, ...myArray0);
+li2.includes('ld');
 
 // JavaScript's objects are equivalent to "dictionaries" or "maps" in other
 // languages: an unordered collection of key-value pairs.
