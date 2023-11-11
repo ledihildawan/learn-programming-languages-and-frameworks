@@ -135,3 +135,38 @@ my_array_0 + li2
 my_array_0.extend(li2)
 
 'ld' in my_array_0
+
+# Tuples are like lists but are immutable.
+
+tup = (1, 2, 3)
+tup[0]
+tup + (4, 5, 6)
+tup[:2]
+
+2 in tup
+
+a, b, c = tup[:]
+a, *b, c = (1, 2, 3, 4)
+d, e, f = (4, 5, 6)
+
+d, e =  e, f
+
+# Dictionaries store mappings from keys to values
+
+my_obj = { "myKey": "myValue", "my other key": 4 }
+my_obj["my other key"]
+my_obj["myKey"]
+my_obj["myThirdKey"] = True
+my_obj.get("myFourthKey")
+my_obj["myFifthKey"] = 5
+
+del my_obj["myFifthKey"]
+
+"myKey" in my_obj
+
+list(my_obj.keys())
+list(my_obj.values())
+
+myKey = my_obj['myKey']
+
+print(myKey)

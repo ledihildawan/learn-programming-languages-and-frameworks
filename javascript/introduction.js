@@ -155,6 +155,19 @@ li2.concat(myArray0);
 li2.splice(li2.length, 0, ...myArray0);
 li2.includes('ld');
 
+const tup = Object.freeze([1, 2, 3]);
+
+tup[0];
+tup.concat(4, 5, 6);
+tup.slice(0, 2);
+tup.includes(2);
+
+let [a, b, c] = [...tup];
+[a, b, ...c] = Object.freeze([1, 2, 3, 4]);
+let [d, e, f] = Object.freeze([4, 5, 6]);
+
+[d, e] = [e, d];
+
 // JavaScript's objects are equivalent to "dictionaries" or "maps" in other
 // languages: an unordered collection of key-value pairs.
 
@@ -164,6 +177,15 @@ myObj['my other key'];
 myObj.myKey;
 myObj.myThirdKey = true;
 myObj.myFourthKey;
+myObj.myFifthKey = 5;
+
+delete myObj.myFifthKey;
+
+Object.hasOwn('myKey');
+Object.keys(myObj);
+Object.values(myObj);
+
+const { myKey } = myObj;
 
 ///////////////////////////////////
 // 3. Logic and Control Structures
