@@ -187,30 +187,83 @@ Object.values(myObj);
 
 const { myKey } = myObj;
 
+const emptySet = new Set();
+const someSet = new Set([1, 1, 2, 2, 3, 4]);
+const otherSet = new Set([3, 4, 5, 6]);
+
+someSet.add(5);
+
+function getIntersectionSet(set1, set2) {
+  return new Set([...set1].filter((element) => set2.has(element)));
+}
+
+getIntersectionSet(someSet, otherSet);
+
+new Set([...someSet, ...otherSet]);
+
+function getDifferenceSet(set1, set2) {
+  return new Set([...set1].filter((element) => !set2.has(element)));
+}
+
+getDifferenceSet(someSet, otherSet);
+
+function getSymmetricDifference(set1, set2) {
+  const sec = getIntersectionSet(set1, set2);
+
+  return new Set([...set1, ...set2].filter((element) => !sec.has(element)));
+}
+
+getSymmetricDifference(new Set([1, 2, 3, 4]), new Set([2, 3, 5]));
+
+function isSuperSetLeft(set1, set2) {
+  return [...set2].every((element) => set1.has(element));
+}
+
+isSuperSetLeft(new Set([1, 2]), new Set([1, 2, 3]));
+
+function isSuperSetRight(set1, set2) {
+  return [...set1].every((element) => set2.has(element));
+}
+
+isSuperSetRight(new Set([1, 2]), new Set([1, 2, 3]));
+
+someSet.has(2);
+someSet.has(10);
+
+const filledSet = new Set([...someSet]);
+
+someSet === filledSet;
+
 ///////////////////////////////////
 // 3. Logic and Control Structures
 
 const count = 1;
 
 if (count == 3) {
-  // evaluated if count is 3
+  console.log('evaluated if count is 3');
 } else if (count == 4) {
-  // evaluated if count is 4
+  console.log('evaluated if count is 4');
 } else {
-  // evaluated if it's not either 3 or 4
+  console.log("evaluated if it's not either 3 or 4");
 }
 
-// while (true){
+// while (true) {
 //   // An infinite loop!
 // }
 
-// let input;
+// let inputVal;
 // do {
-//     input = getInput();
-// } while (!isValid(input));
+//     inputVal = getInput();
+// } while (!isValid(inputVal));
 
 for (var i = 0; i < 5; i++) {
-  // will run 5 times
+  console.log('Will run 5 times');
+}
+
+const animals = ['dog', 'cat', 'mouse'];
+
+for (let i = 0; i < animals.length; i++) {
+  console.log(`${animals[i]} is a mamal`);
 }
 
 outer: for (var i = 0; i < 10; i++) {

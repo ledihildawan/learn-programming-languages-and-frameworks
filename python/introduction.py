@@ -169,4 +169,52 @@ list(my_obj.values())
 
 myKey = my_obj['myKey']
 
-print(myKey)
+empty_set = set()
+some_set = {1, 1, 2, 2, 3, 4}
+
+some_set.add(5)
+
+other_set = {3, 4, 5, 6}
+
+some_set & other_set
+some_set | other_set
+{1, 2, 3, 4} - {2, 3, 5}
+{1, 2, 3, 4} ^ {2, 3, 5}
+{1, 2} >= {1, 2, 3}
+{1, 2} <= {1, 2, 3}
+
+2 in some_set
+10 in some_set
+
+filled_set = some_set.copy()
+filled_set is some_set
+
+####################################################
+## 3. Control Flow and Iterables
+####################################################
+
+count = 1
+
+if count == 3:
+  print("evaluated if count is 3")
+elif count == 4:
+  print("evaluated if count is 4")
+else:
+  print("evaluted if it's not either 3 or 4")
+
+# while True:
+#     print("An infinite loop!")
+
+# while True:
+#   input_val = ''
+
+#   if input_val:
+#     break;
+
+for i in range(5):
+   print("will run 5 times")
+
+animals = ["dog", "cat", "mouse"]
+
+for animal in animals:
+    print(f"{animal} is a mamal")
