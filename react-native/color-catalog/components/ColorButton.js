@@ -1,8 +1,8 @@
 import { Text, View, StyleSheet, TouchableHighlight } from 'react-native';
 
-export default function ColorButton({ label, value, onPress }) {
+export default function ColorButton({ color, onPress }) {
   const handleOnPress = () => {
-    onPress(value);
+    onPress(color);
   };
 
   return (
@@ -12,8 +12,8 @@ export default function ColorButton({ label, value, onPress }) {
       underlayColor="orange"
     >
       <View style={styles.row}>
-        <View style={[styles.sample, { backgroundColor: value }]}></View>
-        <Text style={styles.buttonText}>{label}</Text>
+        <View style={[styles.sample, { backgroundColor: color }]}></View>
+        <Text style={styles.buttonText}>{color}</Text>
       </View>
     </TouchableHighlight>
   );
