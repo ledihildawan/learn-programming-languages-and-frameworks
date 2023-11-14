@@ -202,6 +202,12 @@ elif count == 4:
 else:
   print("evaluted if it's not either 3 or 4")
 
+x = 0
+
+while x < 4:
+   print(x)
+   x += 1
+
 # while True:
 #     print("An infinite loop!")
 
@@ -218,3 +224,58 @@ animals = ["dog", "cat", "mouse"]
 
 for animal in animals:
     print(f"{animal} is a mamal")
+
+for i in range(10):
+    for j in range(10):
+        if i == 5 and j == 5:
+            print(i, j)
+            break
+else:
+    pass
+
+description = ''
+
+person = {
+   'fname': 'Paul',
+   'lname': 'Ken',
+   'age': 18,
+}
+
+for x in person:
+   description += str(person[x]) + ' '
+
+my_pets = ''
+pets = ['cat', 'dog', 'hamster', 'hedgehog']
+
+for pet in pets:
+   my_pets += pet + ' '
+
+house = {
+   'size': 'small',
+   'colour': 'red',
+}
+
+if house["size"] == 'big' and house["colour"] == 'blue':
+   house["contains"] = 'bear'
+
+if house['colour'] == 'red' or house['colour'] == 'blue':
+   print('colour is either red or blue')
+
+otherName = None
+
+name = otherName or 'default'
+
+# try:
+#   raise IndexError("This is an index error")
+# except IndexError as e:
+#    pass
+# except (TypeError, NameError):
+#    pass
+# else:
+#    print("All good!")
+# finally:
+#    print("We clean up resources here")
+
+with open('myfile.txt') as f:
+   for line in f:
+      print(line)

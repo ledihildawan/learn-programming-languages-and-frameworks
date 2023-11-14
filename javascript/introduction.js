@@ -247,6 +247,14 @@ if (count == 3) {
   console.log("evaluated if it's not either 3 or 4");
 }
 
+let x = 0;
+
+while (x < 4) {
+  console.log(x);
+
+  x++;
+}
+
 // while (true) {
 //   // An infinite loop!
 // }
@@ -269,6 +277,7 @@ for (let i = 0; i < animals.length; i++) {
 outer: for (var i = 0; i < 10; i++) {
   for (var j = 0; j < 10; j++) {
     if (i == 5 && j == 5) {
+      console.log(i, j);
       break outer;
       // breaks out of outer loop instead of only the inner one
     }
@@ -301,12 +310,36 @@ if (house.size == 'big' && house.colour == 'blue') {
 }
 
 if (house.colour == 'red' || house.colour == 'blue') {
-  // colour is either red or blue
+  console.log('colour is either red or blue');
 }
 
 let otherName;
 
 const name = otherName || 'default';
+
+// try {
+//   throw new Error('This is an index error');
+// } catch (e) {
+//   if (e instanceof IndexError) {
+//     // Handle IndexError
+//   } else if (e instanceof TypeError || e instanceof NameError) {
+//     // Handle TypeError or NameError
+//   } else {
+//     console.log('All good!');
+//   }
+// } finally {
+//   console.log('We clean up resources here');
+// }
+
+const fs = require('fs').promises;
+
+fs.open('myfile.txt')
+  .then((data) => data.readFile('utf-8').split('\n'))
+  .then((data) => {
+    for (const line of data) {
+      console.log(`${line}\n`);
+    }
+  });
 
 const grade = 'B';
 
