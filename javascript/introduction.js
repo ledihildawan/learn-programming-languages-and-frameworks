@@ -334,12 +334,48 @@ const name = otherName || 'default';
 const fs = require('fs').promises;
 
 fs.open('myfile.txt')
-  .then((data) => data.readFile('utf-8').split('\n'))
+  .then((data) => data.readFile('utf-8'))
   .then((data) => {
-    for (const line of data) {
+    const lines = data.split('\n');
+
+    for (const line of lines) {
       console.log(`${line}\n`);
     }
   });
+
+// const contents = { aa: 12, bb: 21 };
+
+fs.open('myfile1.txt', 'a+').then((data) =>
+  data.write(JSON.stringify(contents))
+);
+
+const contents = { aa: 12, bb: 21 };
+
+let ourIterable = Object.keys(contents);
+
+for (const i of ourIterable) {
+  console.log(i);
+}
+
+function* generator(items) {
+  let idx = 0;
+
+  while (true) {
+    yield items[idx];
+
+    idx++;
+  }
+}
+
+ourIterable = generator(ourIterable);
+
+ourIterable.next().value;
+
+ourIterable = Object.keys(contents);
+
+for (const i of ourIterable) {
+  console.log(i);
+}
 
 const grade = 'B';
 

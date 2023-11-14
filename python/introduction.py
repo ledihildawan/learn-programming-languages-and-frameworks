@@ -279,3 +279,29 @@ name = otherName or 'default'
 with open('myfile.txt') as f:
    for line in f:
       print(line)
+
+contents = {"aa": 12, "bb": 21,}
+
+import json
+
+with open("myfile1.txt", "w+") as file:
+  file.write(json.dumps(contents))
+
+with open('myfile1.txt', "r+") as file:
+  contents = json.load(file)
+
+our_iterable = contents.keys()
+
+for i in our_iterable:
+   print(i)
+
+our_iterable = iter(our_iterable)
+
+next(our_iterable)
+
+our_iterator_2 = iter(our_iterable)
+
+for i in our_iterator_2:
+    print(i)
+
+print(list(our_iterable))
