@@ -409,7 +409,7 @@ function myFunction(thing) {
 
 myFunction('foo');
 
-// Closures, ff a function is defined inside another function,
+// Closures, a function is defined inside another function,
 // the inner function has access to all the outer function's variables,
 // even after the outer function exits.
 
@@ -430,3 +430,64 @@ const isEven = (number) => {
 };
 
 isEven(7);
+
+function add(x, y) {
+  console.log(`x is ${x} and y is ${y}`);
+  return x + y;
+}
+
+add(5, 6);
+
+function varargs(...args) {
+  return args;
+}
+
+varargs(1, 2, 3);
+
+function keywordArgs(...args) {
+  return args.reduce((acc, arg) => {
+    acc[arg[0]] = arg[1];
+
+    return acc;
+  }, {});
+}
+
+keywordArgs(['big', 'foot'], ['loch', 'ness']);
+
+function allTheArgs(...args) {
+  console.log(args);
+}
+
+const args = [1, 2, 3, 4];
+const kwargs = { a: 3, b: 4 };
+
+allTheArgs(...args);
+allTheArgs({ ...kwargs });
+allTheArgs(...args, { ...kwargs });
+
+function swap(x, y) {
+  return [y, x];
+}
+
+let xx = 10;
+let y = 2;
+
+[xx, y] = swap(10, 2);
+
+// Global Scope
+let xxx = 5;
+
+function setXXX(num) {
+  // Local scope
+  let xxx = num;
+  console.log(xxx);
+}
+
+function setGlobalXXX(num) {
+  console.log(xxx);
+  xxx = num;
+  console.log(xxx);
+}
+
+setXXX(43);
+setGlobalXXX(6);

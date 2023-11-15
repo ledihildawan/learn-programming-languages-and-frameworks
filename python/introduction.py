@@ -304,4 +304,90 @@ our_iterator_2 = iter(our_iterable)
 for i in our_iterator_2:
     print(i)
 
-print(list(our_iterable))
+grade = 'B'
+
+if grade == 'A':
+   print("Great job")
+elif grade == 'B':
+   print("OK job")
+elif grade == 'C':
+   print("You can do better")
+else:
+   print("Oy vey")
+
+####################################################
+## 4. Functions
+####################################################
+
+def myFunction(thing):
+   return thing.upper()
+
+print(myFunction("foo"))
+
+from threading import Timer
+
+def sayHelloInFiveSeconds(name):
+   prompt = f"Hello, {name}!"
+
+   def inner():
+      print(prompt)
+
+   Timer(5, inner).start()
+
+sayHelloInFiveSeconds("Ledi")
+
+isEven = lambda number : number % 2 == 0
+
+isEven(7)
+
+def add(x, y):
+   print(f"x is {x} and y is {y}")
+   return x + y
+
+add(5, 6)
+
+def varargs(*args):
+   return args
+
+varargs(1, 2, 3)
+
+def keyword_args(**kwargs):
+   return kwargs
+
+keyword_args(big="foot", loch="ness")
+
+def all_the_args(*args, **kwargs):
+   print(args)
+   print(kwargs)
+
+args = (1, 2, 3, 4)
+kwargs = {"a": 3, "b": 4}
+
+all_the_args(*args)
+all_the_args(**kwargs)
+all_the_args(*args, **kwargs)
+
+def swap(x, y):
+   return [y, x]
+
+xx = 10
+y = 2
+
+[xx, y] = swap(x, y)
+
+# Global scope
+xxx = 5
+
+def set_xxx(num):
+   # Local scope
+   xxx = num
+   print(xxx)
+
+def set_global_xxx(num):
+   global xxx
+   print(xxx)
+   xxx = num
+   print(xxx)
+
+set_xxx(43)
+set_global_xxx(6)
