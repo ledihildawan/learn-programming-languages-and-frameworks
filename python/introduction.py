@@ -391,3 +391,148 @@ def set_global_xxx(num):
 
 set_xxx(43)
 set_global_xxx(6)
+
+# Python has first class function
+
+def create_adder(x):
+   def adder(y):
+      return x + y
+
+   return adder
+
+add_10 = create_adder(10)
+
+add_10(3)
+
+# There are also anonymous functions
+
+(lambda x: x > 2)(3)
+(lambda x, y: x ** 2 + y ** 2)(2, 1)
+
+list(map(add_10, [1, 2, 3]))
+list(map(max, [1, 2, 3], [4, 6, -1]))
+list(filter(lambda x: x > 5, [3, 4, 5, 6, 7]))
+
+{x for x in 'abcddeef' if x not in 'abc'}
+{x: x**2 for x in range(5)}
+
+####################################################
+## 5. Modules
+####################################################
+
+import math
+
+print(math.sqrt(16))
+
+from math import ceil, floor
+
+print(ceil(3.7))
+print(floor(3.7))
+
+import math as m
+
+m.sqrt(16) == m.sqrt(16)
+
+####################################################
+## 6. Classes
+####################################################
+
+class Human:
+   species = "H. sapiens"
+
+   def __init__(self, name):
+      self.name = name
+      self._age = 0
+
+   def say(self, msg):
+      print(f"{self.name}: {msg}")
+
+   def sing(self):
+      return "yo... yo... microphone check... one two... one two..."
+
+   @classmethod
+   def get_species(cls):
+      return cls.species
+
+   @staticmethod
+   def grunt():
+      return "*grunt*"
+
+   @property
+   def age(self):
+      return self._age
+
+   @age.setter
+   def age(self, age):
+      self._age = age
+
+   @age.deleter
+   def age(self):
+      del self._age
+
+
+class Superhero(Human):
+   species = 'Superhuman'
+
+   def __init__(self, name, movie = False, superpowers=["super strength", "bulletproofing"]):
+      super().__init__(name)
+
+      self.fictional = True
+      self.movie = movie
+      self.superpowers = superpowers
+
+   def sing(self):
+      return 'Dun, dun, DUN!'
+
+   def boast(self):
+        for power in self.superpowers:
+            print("I wield the power of {pow}!".format(pow=power))
+
+class Bat:
+   species = 'Baty'
+
+   def __init__(self, can_fly = True):
+      self.fly = can_fly
+
+   def say(self, msg = '... ... ...'):
+      return msg
+
+   def sonar(self):
+      return '))) ... ((('
+
+class Batman(Superhero, Bat):
+   def __init__(self, *arg, **kwargs):
+      Superhero.__init__(self, 'anonymous', movie = True, superpowers = ['Wealthy'], *args, **kwargs)
+      Bat.__init__(self, *args, can_fly = False, **kwargs)
+
+      self.name = 'Ben Afflect'
+
+   def sing(self):
+      return 'nan nan nan nan nan batman!'
+
+####################################################
+## 7. Advanced
+####################################################
+
+# Generators?
+
+# Decorators are a form of syntactic sugar.
+
+from functools import wraps
+
+def log_function(func):
+   @wraps(func)
+   def wrapper(*args, **kwargs):
+      print("Entering function", func.__name__)
+      result = func(*args, **kwargs)
+      print("Exiting function", func.__name__)
+
+      return result
+
+   return wrapper
+
+@log_function
+def my_function(x,y):
+   return x+y
+
+my_function(1,2)

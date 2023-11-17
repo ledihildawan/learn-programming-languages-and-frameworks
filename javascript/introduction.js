@@ -491,3 +491,170 @@ function setGlobalXXX(num) {
 
 setXXX(43);
 setGlobalXXX(6);
+
+function createAdder(x) {
+  function adder(y) {
+    return x + y;
+  }
+
+  return adder;
+}
+
+const add10 = createAdder(10);
+
+add10(3);
+
+// There are also anonymous functions
+((x) => x > 2)(3);
+((x, y) => x ** 2 + y ** 2)(2, 1);
+
+[1, 2, 3].map((el) => add10(el));
+[1, 2, 3].map((el, idx) => Math.max(el, [4, 6, -1][idx]));
+[3, 4, 5, 6, 7].filter((x) => x > 5);
+
+new Set(Array.from('abcddeef').filter((x) => !['a', 'b', 'c'].includes(x)));
+Array.from({ length: 5 }, (_, x) => ({ [x]: x ** 2 })).reduce(
+  (acc, obj) => ({ ...acc, ...obj }),
+  {}
+);
+
+///////////////////////////////////
+// 5. Modules
+///////////////////////////////////
+
+// import math from 'math'
+
+// console.log(math.sqrt(16))
+
+// import { ceil, floor } from 'math'
+
+// console.log(ceil(3.7))
+// console.log(floor(3.7))
+
+// import math as m from 'a'
+
+// m.sqrt(16) === m.sqrt(16)
+
+///////////////////////////////////
+// 5. Classes
+///////////////////////////////////
+
+class Human {
+  static species = 'H. sapiens';
+
+  constructor(name) {
+    this.name = name;
+    this._age = 0;
+
+    console.log(this.species);
+  }
+
+  say(msg) {
+    console.log(`${this.name}: ${msg}`);
+  }
+
+  sing() {
+    return 'yo... yo... microphone check... one two... one two...';
+  }
+
+  static getSpecies() {
+    return Human.species;
+  }
+
+  static grunt() {
+    return '*grunt*';
+  }
+
+  get age() {
+    return this._age;
+  }
+
+  set age(age) {
+    this._age = age;
+  }
+
+  deleteAge() {
+    delete this._age;
+  }
+}
+
+const i = new Human('Ian');
+const j = new Human('Joel');
+
+i.say('hi');
+j.say('hello');
+
+class Superhero extends Human {
+  species = 'Superhuman';
+
+  constructor(
+    name,
+    movie = false,
+    superpowers = ['super strength', 'bulletproofing']
+  ) {
+    super(name);
+
+    this.fictional = true;
+    this.movie = movie;
+    this.superpowers = superpowers;
+  }
+
+  sing() {
+    return 'Dun, dun, DUN!';
+  }
+
+  boast() {
+    for (const power of this.superpowers) {
+      console.log(`I wield the power of ${power}!`);
+    }
+  }
+}
+
+class Bat {
+  species = 'Baty';
+
+  constructor(canFlay = false) {
+    this.canFlay = canFlay;
+  }
+
+  say(msg = '... ... ...') {
+    return msg;
+  }
+
+  sonar() {
+    return '))) ... (((';
+  }
+}
+
+const SuperheroMixin = (classType) =>
+  class extends classType {
+    constructor(name, options, ...args) {
+      super(...args);
+
+      this.name = name || 'Unknown';
+      this.movie = options.movie || false;
+      this.superpowers = options.superpowers || [];
+    }
+  };
+
+const BatMixin = (superclass) =>
+  class extends superclass {
+    constructor(...args) {
+      super(...args);
+      this.can_fly = false;
+    }
+  };
+
+class Batman extends SuperheroMixin(BatMixin(Bat)) {
+  constructor(...args) {
+    super('anonymous', { movie: true, superpowers: ['Wealthy'] }, ...args);
+
+    this.name = 'Ben Affleck';
+  }
+
+  sing() {
+    return 'nan nan nan nan nan batman!';
+  }
+}
+
+const benAfflect = new Batman();

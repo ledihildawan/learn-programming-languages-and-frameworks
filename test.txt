@@ -16,3 +16,6 @@ Namespace
 Precedence
 Mutable
 Scope
+First-Class Function
+Special methods
+Decorator
