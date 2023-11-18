@@ -15,6 +15,9 @@ Iterable
 Namespace
 Precedence
 Mutable
+First-Class Function
+Special methods
+Decorator
 
 Scope:
 Global scope
