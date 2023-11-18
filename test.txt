@@ -15,4 +15,12 @@ Iterable
 Namespace
 Precedence
 Mutable
-Scope
+
+Scope:
+Global scope
+Function scope: If you create a variable in function, the variable is in a function scope.
+Block scope: A block is a set of code contain within curly braces ({}). If you create a variable inside curly braces, that variable is scoped to the block.
+Lexical scope: You can use a variable after you created it. But you cannot use the variable before you created it.
+Closure
+
+Objects are passed as references, Primitives are passed as values
