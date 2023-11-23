@@ -27,3 +27,14 @@ Lexical scope: You can use a variable after you created it. But you cannot use t
 Closure
 
 Objects are passed as references, Primitives are passed as values
+
+
+// Notes Template
+
+Title
+
+Notes
+
+Keywords/Quesitions
+
+Summary
