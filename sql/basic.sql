@@ -27,3 +27,11 @@ delete from cats;
 
 drop table cats;
 drop database hello_world_db;
+
+/*
+CONCAT
+COUNT
+DISTINCT
+LIKE
+GROUP BY
+*/

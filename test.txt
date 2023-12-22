@@ -38,3 +38,63 @@ Notes
 Keywords/Quesitions
 
 Summary
+const people = [
+  'Benjamin Franklin',
+  'Thomas Edison',
+  'Franklin Roosevelt',
+  'Mahatma Gandhi',
+  'Napoleon Bonaparte',
+  'Abraham Lincoln'
+]
+
+people.unshift('Albert Einstein', 'Winston Churchill')
+people.push('Charles Darwin', 'Walt Disney')
+
+const mahatmaGandhiIndex = people.findIndex((person) => person === 'Mahatma Gandhi')
+
+people.splice(mahatmaGandhiIndex, 0, 'Pablo Picasso', 'Ludwig van Beethoven')
+
+people.filter((person) => !['Benjamin Franklin', 'Thomas Edison', 'Napoleon', 'Abraham Lincoln'].includes(person))
+
+people.splice(mahatmaGandhiIndex, 1)
+
+// get/post/put/delete
+
+// /api/v1/{bootcamps, courses, reviews, auth, users}
+
+// Get All Bootcamps: Fetch all bootcamps from database. Includes pagination, filtering, etc...
+// Get Single Bootcamp: Get single bootcamp by ID
+// Create New Bootcamp: Add new bootcamp to database. Must be authenticated and must be publisher or admin
+// Update Bootcamp: Update single bootcamp in database
+// Delete Bootcamp: Delete bootcamp from database
+
+5 Topis (Most) Everyone Enjoys
+
+Food / Drinks
+Geography / Traveling
+Hobbies / Self Improvement
+Sports
+College
+
+For example:
+
+Coding (Learning SQL on CodeAcademy), Reading (Currently reading Blink by Malcom Gladwell), Podcasts (I Listen How I Built This X), Travel (Planning A Trip To Singapore In 2021)
+
+Examples of Interests
+
+Favorite Dish To Cook
+Book You're Reading
+Podcasts You Love`
+Favorite Sports Teams
+Personal Goals
+Hobby You're Trying
+Fun Fact About You
+Side Projects / Hustles
+Coutries You've Visited
+Trips You're Planning
+Courses You're Taking
+Certifications You're Getting
+What You're Watching
+Playlist That's On Repeat
+
+Aggregate Functions
