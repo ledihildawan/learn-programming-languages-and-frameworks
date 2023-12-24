@@ -12,8 +12,7 @@ def generate_land(cols=10, rows=10):
     row_string = ""
 
     for col in range(cols):
-      r = random.choice(data)
-      row_string += r
+      row_string += random.choice(data)
 
     print(row_string)
 
