@@ -1,16 +1,15 @@
-export type ITodo = Partial<{
-  id: number;
+export type Todo = Partial<{
+  id?: any;
   title: string;
   complete: boolean;
 }>;
 
-export class Todo {
-  public id!: number;
-
+export class TodoEntity {
+  public id?: any;
   public title: string = '';
   public complete: boolean = false;
 
-  constructor(values: ITodo = {}) {
+  constructor(values: Todo = {}) {
     Object.assign(this, values);
   }
 }

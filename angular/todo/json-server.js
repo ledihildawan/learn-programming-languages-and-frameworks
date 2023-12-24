@@ -1,8 +1,8 @@
 const jsonServer = require("json-server");
 const server = jsonServer.create();
 const router = jsonServer.router("db.json");
-const middlewares = jsonServer.defaults();
 const bodyParser = require("body-parser");
+const middlewares = jsonServer.defaults();
 
 const jwtToken = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiU2l0ZVBvaW50IFJlYWRlciJ9.sS4aPcmnYfm3PQlTtH14az9CGjWkjnsDyG_1ats4yYg`;
 
@@ -25,11 +25,11 @@ server.post("/sign-in", (req, res) => {
 });
 
 server.use((req, res, next) => {
-  if (isAuthorized(req)) {
-    next();
-  } else {
-    res.sendStatus(401);
-  }
+  // if (isAuthorized(req)) {
+  next();
+  // } else {
+  //   res.sendStatus(401);
+  // }
 });
 
 server.use(router);

@@ -1,4 +1,4 @@
-import { Todo } from './todo';
+import { Todo } from './todo/todo.entity';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, catchError, map, throwError } from 'rxjs';
@@ -15,6 +15,18 @@ export class ApiService {
 
   private _handleError(error: HttpErrorResponse): Observable<never> {
     return throwError(() => new Error(error.message));
+  }
+
+  public signIn(username: string, password: string) {
+    return this._http
+      .post(`${API_URL}/sign-in`, {
+        username,
+        password,
+      })
+      .pipe(
+        map((res: any) => res.json()),
+        catchError(this._handleError)
+      );
   }
 
   /**
@@ -38,7 +50,7 @@ export class ApiService {
    *
    * @return {Observable<null>}
    */
-  public deleteTodoById(id: number): Observable<null> {
+  public deleteTodoById(id: any): Observable<null> {
     return this._http.delete<null>(`${API_URL}/todos/${id}`).pipe(
       map(() => null),
       catchError(this._handleError)
@@ -79,7 +91,7 @@ export class ApiService {
    *
    * @return {Observable<Todo>}
    */
-  public updateTodo(id: number, todo: Todo): Observable<Todo> {
+  public updateTodoById(id: any, todo: Todo): Observable<Todo> {
     return this._http
       .put<Todo>(`${API_URL}/todos/${id}`, todo)
       .pipe(map((todo) => todo));

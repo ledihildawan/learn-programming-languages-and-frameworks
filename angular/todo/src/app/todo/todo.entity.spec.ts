@@ -1,12 +1,12 @@
-import { Todo } from './todo';
+import { TodoEntity } from './todo.entity';
 
 describe('Todo', () => {
   it('should create an instance', () => {
-    expect(new Todo()).toBeTruthy();
+    expect(new TodoEntity()).toBeTruthy();
   });
 
   it('should accept values in the constructor', () => {
-    const todo: Todo = new Todo({
+    const todo: TodoEntity = new TodoEntity({
       id: 0,
       title: 'Learn Angular',
       complete: true,

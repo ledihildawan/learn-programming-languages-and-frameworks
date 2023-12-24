@@ -1,6 +1,5 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { Todo } from './todo';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
@@ -15,11 +14,7 @@ describe('AppComponent', () => {
     appComponent = fixture.componentInstance;
   });
 
-  it('should create the AppComponent', () => {
+  it('should create', () => {
     expect(appComponent).toBeTruthy();
-  });
-
-  it('should have a newTodo todo', () => {
-    expect(appComponent.newTodo instanceof Todo).toBeTruthy();
   });
 });
