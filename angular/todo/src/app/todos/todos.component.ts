@@ -6,11 +6,11 @@ import { ActivatedRoute, Data, Router } from '@angular/router';
 import { map } from 'rxjs';
 
 @Component({
-  selector: 'todo',
-  styleUrl: './todo.component.scss',
-  templateUrl: './todo.component.html',
+  selector: 'todos',
+  styleUrl: './todos.component.scss',
+  templateUrl: './todos.component.html',
 })
-export class TodoComponent implements OnInit {
+export class TodosComponent implements OnInit {
   private readonly _router = inject(Router);
   private readonly _authService = inject(AuthService);
   private readonly _todoService = inject(TodoService);

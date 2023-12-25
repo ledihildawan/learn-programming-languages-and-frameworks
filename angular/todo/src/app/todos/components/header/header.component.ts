@@ -5,7 +5,6 @@ import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'todo-header',
-  styleUrl: './header.component.scss',
   templateUrl: './header.component.html',
 })
 export class HeaderComponent {

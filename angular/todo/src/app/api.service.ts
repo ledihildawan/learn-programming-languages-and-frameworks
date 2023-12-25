@@ -1,4 +1,4 @@
-import { Todo } from './todo/todo.entity';
+import { Todo } from './todos/todo.entity';
 import { SessionService } from './session.service';
 import {
   HttpClient,

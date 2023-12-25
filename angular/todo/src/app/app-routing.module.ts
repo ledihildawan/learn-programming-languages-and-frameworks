@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { TodoComponent } from './todo/todo.component';
-import { TodosResolver } from './todo/todos.resolver';
+import { TodosResolver } from './todos/todos.resolver';
+import { TodosComponent } from './todos/todos.component';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { CanActivateTodosGuard } from './can-active-todos.guard';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
@@ -22,7 +22,7 @@ const appRoutes: Routes = [
     resolve: {
       todos: TodosResolver,
     },
-    component: TodoComponent,
+    component: TodosComponent,
     canActivate: [CanActivateTodosGuard],
   },
   {
