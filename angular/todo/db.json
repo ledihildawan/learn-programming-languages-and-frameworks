@@ -1,9 +1,14 @@
 {
   "todos": [
     {
-      "title": "Watch Football",
+      "title": "Workout",
       "complete": true,
       "id": 1
+    },
+    {
+      "title": "Read a book",
+      "complete": false,
+      "id": 2
     }
   ]
 }

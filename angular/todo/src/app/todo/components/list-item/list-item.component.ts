@@ -5,7 +5,6 @@ import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'todo-list-item',
-  styleUrl: './list-item.component.scss',
   templateUrl: './list-item.component.html',
 })
 export class ListItemComponent {

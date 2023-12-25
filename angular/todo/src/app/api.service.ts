@@ -1,8 +1,12 @@
 import { Todo } from './todo/todo.entity';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { SessionService } from './session.service';
+import {
+  HttpClient,
+  HttpHeaders,
+  HttpErrorResponse,
+} from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, catchError, map, throwError } from 'rxjs';
-
 import { environment } from '../environments/environment';
 
 const API_URL: string = environment.apiUrl;
@@ -12,6 +16,15 @@ const API_URL: string = environment.apiUrl;
 })
 export class ApiService {
   private readonly _http: HttpClient = inject(HttpClient);
+  private readonly _sessionService: SessionService = inject(SessionService);
+
+  private _getRequestOptions(): { headers: HttpHeaders } {
+    const headers: HttpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this._sessionService.accessToken}`,
+    });
+
+    return { headers };
+  }
 
   private _handleError(error: HttpErrorResponse): Observable<never> {
     return throwError(() => new Error(error.message));
@@ -24,7 +37,7 @@ export class ApiService {
         password,
       })
       .pipe(
-        map((res: any) => res.json()),
+        map((res: any) => res),
         catchError(this._handleError)
       );
   }
@@ -37,10 +50,12 @@ export class ApiService {
    * @return {Observable<Todo>}
    */
   public createTodo(todo: Todo): Observable<Todo> {
-    return this._http.post<Todo>(`${API_URL}/todos`, todo).pipe(
-      map((todo: Todo) => todo),
-      catchError(this._handleError)
-    );
+    return this._http
+      .post<Todo>(`${API_URL}/todos`, todo, this._getRequestOptions())
+      .pipe(
+        map((todo: Todo) => todo),
+        catchError(this._handleError)
+      );
   }
 
   /**
@@ -51,10 +66,12 @@ export class ApiService {
    * @return {Observable<null>}
    */
   public deleteTodoById(id: any): Observable<null> {
-    return this._http.delete<null>(`${API_URL}/todos/${id}`).pipe(
-      map(() => null),
-      catchError(this._handleError)
-    );
+    return this._http
+      .delete<null>(`${API_URL}/todos/${id}`, this._getRequestOptions())
+      .pipe(
+        map(() => null),
+        catchError(this._handleError)
+      );
   }
 
   /**
@@ -63,10 +80,12 @@ export class ApiService {
    * @return {Observable<Todo[]>}
    */
   public getAllTodos(): Observable<Todo[]> {
-    return this._http.get<Todo[]>(`${API_URL}/todos`).pipe(
-      map((todos: Todo[]) => todos.map((todo: Todo) => todo)),
-      catchError(this._handleError)
-    );
+    return this._http
+      .get<Todo[]>(`${API_URL}/todos`, this._getRequestOptions())
+      .pipe(
+        map((todos: Todo[]) => todos.map((todo: Todo) => todo)),
+        catchError(this._handleError)
+      );
   }
 
   /**
@@ -77,10 +96,12 @@ export class ApiService {
    * @return {Observable<Todo>}
    */
   public getTodoById(id: number): Observable<Todo> {
-    return this._http.get<Todo>(`${API_URL}/todos/${id}`).pipe(
-      map((todo) => todo),
-      catchError(this._handleError)
-    );
+    return this._http
+      .get<Todo>(`${API_URL}/todos/${id}`, this._getRequestOptions())
+      .pipe(
+        map((todo) => todo),
+        catchError(this._handleError)
+      );
   }
 
   /**
@@ -93,7 +114,7 @@ export class ApiService {
    */
   public updateTodoById(id: any, todo: Todo): Observable<Todo> {
     return this._http
-      .put<Todo>(`${API_URL}/todos/${id}`, todo)
+      .put<Todo>(`${API_URL}/todos/${id}`, todo, this._getRequestOptions())
       .pipe(map((todo) => todo));
   }
 }

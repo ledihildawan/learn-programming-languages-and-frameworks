@@ -3,7 +3,6 @@ import { Input, Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'todo-footer',
-  styleUrl: './footer.component.scss',
   templateUrl: './footer.component.html',
 })
 export class FooterComponent implements OnInit {

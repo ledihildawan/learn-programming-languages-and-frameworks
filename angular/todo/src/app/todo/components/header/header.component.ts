@@ -1,4 +1,4 @@
-import { Todo, TodoEntity } from '../../todo.entity';
+import { TodoEntity } from '../../todo.entity';
 import { TodoService } from '../../todo.service';
 import { Component, inject } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
