@@ -2,5 +2,5 @@
 fn main() {
     println!("Hello, world!");
 
-    let mut my_name = "Luis";
+    let mut _my_name = "Luis";
 }
