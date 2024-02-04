@@ -1,0 +1,15 @@
+A better question could be
+
+In the exercise 2.15 when I try to add a new person to the app, server responds to 403, despite the request looks ok to me.
+The code looks like this
+
+  // the relevant part of code is pasted here
+  // code should contain several console.log statements for helping the debuggingcopy
+The following gets printed to the console
+
+  // data printed to consolecopy
+The network tab looks like the following*
+
+[screen shot from the network console]
+
+All the code can be found here (a link to GitHub)

@@ -11,6 +11,13 @@
   "Rust": 1
 }
 
+C++
+Ruby
+R
+SQL
+
+////
+
 Iterable
 Namespace
 Precedence
@@ -98,3 +105,13 @@ What You're Watching
 Playlist That's On Repeat
 
 Aggregate Functions
+Type Hinting
+
+Backend:
+URL Routing Configuration
+Mail Service
+Message Queue System
+Scheduling
+Authentication and Authorization
+Database Seeder
+Localization
