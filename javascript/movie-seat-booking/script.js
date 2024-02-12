@@ -6,30 +6,6 @@ const movieSelectEl = document.getElementById('movie');
 
 let ticketPrice = +movieSelectEl.value;
 
-class ClassHelper {
-  static add (el, value) {
-    el.classList.add(value);
-  }
-
-  static toggle (el, value) {
-    el.classList.toggle(value);
-  }
-
-  static contains(el, value) {
-    return el.classList.contains(value);
-  }
-
-  static notContains(el, value) {
-    return !this.contains(el, value);
-  }
-}
-
-class DomHelper {
-  static setText(el, value) {
-    el.innerText = value;
-  }
-}
-
 function setMovieData(movieIndex, moviePrice) {
   localStorage.setItem('selectedMovieIndex', movieIndex);
   localStorage.setItem('selectedMoviePrice', moviePrice);
@@ -42,7 +18,7 @@ function populateUI() {
   if (selectedSeats !== null && selectedSeats.length > 0) {
     seatsEl.forEach((seatEl, index) => {
       if (selectedSeats.indexOf(index) > -1) {
-        ClassHelper.add(seatEl, 'selected');
+        seatEl.classList.add('selected');
       }
     });
   }
@@ -63,8 +39,8 @@ function updateSelectedCount() {
 
   localStorage.setItem('selectedSeats', JSON.stringify(seatsIndex));
 
-  DomHelper.setText(countEl, numberSelectedOfSeats);
-  DomHelper.setText(totalEl, numberSelectedOfSeats * ticketPrice);
+  countEl.innerText = numberSelectedOfSeats;
+  totalEl.innerText = numberSelectedOfSeats * ticketPrice;
 }
 
 movieSelectEl.addEventListener('click', (e) => {
@@ -75,8 +51,11 @@ movieSelectEl.addEventListener('click', (e) => {
 });
 
 containerEl.addEventListener('click', (e) => {
-  if (ClassHelper.contains(e.target, 'seat') && ClassHelper.notContains(e.target, 'occupied')) {
-    ClassHelper.toggle(e.target, 'selected');
+  if (
+    e.target.classList.contains('seat') &&
+    !e.target.classList.contains('occupied')
+  ) {
+    e.target.classList.toggle('selected');
 
     updateSelectedCount();
   }

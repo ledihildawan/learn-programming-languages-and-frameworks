@@ -1,0 +1,73 @@
+@font-face {
+  font-family: "Bluu Next";
+  src: url(assets/fonts/bluunext.woff2), url(bluunext.woff);
+}
+
+body {
+  width: 640px;
+  height: 100vh;
+  margin: 40px auto;
+
+  background-color: #edc7a9;
+  background-image: linear-gradient(180deg, #fff, rgba(255, 255, 255, 0));
+  color: #000;
+
+  font-family: "Bluee Next", 'Times New Roman';
+  font-size: 24px;
+  line-height: 1.25;
+
+  transition: background-color .5s;
+}
+
+h1 {
+  font-size: 24px;
+  margin: 10px 0;
+}
+
+h2 {
+  font-size: 10vmin;
+}
+
+section {
+  width: 60%;
+
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  text-align: center;
+}
+
+section a {
+  color: #000;
+}
+
+section .circle {
+  display: inline-block;
+  border-radius: 50%;
+
+  width: 20px;
+  height: 20px;
+
+  background: #3e78ed;
+
+}
+
+footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}
+
+footer svg {
+  margin: 0 10px;
+
+  cursor: pointer;
+}
