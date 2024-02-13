@@ -1,0 +1,33 @@
+body {
+  background-color: #0B080A;
+  color: #F1EFF0;
+  font-family: "Roboto", sans-serif;
+}
+
+h1 {
+  text-align: center;
+}
+
+h2 {
+  color: #C955B3;
+  text-align: center;
+}
+
+
+table {
+  max-width: 640px;
+  margin: auto;
+  border: 2px solid #C955B3;
+}
+
+table th {
+  background-color: #C955B3;
+  color: #fff;
+  text-align: center;
+}
+
+.highlight {
+  background-color: #fff;
+  color: #713065;
+  font-family: 'Courier New', Courier, monospace;
+}
