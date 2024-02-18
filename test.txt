@@ -115,3 +115,44 @@ Scheduling
 Authentication and Authorization
 Database Seeder
 Localization
+
+CLI
+ls
+pwd
+cd
+mkdir
+touch
+clear
+
+UI
+Color
+Before selecting and applying color to your projects, it’s essential to gain an understanding of:
+
+    Which colors pair well with others
+    What color schemes are available to produce effective designs
+    Which emotions each color evokes and communicates
+    How contrast plays a vital role
+    What color combinations you should avoid
+
+
+Color Psychology
+    Red: Passionate, energetic, angry
+    Orange: Optimistic, playful, fun
+    Yellow: Welcoming, intellectual, impatient
+    Green: Prosperous, balanced, growing
+    Blue: Peaceful, loyal, cold
+    Purple: Imaginative, royal, spiritual
+    Gray: Unemotional, compromising
+    White: Innocent, pure
+    Black: Luxurious, powerful
+
+Font
+Take a look at the website to the right. What do you notice about how text is used?
+
+Consider the following:
+
+    Are different pieces of text differentiated from each other?
+    Is the text easy to read?
+    Is the text easy to navigate?
+    Do the images and text pair well together?
+    Try skimming the content of the website. Was it difficult?
