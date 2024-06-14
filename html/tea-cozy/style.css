@@ -1,0 +1,134 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: black;
+  color: seashell;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+a {
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+}
+
+main {
+  max-width: 1200px;
+  margin: auto;
+}
+
+figure {
+  margin: 0;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-decoration-none {
+  text-decoration: none;
+}
+
+#main-header {
+  width: 100%;
+  height: 69px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  border-bottom: 1px solid seashell;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #000;
+}
+
+#logo {
+  height: 50px;
+}
+
+#main-nav ul {
+  display: flex;
+  gap: 8px;
+  list-style-type: none;
+}
+
+#mission {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 700px;
+  background-image: url('https://content.codecademy.com/courses/freelance-1/unit-4/img-mission-background.jpg?_gl=1*wzf6c1*_ga*ODA1NzY5NjkwMy4xNzA0ODAyNjQ2*_ga_3LRZM6TM9L*MTcwODUyMzc3MS40NC4xLjE3MDg1MjM3OTIuMC4wLjA.');
+}
+
+#mission .mission-copy {
+  background-color: #000;
+  width: 100%;
+}
+
+#featured-tea {
+  max-width: 1000px;
+  height: 700px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+}
+
+#featured-tea h2 {
+  margin: 0;
+}
+
+#featured-tea .photo-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px;
+}
+
+#featured-tea .photo {
+  max-width: 300px;
+}
+
+#featured-tea .photo-caption {
+  margin-top: 10px;
+  font-weight: 700;
+}
+
+#locations {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  height: 500px;
+  background-image: url('https://content.codecademy.com/courses/freelance-1/unit-4/img-locations-background.jpg?_gl=1*1vzpdn0*_ga*ODA1NzY5NjkwMy4xNzA0ODAyNjQ2*_ga_3LRZM6TM9L*MTcwODUyMzc3MS40NC4xLjE3MDg1MjM3OTIuMC4wLjA.');
+}
+
+#locations .card-container {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+}
+
+#locations .card {
+  width: 300px;
+  background-color: #000;
+}
+
+#contact {
+  height: 200px;
+}
+
+#main-footer {
+  padding: 0 20px;
+}

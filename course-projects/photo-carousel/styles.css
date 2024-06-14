@@ -1,0 +1,40 @@
+body {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    background-color: rgb(250, 250, 250);
+}
+
+.carousel-container {
+    padding: 20px;
+    border-radius: 20px;
+    background-color: #fff;
+    box-shadow: 4px 4px 16px rbg(255, 255, 255);
+}
+
+.photo-container {
+    width: 500px;
+    height: 500px;
+    overflow: hidden;
+    scroll-behavior: smooth;
+    display: flex;
+    border-radius: 20px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+}
+
+.button {
+    width: 40px;
+    height: 40px;
+    margin: 20px 10px 0 10px;
+    border-radius: 20px;
+    background-color: #fff;
+    background-image: linear-gradient(#fff, rgb(247, 247, 247));
+    box-shadow: 0 1px 5px rgb(177, 176, 176), inset 1px 1px 2px #fff;
+}

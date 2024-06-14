@@ -156,3 +156,9 @@ Consider the following:
     Is the text easy to navigate?
     Do the images and text pair well together?
     Try skimming the content of the website. Was it difficult?
+
+
+docker-compose up -d
+docker ps | grep mongo
+docker stop mongo
+docker start mongo

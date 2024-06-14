@@ -17,7 +17,7 @@
     "titleBar.activeForeground": "#e7e7e7",
     "titleBar.inactiveBackground": "#1e293b99",
     "titleBar.inactiveForeground": "#e7e7e799"
-  },
+},
   "peacock.color": "#1e293b",
   "[python]": {
     "editor.defaultFormatter": "ms-python.python"

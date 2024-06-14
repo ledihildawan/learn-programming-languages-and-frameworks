@@ -1,2 +1,3 @@
 - nest g module [name]
 - nest g class [name] --no-spec
+- nest g controller [name]

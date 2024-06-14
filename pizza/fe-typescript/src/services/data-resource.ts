@@ -3,7 +3,7 @@ export class DataResource<T> {
 
   async save(data: T): Promise<Response> {
 		const res: Response = await fetch(this.endpoint, {
-      body: JSON.stringify(data),
+            body: JSON.stringify(data),
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 		});

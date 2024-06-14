@@ -20,4 +20,8 @@ void main(List<String> arguments) {
   String myString4;
   final String myString5 = 'oke';
   myString4 = 'Coba';
+
+  // "is" is the instance-of operator
+  // print runtimetype of an object
+  // late assign a non-nullable value later
 }
