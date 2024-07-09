@@ -162,3 +162,17 @@ docker-compose up -d
 docker ps | grep mongo
 docker stop mongo
 docker start mongo
+
+Golang
+PHP
+NodeJS
+Redis
+Kafka
+MySQL
+PostgreSQL
+Web Server
+REST
+gRPC
+Pub/Sub
+Docker
+Kubernetes

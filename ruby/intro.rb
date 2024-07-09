@@ -84,7 +84,7 @@ puts "My favorite number is #{a}"
 8 % 2
 10 % 4
 
-16.reminder(5)
+16.remainder(5)
 16.divmod(5)
 
 # Integers and float
@@ -123,15 +123,15 @@ puts "My favorite number is #{a}"
 # Hash
 
 {
-    dog => 'barks',
-    cat => 'meow',
-    pig => 'oinks',
+    :dog => 'barks',
+    :cat => 'meow',
+    :pig => 'oinks',
 }
 
 {
-    dog => 'barks',
-    cat => 'meow',
-    pig => 'oinks',
+    :dog => 'barks',
+    :cat => 'meow',
+    :pig => 'oinks',
 }[:cat]
 
 # Exercise
@@ -144,11 +144,11 @@ tens = 4936 % 1000 % 100 / 10
 ones = 4936 % 1000 % 100 % 10
 
 movies = {
-    jaws => 1975,
-    anchorman => 2004,
-    man_of_steel => 2013,
-    a_beautiful_mind => 2001,
-    the_evil_dead => 1981
+    :jaws => 1975,
+    :anchorman => 2004,
+    :man_of_steel => 2013,
+    :a_beautiful_mind => 2001,
+    :the_evil_dead => 1981
 }
 
 puts movies[:jaws]
