@@ -1,0 +1,213 @@
+<!doctype html>
+
+<html lang="en-US" dir="ltr">
+
+  <head>
+    <meta charset="utf-8">
+<title>Nue / Getting started</title>
+<meta name="date.updated" content="2024-08-24T04:42:58.611Z">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Minimalist, designer, and UX developer">
+<meta name="author" content="Emma Bennet">
+<meta property="og:image" content="https://simple-blog.nuejs.org/img/og_emma.png">
+<meta name="nue:components" content=" ">
+<link rel="icon" type="image/jpg" href="/img/favicon.jpg">
+<style href="/@global/colors.css">:root {
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-500: #6b7280;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+  --main-500: #3b82f6;
+  --main-600: #2563eb;
+  --pink-gradient: linear-gradient(#e879f9, #ec4899);
+  --blue-gradient: linear-gradient(#0ea5e9, #67e8f9);
+  --marker: #ffff7a;
+}
+</style>
+<style href="/@global/typography.css">body {
+  font-family: -apple-system, BlinkMacSystemFont, Avenir Next, Segoe UI, Roboto;
+}
+
+h1 {
+  letter-spacing: -.03em;
+  font-size: 2.6rem;
+}
+
+h1, h1 + p {
+  text-align: center;
+  text-wrap: balance;
+  max-width: 40rem;
+  margin: 0 auto .2em;
+}
+
+h1 + p {
+  margin-bottom: 2em;
+  font-size: 1.15em;
+  font-weight: 300;
+}
+
+a {
+  text-decoration: none;
+}
+
+nav :is(a) {
+  color: var(--gray-900);
+  font-weight: 500;
+}
+
+nav :is(a)[aria-selected] {
+  text-decoration: 2px underline var(--main-500);
+  text-underline-offset: 8px;
+}
+
+p, li {
+  color: var(--gray-500);
+  line-height: 1.65;
+}
+
+:is(p, li) strong {
+  color: var(--gray-800);
+}
+</style>
+<style href="/@library/forms.css">:focus-visible {
+  outline: 3px solid var(--gray-100);
+  border-color: var(--main-500);
+  outline-offset: 1px;
+}
+
+label {
+  margin-bottom: 1em;
+  display: block;
+}
+
+label span {
+  margin-bottom: .3em;
+  font-weight: 500;
+  display: block;
+}
+
+input, textarea {
+  border: 1px solid var(--gray-200);
+  font-family: inherit;
+  font-size: inherit;
+  border-radius: 4px;
+  width: 100%;
+  padding: .7em 1em;
+}
+
+textarea {
+  form-sizing: normal;
+  min-height: 80px;
+}
+
+button, [role="button"] {
+  background-color: var(--main-500);
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+  color: #fff;
+  border: 0;
+  border-radius: 4px;
+  width: 100%;
+  padding: .75em 1.5em;
+  font-weight: 550;
+}
+
+:is(button, [role="button"]):hover {
+  background-color: var(--main-600);
+}
+
+:is(button, [role="button"]):active {
+  transform: translateY(1px);
+}
+</style>
+<style href="/welcome/welcome.css">* {
+  box-sizing: border-box;
+}
+
+body {
+  background: #000 url("img/editor-split-big.png") 50% / 100%;
+  margin: 0;
+  transition: background-size 1s;
+}
+
+@starting-style {
+  body {
+    background-size: 500%;
+  }
+}
+
+body main {
+  backdrop-filter: blur(3px);
+  background: radial-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, .6));
+  height: 100vh;
+  padding-top: 22vh;
+  transition-delay: .5s;
+}
+
+body article {
+  background-color: #fff;
+  border-radius: 8px;
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 2em 2.2em 3em;
+  transition-delay: 1s;
+  box-shadow: 0 0 3em rgba(0, 0, 0, .533);
+}
+
+body article h1 {
+  text-align: left;
+  font-size: 2em;
+}
+
+body article ol {
+  padding: 0 1.4em 1em;
+}
+
+main, article {
+  opacity: 1;
+  transition: all .5s;
+}
+
+@starting-style {
+  :is(main, article) {
+    opacity: 0;
+  }
+}
+</style>
+<script src="/@nue/hotreload.js" type="module"></script>
+<script src="/@nue/view-transitions.js" type="module"></script>
+    
+  </head>
+
+  <body>
+    
+    
+    
+
+    <main>
+    
+
+    <article>
+      
+      <section><h1>Welcome to Nue!</h1><ol>
+<li>Open the project on your editor</li>
+<li>Split the screen with your browser</li>
+<li>Edit files and see your site evolve</li>
+</ol>
+
+<a href="/" role="button">Start UX development</a></section>
+      
+    </article>
+
+    
+  </main>
+
+    
+    
+    
+  </body>
+
+</html>

@@ -1,21 +1,12 @@
-import type { Server } from "bun";
+let myAge = 27;
+let earlyYears = 2;
 
-import figlet from "figlet";
+earlyYears *= 10.5;
 
-const server: Server = Bun.serve({
-  port: 3000,
-  fetch(): Response {
-    figlet("Hello World!!", function (err, data) {
-      if (err) {
-        console.log("Something went wrong...");
-        console.dir(err);
-        return;
-      }
-      console.log(data);
-    });
+let laterYears = myAge - 2;
+laterYears *= 4;
 
-    return new Response('Bun!');
-  },
-});
+const myAgeInDogYears = earlyYears + laterYears;
+const myName = "John".toLowerCase();
 
-console.log(`Listening on http://localhost:${server.port} ...`);
+console.log(`My name is ${myName}. I'm HUMAN ${myAge} years old in human years which is ${myAgeInDogYears} years old in dog years.`);

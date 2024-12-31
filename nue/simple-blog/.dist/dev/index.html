@@ -1,0 +1,244 @@
+<!doctype html>
+
+<html lang="en-US" dir="ltr">
+
+  <head>
+    <meta charset="utf-8">
+<title>Emma Bennet / Minimalist, UX developer, designer, urban explorer.</title>
+<meta name="date.updated" content="2024-08-24T04:43:11.325Z">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Minimalist, designer, and UX developer">
+<meta name="author" content="Emma Bennet">
+<meta property="og:image" content="https://simple-blog.nuejs.org/img/og_emma.png">
+<meta name="nue:components" content=" ">
+<link rel="icon" type="image/jpg" href="/img/favicon.jpg">
+<style href="/@global/colors.css">:root {
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-500: #6b7280;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+  --main-500: #3b82f6;
+  --main-600: #2563eb;
+  --pink-gradient: linear-gradient(#e879f9, #ec4899);
+  --blue-gradient: linear-gradient(#0ea5e9, #67e8f9);
+  --marker: #ffff7a;
+}
+</style>
+<style href="/@global/layout.css">*, :before, :after {
+  box-sizing: border-box;
+}
+
+ul, ol, figure, pre {
+  margin: 2em 0;
+}
+
+body {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2% 5%;
+}
+
+body > header nav {
+  justify-content: space-between;
+  margin-bottom: 4rem;
+  display: flex;
+}
+
+body > header nav > a:first-child {
+  background: url("/img/avatar-rounded.jpg") 0 / 2em no-repeat;
+  padding-left: 2.5em;
+}
+
+body > header nav a {
+  padding: 1em 0;
+}
+
+body article > header {
+  margin-bottom: 2rem;
+}
+
+body article > section {
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+body > footer {
+  border-top: 1px solid var(--gray-200);
+  justify-content: space-between;
+  margin-top: 6rem;
+  padding: 1rem 0;
+  display: flex;
+}
+
+body > footer > :last-child {
+  gap: .5em;
+  display: flex;
+}
+
+body > footer > :last-child a:hover {
+  transform: scale(1.1);
+}
+</style>
+<style href="/@global/typography.css">body {
+  font-family: -apple-system, BlinkMacSystemFont, Avenir Next, Segoe UI, Roboto;
+}
+
+h1 {
+  letter-spacing: -.03em;
+  font-size: 2.6rem;
+}
+
+h1, h1 + p {
+  text-align: center;
+  text-wrap: balance;
+  max-width: 40rem;
+  margin: 0 auto .2em;
+}
+
+h1 + p {
+  margin-bottom: 2em;
+  font-size: 1.15em;
+  font-weight: 300;
+}
+
+a {
+  text-decoration: none;
+}
+
+nav :is(a) {
+  color: var(--gray-900);
+  font-weight: 500;
+}
+
+nav :is(a)[aria-selected] {
+  text-decoration: 2px underline var(--main-500);
+  text-underline-offset: 8px;
+}
+
+p, li {
+  color: var(--gray-500);
+  line-height: 1.65;
+}
+
+:is(p, li) strong {
+  color: var(--gray-800);
+}
+</style>
+<style href="/@library/gallery.css">ul:has(time) {
+  margin: 4em 0;
+  padding: 0;
+  list-style: none;
+}
+
+ul:has(time) li {
+  margin-bottom: 3em;
+}
+
+ul:has(time) figure {
+  align-items: center;
+  gap: 3rem;
+  margin: 0;
+  transition: transform .1s;
+  display: flex;
+}
+
+ul:has(time) figure:hover {
+  transform: scale(1.01);
+}
+
+ul:has(time) time {
+  color: var(--gray-500);
+  font-size: 85%;
+  font-weight: 300;
+}
+
+ul:has(time) h2 {
+  color: var(--gray-800);
+  text-wrap: balance;
+  margin: .3em 0 0;
+  font-size: 1.05em;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+ul:has(time) img {
+  border-radius: 4px;
+  max-width: 12em;
+}
+</style>
+<style href="/@library/motion.css">header, h1, h1 + p, h1 + p + * {
+  filter: none;
+  opacity: 1;
+  transition: opacity .5s, filter .7s;
+}
+
+@starting-style {
+  :is(header, h1, h1 + p, h1 + p + *) {
+    filter: blur(10px);
+    opacity: 0;
+  }
+}
+
+h1 {
+  transition-delay: .1s;
+}
+
+h1 + p {
+  transition-delay: .2s;
+}
+
+h1 + p + * {
+  transition-delay: .4s;
+}
+
+article {
+  view-transition-name: article;
+}
+
+::view-transition-old(article) {
+  transition: all .8s;
+  transform: scale(1.2)translateY(2em);
+}
+</style>
+<script src="/@nue/hotreload.js" type="module"></script>
+<script src="/@nue/view-transitions.js" type="module"></script>
+    
+  </head>
+
+  <body>
+    
+    <header>
+    <nav aria-label="navigation"><a href="/">Emma Bennet</a>
+<a href="/contact/">Contact</a></nav>
+    
+  </header>
+    
+
+    <main>
+    
+
+    <article>
+      
+      <section><h1>Minimalist, UX developer, designer, urban explorer.</h1><p>I&#x2019;m Emma Bennett, an user experience developer from Berlin. I build websites that are exceptionally well designed &#x2014; inside, and outside.</p>
+
+<ul><li class="is-new"><a href="/blog/scaleable-design-system.html"><figure><img src="/blog/img/ui-thumb.png" loading="lazy"><figcaption><time datetime="2024-09-15T00:00:00.000Z">September 15, 2024</time><h2>Crafting a scaleable CSS design system</h2></figcaption></figure></a></li>
+<li><a href="/blog/color-strategies.html"><figure><img src="/blog/img/colors-thumb.png" loading="lazy"><figcaption><time datetime="2024-05-23T00:00:00.000Z">May 23, 2024</time><h2>Practical strategies for using colors in CSS</h2></figcaption></figure></a></li>
+<li><a href="/blog/class-naming-strategies.html"><figure><img src="/blog/img/dashboard-thumb.png" loading="lazy"><figcaption><time datetime="2024-03-13T00:00:00.000Z">March 13, 2024</time><h2>CSS class naming strategies for scaleable dasboard design</h2></figcaption></figure></a></li></ul></section>
+      
+    </article>
+
+    
+  </main>
+
+    <footer>
+    <nav aria-label="copyright"><a href="/">&#xa9; Emma Bennet</a></nav><nav aria-label="social"><a href="//x.com/tipiirai"><img src="/img/twitter.svg" width="22" height="22" alt="Twitter (X) profile"></a>
+<a href="//github.com/nuejs/"><img src="/img/github.svg" width="22" height="22" alt="Github Projects"></a>
+<a href="//linkedin.com/in/tipiirai"><img src="/img/linkedin.svg" width="22" height="22" alt="LinkedIn profile"></a></nav>
+  </footer>
+    
+    
+  </body>
+
+</html>

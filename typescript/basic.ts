@@ -53,4 +53,35 @@ class Hamburger {
   id: string;
 }
 
-console.log(new Pizza().id);
+interface A {
+  a: string
+}
+
+interface B {
+  a: number;
+}
+
+type C = A & B;
+
+// A | unknown = unknown
+// A | never = never
+// A | any = any
+// A & unknown = A
+// A & never = never
+// A & any = any
+
+namespace move {
+  type Direction = "backward" | "forward";
+
+  function move(direction: Direction) {
+    // some code
+  }
+
+  move("backward");
+  move("forward");
+
+  // @ts-expect-error: ❌ not supported
+  move("left");
+  // @ts-expect-error: ❌ not supported
+  move("right");
+}

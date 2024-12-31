@@ -13,42 +13,45 @@
   </head>
   <body>
     <script>
-      // const observable = new rxjs.Observable();
+      // A Function is a lazily evaluated computation that synchronously returns a single value on invocation.
+      // A generator is a lazily evaluated computation that synchronously returns zero to (potentially) infinite values on iteration.
+      // A Promise is a computation that may (or may not) eventually return a single value.
+      // An Observable is a lazily evaluated computation that can synchronously or asynchronously return zero to (potentially) infinite values from the time it's invoked onwards.
 
-      // observable.pipe(
-      //   firstOperator(),
-      //   secondOperator(),
-      // ).subscribe();
+      // Core Observable concerns:
+      // Creating Observables
+      // Subscribing to Observables
+      // Executing the Observable
+      // Disposing Observables
 
-      const observable = new rxjs.Observable((subscriber) => {
-        const id = setInterval(() => {
-          subscriber.next('test');
-          console.log('leak');
-        }, 1000);
+      // Observable: represents the idea of an invokable collection of future values or events.
+      // Observer: is a collection of callbacks that knows how to listen to values delivered by the Observable.
+      // Subscription: represents the execution of an Observable, is primarily useful for cancelling the execution.
+      // Operators: are pure functions that enable a functional programming style of dealing with collections with operations like map, filter, concat, reduce, etc.
+      // Subject: is equivalent to an EventEmitter, and the only way of multicasting a value or event to multiple Observers.
+      // Schedulers: are centralized dispatchers to control concurrency, allowing us to coordinate when computation happens on e.g. setTimeout or requestAnimationFrame or others.
 
-        subscriber.next('Hello world');
-        subscriber.next('test');
+      const { Observable } = rxjs;
 
-        // subscriber.complete();
+      const observable = new Observable((subscriber) => {
+        try {
+          const intervalId = setInterval(() => {
+            subscriber.next('hi');
+          }, 1000);
 
-        subscriber.next('next');
-
-        return () => {
-          clearInterval(id);
-        };
+          subscriber.next(1);
+          subscriber.next(2);
+          subscriber.next(3);
+        } catch (err) {
+          subscriber.error(err);
+        }
       });
 
       const subscription = observable.subscribe({
-        next: (value) => {
-          console.log(value);
-        },
-        complete: () => console.log('complete called!'),
-        error: (err) => console.error(err),
+        next: (x) => console.log(x),
       });
 
-      setTimeout(() => {
-        subscription.unsubscribe();
-      }, 4000);
+      // subscription.unsubscribe();
     </script>
   </body>
 </html>

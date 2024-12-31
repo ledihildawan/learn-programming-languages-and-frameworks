@@ -1,0 +1,1 @@
+One key difference with observables, although there are many, is that it doesn’t just have to resolve with one value and be done like a promise. An observable can stay active for a long time, and emit multiple values over time that will all be handled by our subscribe handler.

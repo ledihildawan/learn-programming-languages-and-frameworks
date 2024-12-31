@@ -1,0 +1,541 @@
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link
+    href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"
+    rel="stylesheet"
+  />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    body {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      margin: 0;
+      font-family: 'Lato', sans-serif;
+      background-color: #121826;
+    }
+
+    button {
+      font-family: 'Lato', sans-serif;
+    }
+
+    h1 {
+      margin: 0;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    .bg-gray-900 {
+      background-color: #121826;
+    }
+
+    .text-white {
+      color: white;
+    }
+
+    .justify-between {
+      justify-content: space-between;
+    }
+
+    .justify-center {
+      justify-content: center;
+    }
+
+    .items-center {
+      align-items: center;
+    }
+
+    .m-8 {
+      margin: 8px;
+    }
+
+    .p-8 {
+      padding: 8px;
+    }
+
+    .pt-18 {
+      padding-top: 18px;
+    }
+
+    .py-18 {
+      padding-top: 18px;
+      padding-bottom: 18px;
+    }
+
+    .py-8 {
+      padding-top: 8px;
+      padding-bottom: 8px;
+    }
+
+    .px-16 {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+
+    .py-12 {
+      padding-top: 12px;
+      padding-bottom: 12px;
+    }
+
+    .px-28 {
+      padding-left: 28px;
+      padding-right: 28px;
+    }
+
+    .font-lato {
+      font-family: 'Lato', sans-serif;
+    }
+
+    .no-underline {
+      text-decoration: none;
+    }
+
+    .bg-brand-teal {
+      background-color: #539d98;
+    }
+
+    .border-none {
+      border: none;
+    }
+
+    .rounded-full {
+      border-radius: 9999px;
+    }
+
+    .uppercase {
+      text-transform: uppercase;
+    }
+
+    .text-sm {
+      font-size: 14px;
+    }
+
+    .relative {
+      position: relative;
+    }
+
+    .z-10 {
+      z-index: 10;
+    }
+
+    .object-cover {
+      object-fit: cover;
+    }
+
+    .text-brand-teal {
+      color: #90cac7;
+    }
+
+    .text-brand-teal-dark {
+      color: #539d98;
+    }
+
+    .bg-white {
+      background-color: white;
+    }
+
+    .absolute {
+      position: absolute;
+    }
+
+    .text-16px {
+      font-size: 16px;
+    }
+
+    .text-36px {
+      font-size: 36px;
+    }
+
+    .h-450px {
+      height: 450px;
+    }
+
+    /* sm screen size */
+    @media (min-width: 640px) {
+      .sm\:text-60px {
+        font-size: 60px;
+      }
+
+      .sm\:text-20px {
+        font-size: 20px;
+      }
+    }
+
+    /* md screen size */
+    @media (min-width: 768px) {
+      .md\:h-689px {
+        height: 689px;
+      }
+    }
+  </style>
+</head>
+<div class="relative">
+  <div
+    class="absolute inset-0 z-10 bg-gradient-to-b from-black to-transparent hidden md:block"
+    style="bottom: -35px;"
+  ></div>
+  <header
+    class="flex justify-between py-18 relative z-20 mx-auto px-6"
+    style="max-width: 1200px;"
+  >
+    <div class="flex justify-center items-center">
+      <img src="./logo.svg" alt="" style="margin-right: 50px;" />
+      <nav class="hidden md:block">
+        <a href="" class="text-white py-8 px-16 no-underline">Pricing</a>
+        <a href="" class="text-white py-8 px-16 no-underline">Courses</a>
+        <a href="" class="text-white py-8 px-16 no-underline">Blog</a>
+        <a href="" class="text-white py-8 px-16 no-underline">Forum</a>
+      </nav>
+    </div>
+    <div class="items-center hidden md:flex">
+      <a
+        href=""
+        class="text-white py-8 px-16 no-underline"
+        style="margin-right: 12px;"
+        >Login</a
+      >
+      <button
+        class="bg-brand-teal text-white border-none rounded-full py-12 px-28 font-bold uppercase text-sm"
+      >
+        Sign Up
+      </button>
+    </div>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="h-6 w-6 text-white md:hidden"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M4 6h16M4 12h16M4 18h16"
+      />
+    </svg>
+  </header>
+</div>
+
+<section
+  class="relative  overflow-hidden h-450px md:h-689px"
+  style="top: -80px;"
+>
+  <div class="absolute h-450px md:h-689px inset-x-0">
+    <div class="bg-black inset-0 absolute z-10 opacity-50 md:hidden"></div>
+    <video
+      loop="loop"
+      autoplay="autoplay"
+      playsinline
+      muted="muted"
+      class="w-full h-full object-cover"
+      style="top: -80px;"
+      src="./videos/galaxy.mp4"
+    ></video>
+  </div>
+
+  <!-- <img src="./img/hero.png" alt="" class="w-full"> -->
+  <div style="max-width: 1200px;" class="mx-auto pt-24 pb-8 md:pt-48 px-6">
+    <div class="relative z-10" style="max-width: 538px;">
+      <h1 class="text-white text-36px sm:text-60px font-bold leading-none">
+        Turbocharge your <span class="text-brand-teal">development career</span>
+      </h1>
+      <p
+        class="text-white text-16px sm:text-20px"
+        style="max-width: 449px; margin-top: 30px;"
+      >
+        Chris Courses provides students and professionals a college-level web
+        development education.
+      </p>
+      <button
+        style="margin-top: 28px; border-radius: 4px;"
+        class="bg-white text-brand-teal-dark border-none py-12 px-28 w-full md:w-auto"
+      >
+        Get started
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- stats section -->
+<section class="bg-gray-900 px-6">
+  <div style="top: -100px;" class="relative z-20">
+    <div
+      class="bg-gray-800 rounded-lg md:flex md:mx-auto md:divide-x md:divide-gray-600"
+      style="max-width: 878px;"
+    >
+      <div
+        class="text-center py-12 border-b md:border-b-0 border-solid border-gray-600 md:w-1/3"
+      >
+        <h2 class="text-purple-300 font-bold text-5xl">84</h2>
+        <p class="text-gray-300 text-lg">Lessons</p>
+      </div>
+      <div
+        class="text-center py-12 border-b md:border-b-0 border-solid border-gray-600 md:w-1/3"
+      >
+        <h2 class="text-purple-300 font-bold text-5xl">29</h2>
+        <p class="text-gray-300 text-lg">Hours of Content</p>
+      </div>
+
+      <div class="text-center py-12 md:w-1/3">
+        <h2 class="text-purple-300 font-bold text-5xl">5095</h2>
+        <p class="text-gray-300 text-lg">Students</p>
+      </div>
+    </div>
+    <p class="text-gray-500 text-xs text-center mt-4">
+      Metrics update real-time
+    </p>
+  </div>
+</section>
+
+<!-- Popular Courses Section -->
+<section class="bg-gray-900 px-6 pb-24">
+  <div class="container mx-auto text-white text-center">
+    <h2 class="font-bold text-4xl">Popular Courses</h2>
+    <p style="max-width: 518px; color: #9DA3AE;" class="mx-auto text-xl mt-4">
+      Whether you'd like to build a web app or learn creative coding techniques,
+      I'll teach you how.
+    </p>
+
+    <div
+      class="mt-16 space-y-8 md:space-y-0 md:flex md:space-x-8 md:justify-center"
+    >
+      <!-- card 1 -->
+      <div class="max-w-xs mx-auto md:mx-0 md:w-1/3 flex flex-col">
+        <img class="w-full" src="./img/popularCoursesImg1.png" alt="" />
+        <div style="background-color: #212936;" class="p-4 text-left h-full">
+          <h3 class="text-lg">HTML for Complete Beginners</h3>
+          <p class="text-sm mt-2" style="color: #D5D5DA">
+            Brand new to web development? Start here to learn the foundations
+            and begin your development journey.
+          </p>
+
+          <div class="flex space-x-8 mt-12 h-full">
+            <div>
+              <p class="text-sm" style="color: #9DA3AE;">
+                6 videos + 6 quizzes
+              </p>
+              <p class="text-xs" style="color: #D0D3D8">2:03 hours</p>
+            </div>
+            <div>
+              <p class="text-sm" style="color: #9DA3AE;">
+                Skill Level
+              </p>
+              <p class="text-xs" style="color: #D0D3D8">Beginner</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- card 2 -->
+      <div class="max-w-xs mx-auto md:mx-0 md:w-1/3 flex flex-col">
+        <img class="w-full" src="./img/popularCoursesImg2.png" alt="" />
+        <div style="background-color: #212936;" class="p-4 text-left h-full">
+          <h3 class="text-lg">HTML5 Canvas and JavaScript Games for ...</h3>
+          <p class="text-sm mt-2" style="color: #D5D5DA">
+            When I first started learning web development, I was able to get
+            text and images displaying in a browser, but...
+          </p>
+
+          <div class="flex space-x-8 mt-12">
+            <div>
+              <p class="text-sm" style="color: #9DA3AE;">
+                17 videos
+              </p>
+              <p class="text-xs" style="color: #D0D3D8">6:03 hours</p>
+            </div>
+            <div>
+              <p class="text-sm" style="color: #9DA3AE;">
+                Skill Level
+              </p>
+              <p class="text-xs" style="color: #D0D3D8">Beginner</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- card 3 -->
+      <div class="max-w-xs mx-auto md:mx-0 md:w-1/3 flex flex-col">
+        <img class="w-full" src="./img/popularCoursesImg3.png" alt="" />
+        <div style="background-color: #212936;" class="p-4 text-left h-full">
+          <h3 class="text-lg">Web Application Development for Beginne...</h3>
+          <p class="text-sm mt-2" style="color: #D5D5DA">
+            Ever wonder how user-based apps like Facebook, Gmail, and YouTube
+            are created? Wonder no more, thi...
+          </p>
+
+          <div class="flex space-x-8 mt-12">
+            <div>
+              <p class="text-sm" style="color: #9DA3AE;">
+                27 videos
+              </p>
+              <p class="text-xs" style="color: #D0D3D8">6:09 hours</p>
+            </div>
+            <div>
+              <p class="text-sm" style="color: #9DA3AE;">
+                Skill Level
+              </p>
+              <p class="text-xs" style="color: #D0D3D8">Beginner</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features Section #1 -->
+<section class="px-6 py-32 bg-gray-800 overflow-hidden">
+  <div class="container mx-auto lg:flex lg:space-x-12">
+    <div class="lg:w-1/2">
+      <h2 class="font-bold text-4xl text-white">
+        An affordable web dev education
+      </h2>
+      <p style="color: #9DA3AE;" class="text-xl mt-4">
+        Chris Courses was created as a way to give students a college-level
+        curriculum at a fraction of the cost. By becoming a part of Chris
+        Courses, you'll immediately gain access to:
+      </p>
+      <div class="mt-16 space-y-8">
+        <!-- perk 1 container -->
+        <div class="flex">
+          <!-- indigo icon box -->
+          <div
+            style="width: 48px; height: 48px;"
+            class="bg-indigo-600 rounded text-white flex items-center justify-center flex-shrink-0 mr-8"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <!-- indigo box end -->
+
+          <div>
+            <h3 class="text-lg font-bold text-white">Perk #1</h3>
+            <p style="color: #D1D5DB; max-width: 486px;">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </p>
+          </div>
+        </div>
+        <!-- end perk 1 container -->
+
+        <!-- perk 2 container -->
+        <div class="flex">
+          <!-- indigo icon box -->
+          <div
+            style="width: 48px; height: 48px;"
+            class="bg-indigo-600 rounded text-white flex items-center justify-center flex-shrink-0 mr-8"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"
+              />
+            </svg>
+          </div>
+          <!-- indigo box end -->
+
+          <div>
+            <h3 class="text-lg font-bold text-white">Perk #2</h3>
+            <p style="color: #D1D5DB; max-width: 486px;">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </p>
+          </div>
+        </div>
+        <!-- end perk 2 container -->
+
+        <!-- perk 3 container -->
+        <div class="flex">
+          <!-- indigo icon box -->
+          <div
+            style="width: 48px; height: 48px;"
+            class="bg-indigo-600 rounded text-white flex items-center justify-center flex-shrink-0 mr-8"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+              <path
+                fill-rule="evenodd"
+                d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm9.707 5.707a1 1 0 00-1.414-1.414L9 12.586l-1.293-1.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <!-- indigo box end -->
+
+          <div>
+            <h3 class="text-lg font-bold text-white">Perk #3</h3>
+            <p style="color: #D1D5DB; max-width: 486px;">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </p>
+          </div>
+        </div>
+        <!-- end perk 3 container -->
+      </div>
+    </div>
+    <!-- end w-1/2 -->
+    <div class="lg:w-1/2 relative mt-12 lg:mt-0">
+      <img
+        src="./img/feature1.png"
+        alt="Feature Example Course Sidebar"
+        class="relative z-10 mx-auto lg:m-0"
+      />
+      <svg
+        width="404"
+        height="784"
+        fill="none"
+        viewBox="0 0 404 784"
+        class="hidden lg:block absolute transform -translate-y-1/4 top-0 ml-32"
+      >
+        <defs>
+          <pattern
+            id="svg-pattern-squares-1"
+            x="0"
+            y="0"
+            width="20"
+            height="20"
+            patternUnits="userSpaceOnUse"
+          >
+            <rect
+              x="0"
+              y="0"
+              width="4"
+              height="4"
+              fill="currentColor"
+              class="text-gray-200 dark:text-gray-600"
+            ></rect>
+          </pattern>
+        </defs>
+        <rect
+          width="404"
+          height="784"
+          fill="url(#svg-pattern-squares-1)"
+        ></rect>
+      </svg>
+    </div>
+  </div>
+</section>

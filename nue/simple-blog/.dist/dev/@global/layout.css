@@ -1,0 +1,54 @@
+*, :before, :after {
+  box-sizing: border-box;
+}
+
+ul, ol, figure, pre {
+  margin: 2em 0;
+}
+
+body {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2% 5%;
+}
+
+body > header nav {
+  justify-content: space-between;
+  margin-bottom: 4rem;
+  display: flex;
+}
+
+body > header nav > a:first-child {
+  background: url("/img/avatar-rounded.jpg") 0 / 2em no-repeat;
+  padding-left: 2.5em;
+}
+
+body > header nav a {
+  padding: 1em 0;
+}
+
+body article > header {
+  margin-bottom: 2rem;
+}
+
+body article > section {
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+body > footer {
+  border-top: 1px solid var(--gray-200);
+  justify-content: space-between;
+  margin-top: 6rem;
+  padding: 1rem 0;
+  display: flex;
+}
+
+body > footer > :last-child {
+  gap: .5em;
+  display: flex;
+}
+
+body > footer > :last-child a:hover {
+  transform: scale(1.1);
+}
