@@ -1,0 +1,19 @@
+{
+  "name": "Scrim-s06kah",
+  "description": "https://scrimba.com/the-frontend-developer-career-path-c0j/~0b/s09dgtm6rb/head",
+  "scripts": {
+    "watch": "webpack -w",
+    "build": "webpack"
+  },
+  "dependencies": {
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
+    "webpack": "^2.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.0",
+    "babel-loader": "^7.0",
+    "babel-preset-env": "*",
+    "babel-preset-react": "*"
+  }
+}

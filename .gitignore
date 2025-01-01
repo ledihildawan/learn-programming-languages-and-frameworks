@@ -2,6 +2,8 @@
 .angular
 .dart_tool
 
+node_modules/
+
 ios
 web
 macos
