@@ -1,3 +1,89 @@
 Fakta bahwa sebagian besar waktu kita dihabiskan untuk bekerja, jadi mencintai pekerjaan adalah kunci utama untuk mencintai hidup. Jika pekerjaan kita memotivasi, menantang, dan memberikan imbalan yang baik, maka kita akan merasa lebih bersemangat untuk menjalani hari-hari kita.
 
 Memiliki keinginan kuat untuk menjadi hebat.
+
+const goat = {
+  dietType: 'herbivore',
+  makeSound() {
+    console.log('baaa');
+  },
+  diet: () => {
+    console.log(this.dietType);
+  }
+};
+
+goat.diet(); // Prints undefined
+
+Arrow functions inherently bind, or tie, an already defined this value to the function itself that is NOT the calling object. In the code snippet above, the value of this is the global object, or an object that exists in the global scope, which doesn’t have a dietType property and therefore returns undefined.
+
+---
+
+Debugging JavaScript Code
+JavaScript Error Types
+4 min
+
+Now that you can identify the type of error from an error stack trace, you might be wondering what the different types of
+Preview: Docs Loading link description
+errors
+mean.
+
+Here are three common error types:
+
+    SyntaxError: This error will be thrown when a typo creates invalid code — code that cannot be interpreted by the compiler. When this error is thrown, scan your code to make sure you properly opened and closed all brackets, braces, and parentheses and that you didn’t include any invalid semicolons.
+    ReferenceError: This error will be thrown if you try to use a variable that does not exist. When this error is thrown, make sure all
+    Preview: Docs Variables are used to store a piece of data at a named location in memory.
+    variables
+    are properly declared.
+    TypeError: This error will be thrown if you attempt to perform an operation on a value of the wrong type. For example, if we tried to use a string method on a number, it would throw a TypeError.
+
+There are seven types of built-in JavaScript errors in total. You can find more information about all of them at the MDN JavaScript Error documentation. Whenever you are confronted with an error you can’t comprehend, consulting this documentation is a great place to start.
+
+
+myVariable++;
+// 1 - What type of error will be thrown on the line above: ReferenceError
+
+const myString = 42;
+myString.substring(0);
+// 2 - What type of error will be thrown on the line above: TypeError
+
+const myRandomNumber; = Math.random();
+// 3 - What type of error will be thrown on the line above: SyntaxError
+
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error
+
+Based on the following error stack trace, fill in the answers to the questions below:
+
+------------------------------------------------------------------
+
+/home/ccuser/workspace/learn-javascript-debugging-code/script.js:5
+if (numberSum > total;) {
+                     ^
+
+SyntaxError: Unexpected token ;
+
+------------------------------------------------------------------
+
+From what file was this error thrown?
+1 - Answer: script.js
+On what line of that file was this error thrown?
+2 - Answer: 5
+What type of error was thrown in this stack trace?
+3 - Answer: SyntaxError
+What is the description of the error in this stack trace?
+4 - Answer: Unexpected token ;
+
+---
+
+setup, exercise, verify, and teardown
+
+
+    beforeEach(callback) - callback is run before each test
+    afterEach(callback) - callback is run after each test
+    before(callback) - callback is run before the first test
+    after(callback) - callback is run after the last test
+
+---
+
+badan sehat
+hati bersih
+spiritualitas
