@@ -1,0 +1,68 @@
+import { Title } from '../../types';
+
+export const titles: Title[] = [
+  {
+    titleID: 101,
+    titleName: 'Pride and Predicates',
+    price: '9.95',
+    advance: '5000',
+    royalty: '15',
+    publicationDate: new Date('2015-04-30'),
+  },
+  {
+    titleID: 102,
+    titleName: 'The Join Luck Club',
+    price: '9.95',
+    advance: '6000',
+    royalty: '12',
+    publicationDate: new Date('2016-02-06'),
+  },
+  {
+    titleID: 103,
+    titleName: 'Catcher in the Try',
+    price: '8.95',
+    advance: '5000',
+    royalty: '10',
+    publicationDate: new Date('2017-04-03'),
+  },
+  {
+    titleID: 104,
+    titleName: 'Anne of Fact Tables',
+    price: '12.95',
+    advance: '10000',
+    royalty: '15',
+    publicationDate: new Date('2018-01-12'),
+  },
+  {
+    titleID: 105,
+    titleName: 'The DateTime Machine',
+    price: '7.95',
+    advance: '5500',
+    royalty: '15',
+    publicationDate: new Date('2019-02-04'),
+  },
+  {
+    titleID: 106,
+    titleName: 'The Great GroupBy',
+    price: '10.95',
+    advance: '0',
+    royalty: '20',
+    publicationDate: new Date('2019-12-23'),
+  },
+  {
+    titleID: 107,
+    titleName: 'The Call of the While',
+    price: '8.95',
+    advance: '2500',
+    royalty: '15',
+    publicationDate: new Date('2020-03-14'),
+  },
+  {
+    titleID: 108,
+    titleName: 'The Sum Also Rises',
+    price: '7.95',
+    advance: '5000',
+    royalty: '12',
+    publicationDate: new Date('2021-11-12'),
+  },
+];

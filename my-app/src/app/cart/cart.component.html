@@ -1,0 +1,14 @@
+<div [formGroup]="cartForm">
+  <div formArrayName="products">
+    @for(product of cartForm.controls.products.controls; track $index) {
+      <mat-form-field>
+        <mat-label>{{products[$index].title}}</mat-label>
+        <input
+          [formControlName]="$index"
+          placeholder="{{products[$index].title}}"
+          type="number"
+          matInput />
+      </mat-form-field>
+    }
+  </div>
+</div>

@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Most Wealthy Nations Bar Chart with Custom Legend</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <!-- Highcharts -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <!-- jQuery (for Bootstrap) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <!-- Popper.js (for Bootstrap) -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+      /* Wrapper to position chart and legend using flex (or grid) */
+      #chart-wrapper {
+        display: flex;
+        justify-content: center;
+        padding: 10px;
+        gap: 8px;
+      }
+      /* Chart container styling */
+      #container {
+        width: 600px;
+        height: 500px;
+      }
+      /* Custom legend container styling */
+      #custom-legend {
+        font-family: Arial, sans-serif;
+        display: flex;
+        gap: 5px;
+        overflow: auto;
+      }
+      .legend-item {
+        padding: 3px 6px;
+        border: 1px solid transparent;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+      .legend-item:hover {
+        border-color: #ccc;
+      }
+      .see-more-button {
+        color: blue;
+        cursor: pointer;
+        font-weight: bold;
+        padding: 3px 6px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="config-controls" style="padding: 20px; text-align: center">
+      <label for="layout-select">Legend Layout:</label>
+      <select id="layout-select">
+        <option value="vertical">Vertical</option>
+        <option value="horizontal">Horizontal</option>
+      </select>
+
+      <label for="align-select">Align:</label>
+      <select id="align-select">
+        <option value="left">Left</option>
+        <option value="center">Center</option>
+        <option value="right">Right</option>
+      </select>
+
+      <label for="vertical-align-select">Vertical Align:</label>
+      <select id="vertical-align-select">
+        <option value="top">Top</option>
+        <option value="middle">Middle</option>
+        <option value="bottom">Bottom</option>
+      </select>
+    </div>
+
+    <!-- Parent Wrapper: Chart and Legend -->
+    <div id="chart-wrapper">
+      <!-- Chart Container -->
+      <div id="container"></div>
+      <!-- Custom Legend Container -->
+      <div id="custom-legend"></div>
+    </div>
+
+    <script>
+      var legendConfig = {
+        layout: "vertical", // vertical or horizontal
+        align: "left", // used when layout is horizontal:left:center:right
+        verticalAlign: "top", // used when layout is vertical: top:middle:bottom
+      };
+
+      var containerElem = document.getElementById("container");
+      var chartWrapper = document.getElementById("chart-wrapper");
+      var legendContainer = document.getElementById("custom-legend");
+      var chartHeight = containerElem.getBoundingClientRect().height;
+      var chartWidth = containerElem.getBoundingClientRect().width;
+
+      function render() {
+        /***** Data for the Chart *****/
+        // Data for the most wealthy nations by GDP (trillion USD)
+        var nationsData = [
+          { name: "USA", gdp: 21.43 },
+          { name: "China", gdp: 14.34 },
+          { name: "Japan", gdp: 5.08 },
+          { name: "Germany", gdp: 3.86 },
+          { name: "UK", gdp: 2.83 },
+          { name: "India", gdp: 2.87 },
+          { name: "France", gdp: 2.71 },
+          { name: "Italy", gdp: 2.0 },
+          { name: "Canada", gdp: 1.74 },
+          { name: "South Korea", gdp: 1.63 },
+        ];
+
+        // Convert nationsData into Highcharts series data (each series contains one data point)
+        var seriesData = nationsData.map(function (nation) {
+          return {
+            name: nation.name,
+            data: [nation.gdp],
+          };
+        });
+
+        /***** Create the Highcharts Bar Chart *****/
+        var chart = Highcharts.chart("container", {
+          chart: {
+            type: "bar",
+          },
+          title: {
+            text: "Most Wealthy Nations by GDP (trillion USD)",
+          },
+          xAxis: {
+            categories: ["GDP"],
+          },
+          legend: {
+            enabled: false, // disable built-in legend
+          },
+          series: seriesData,
+        });
+
+        legendContainer.style.flexDirection = legendConfig.layout === "horizontal" ? "row" : "column";
+        legendContainer.style.overflowX = "auto";
+        legendContainer.style.maxWidth = chartWidth + "px";
+        legendContainer.style.maxHeight = chartHeight + "px";
+
+        legendContainer.style.position = "unset";
+        legendContainer.style.top = "unset";
+        legendContainer.style.left = "unset";
+        legendContainer.style.transform = "unset";
+
+        legendContainer.style.width = "100%";
+
+        if (legendConfig.layout === "vertical") {
+          chartWrapper.style.flexDirection = "column";
+
+          if (legendConfig.verticalAlign === "top") {
+            chartWrapper.style.flexDirection = "column-reverse";
+            chartWrapper.style.alignItems = "flex-start";
+          } else if (legendConfig.verticalAlign === "middle") {
+            chartWrapper.style.alignItems = "center";
+
+            if (legendConfig.align === "center") {
+              legendContainer.style.position = "absolute";
+              legendContainer.style.top = "50%";
+              legendContainer.style.left = "50%";
+              legendContainer.style.transform = "translate(-50%, -50%)";
+            }
+          } else if (legendConfig.verticalAlign === "bottom") {
+            chartWrapper.style.alignItems = "flex-end";
+          }
+
+          if (legendConfig.align === "left") {
+            chartWrapper.style.flexDirection = "row-reverse";
+            legendContainer.style.alignItems = "flex-start";
+            legendContainer.style.width = "unset";
+          } else if (legendConfig.align === "center") {
+            legendContainer.style.width = "100%";
+            legendContainer.style.alignItems = "center";
+          } else if (legendConfig.align === "right") {
+            legendContainer.style.width = "unset";
+            chartWrapper.style.flexDirection = "row";
+            legendContainer.style.alignItems = "flex-end";
+          }
+        } else {
+          chartWrapper.style.flexDirection = "column";
+
+          if (legendConfig.verticalAlign === "top") {
+            chartWrapper.style.flexDirection = "column-reverse";
+          } else if (legendConfig.verticalAlign === "middle" && legendConfig.align === "center") {
+            legendContainer.style.position = "absolute";
+            legendContainer.style.top = "50%";
+            legendContainer.style.left = "50%";
+            legendContainer.style.transform = "translate(-50%, -50%)";
+          } else if (legendConfig.verticalAlign === "bottom") {
+            chartWrapper.style.flexDirection = "column";
+          }
+
+          if (legendConfig.align === "left") {
+            legendContainer.style.justifyContent = "flex-start";
+
+            if (legendConfig.verticalAlign === "middle") {
+              chartWrapper.style.flexDirection = "row-reverse";
+              chartWrapper.style.alignItems = "center";
+              legendContainer.style.flexDirection = "column";
+            }
+          } else if (legendConfig.align === "center") {
+            legendContainer.style.justifyContent = "center";
+          } else if (legendConfig.align === "right") {
+            legendContainer.style.justifyContent = "flex-end";
+
+            if (legendConfig.verticalAlign === "middle") {
+              chartWrapper.style.flexDirection = "row";
+              chartWrapper.style.alignItems = "center";
+            }
+          }
+        }
+
+        /***** Build the Custom Legend *****/
+        var maxVisibleItems = 5;
+        for (var i = 0; i < Math.min(maxVisibleItems, chart.series.length); i++) {
+          (function (serie) {
+            var legendItem = document.createElement("span");
+            legendItem.className = "legend-item";
+            legendItem.innerText = serie.name;
+            legendItem.style.opacity = serie.visible ? "1" : "0.5";
+            // Toggle series visibility on click
+            legendItem.onclick = function () {
+              if (serie.visible) {
+                serie.hide();
+                legendItem.style.opacity = "0.5";
+              } else {
+                serie.show();
+                legendItem.style.opacity = "1";
+              }
+            };
+            legendContainer.appendChild(legendItem);
+          })(chart.series[i]);
+        }
+
+        /***** "See more" Button & Dynamic Modal for Additional Data *****/
+        if (chart.series.length > maxVisibleItems) {
+          var seeMoreBtn = document.createElement("span");
+          seeMoreBtn.className = "see-more-button";
+          seeMoreBtn.innerText = "See more";
+          legendContainer.appendChild(seeMoreBtn);
+
+          // Dynamically create the modal template entirely in JavaScript
+          var modalHTML = `
+        <div class="modal fade" id="seeMoreModal" tabindex="-1" role="dialog" aria-labelledby="seeMoreModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="seeMoreModalLabel">All Nations Data</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Nation</th>
+                      <th>GDP (trillion USD)</th>
+                    </tr>
+                  </thead>
+                  <tbody id="legendTableBody"></tbody>
+                </table>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+          document.body.insertAdjacentHTML("beforeend", modalHTML);
+
+          seeMoreBtn.onclick = function () {
+            var tableBody = document.getElementById("legendTableBody");
+            tableBody.innerHTML = ""; // Clear any existing rows
+
+            chart.series.forEach(function (serie) {
+              var row = document.createElement("tr");
+              var nameCell = document.createElement("td");
+              nameCell.innerText = serie.name;
+              row.appendChild(nameCell);
+              var dataCell = document.createElement("td");
+              dataCell.innerText = serie.options.data[0];
+              row.appendChild(dataCell);
+              tableBody.appendChild(row);
+            });
+            // Use jQuery to show the modal
+            $("#seeMoreModal").modal("show");
+          };
+        }
+      }
+
+      function updateConfig() {
+        legendConfig.layout = document.getElementById("layout-select").value;
+        legendConfig.verticalAlign = document.getElementById("vertical-align-select").value;
+        legendConfig.align = document.getElementById("align-select").value;
+
+        console.log(legendConfig);
+
+        legendContainer.innerHTML = "";
+
+        render();
+
+        let widest = 0;
+        const seeMoreEl = document.querySelector(".see-more-button");
+        const seeMoreElWidth = seeMoreEl.getBoundingClientRect().width;
+
+        document.querySelectorAll(".legend-item").forEach((el) => {
+          const widthEl = el.getBoundingClientRect().width;
+
+          if (widthEl > widest) {
+            widest = widthEl;
+          }
+        });
+
+        if (seeMoreElWidth > widest) {
+          widest = seeMoreElWidth;
+        }
+
+        document.querySelectorAll(".legend-item").forEach((el) => {
+          el.style.width = widest + "px";
+        });
+      }
+
+      document.getElementById("layout-select").addEventListener("change", updateConfig);
+      document.getElementById("vertical-align-select").addEventListener("change", updateConfig);
+      document.getElementById("align-select").addEventListener("change", updateConfig);
+
+      document.getElementById("layout-select").value = legendConfig.layout;
+      document.getElementById("vertical-align-select").value = legendConfig.verticalAlign;
+      document.getElementById("align-select").value = legendConfig.align;
+
+      render();
+    </script>
+  </body>
+</html>

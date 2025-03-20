@@ -1,0 +1,14 @@
+{
+  "db": {
+    "name": "db",
+    "connector": "mongodb",
+    "url": "mongodb+srv://ledi:ledi@cluster0.xjggk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+  },
+  "myFile": {
+    "name": "myFile",
+    "connector": "loopback-component-storage",
+    "provider": "filesystem",
+    "root": "./server/storage",
+    "nameConflict": "makeUnique"
+  }
+}

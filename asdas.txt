@@ -1,0 +1,66 @@
+10 Principle for Good Design
+
+- Good design is innovative
+- Good design makes a product useful
+- Good design is aesthetic
+- Good design makes a product understandable
+- Good design is unobtrusive
+- Good design is honest
+- Good design is long-lasting
+- Good design is through down to the last detail
+- Good design is environmentally-friendly
+- Good design is as little design as possible
+
+For good UX Design, you should follow these practices:
+
+- The product should be easily usable, logical, and self-explanatory
+- The product should solve the user's problem
+- The product should be accessable and usable to a wide range of people
+- The product should create a positive experience 
+
+Grid and Layout
+
+For Desktop
+
+- Columns: 12
+- Rows
+- Gutters: 12, 14, 16
+- Margins: 160, 180
+
+Most screen sizes are divisible by 8, so with the 8pt rule, all the dimensions of elements must be a multiple of 8, like 16, 24, 32, 40, and so on. This rule will create consistency in design but also reduce implementation time.
+
+For Mobile
+
+- Columns: 4
+- Rows
+- Gutters: 16
+- Margins: 16, 20, 24
+
+Typography
+
+Line height inversely scales with font size: small text uses a multiplier of 1.6 (e.g. 16pt becomes ~26pt), while large text (>32pt) works best with 1.3 or 1.1. Optimal line length balances readability—too short makes text choppy; too long strains the reader’s eye.
+
+Letter spacing, usually 0 by default, improves readability by adjusting gaps between letters—minor kerning may be needed for adjacent capitals, though most fonts follow well-calibrated design guidelines.
+
+Type Scale
+
+Heading 1 - 48
+Heading 2 - 36
+Heading 3 - 30
+Heading 4 - 24
+Heading 5 - 20
+Heading 6 - 16
+Lead Text - 20
+Paragraph - 16
+Small - 14
+Tiny - 12
+
+Hello John Doe! 👋
+
+Thank you for booking with us! Here are your appointment details:
+
+📅 Date & Time: 20 Maret 2025, 21:00 WITA
+💈 Service: Paket Classic
+📍 Location: Google Maps
+
+Please arrive on time, and let us know if you need any changes. See you soon! 😊✂️

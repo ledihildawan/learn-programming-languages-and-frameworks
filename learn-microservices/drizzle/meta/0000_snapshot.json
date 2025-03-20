@@ -1,0 +1,339 @@
+{
+  "id": "3db78c6c-0e89-4742-b123-ac2b0ca3bf7b",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.Author": {
+      "name": "Author",
+      "schema": "",
+      "columns": {
+        "AuthorID": {
+          "name": "AuthorID",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "FirstName": {
+          "name": "FirstName",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "MiddleName": {
+          "name": "MiddleName",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "LastName": {
+          "name": "LastName",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "PaymentMethod": {
+          "name": "PaymentMethod",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.Customer": {
+      "name": "Customer",
+      "schema": "",
+      "columns": {
+        "CustomerID": {
+          "name": "CustomerID",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "FirstName": {
+          "name": "FirstName",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "LastName": {
+          "name": "LastName",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Address": {
+          "name": "Address",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "City": {
+          "name": "City",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "State": {
+          "name": "State",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Zip": {
+          "name": "Zip",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Country": {
+          "name": "Country",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.MyFirstQuery": {
+      "name": "MyFirstQuery",
+      "schema": "",
+      "columns": {
+        "Outcome": {
+          "name": "Outcome",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.OrderHeader": {
+      "name": "OrderHeader",
+      "schema": "",
+      "columns": {
+        "OrderID": {
+          "name": "OrderID",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "CustomerID": {
+          "name": "CustomerID",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "PromotionID": {
+          "name": "PromotionID",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "OrderDate": {
+          "name": "OrderDate",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.OrderItem": {
+      "name": "OrderItem",
+      "schema": "",
+      "columns": {
+        "OrderID": {
+          "name": "OrderID",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "OrderItem": {
+          "name": "OrderItem",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "TitleID": {
+          "name": "TitleID",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Quantity": {
+          "name": "Quantity",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ItemPrice": {
+          "name": "ItemPrice",
+          "type": "numeric(5, 2)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.Promotion": {
+      "name": "Promotion",
+      "schema": "",
+      "columns": {
+        "PromotionID": {
+          "name": "PromotionID",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "PromotionCode": {
+          "name": "PromotionCode",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "PromotionStartDate": {
+          "name": "PromotionStartDate",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "PromotionEndDate": {
+          "name": "PromotionEndDate",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.Title": {
+      "name": "Title",
+      "schema": "",
+      "columns": {
+        "TitleID": {
+          "name": "TitleID",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "TitleName": {
+          "name": "TitleName",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Price": {
+          "name": "Price",
+          "type": "numeric(5, 2)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Advance": {
+          "name": "Advance",
+          "type": "numeric(8, 2)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Royalty": {
+          "name": "Royalty",
+          "type": "numeric(5, 2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "PublicationDate": {
+          "name": "PublicationDate",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.TitleAuthor": {
+      "name": "TitleAuthor",
+      "schema": "",
+      "columns": {
+        "TitleID": {
+          "name": "TitleID",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "AuthorID": {
+          "name": "AuthorID",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "AuthorOrder": {
+          "name": "AuthorOrder",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
