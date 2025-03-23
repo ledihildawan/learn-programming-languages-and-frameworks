@@ -3,6 +3,10 @@ package main
 import "fmt"
 
 func main() {
+	const version = "0.0.1"
+
+	fmt.Println(version)
+
 	var favColor = "Blue"
 	fmt.Println("my favorite color is", favColor)
 
