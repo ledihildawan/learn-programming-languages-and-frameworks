@@ -10,8 +10,8 @@ func main() {
 	fmt.Println("Born in", birthYear, "aged", ageInYears, "years")
 
 	var (
-		firstInitial = "L",
-		lastInitial = "H"
+		firstInitial = "L"
+		lastInitial  = "H"
 	)
 	fmt.Println("Initials=", firstInitial, lastInitial)
 
