@@ -1,0 +1,22 @@
+{
+  "name": "medium-elysiajs",
+  "version": "1.0.50",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "bun run --watch src/index.ts"
+  },
+  "dependencies": {
+    "@elysiajs/jwt": "^1.2.0",
+    "@elysiajs/swagger": "^1.2.2",
+    "@neondatabase/serverless": "^0.10.4",
+    "drizzle-orm": "^0.41.0",
+    "drizzle-typebox": "^0.3.0",
+    "elysia": "latest",
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "bun-types": "latest",
+    "drizzle-kit": "^0.30.5"
+  },
+  "module": "src/index.js"
+}
