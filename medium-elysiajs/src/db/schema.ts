@@ -1,4 +1,5 @@
-import { bigserial, pgTable, text, varchar } from 'drizzle-orm/pg-core';
+import { relations } from 'drizzle-orm';
+import { bigint, bigserial, numeric, pgTable, text, timestamp, varchar } from 'drizzle-orm/pg-core';
 
 export const tag = pgTable('tags', {
   id: bigserial({ mode: 'number' }).notNull().primaryKey(),
@@ -14,9 +15,36 @@ export const user = pgTable('users', {
   password: varchar().notNull(),
 });
 
+export const userRelations = relations(user, ({ many }) => ({
+  articles: many(article),
+}));
+
+export const article = pgTable('articles', {
+  id: bigserial({ mode: 'number' }).notNull().primaryKey(),
+  slug: text(),
+  title: text().notNull(),
+  description: text().default(''),
+  body: text().default(''),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+  tagList: text('tag_list').array().notNull(),
+  favoritesCount: numeric('favorites_count').default('0'),
+  authorId: bigint('author_id', { mode: 'number' })
+    .notNull()
+    .references(() => user.id),
+});
+
+export const articleRelations = relations(article, ({ one }) => ({
+  author: one(user, {
+    fields: [article.authorId],
+    references: [user.id],
+  }),
+}));
+
 export const table = {
   tag,
   user,
+  article,
 } as const;
 
 export type Table = typeof table;

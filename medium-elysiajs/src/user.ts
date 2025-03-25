@@ -7,7 +7,7 @@ import { table } from './db/schema';
 import { first, recordExists } from './db/utils';
 import { User } from './types';
 
-async function auth(app: Elysia) {
+export async function auth(app: Elysia) {
   return app
     .use(
       jwt({
