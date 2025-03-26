@@ -1,5 +1,5 @@
 import { relations } from 'drizzle-orm';
-import { bigint, bigserial, numeric, pgTable, text, timestamp, varchar } from 'drizzle-orm/pg-core';
+import { bigint, bigserial, pgTable, text, timestamp, varchar } from 'drizzle-orm/pg-core';
 
 export const tag = pgTable('tags', {
   id: bigserial({ mode: 'number' }).notNull().primaryKey(),
@@ -28,7 +28,7 @@ export const article = pgTable('articles', {
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
   tagList: text('tag_list').array().notNull(),
-  favoritesCount: numeric('favorites_count').default('0'),
+  favoritesCount: bigint('favorites_count', { mode: 'number' }).default(0),
   authorId: bigint('author_id', { mode: 'number' })
     .notNull()
     .references(() => user.id),

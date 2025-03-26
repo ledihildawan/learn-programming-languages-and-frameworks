@@ -1,4 +1,4 @@
-import { eq } from 'drizzle-orm';
+import { arrayContains, eq } from 'drizzle-orm';
 import Elysia, { t } from 'elysia';
 import slugify from 'slugify';
 import { db } from './db';
@@ -14,7 +14,7 @@ export function getSlug(title: string) {
 export const article = new Elysia({ prefix: '/articles' })
   .get(
     '/:slug',
-    async ({ params }) => {
+    async ({ params, error }) => {
       const article = await first(
         db
           .select()
@@ -23,6 +23,10 @@ export const article = new Elysia({ prefix: '/articles' })
           .where(eq(table.article.slug, params.slug))
           .limit(1)
       );
+
+      if (!article) {
+        return error(404, 'Article does not exist');
+      }
 
       return {
         article,
@@ -118,6 +122,107 @@ export const article = new Elysia({ prefix: '/articles' })
           body: t.Optional(t.String()),
           tagList: t.Optional(t.Array(t.String())),
         }),
+      }),
+    }
+  )
+  .patch(
+    '/:slug/favorite',
+    async ({ params, error }) => {
+      console.log('Tes');
+
+      const currentArticle = await first(
+        db.select().from(table.article).where(eq(table.article.slug, params.slug)).limit(1)
+      );
+
+      if (!currentArticle) {
+        return error(404, 'Article does not exist');
+      }
+
+      const updatedArticle = await first(
+        db
+          .update(table.article)
+          .set({
+            favoritesCount: currentArticle!.favoritesCount! + 1,
+          })
+          .returning()
+      );
+
+      return {
+        user: updatedArticle,
+      };
+    },
+    {
+      params: t.Object({
+        slug: t.String(),
+      }),
+    }
+  )
+  .patch(
+    '/:slug/favorite',
+    async ({ params, error }) => {
+      console.log('Tes');
+
+      const currentArticle = await first(
+        db.select().from(table.article).where(eq(table.article.slug, params.slug)).limit(1)
+      );
+
+      if (!currentArticle) {
+        return error(404, 'Article does not exist');
+      }
+
+      const updatedArticle = await first(
+        db
+          .update(table.article)
+          .set({
+            favoritesCount: currentArticle!.favoritesCount! - 1,
+          })
+          .returning()
+      );
+
+      return {
+        user: updatedArticle,
+      };
+    },
+    {
+      params: t.Object({
+        slug: t.String(),
+      }),
+    }
+  )
+  .get(
+    '/',
+    async ({ query, auth, error }) => {
+      const qb = db.select().from(table.article).leftJoin(table.user, eq(table.article.authorId, table.user.id));
+
+      if (query.tag) {
+        qb.where(arrayContains(table.article.tagList, [query.tag]));
+      }
+
+      if (query.author) {
+        const author = await first(db.select().from(table.user).where(eq(table.user.username, query.author)));
+
+        if (!author) {
+          return error(404, 'Author is not found');
+        }
+
+        qb.where(eq(table.article.authorId, author!.id!));
+      }
+
+      const articles = await qb;
+      const articlesCount = await db.$count(qb);
+
+      return {
+        articles,
+        articlesCount,
+      };
+    },
+    {
+      query: t.Object({
+        tag: t.Optional(t.String()),
+        author: t.Optional(t.String()),
+        favorited: t.Optional(t.String()),
+        limit: t.Optional(t.String()),
+        offset: t.Optional(t.String()),
       }),
     }
   );
