@@ -1,11 +1,11 @@
-import { createEnv } from '@t3-oss/env-nextjs';
-import { z } from 'zod';
+import { createEnv } from "@t3-oss/env-nextjs";
+import { z } from "zod";
 
 export const env = createEnv({
   client: {
-    NEXT_PUBLIC_DATABASE_URI: z.string().url(),
+    NEXT_PUBLIC_DATABASE_URL: z.string().url(),
   },
   runtimeEnv: {
-    NEXT_PUBLIC_DATABASE_URI: process.env.NEXT_PUBLIC_DATABASE_URI,
+    NEXT_PUBLIC_DATABASE_URL: process.env.NEXT_PUBLIC_DATABASE_URL,
   },
 });

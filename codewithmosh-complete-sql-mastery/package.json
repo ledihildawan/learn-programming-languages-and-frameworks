@@ -40,6 +40,7 @@
     "react-day-picker": "^9",
     "react-dom": "^19.0.0",
     "react-phone-number-input": "^3.4.12",
+    "react-use-websocket": "^4.13.0",
     "tailwind-merge": "^3.0.2",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.24.2"
