@@ -17,7 +17,7 @@ const router = () => (app: App) =>
         .group('/users', (app) => app.use(user()))
     );
 
-const app = new Elysia()
+export const app = new Elysia()
   .use(swagger())
   .use(
     jwt({
