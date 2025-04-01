@@ -1,7 +1,8 @@
 import db from '@/db';
 import { first } from '@/db/utils';
+import type { App } from '@/index';
 import { eq } from 'drizzle-orm';
-import Elysia, { t } from 'elysia';
+import { t } from 'elysia';
 import { rolesTable } from './table';
 
 const bodyManipulationValidation = t.Object({
@@ -13,51 +14,52 @@ const paramsManipulationValidation = t.Object({
   roleId: t.Number(),
 });
 
-export const role = new Elysia({ prefix: '/roles' })
-  .get('/', async () => {
-    const data = await db.select().from(rolesTable);
-
-    return data;
-  })
-  .post(
-    '/',
-    async ({ body }) => {
-      const data = await first(db.insert(rolesTable).values(body).returning());
+export const role = () => (app: App) =>
+  app
+    .get('/', async () => {
+      const data = await db.select().from(rolesTable);
 
       return data;
-    },
-    {
-      body: bodyManipulationValidation,
-    }
-  )
-  .patch(
-    '/:roleId',
-    async ({ params: { roleId }, body, error }) => {
-      const data = await first(db.update(rolesTable).set(body).where(eq(rolesTable.roleId, roleId)).returning());
+    })
+    .post(
+      '/',
+      async ({ body }) => {
+        const data = await first(db.insert(rolesTable).values(body).returning());
 
-      if (!data) {
-        return error(404);
+        return data;
+      },
+      {
+        body: bodyManipulationValidation,
       }
+    )
+    .patch(
+      '/:roleId',
+      async ({ params: { roleId }, body, error }) => {
+        const data = await first(db.update(rolesTable).set(body).where(eq(rolesTable.roleId, roleId)).returning());
 
-      return data;
-    },
-    {
-      body: bodyManipulationValidation,
-      params: paramsManipulationValidation,
-    }
-  )
-  .delete(
-    '/:roleId',
-    async ({ params: { roleId }, error }) => {
-      const data = await first(db.delete(rolesTable).where(eq(rolesTable.roleId, roleId)).returning());
+        if (!data) {
+          return error(404);
+        }
 
-      if (!data) {
-        return error(404);
+        return data;
+      },
+      {
+        body: bodyManipulationValidation,
+        params: paramsManipulationValidation,
       }
+    )
+    .delete(
+      '/:roleId',
+      async ({ params: { roleId }, error }) => {
+        const data = await first(db.delete(rolesTable).where(eq(rolesTable.roleId, roleId)).returning());
 
-      return data;
-    },
-    {
-      params: paramsManipulationValidation,
-    }
-  );
+        if (!data) {
+          return error(404);
+        }
+
+        return data;
+      },
+      {
+        params: paramsManipulationValidation,
+      }
+    );

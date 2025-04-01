@@ -1,29 +1,23 @@
 import db from '@/db';
 import { checkIfRecordExistsInColumn, first } from '@/db/utils';
-import { adminGuard } from '@/guards/admin';
+import type { App } from '@/index';
 import { eq } from 'drizzle-orm';
-import Elysia, { t } from 'elysia';
+import { t } from 'elysia';
 import { usersTable } from './table';
 
-export const user = new Elysia({ prefix: '/users' }).use(adminGuard).group('/', (app) =>
+export const user = () => (app: App) =>
   app
-    .derive(({ auth, error }) => {
-      if (auth.role !== 'admin') {
-        return error(403);
-      }
-    })
     .post(
       '',
-      async ({ body, error, auth }) => {
+      async ({ body, error }) => {
         let emailExists = await checkIfRecordExistsInColumn(usersTable, 'email', body.email);
 
-        if (auth)
-          if (emailExists) {
-            return error(422, {
-              summary: 'Email already exists',
-              message: 'The email provided is already registered',
-            });
-          }
+        if (emailExists) {
+          return error(422, {
+            summary: 'Email already exists',
+            message: 'The email provided is already registered',
+          });
+        }
 
         const user = await db.insert(usersTable).values(body).returning();
 
@@ -61,5 +55,4 @@ export const user = new Elysia({ prefix: '/users' }).use(adminGuard).group('/', 
           email: t.String({ format: 'email' }),
         }),
       }
-    )
-);
+    );
