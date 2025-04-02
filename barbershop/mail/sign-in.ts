@@ -1,5 +1,5 @@
-export function setupTemplateEmailSignIn(token: string) {
-  const magicLink = `${process.env.APP_URL}/auth/verify?token=${token}`;
+export function setupTemplateEmailSignIn(verificationToken: string) {
+  const magicLink = `${process.env.APP_URL}/auth/verify?verification_token=${verificationToken}`;
 
   return `
     <!DOCTYPE html>

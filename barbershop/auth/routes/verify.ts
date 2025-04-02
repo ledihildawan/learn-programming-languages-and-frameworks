@@ -1,17 +1,18 @@
 import db from '@/db';
 import { rolesTable, usersTable } from '@/db/schema';
 import { first } from '@/db/utils';
+import type { App } from '@/index';
 import type { User } from '@/types';
 import { eq } from 'drizzle-orm';
 import { t } from 'elysia';
-import { ERROR, SUCCESS } from '../constants';
+import { ERROR, INFO, SUCCESS } from '../constants';
 import { decodeToken } from '../helpers';
 
-export const verifyRoute = (app) =>
+export const verifyRoute = (app: App) =>
   app.get(
     '/verify',
     async ({ query, jwt, error }) => {
-      let decoded = await decodeToken(jwt)(query.token);
+      let decoded = await decodeToken(jwt)(query.verificationToken);
 
       if (!decoded) return error(400, ERROR.INVALID_TOKEN);
 
@@ -25,6 +26,7 @@ export const verifyRoute = (app) =>
             lastSignInAt: usersTable.lastSignInAt,
             emailVerifiedAt: usersTable.emailVerifiedAt,
             isEmailVerified: usersTable.isEmailVerified,
+            verificationToken: usersTable.verificationToken,
           })
           .from(usersTable)
           .where(eq(usersTable.email, decoded.email))
@@ -33,16 +35,15 @@ export const verifyRoute = (app) =>
 
       if (!user) return error(404, ERROR.EMAIL_NOT_FOUND);
 
-      decoded = await decodeToken(jwt)(user.token!);
+      decoded = await decodeToken(jwt)(user.verificationToken!);
 
       if (user.isSignIn && user.isEmailVerified) {
         return {
+          ...INFO.EMAIL_ALREADY_SIGNED_IN,
           data: {
             user: decoded,
             token: user.token,
           },
-          status: 'info',
-          message: 'You are already logged in. Please continue your session.',
         };
       }
 
@@ -53,9 +54,11 @@ export const verifyRoute = (app) =>
       if (!user.isEmailVerified) updates.isEmailVerified = true;
       if (!user.emailVerifiedAt) updates.emailVerifiedAt = new Date();
 
+      if (user.verificationToken) updates.verificationToken = null;
+
       await db.update(usersTable).set(updates).where(eq(usersTable.userId, user.userId));
 
-      if (!updates.isSignIn && user.isEmailVerified) {
+      if (!updates.isSignIn && user.isEmailVerified && user.verificationToken) {
         return error(409, ERROR.EMAIL_ALREADY_VERIFIED);
       }
 
@@ -72,6 +75,8 @@ export const verifyRoute = (app) =>
           .where(eq(usersTable.email, decoded!.email))
           .limit(1)
       );
+
+      console.log(updatedUser, decoded);
 
       const newToken = await jwt.sign({
         role: updatedUser!.role!,
@@ -91,6 +96,6 @@ export const verifyRoute = (app) =>
       };
     },
     {
-      query: t.Object({ token: t.String() }),
+      query: t.Object({ verificationToken: t.String() }),
     }
   );

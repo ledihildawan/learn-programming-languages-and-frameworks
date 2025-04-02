@@ -5,7 +5,7 @@ import type { App } from '@/index';
 import { eq } from 'drizzle-orm';
 import { t } from 'elysia';
 import { ERROR, INFO, SUCCESS } from '../constants';
-import { ensureFreshToken, sendVerificationEmail } from '../helpers';
+import { createTokenVerification, sendVerificationEmail } from '../helpers';
 import { authJwt } from '../plugin';
 
 export const signInRoute = (app: App) =>
@@ -28,17 +28,19 @@ export const signInRoute = (app: App) =>
       );
 
       if (!user) return error(404, ERROR.EMAIL_NOT_FOUND);
+
+      if (user.isSignIn && user.token) return INFO.EMAIL_ALREADY_SIGNED_IN;
+
       if (!user.isEmailVerified) return error(401, ERROR.EMAIL_NOT_VERIFIED);
 
-      const { token, isFreshToken } = await ensureFreshToken({
-        jwt,
+      const { verificationToken, isFreshToken } = await createTokenVerification(jwt)({
         email: user.email,
-        token: user.verificationToken!,
+        verificationToken: user.verificationToken!,
         userId: user.userId,
       });
 
-      if (!isFreshToken) {
-        await sendVerificationEmail(user.email, token as string, 'signin');
+      if (isFreshToken) {
+        await sendVerificationEmail(user.email, verificationToken, 'signin');
       }
 
       if (user.isEmailVerified && user.isSignIn) return INFO.EMAIL_ALREADY_SIGNED_IN;

@@ -2,11 +2,10 @@ import db from '@/db';
 import { usersTable } from '@/db/schema';
 import { first } from '@/db/utils';
 import type { App } from '@/index';
-import type { Nullable, User } from '@/types';
 import { eq } from 'drizzle-orm';
 import { t } from 'elysia';
-import { ERROR, SUCCESS } from '../constants';
-import { createToken, decodeToken, sendVerificationEmail } from '../helpers';
+import { ERROR, INFO, SUCCESS } from '../constants';
+import { createTokenVerification, sendVerificationEmail } from '../helpers';
 import { authJwt } from '../plugin';
 
 export const signUpRoute = (app: App) =>
@@ -15,45 +14,39 @@ export const signUpRoute = (app: App) =>
     async ({ body, jwtSignUp: jwt, error }) => {
       const existingUser = await first(db.select().from(usersTable).where(eq(usersTable.email, body.email)).limit(1));
 
-      if (existingUser) {
-        const decoded = await decodeToken(jwt)(existingUser.token!);
-
-        let token: Nullable<string>;
-
-        const response = { ...ERROR.EMAIL_ALREADY_REGISTERED };
-
-        if (existingUser.isEmailVerified) {
-          response.message = 'The email address is already registered and verified.';
-          if (!existingUser.isSignIn) {
-            response.message += ' Please sign in.';
-          }
-        } else {
-          response.message = `The email address is already registered. Please check your inbox for a verification email. If you haven't received it, please check your spam folder or request a new one.`;
-        }
-
-        if (!decoded) {
-          token = await createToken(jwt)(existingUser.email);
-
-          await db
-            .update(usersTable)
-            .set({ verificationToken: token })
-            .where(eq(usersTable.userId, existingUser.userId));
-
-          await sendVerificationEmail(existingUser.email, token, 'signup');
-        }
-
-        return error(422, response);
+      if (existingUser?.isSignIn && existingUser?.token) {
+        return INFO.EMAIL_ALREADY_SIGNED_UP;
       }
 
-      const newUser = (await first(db.insert(usersTable).values(body).returning())) as User;
+      if (!existingUser) {
+        const newUser = await first(db.insert(usersTable).values(body).returning());
 
-      const token = await createToken(jwt)(newUser.email);
+        const { verificationToken } = await createTokenVerification(jwt)({
+          email: newUser!.email,
+          userId: newUser!.userId,
+          verificationToken: newUser!.verificationToken!,
+        });
 
-      await db.update(usersTable).set({ token }).where(eq(usersTable.userId, newUser.userId!));
+        await sendVerificationEmail(newUser!.email, verificationToken, 'signup');
 
-      await sendVerificationEmail(newUser.email, token, 'signup');
+        return SUCCESS.SIGNUP;
+      }
 
-      return SUCCESS.SIGNUP;
+      const { verificationToken, isFreshToken, oldVerificationToken } = await createTokenVerification(jwt)({
+        email: existingUser.email,
+        userId: existingUser.userId,
+        verificationToken: existingUser.verificationToken!,
+      });
+
+      if (isFreshToken) {
+        await sendVerificationEmail(existingUser.email, verificationToken, 'signup');
+      }
+
+      if (!existingUser.isEmailVerified && oldVerificationToken === existingUser.verificationToken) {
+        return error(400, ERROR.EMAIL_NOT_VERIFIED);
+      }
+
+      return error(422, existingUser.isEmailVerified ? ERROR.EMAIL_ALREADY_VERIFIED : ERROR.EMAIL_ALREADY_REGISTERED);
     },
     {
       body: t.Object({

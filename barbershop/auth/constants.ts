@@ -42,6 +42,10 @@ export const INFO = {
     status: 'info',
     message: 'A magic link has been sent to your email. Please check your inbox to log in.',
   },
+  EMAIL_ALREADY_SIGNED_UP: {
+    status: 'info',
+    message: "You are already signed up and logged in. You don't need to sign up again.",
+  },
 };
 
 export const SUCCESS = {

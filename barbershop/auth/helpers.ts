@@ -32,36 +32,25 @@ export const createToken =
     return await jwt.sign({ email });
   };
 
-export const ensureFreshToken = async ({
-  jwt,
-  email,
-  token,
-  userId,
-  column = 'verificationToken',
-}: {
-  jwt: any;
-  email: string;
-  userId: number;
-  token?: string;
-  column?: string;
-}) => {
-  const decoded = await decodeToken(jwt)(token || '');
+export const createTokenVerification =
+  (jwt) =>
+  async ({ email, userId, verificationToken }: { email: string; userId: number; verificationToken: string }) => {
+    const decoded = await decodeToken(jwt)(verificationToken || '');
 
-  if (decoded)
+    if (decoded)
+      return {
+        isFreshToken: false,
+        verificationToken,
+        oldVerificationToken: verificationToken || null,
+      };
+
+    const newVerificationToken = await createToken(jwt)(email);
+
+    await db.update(usersTable).set({ verificationToken: newVerificationToken }).where(eq(usersTable.userId, userId));
+
     return {
-      token,
-      isFreshToken: false,
+      isFreshToken: true,
+      verificationToken: newVerificationToken,
+      oldVerificationToken: verificationToken || null,
     };
-
-  const newToken = await createToken(jwt)(email);
-
-  await db
-    .update(usersTable)
-    .set({ [column]: newToken })
-    .where(eq(usersTable.userId, userId));
-
-  return {
-    token: newToken,
-    isFreshToken: true,
   };
-};
