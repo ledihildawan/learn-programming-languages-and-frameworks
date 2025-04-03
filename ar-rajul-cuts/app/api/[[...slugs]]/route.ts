@@ -2,6 +2,7 @@ import { opentelemetry } from '@elysiajs/opentelemetry';
 import { swagger } from '@elysiajs/swagger';
 import { Elysia } from 'elysia';
 import { note } from './note';
+import { todoRouter } from './todos';
 import { user } from './user';
 
 export const app = new Elysia({ prefix: '/api' })
@@ -12,6 +13,7 @@ export const app = new Elysia({ prefix: '/api' })
 
     console.error(error);
   })
+  .use(todoRouter)
   .use(user)
   .use(note);
 

@@ -1,9 +1,9 @@
-import Elysia, { t } from 'elysia';
+import { Elysia, t } from 'elysia';
 
-export const userService = new Elysia({ name: 'user/service' })
+export const userService = new Elysia({ name: 'user/service', tags: ['user'] })
   .state({
     user: {} as Record<string, string>,
-    session: {} as Record<number, string>,
+    session: {} as Record<string, string>,
   })
   .model({
     signIn: t.Object({
@@ -12,7 +12,7 @@ export const userService = new Elysia({ name: 'user/service' })
     }),
     session: t.Cookie(
       {
-        token: t.Number(),
+        token: t.String(),
       },
       {
         secrets: 'seia',
@@ -57,10 +57,6 @@ export const getUserId = new Elysia()
 
 export const user = new Elysia({ prefix: '/user' })
   .use(userService)
-  .state({
-    user: {} as Record<string, string>,
-    session: {} as Record<number, string>,
-  })
   .put(
     '/sign-up',
     async ({ body: { username, password }, store, error }) => {
@@ -69,7 +65,9 @@ export const user = new Elysia({ prefix: '/user' })
           success: false,
           message: 'User already exists',
         });
+
       store.user[username] = await Bun.password.hash(password);
+
       return {
         success: true,
         message: 'User created',
@@ -88,9 +86,16 @@ export const user = new Elysia({ prefix: '/user' })
           message: 'Invalid username or password',
         });
 
+      if (token.value) {
+        return {
+          success: true,
+          message: 'You are already signed in',
+        };
+      }
+
       const key = crypto.getRandomValues(new Uint32Array(1))[0];
       session[key] = username;
-      token.value = key;
+      token.value = key.toString();
 
       return {
         success: true,
@@ -99,24 +104,18 @@ export const user = new Elysia({ prefix: '/user' })
     },
     {
       body: 'signIn',
-      cookie: 'session',
-    }
-  )
-  .get(
-    '/sign-out',
-    ({ cookie: { token } }) => {
-      token.remove();
-      return {
-        success: true,
-        message: 'Signed out',
-      };
-    },
-    {
-      cookie: 'optionalSession',
     }
   )
   .use(getUserId)
   .get('/profile', ({ username }) => ({
     success: true,
     username,
-  }));
+  }))
+  .get('/sign-out', ({ cookie: { token } }) => {
+    token.remove();
+
+    return {
+      success: true,
+      message: 'Signed out',
+    };
+  });

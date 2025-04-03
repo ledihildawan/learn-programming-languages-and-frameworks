@@ -1,4 +1,4 @@
-import Elysia, { t } from 'elysia';
+import { Elysia, t } from 'elysia';
 import { getUserId, userService } from './user';
 
 const memo = t.Object({
@@ -33,7 +33,7 @@ class Note {
   }
 }
 
-export const note = new Elysia({ prefix: '/note' })
+export const note = new Elysia({ prefix: '/note', tags: ['note'] })
   .use(userService)
   .decorate('note', new Note())
   .model({
@@ -45,20 +45,28 @@ export const note = new Elysia({ prefix: '/note' })
       params,
     });
   })
-  .use(getUserId)
   .get('/', ({ note }) => note.data)
+  .use(getUserId)
   .put('/', ({ note, body: { data }, username }) => note.add({ data, author: username }), {
     body: 'memo',
   })
+  .get(
+    '/:index',
+    ({ note, params: { index }, error }) => {
+      return note.data[index] ?? error(404, 'Not Found :(');
+    },
+    {
+      params: t.Object({
+        index: t.Number(),
+      }),
+    }
+  )
   .guard({
     params: t.Object({
       index: t.Number(),
     }),
   })
-  .get('//:index', ({ note, params: { index }, error }) => {
-    return note.data[index] ?? error(404, 'oh no :(');
-  })
-  .delete('//:index', ({ note, params: { index }, error }) => {
+  .delete('/:index', ({ note, params: { index }, error }) => {
     if (index in note.data) return note.remove(index);
 
     return error(422);
@@ -71,6 +79,7 @@ export const note = new Elysia({ prefix: '/note' })
       return error(422);
     },
     {
+      isSignIn: true,
       body: 'memo',
     }
   );
