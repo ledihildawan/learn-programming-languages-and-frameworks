@@ -14,23 +14,46 @@ import {
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar';
 import { authClient } from '@/lib/auth-client';
 import { redirect } from 'next/navigation';
+import { useMemo } from 'react';
+import { Skeleton } from './ui/skeleton';
 
-export function NavUser({
-  user,
-}: {
+interface NavUserProps {
   user: {
-    name: string;
-    email: string;
-    avatar: string;
+    username: string;
   };
-}) {
+}
+
+function User({ user }: NavUserProps) {
+  const firstChartUsername = useMemo(() => user.username?.charAt(0).toUpperCase() || 'n', [user.username]);
+
+  const avatarSrc = useMemo(() => `https://placehold.co/32x32?text=${firstChartUsername}`, [firstChartUsername]);
+
+  return user.username ? (
+    <>
+      <Avatar className="h-8 w-8 rounded-lg">
+        <AvatarImage src={avatarSrc} alt={user.username} />
+        <AvatarFallback className="rounded-lg">{firstChartUsername}</AvatarFallback>
+      </Avatar>
+      <div className="grid flex-1 text-left text-sm leading-tight">
+        <span className="truncate font-semibold">{user.username}</span>
+      </div>
+    </>
+  ) : (
+    <div className="flex items-center gap-2">
+      <Skeleton className="h-8 w-8 rounded-lg" />
+      <Skeleton className="h-3 w-[144px]" />
+    </div>
+  );
+}
+
+export function NavUser({ user }: NavUserProps) {
   const { isMobile } = useSidebar();
 
   async function signOut() {
     await authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
-          redirect('/sign-in'); // redirect to login page
+          redirect('/sign-in');
         },
       },
     });
@@ -45,15 +68,12 @@ export function NavUser({
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
-              </Avatar>
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{user.name}</span>
-                <span className="truncate text-xs">{user.email}</span>
-              </div>
-              <ChevronsUpDown className="ml-auto size-4" />
+              <User user={user} />
+              {user?.username ? (
+                <ChevronsUpDown className="ml-auto size-4" />
+              ) : (
+                <Skeleton className="h-4 w-4 ml-auto rounded-sm" />
+              )}
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
@@ -64,14 +84,7 @@ export function NavUser({
           >
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user.avatar} alt={user.name} />
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
-                </Avatar>
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{user.name}</span>
-                  <span className="truncate text-xs">{user.email}</span>
-                </div>
+                <User user={user} />
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />

@@ -140,3 +140,15 @@
     @apply bg-background text-foreground;
   }
 }
+
+#nprogress .bar {
+  background: var(--color-primary) !important;
+}
+
+#nprogress .spinner {
+  border-top-color: var(--color-primary) !important;
+}
+
+#nprogress .peg {
+  box-shadow: 0 0 10px var(--color-primary) !important;
+}

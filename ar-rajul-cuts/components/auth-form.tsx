@@ -35,7 +35,7 @@ export function AuthForm({ className, type, ...props }: React.ComponentPropsWith
       treaty<API>(URL_API).api.user['sign-in'].post({ username, password }, { fetch: { credentials: 'include' } }),
     onSuccess: () => {
       if (!session) {
-        nav.push('/admin');
+        nav.push('/note');
       }
     },
   });
@@ -79,7 +79,7 @@ export function AuthForm({ className, type, ...props }: React.ComponentPropsWith
         },
         {
           onSuccess: (ctx) => {
-            nav.push('/admin');
+            nav.push('/note');
           },
         }
       );
