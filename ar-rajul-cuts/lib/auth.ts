@@ -1,7 +1,7 @@
 import { db } from '@/db'; // your drizzle instance
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
-import { openAPI } from 'better-auth/plugins';
+import { openAPI, username } from 'better-auth/plugins';
 
 import * as schema from '@/db/schema';
 
@@ -9,7 +9,6 @@ export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: 'pg',
     schema,
-    usePlural: true,
   }),
   emailAndPassword: {
     enabled: true,
@@ -22,7 +21,8 @@ export const auth = betterAuth({
     },
   },
   plugins: [
-    openAPI(),
+    openAPI({ disableDefaultReference: true }),
+    username(),
     //   magicLink({
     //     sendMagicLink: async ({ email, token, url }, request) => {
     //       // send email to user
@@ -30,3 +30,49 @@ export const auth = betterAuth({
     //   }),
   ],
 });
+
+export async function getBetterAuthOpenAPIDocumentation() {
+  const betterAuthOpenAPISchema = (await auth.api.generateOpenAPISchema()) as any;
+
+  betterAuthOpenAPISchema.info = {
+    title: '',
+    description: '',
+    version: '',
+  };
+
+  betterAuthOpenAPISchema.tags.at(0).description = '';
+
+  betterAuthOpenAPISchema.tags.forEach((tag) => {
+    tag.name = 'auth';
+  });
+
+  for (let path in betterAuthOpenAPISchema.paths) {
+    const updatedPath = 'api' + path;
+
+    betterAuthOpenAPISchema.paths[updatedPath] = betterAuthOpenAPISchema.paths[path];
+
+    delete betterAuthOpenAPISchema.paths[path];
+
+    if (betterAuthOpenAPISchema.paths[updatedPath].post) {
+      betterAuthOpenAPISchema.paths[updatedPath].post.tags = ['auth'];
+    }
+
+    if (betterAuthOpenAPISchema.paths[updatedPath].get) {
+      betterAuthOpenAPISchema.paths[updatedPath].get.tags = ['auth'];
+    }
+  }
+
+  const schemaComponents = betterAuthOpenAPISchema.components.schemas;
+
+  const updatedSchemas = {};
+
+  for (let schemaName in schemaComponents) {
+    const camelCaseSchemaName = schemaName.charAt(0).toLowerCase() + schemaName.slice(1);
+
+    updatedSchemas[camelCaseSchemaName] = schemaComponents[schemaName];
+  }
+
+  betterAuthOpenAPISchema.components.schemas = updatedSchemas;
+
+  return betterAuthOpenAPISchema;
+}

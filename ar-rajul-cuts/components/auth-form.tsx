@@ -73,18 +73,8 @@ export function AuthForm({ className, type, ...props }: React.ComponentPropsWith
     if (type === 'sign-in') {
       const { data, error } = await authClient.signIn.email(
         {
-          /**
-           * The user email
-           */
           email: 'lhildawan@gmail.com',
-          /**
-           * The user password
-           */
           password: 'ledihildawan',
-          /**
-           * remember the user session after the browser is closed.
-           * @default true
-           */
           rememberMe: false,
         },
         {
@@ -96,21 +86,25 @@ export function AuthForm({ className, type, ...props }: React.ComponentPropsWith
     } else {
       const { data, error } = await authClient.signUp.email(
         {
-          email: 'lhildawan@gmail.com', // user email address
-          password: 'ledihildawan', // user password -> min 8 characters by default
-          name: 'Ledi Hildawan', // user display name
-          callbackURL: '/', // a url to redirect to after the user verifies their email (optional)
+          email: 'lhildawan@gmail.com',
+          username: 'ledihildawn',
+          password: 'ledihildawan',
+          name: 'Ledi Hildawan',
+          callbackURL: '/',
         },
         {
           onRequest: (ctx) => {
             //show loading
           },
           onSuccess: (ctx) => {
-            //redirect to the dashboard or sign in page
+            nav.push('/sign-in');
           },
           onError: (ctx) => {
-            // display the error message
-            alert(ctx.error.message);
+            toast({
+              variant: 'destructive',
+              title: ctx.error.code,
+              description: ctx.error.message,
+            });
           },
         }
       );
