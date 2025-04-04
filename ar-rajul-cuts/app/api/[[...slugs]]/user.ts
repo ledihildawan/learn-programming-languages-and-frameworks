@@ -1,6 +1,6 @@
 import { Elysia, t } from 'elysia';
 
-export const userService = new Elysia({ name: 'user/service', tags: ['user'] })
+export const userService = new Elysia({ name: 'user/service' })
   .state({
     user: {} as Record<string, string>,
     session: {} as Record<string, string>,
@@ -55,7 +55,7 @@ export const getUserId = new Elysia()
   }))
   .as('plugin');
 
-export const user = new Elysia({ prefix: '/user' })
+export const user = new Elysia({ prefix: '/user', tags: ['user'] })
   .use(userService)
   .put(
     '/sign-up',

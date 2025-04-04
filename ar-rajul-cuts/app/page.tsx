@@ -1,7 +1,10 @@
-import { api } from '@/lib/api';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 export default async function HomePage() {
-  const hello = await api['ip-1'].get();
+  const token = (await cookies()).get('token');
 
-  return <h1>{JSON.stringify(hello)}</h1>;
+  if (!token) redirect('/sign-in');
+
+  return <h1>Dashboard</h1>;
 }

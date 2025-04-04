@@ -1,3 +1,5 @@
+'use client';
+
 import { AppSidebar } from '@/components/app-sidebar';
 import {
   Breadcrumb,
@@ -10,7 +12,7 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 
-export default function Page() {
+export default function AdminPage() {
   return (
     <SidebarProvider>
       <AppSidebar />
