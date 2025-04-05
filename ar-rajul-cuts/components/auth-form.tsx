@@ -1,15 +1,11 @@
 'use client';
 
-import { API } from '@/app/api/[[...slugs]]/route';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { URL_API } from '@/constants';
 import { authClient } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
-import { treaty } from '@elysiajs/eden';
-import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
@@ -19,92 +15,84 @@ export function AuthForm({ className, type, ...props }: React.ComponentPropsWith
   const nav = useRouter();
 
   const { toast } = useToast();
+  const { data: session } = authClient.useSession();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
-  const {
-    data: session,
-    isPending, //loading state
-    error, //error object
-    refetch, //refetch the session
-  } = authClient.useSession();
-
-  const signInMutation = useMutation({
-    mutationFn: ({ username, password }: { username: string; password: string }) =>
-      treaty<API>(URL_API).api.user['sign-in'].post({ username, password }, { fetch: { credentials: 'include' } }),
-    onSuccess: () => {
-      if (!session) {
-        nav.push('/note');
-      }
-    },
-  });
-
-  const signUpMutation = useMutation({
-    mutationFn: ({ username, password }: { username: string; password: string }) =>
-      treaty<API>(URL_API).api.user['sign-up'].put({ username, password }),
-  });
+  const [isPending, setIsPending] = useState(false);
 
   const isSignInType = useMemo(() => type === 'sign-in', [type]);
 
   async function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
+    e.stopPropagation();
 
-    // const req = isSignInType ? signInMutation : signUpMutation;
-    // const res = await req.mutateAsync({ password, username });
-
-    // if (res.error?.value) {
-    //   toast({
-    //     variant: 'destructive',
-    //     title: 'Something went wrong.',
-    //     description: res.error.value.message,
-    //   });
-    // } else {
-    //   toast({
-    //     title: res.data?.message,
-    //     description: res.data?.message,
-    //   });
-    // }
-
-    // if (!isSignInType && !res.error?.value) {
-    //   nav.push('/sign-in');
-    // }
+    if (!session) {
+      nav.push('/sign-in');
+    }
 
     if (type === 'sign-in') {
-      const { data, error } = await authClient.signIn.email(
+      await authClient.signIn.username(
         {
-          email: 'lhildawan@gmail.com',
-          password: 'ledihildawan',
+          username,
+          password,
           rememberMe: false,
         },
         {
-          onSuccess: (ctx) => {
+          onRequest: () => {
+            setIsPending(true);
+          },
+          onSuccess: ({ data }) => {
+            toast({
+              title: 'Success',
+              description: data.message,
+            });
+
             nav.push('/note');
+
+            setIsPending(false);
+          },
+          onError: ({ error }) => {
+            toast({
+              variant: 'destructive',
+              title: 'Something went wrong.',
+              description: error.message,
+            });
+
+            setIsPending(false);
           },
         }
       );
     } else {
-      const { data, error } = await authClient.signUp.email(
+      await authClient.signUp.email(
         {
+          name: '',
           email: 'lhildawan@gmail.com',
-          username: 'ledihildawn',
-          password: 'ledihildawan',
-          name: 'Ledi Hildawan',
-          callbackURL: '/',
+          username,
+          password,
         },
         {
-          onRequest: (ctx) => {
-            //show loading
+          onRequest: () => {
+            setIsPending(true);
           },
-          onSuccess: (ctx) => {
+          onSuccess: ({ data }) => {
+            toast({
+              title: 'Success',
+              description: data.message,
+            });
+
             nav.push('/sign-in');
+
+            setIsPending(false);
           },
-          onError: (ctx) => {
+          onError: ({ error }) => {
             toast({
               variant: 'destructive',
-              title: ctx.error.code,
-              description: ctx.error.message,
+              title: error.code,
+              description: error.message,
             });
+
+            setIsPending(false);
           },
         }
       );
@@ -146,12 +134,8 @@ export function AuthForm({ className, type, ...props }: React.ComponentPropsWith
                 />
               </div>
 
-              <Button
-                type="submit"
-                className="w-full"
-                disabled={isSignInType ? signInMutation.isPending : signUpMutation.isPending}
-              >
-                {isSignInType ? 'Sign In' : 'Sing Up'}
+              <Button type="submit" className="w-full" disabled={isPending}>
+                {isSignInType ? 'Sign In' : 'Sign Up'}
               </Button>
             </div>
             <div className="mt-4 text-center text-sm">

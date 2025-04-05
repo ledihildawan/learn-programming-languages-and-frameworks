@@ -1,7 +1,5 @@
 'use client';
 
-import { ArrowUpRight, Link, MoreHorizontal, StarOff, Trash2 } from 'lucide-react';
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,14 +16,17 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
+import { ArrowUpRight, Link, MoreHorizontal, StarOff, Trash2 } from 'lucide-react';
 
 export function NavRecents({
-  favorites,
+  recents,
 }: {
-  favorites: {
-    name: string;
+  recents: {
+    id: number;
+    title: string;
     url: string;
     emoji: string;
+    name: 'string';
   }[];
 }) {
   const { isMobile } = useSidebar();
@@ -34,12 +35,12 @@ export function NavRecents({
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel>Recents</SidebarGroupLabel>
       <SidebarMenu>
-        {favorites.map((item) => (
-          <SidebarMenuItem key={item.name}>
+        {recents.map((recent) => (
+          <SidebarMenuItem key={recent.id}>
             <SidebarMenuButton asChild>
-              <a href={item.url} title={item.name}>
-                <span>{item.emoji}</span>
-                <span>{item.name}</span>
+              <a href={recent.url} title={recent.name}>
+                <span>{recent.emoji}</span>
+                <span>{recent.title}</span>
               </a>
             </SidebarMenuButton>
             <DropdownMenu>

@@ -1,4 +1,4 @@
-import { boolean, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
+import { bigserial, boolean, pgTable, text, timestamp, varchar } from 'drizzle-orm/pg-core';
 
 export const user = pgTable('users', {
   id: text('id').primaryKey(),
@@ -50,4 +50,17 @@ export const verification = pgTable('verifications', {
   expiresAt: timestamp('expires_at').notNull(),
   createdAt: timestamp('created_at'),
   updatedAt: timestamp('updated_at'),
+});
+
+export const note = pgTable('notes', {
+  id: bigserial('id', { mode: 'number' }).primaryKey(),
+  title: varchar('title').notNull(),
+  slug: varchar('slug').notNull(),
+  content: text('content').notNull(),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }),
+  lastAccessedAt: timestamp('last_accessed_at', { withTimezone: true }).defaultNow(),
+  author: text('author')
+    .notNull()
+    .references(() => user.username, { onDelete: 'cascade' }),
 });

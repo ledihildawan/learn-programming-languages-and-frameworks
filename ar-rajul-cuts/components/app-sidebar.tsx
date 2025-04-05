@@ -7,16 +7,35 @@ import { NavMain } from '@/components/nav-main';
 import { NavRecents } from '@/components/nav-recents';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from '@/components/ui/sidebar';
 import { authClient } from '@/lib/auth-client';
+import { App } from '@/server';
+import { treaty } from '@elysiajs/eden';
 import { NavUser } from './nav-user';
 import { TeamSwitcher } from './team-switcher';
 
+const server = treaty<App>(`http://localhost:44720`, {
+  fetch: { credentials: 'include' },
+});
+
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const {
-    data: session,
-    isPending, //loading state
-    error, //error object
-    refetch, //refetch the session
-  } = authClient.useSession();
+  const { data: session } = authClient.useSession();
+
+  const [recents, setRecents] = React.useState<any[]>([]);
+
+  React.useEffect(() => {
+    server.api.note.index.get().then(({ data }) => {
+      setRecents(data?.data as any);
+    });
+
+    const recents = server.api.ws.subscribe();
+
+    recents.subscribe((message: any) => {
+      setRecents(message.data.data);
+    });
+
+    return () => {
+      recents.close();
+    };
+  }, []);
 
   const data = {
     user: {
@@ -110,7 +129,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain items={data.navMain} />
       </SidebarHeader>
       <SidebarContent>
-        <NavRecents favorites={data.favorites} />
+        <NavRecents recents={recents} />
       </SidebarContent>
       <SidebarRail />
       <SidebarFooter>

@@ -152,3 +152,7 @@
 #nprogress .peg {
   box-shadow: 0 0 10px var(--color-primary) !important;
 }
+
+.w-md-editor {
+  @apply !rounded-md;
+}

@@ -1,19 +1,29 @@
 import { auth, getBetterAuthOpenAPIDocumentation } from '@/lib/auth';
+import { cors } from '@elysiajs/cors';
 import { opentelemetry } from '@elysiajs/opentelemetry';
 import { swagger } from '@elysiajs/swagger';
 import { Elysia } from 'elysia';
 import { note } from './note';
-import { user } from './user';
+import { store } from './store';
 
 const betterAuthDocumentation = await getBetterAuthOpenAPIDocumentation();
 
-export const api = new Elysia({ prefix: '/api' })
+export const app = new Elysia({ prefix: '/api' })
+  .use(
+    cors({
+      origin: 'http://localhost:32462',
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+      credentials: true,
+      allowedHeaders: ['Content-Type', 'Authorization'],
+    })
+  )
   .use(opentelemetry())
   .use(
     swagger({
       documentation: betterAuthDocumentation,
     })
   )
+  .use(store)
   .onError(({ error, code }) => {
     if (code === 'NOT_FOUND') return 'Not Found :(';
 
@@ -28,13 +38,18 @@ export const api = new Elysia({ prefix: '/api' })
       error(405);
     }
   })
-  .use(user)
-  .use(note);
+  .use(note)
+  .ws('/ws', {
+    open(ws) {
+      ws.data.wsClient.add(ws);
+    },
+    message(ws, message) {
+      Array.from(ws.data.wsClient.list).forEach((wsClient) => wsClient.send(message));
+    },
+    close(ws) {
+      ws.data.wsClient.remove(ws);
+    },
+  })
+  .listen(process.env.SERVER_PORT!);
 
-export type API = typeof api;
-
-export const GET = api.handle;
-export const POST = api.handle;
-export const PUT = api.handle;
-export const PATCH = api.handle;
-export const DELETE = api.handle;
+export type App = typeof app;

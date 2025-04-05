@@ -1,9 +1,8 @@
-import { db } from '@/db'; // your drizzle instance
+import { db } from '@/db';
+import * as schema from '@/db/schema';
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { openAPI, username } from 'better-auth/plugins';
-
-import * as schema from '@/db/schema';
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -29,25 +28,22 @@ export const auth = betterAuth({
     //     },
     //   }),
   ],
+  trustedOrigins: ['http://localhost:32462'],
 });
 
 export async function getBetterAuthOpenAPIDocumentation() {
   const betterAuthOpenAPISchema = (await auth.api.generateOpenAPISchema()) as any;
 
-  betterAuthOpenAPISchema.info = {
-    title: '',
-    description: '',
-    version: '',
-  };
-
-  betterAuthOpenAPISchema.tags.at(0).description = '';
+  delete betterAuthOpenAPISchema.info;
+  delete betterAuthOpenAPISchema.servers;
+  delete betterAuthOpenAPISchema.tags.at(0).description;
 
   betterAuthOpenAPISchema.tags.forEach((tag) => {
     tag.name = 'auth';
   });
 
   for (let path in betterAuthOpenAPISchema.paths) {
-    const updatedPath = 'api' + path;
+    const updatedPath = 'api/auth' + path;
 
     betterAuthOpenAPISchema.paths[updatedPath] = betterAuthOpenAPISchema.paths[path];
 
