@@ -1,14 +1,16 @@
-'use client';
-
-import { useAuth } from '@/contexts/auth';
-
-export default function ProfilePage() {
-  const { user, logout } = useAuth();
-
+export default function Page() {
   return (
     <div>
-      <h1>Welcome {user}!</h1>
-      <button onClick={logout}>Sign Out</button>
+      <h1>Welcome {'user'}!</h1>
+      <button
+        onClick={async () => {
+          'use server';
+
+          console.log('fsadlkfakl');
+        }}
+      >
+        Sign Out
+      </button>
     </div>
   );
 }

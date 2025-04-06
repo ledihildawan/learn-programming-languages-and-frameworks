@@ -1,35 +1,12 @@
+import { APP_PORT, SERVER_PORT } from '@/constants';
 import { db } from '@/db';
 import * as schema from '@/db/schema';
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
+import { usernameClient } from 'better-auth/client/plugins';
+import { nextCookies } from 'better-auth/next-js';
 import { openAPI, username } from 'better-auth/plugins';
-
-export const auth = betterAuth({
-  database: drizzleAdapter(db, {
-    provider: 'pg',
-    schema,
-  }),
-  emailAndPassword: {
-    enabled: true,
-    autoSignIn: false,
-  },
-  socialProviders: {
-    github: {
-      clientId: process.env.GITHUB_CLIENT_ID as string,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
-    },
-  },
-  plugins: [
-    openAPI({ disableDefaultReference: true }),
-    username(),
-    //   magicLink({
-    //     sendMagicLink: async ({ email, token, url }, request) => {
-    //       // send email to user
-    //     },
-    //   }),
-  ],
-  trustedOrigins: ['http://localhost:32462'],
-});
+import { createAuthClient } from 'better-auth/react';
 
 export async function getBetterAuthOpenAPIDocumentation() {
   const betterAuthOpenAPISchema = (await auth.api.generateOpenAPISchema()) as any;
@@ -72,3 +49,27 @@ export async function getBetterAuthOpenAPIDocumentation() {
 
   return betterAuthOpenAPISchema;
 }
+
+export const auth = betterAuth({
+  plugins: [openAPI({ disableDefaultReference: true }), username(), nextCookies()],
+  database: drizzleAdapter(db, {
+    schema,
+    provider: 'pg',
+  }),
+  emailAndPassword: {
+    enabled: true,
+    autoSignIn: false,
+  },
+  socialProviders: {
+    github: {
+      clientId: process.env.GITHUB_CLIENT_ID as string,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
+    },
+  },
+  trustedOrigins: [`http://localhost:${APP_PORT}`],
+});
+
+export const authClient = createAuthClient({
+  baseURL: `http://localhost:${SERVER_PORT}`,
+  plugins: [usernameClient()],
+});
