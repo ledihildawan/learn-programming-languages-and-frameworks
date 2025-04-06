@@ -15,6 +15,7 @@
     "@elysiajs/eden": "^1.2.0",
     "@elysiajs/opentelemetry": "^1.2.0",
     "@elysiajs/swagger": "^1.2.2",
+    "@elysiajs/websocket": "^0.2.8",
     "@hookform/resolvers": "^5.0.1",
     "@radix-ui/react-accordion": "^1.2.3",
     "@radix-ui/react-alert-dialog": "^1.1.6",
