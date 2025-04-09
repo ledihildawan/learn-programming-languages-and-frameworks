@@ -1,10 +1,12 @@
-import { WEB_URL } from '@/constants';
+import { APP_PORT, SERVER_PORT } from '@/constants';
 import { db } from '@/db';
 import * as schema from '@/db/schema';
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
+import { usernameClient } from 'better-auth/client/plugins';
 import { nextCookies } from 'better-auth/next-js';
-import { oAuthProxy, openAPI, username } from 'better-auth/plugins';
+import { openAPI, username } from 'better-auth/plugins';
+import { createAuthClient } from 'better-auth/react';
 
 export async function getBetterAuthOpenAPIDocumentation() {
   const betterAuthOpenAPISchema = (await auth.api.generateOpenAPISchema()) as any;
@@ -49,16 +51,10 @@ export async function getBetterAuthOpenAPIDocumentation() {
 }
 
 export const auth = betterAuth({
-  plugins: [openAPI({ disableDefaultReference: true }), username(), nextCookies(), oAuthProxy()],
-  account: {
-    accountLinking: {
-      enabled: true,
-    },
-  },
+  plugins: [openAPI({ disableDefaultReference: true }), username(), nextCookies()],
   database: drizzleAdapter(db, {
     schema,
     provider: 'pg',
-    usePlural: true,
   }),
   emailAndPassword: {
     enabled: true,
@@ -69,10 +65,11 @@ export const auth = betterAuth({
       clientId: process.env.GITHUB_CLIENT_ID as string,
       clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
     },
-    google: {
-      clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-    },
   },
-  trustedOrigins: [WEB_URL],
+  trustedOrigins: [`http://localhost:${APP_PORT}`],
+});
+
+export const authClient = createAuthClient({
+  baseURL: `http://localhost:${SERVER_PORT}`,
+  plugins: [usernameClient()],
 });

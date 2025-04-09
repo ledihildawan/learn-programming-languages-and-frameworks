@@ -32,7 +32,7 @@ export const app = new Elysia()
   })
   .group('/api', (app) =>
     app
-      .all('/auth/*', ({ request, error }) => {
+      .all('/auth/*', ({ request, error, response }) => {
         const BETTER_AUTH_ACCEPT_METHODS = ['POST', 'GET'];
 
         if (BETTER_AUTH_ACCEPT_METHODS.includes(request.method)) {
