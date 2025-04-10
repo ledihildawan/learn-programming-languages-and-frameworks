@@ -4,7 +4,7 @@ import * as schema from '@/db/schema';
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { nextCookies } from 'better-auth/next-js';
-import { oAuthProxy, openAPI, username } from 'better-auth/plugins';
+import { admin, oAuthProxy, openAPI, username } from 'better-auth/plugins';
 
 export async function getBetterAuthOpenAPIDocumentation() {
   const betterAuthOpenAPISchema = (await auth.api.generateOpenAPISchema()) as any;
@@ -49,10 +49,19 @@ export async function getBetterAuthOpenAPIDocumentation() {
 }
 
 export const auth = betterAuth({
-  plugins: [openAPI({ disableDefaultReference: true }), username(), nextCookies(), oAuthProxy()],
+  user: {
+    changeEmail: {
+      enabled: true,
+    },
+    deleteUser: {
+      enabled: true,
+    },
+  },
+  plugins: [openAPI({ disableDefaultReference: true }), username(), nextCookies(), oAuthProxy(), admin()],
   account: {
     accountLinking: {
-      enabled: true,
+      eenabled: true,
+      trustedProviders: ['google', 'github'],
     },
   },
   database: drizzleAdapter(db, {

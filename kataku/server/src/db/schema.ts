@@ -10,6 +10,10 @@ export const users = pgTable('users', {
   updatedAt: timestamp('updated_at').notNull(),
   username: text('username').unique(),
   displayUsername: text('display_username'),
+  role: text('role'),
+  banned: boolean('banned'),
+  banReason: text('ban_reason'),
+  banExpires: timestamp('ban_expires'),
 });
 
 export const sessions = pgTable('sessions', {
@@ -23,6 +27,7 @@ export const sessions = pgTable('sessions', {
   userId: text('user_id')
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
+  impersonatedBy: text('impersonated_by'),
 });
 
 export const accounts = pgTable('accounts', {
