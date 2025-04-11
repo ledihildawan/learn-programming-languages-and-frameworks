@@ -3,7 +3,12 @@
   "version": "1.0.50",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "bun run --watch src/index.ts"
+    "dev": "bun run --watch src/index.ts",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio",
+    "db:refresh": "rm -rf drizzle && bun src/db/reset.ts && bun run db:generate && bun run db:migrate",
+    "db:seed": "bun run src/db/seed.ts"
   },
   "dependencies": {
     "@elysiajs/cors": "^1.2.0",

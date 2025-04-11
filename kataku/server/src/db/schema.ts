@@ -66,5 +66,5 @@ export const notes = pgTable('notes', {
   updatedAt: timestamp('updated_at', { withTimezone: true }),
   author: text('author')
     .notNull()
-    .references(() => users.username, { onDelete: 'cascade' }),
+    .references(() => users.id, { onDelete: 'cascade' }),
 });

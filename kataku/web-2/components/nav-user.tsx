@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar';
 import { LogOut } from 'lucide-react';
+import { authClient } from '../lib/auth';
 import { Skeleton } from './ui/skeleton';
 
 interface NavUserProps {
@@ -40,18 +41,14 @@ function User({ user }: NavUserProps) {
 export async function NavUser() {
   const { isMobile } = useSidebar();
 
-  // useEffect(() => {
-  //   authClient.getSession().then(console.log);
-  // });
-
   async function signOut() {
-    // await authClient.signOut({
-    //   fetchOptions: {
-    //     onSuccess: () => {
-    //       redirect('/sign-in');
-    //     },
-    //   },
-    // });
+    await authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          redirect('/sign-in');
+        },
+      },
+    });
   }
 
   return (

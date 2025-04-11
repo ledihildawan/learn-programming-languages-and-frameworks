@@ -30,9 +30,16 @@ export const app = new Elysia()
 
     console.error(error);
   })
+  .get('/status', () => {
+    return {
+      status: 'Server is online',
+      uptime: Bun.nanoseconds() / 1e9,
+      timestamp: new Date().toISOString(),
+    };
+  })
   .group('/api', (app) =>
     app
-      .all('/auth/*', ({ request, error, response }) => {
+      .all('/auth/*', ({ request, error }) => {
         const BETTER_AUTH_ACCEPT_METHODS = ['POST', 'GET'];
 
         if (BETTER_AUTH_ACCEPT_METHODS.includes(request.method)) {
