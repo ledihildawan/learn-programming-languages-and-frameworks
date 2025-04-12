@@ -5,7 +5,7 @@ async function reset() {
 
   const start = Date.now();
 
-  const schemas = ['public'];
+  const schemas = ['public', 'drizzle'];
 
   for (const schema of schemas) {
     await db.execute(`DROP SCHEMA IF EXISTS ${schema} CASCADE;`);
