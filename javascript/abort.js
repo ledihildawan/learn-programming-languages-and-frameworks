@@ -19,5 +19,7 @@ function fetchVideo() {
     })
     .catch((err) => {
       console.error(`Download error: ${err.message}`);
+      console.log("test");
+      
     });
 }
