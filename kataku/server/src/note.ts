@@ -1,11 +1,14 @@
 import { db } from '@/db';
 import * as schema from '@/db/schema';
 import { Elysia, t } from 'elysia';
+import slugify from 'slugify';
 import { getUserId } from './user';
 
 export const note = new Elysia({ prefix: '/note', tags: ['note'] })
+  .onBeforeHandle((ctx) => {
+    console.log(ctx.body);
+  })
   .use(getUserId)
-  .guard({ isSignIn: true })
   .get('/', async () => {
     const notes = await db.select().from(schema.notes);
 
@@ -13,28 +16,26 @@ export const note = new Elysia({ prefix: '/note', tags: ['note'] })
   })
   .post(
     '/',
-    async ({ body, userId }) => {
-      console.log(body);
+    async ({ body: { title, content }, userId }) => {
+      const slug = slugify(title || 'Untitled', { lower: true, strict: true });
 
-      // const slug = slugify(title || 'Untitled', { lower: true, strict: true });
+      const note = await db
+        .insert(schema.notes)
+        .values({
+          slug,
+          title: title || 'Untitled',
+          author: userId!,
+          content,
+        })
+        .returning();
 
-      // const note = await db
-      //   .insert(schema.notes)
-      //   .values({
-      //     slug,
-      //     title: title || 'Untitled',
-      //     author: userId!,
-      //     content,
-      //   })
-      //   .returning();
-
-      // return { success: true, data: note?.[0] };
+      return { success: true, data: note?.[0] };
     },
     {
-      // body: t.Object({
-      //   title: t.String(),
-      //   content: t.String(),
-      // }),
+      body: t.Object({
+        title: t.String(),
+        content: t.String(),
+      }),
     }
   )
   .guard({
