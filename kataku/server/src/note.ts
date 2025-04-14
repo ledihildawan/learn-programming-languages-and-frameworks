@@ -1,13 +1,11 @@
 import { db } from '@/db';
 import * as schema from '@/db/schema';
+import { eq } from 'drizzle-orm';
 import { Elysia, t } from 'elysia';
 import slugify from 'slugify';
 import { getUserId } from './user';
 
 export const note = new Elysia({ prefix: '/note', tags: ['note'] })
-  .onBeforeHandle((ctx) => {
-    console.log(ctx.body);
-  })
   .use(getUserId)
   .get('/', async () => {
     const notes = await db.select().from(schema.notes);
@@ -40,15 +38,56 @@ export const note = new Elysia({ prefix: '/note', tags: ['note'] })
   )
   .guard({
     params: t.Object({
-      index: t.Number(),
+      slug: t.String(),
     }),
   })
-  .get('/:index', ({ params: { index }, error }) => {
-    return error(404, 'Not Found :(');
+  .get('/:slug', async ({ params: { slug }, error }) => {
+    const note = await db.select().from(schema.notes).where(eq(schema.notes.slug, slug));
+
+    if (!note) {
+      return error(404, 'Not Found :(');
+    }
+
+    return {
+      data: note?.at(0),
+    };
   })
-  .delete('/:index', ({ params: { index }, error }) => {
-    return error(422);
+  .delete('/:slug', async ({ params: { slug }, error }) => {
+    const note = await db.select().from(schema.notes).where(eq(schema.notes.slug, slug));
+
+    if (!note) {
+      return error(404, 'Not Found :(');
+    }
+
+    await db.delete(schema.notes).where(eq(schema.notes.slug, slug));
+
+    return {
+      data: null,
+    };
   })
-  .patch('/:index', ({ params: { index }, body, error, userId }) => {
-    return error(422);
-  });
+  .patch(
+    '/:slug',
+    async ({ params: { slug }, body, error, userId }) => {
+      const note = await db.select().from(schema.notes).where(eq(schema.notes.slug, slug));
+
+      if (!note) {
+        return error(404, 'Not Found :(');
+      }
+
+      const updatedNote = await db
+        .update(schema.notes)
+        .set({ ...body, author: userId })
+        .where(eq(schema.notes.slug, slug))
+        .returning();
+
+      return {
+        data: updatedNote?.at(0),
+      };
+    },
+    {
+      body: t.Object({
+        title: t.Optional(t.String()),
+        content: t.Optional(t.String()),
+      }),
+    }
+  );
