@@ -3,6 +3,7 @@ import { cors } from '@elysiajs/cors';
 import { opentelemetry } from '@elysiajs/opentelemetry';
 import { swagger } from '@elysiajs/swagger';
 import { Elysia } from 'elysia';
+import Resend from 'resend';
 import { WEB_URL } from './constants';
 import { note } from './note';
 import { store } from './store';
@@ -29,6 +30,20 @@ export const app = new Elysia()
     if (code === 'NOT_FOUND') return 'Not Found :(';
 
     console.error(error);
+  })
+  .get('/otp', async () => {
+    const resend = new Resend('re_123456789');
+
+    const otp = Math.random() * (900_000 - 1) + 100_000;
+
+    await resend.emails.send({
+      from: 'ibuki@gehenna.sh',
+      to: 'lhildawan@gmail.com',
+      subject: 'Verify your email address',
+      html: <OTPEmail otp={otp} />,
+    });
+
+    return { success: true };
   })
   .get('/status', () => {
     return {

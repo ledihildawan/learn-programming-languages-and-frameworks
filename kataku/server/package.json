@@ -8,23 +8,28 @@
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
     "db:refresh": "rm -rf drizzle && bun src/db/reset.ts && bun run db:generate && bun run db:migrate && drizzle-kit up",
-    "db:seed": "bun run src/db/seed.ts"
+    "db:seed": "bun run src/db/seed.ts",
+    "email": "email dev --dir src/emails --port 60408"
   },
   "dependencies": {
     "@elysiajs/cors": "^1.2.0",
     "@elysiajs/opentelemetry": "^1.2.0",
     "@elysiajs/swagger": "^1.2.2",
+    "@react-email/components": "^0.0.36",
     "better-auth": "^1.2.5",
     "drizzle-orm": "^0.41.0",
     "drizzle-seed": "^0.3.1",
     "elysia": "latest",
     "pg": "^8.14.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "slugify": "^1.6.6"
   },
   "devDependencies": {
     "@types/pg": "^8.11.11",
     "bun-types": "latest",
-    "drizzle-kit": "^0.30.6"
+    "drizzle-kit": "^0.30.6",
+    "react-email": "^4.0.7"
   },
   "module": "src/index.js"
 }
