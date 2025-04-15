@@ -3,7 +3,7 @@
   "version": "1.0.50",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "bun run --watch src/index.ts",
+    "dev": "bun run --watch src/index.tsx",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
@@ -23,6 +23,8 @@
     "pg": "^8.14.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "resend": "^4.2.0",
+    "server": "react-dom/server",
     "slugify": "^1.6.6"
   },
   "devDependencies": {

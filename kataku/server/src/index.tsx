@@ -3,8 +3,11 @@ import { cors } from '@elysiajs/cors';
 import { opentelemetry } from '@elysiajs/opentelemetry';
 import { swagger } from '@elysiajs/swagger';
 import { Elysia } from 'elysia';
-import Resend from 'resend';
+import * as React from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { Resend } from 'resend';
 import { WEB_URL } from './constants';
+import OTPEmail from './emails/otp';
 import { note } from './note';
 import { store } from './store';
 
@@ -32,15 +35,15 @@ export const app = new Elysia()
     console.error(error);
   })
   .get('/otp', async () => {
-    const resend = new Resend('re_123456789');
+    const resend = new Resend(process.env.RESEND_API_KEY!);
 
-    const otp = Math.random() * (900_000 - 1) + 100_000;
+    const otp = ~~Math.random() * (900_000 - 1) + 100_000;
 
     await resend.emails.send({
-      from: 'ibuki@gehenna.sh',
-      to: 'lhildawan@gmail.com',
-      subject: 'Verify your email address',
-      html: <OTPEmail otp={otp} />,
+      from: 'Acme <onboarding@resend.dev>',
+      to: ['delivered@resend.dev'],
+      subject: 'hello world 2',
+      html: renderToStaticMarkup(<OTPEmail otp={otp} />),
     });
 
     return { success: true };
