@@ -53,3 +53,5 @@ export const app = new Elysia()
   .listen(process.env.APP_PORT!);
 
 console.log(`🦊 Elysia is running at http://${app.server?.hostname}:${app.server?.port}`);
+
+export type App = typeof app;
