@@ -2,7 +2,7 @@ import { db } from '@/db';
 import * as schema from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import { Elysia, t } from 'elysia';
-import slugify from 'slugify';
+import { generateUniqueSlug } from './db/utils';
 import { getUserId } from './user';
 
 export const note = new Elysia({ prefix: '/note', tags: ['note'] })
@@ -15,14 +15,15 @@ export const note = new Elysia({ prefix: '/note', tags: ['note'] })
   .post(
     '/',
     async ({ body: { title, content }, userId }) => {
-      const slug = slugify(title || 'Untitled', { lower: true, strict: true });
+      const newTitle = title || 'Untitled';
+      const slug = await generateUniqueSlug(newTitle);
 
       const note = await db
         .insert(schema.notes)
         .values({
           slug,
-          title: title || 'Untitled',
-          author: userId!,
+          title: newTitle,
+          author: userId,
           content,
         })
         .returning();
