@@ -1,12 +1,11 @@
 "use client";
 
 import { eden } from "@/lib/eden";
+import { updateBreadcrumbs } from "@/store/breadcrumbs-store";
 import { useQuery } from "@tanstack/react-query";
-import markdownit from "markdown-it";
+import { marked } from "marked";
 import { useParams } from "next/navigation";
 import { useState } from "react";
-
-const md = markdownit();
 
 export default function Page() {
   const params = useParams<{ slug: string }>();
@@ -14,15 +13,23 @@ export default function Page() {
 
   const query = useQuery({
     queryKey: ["note", params.slug],
-    queryFn: () => eden.api.note({ slug: params.slug }).get(),
+    queryFn: async () => {
+      try {
+        const res = await eden.api.note({ slug: params.slug }).get();
+
+        updateBreadcrumbs(res.data.data.title);
+
+        return res.data.data;
+      } catch (error) {}
+    },
   });
 
-  const result = md.render(query.data?.data?.data?.content || "xxxx");
+  const result = marked.parse(query.data?.content || "xxxx");
 
   return (
-    <div className="relative flex flex-col justify-center overflow-hidden bg-gray-50 py-8 lg:py-12">
+    <div className="relative flex flex-col justify-center overflow-hidden px-4 lg:px-6">
       <article
-        className="prose"
+        className="prose dark:prose-invert"
         dangerouslySetInnerHTML={{ __html: result }}
       ></article>
     </div>
