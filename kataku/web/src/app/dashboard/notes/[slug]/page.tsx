@@ -1,15 +1,20 @@
 "use client";
 
 import { eden } from "@/lib/eden";
-import { updateBreadcrumbs } from "@/store/breadcrumbs-store";
+import {
+  updateData,
+  updateIsLazy,
+  updateIsLoading,
+} from "@/store/breadcrumbs-store";
 import { useQuery } from "@tanstack/react-query";
+import { batch } from "@tanstack/react-store";
 import { marked } from "marked";
-import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useParams, usePathname } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Page() {
   const params = useParams<{ slug: string }>();
-  const [content, setContent] = useState("");
+  const pathname = usePathname();
 
   const query = useQuery({
     queryKey: ["note", params.slug],
@@ -17,19 +22,31 @@ export default function Page() {
       try {
         const res = await eden.api.note({ slug: params.slug }).get();
 
-        updateBreadcrumbs(res.data.data.title);
+        batch(() => {
+          updateData({
+            pathname,
+            customTitle: res.data.data.title,
+          });
+          updateIsLazy(false);
+          updateIsLoading(false);
+        });
 
         return res.data.data;
       } catch (error) {}
     },
   });
 
+  useEffect(() => {
+    updateIsLazy(true);
+    updateIsLoading(true);
+  }, []);
+
   const result = marked.parse(query.data?.content || "xxxx");
 
   return (
     <div className="relative flex flex-col justify-center overflow-hidden px-4 lg:px-6">
       <article
-        className="prose dark:prose-invert"
+        className="dark:prose-invert prose w-full max-w-none"
         dangerouslySetInnerHTML={{ __html: result }}
       ></article>
     </div>

@@ -1,20 +1,58 @@
 import { Store } from "@tanstack/react-store";
 
-interface BreadcrumbItem {
-  title: string;
+export interface BreadcrumbItem {
   link: string;
+  title: string;
 }
 
-export function updateBreadcrumbs(customTitle?: string) {
-  breadcrumbsStore.setState(() => generateBreadcrumbsFromPath(customTitle));
+interface BreadcrumbStore {
+  data: BreadcrumbItem[];
+  isLazy: boolean;
+  isLoading: boolean;
 }
 
-export function generateBreadcrumbsFromPath(customTitle?: string) {
-  if (routeMapping[location.pathname]) {
-    return routeMapping[location.pathname];
+export function updateData({
+  isLazy,
+  pathname,
+  customTitle,
+}: {
+  isLazy?: boolean;
+  pathname: string;
+  customTitle?: string;
+}) {
+  breadcrumbsStore.setState((state) => ({
+    ...state,
+    data: generateBreadcrumbsFromPath({ pathname, customTitle }),
+  }));
+}
+
+export function updateIsLoading(loading: boolean) {
+  breadcrumbsStore.setState((state) => ({
+    ...state,
+    isLoading: loading,
+  }));
+}
+export function updateIsLazy(lazy: boolean) {
+  breadcrumbsStore.setState((state) => ({
+    ...state,
+    isLazy: lazy,
+  }));
+}
+
+export function generateBreadcrumbsFromPath({
+  isLazy,
+  pathname,
+  customTitle,
+}: {
+  isLazy?: boolean;
+  pathname: string;
+  customTitle?: string;
+}) {
+  if (routeMapping[pathname]) {
+    return routeMapping[pathname];
   }
 
-  const segments = location.pathname.split("/").filter(Boolean);
+  const segments = pathname.split("/").filter(Boolean);
 
   return segments.map((segment, index) => {
     const title = segment.charAt(0).toUpperCase() + segment.slice(1);
@@ -31,6 +69,8 @@ const routeMapping: Record<string, BreadcrumbItem[]> = {
   "/dashboard": [{ title: "Dashboard", link: "/dashboard" }],
 };
 
-export const breadcrumbsStore = new Store<BreadcrumbItem[]>(
-  generateBreadcrumbsFromPath(),
-);
+export const breadcrumbsStore = new Store<BreadcrumbStore>({
+  data: generateBreadcrumbsFromPath({ pathname: "/dashboard" }),
+  isLazy: false,
+  isLoading: false,
+});

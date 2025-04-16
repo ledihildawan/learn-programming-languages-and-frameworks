@@ -14,28 +14,28 @@ import Link from "next/link";
 import { Fragment } from "react";
 
 export function Breadcrumbs() {
-  const items = useBreadcrumbs();
+  const breadcrumbs = useBreadcrumbs();
 
-  if (items.length === 0) return null;
+  if (breadcrumbs.isLoading && breadcrumbs.isLazy) return null;
 
   return (
     <Breadcrumb>
       <BreadcrumbList>
-        {items.map((item, index) => (
+        {breadcrumbs.data.map((item, index) => (
           <Fragment key={item.title}>
-            {index !== items.length - 1 && (
+            {index !== breadcrumbs.data.length - 1 && (
               <BreadcrumbItem className="hidden md:block">
                 <BreadcrumbLink asChild={true}>
                   <Link href={item.link}>{item.title}</Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
             )}
-            {index < items.length - 1 && (
+            {index < breadcrumbs.data.length - 1 && (
               <BreadcrumbSeparator className="hidden md:block">
                 <Slash />
               </BreadcrumbSeparator>
             )}
-            {index === items.length - 1 && (
+            {index === breadcrumbs.data.length - 1 && (
               <BreadcrumbPage>{item.title}</BreadcrumbPage>
             )}
           </Fragment>
