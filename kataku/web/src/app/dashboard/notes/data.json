@@ -1,0 +1,614 @@
+[
+  {
+    "id": 1,
+    "title": "Tips for Effective Time Management",
+    "slug": "tips-for-effective-time-management",
+    "content": "Time management is key to productivity. Here are some tips to help you manage your time more effectively.",
+    "createdAt": "2025-04-01T08:00:00Z",
+    "updatedAt": "2025-04-01T08:00:00Z",
+    "author": "John Doe"
+  },
+  {
+    "id": 2,
+    "title": "The Importance of Mental Health Awareness",
+    "slug": "importance-of-mental-health-awareness",
+    "content": "Mental health awareness is critical in today's world. It's essential to talk about mental health openly.",
+    "createdAt": "2025-04-02T09:00:00Z",
+    "updatedAt": "2025-04-02T09:00:00Z",
+    "author": "Jane Smith"
+  },
+  {
+    "id": 3,
+    "title": "Understanding the Basics of JavaScript",
+    "slug": "understanding-the-basics-of-javascript",
+    "content": "JavaScript is a versatile programming language used for both front-end and back-end development. Learn its core principles.",
+    "createdAt": "2025-04-03T10:00:00Z",
+    "updatedAt": "2025-04-03T10:00:00Z",
+    "author": "Emily Brown"
+  },
+  {
+    "id": 4,
+    "title": "How to Build a Personal Brand",
+    "slug": "how-to-build-a-personal-brand",
+    "content": "A personal brand can help you stand out in your career. Here are steps to effectively build your brand.",
+    "createdAt": "2025-04-04T11:00:00Z",
+    "updatedAt": "2025-04-04T11:00:00Z",
+    "author": "Michael Lee"
+  },
+  {
+    "id": 5,
+    "title": "The Future of Artificial Intelligence",
+    "slug": "future-of-artificial-intelligence",
+    "content": "AI is changing the world rapidly. Explore the future potential of artificial intelligence in various industries.",
+    "createdAt": "2025-04-05T12:00:00Z",
+    "updatedAt": "2025-04-05T12:00:00Z",
+    "author": "Sarah Green"
+  },
+  {
+    "id": 6,
+    "title": "10 Healthy Habits to Adopt in 2025",
+    "slug": "healthy-habits-to-adopt-in-2025",
+    "content": "Adopting healthy habits can improve your quality of life. Here are 10 habits to consider in the new year.",
+    "createdAt": "2025-04-06T13:00:00Z",
+    "updatedAt": "2025-04-06T13:00:00Z",
+    "author": "David Harris"
+  },
+  {
+    "id": 7,
+    "title": "A Beginner's Guide to Yoga",
+    "slug": "beginners-guide-to-yoga",
+    "content": "Yoga is a great way to reduce stress and improve flexibility. Here's a guide for those just starting out.",
+    "createdAt": "2025-04-07T14:00:00Z",
+    "updatedAt": "2025-04-07T14:00:00Z",
+    "author": "Linda Walker"
+  },
+  {
+    "id": 8,
+    "title": "The Benefits of Reading Every Day",
+    "slug": "benefits-of-reading-every-day",
+    "content": "Reading daily has numerous benefits, including improved focus and expanded knowledge. Make it a daily habit.",
+    "createdAt": "2025-04-08T15:00:00Z",
+    "updatedAt": "2025-04-08T15:00:00Z",
+    "author": "James Wilson"
+  },
+  {
+    "id": 9,
+    "title": "Effective Communication Skills in the Workplace",
+    "slug": "effective-communication-skills-in-the-workplace",
+    "content": "Communication is key in any workplace. Here are ways to improve your communication skills for better results.",
+    "createdAt": "2025-04-09T16:00:00Z",
+    "updatedAt": "2025-04-09T16:00:00Z",
+    "author": "Patricia King"
+  },
+  {
+    "id": 10,
+    "title": "Understanding the Stock Market for Beginners",
+    "slug": "understanding-the-stock-market-for-beginners",
+    "content": "Investing in the stock market can be a great way to grow wealth. Learn the basics of stock trading.",
+    "createdAt": "2025-04-10T17:00:00Z",
+    "updatedAt": "2025-04-10T17:00:00Z",
+    "author": "Robert Clark"
+  },
+  {
+    "id": 11,
+    "title": "Building a Successful Startup",
+    "slug": "building-a-successful-startup",
+    "content": "Starting a business is challenging but rewarding. Here are key steps to build a successful startup from the ground up.",
+    "createdAt": "2025-04-11T18:00:00Z",
+    "updatedAt": "2025-04-11T18:00:00Z",
+    "author": "Olivia Moore"
+  },
+  {
+    "id": 12,
+    "title": "Mastering Time Blocking for Productivity",
+    "slug": "mastering-time-blocking-for-productivity",
+    "content": "Time blocking can help you manage your schedule more effectively. Learn how to use it for increased productivity.",
+    "createdAt": "2025-04-12T19:00:00Z",
+    "updatedAt": "2025-04-12T19:00:00Z",
+    "author": "Daniel Scott"
+  },
+  {
+    "id": 13,
+    "title": "The Importance of Networking for Career Growth",
+    "slug": "importance-of-networking-for-career-growth",
+    "content": "Networking is crucial for career development. Here’s why building a strong network can accelerate your growth.",
+    "createdAt": "2025-04-13T20:00:00Z",
+    "updatedAt": "2025-04-13T20:00:00Z",
+    "author": "Sophia Adams"
+  },
+  {
+    "id": 14,
+    "title": "How to Stay Motivated in Challenging Times",
+    "slug": "how-to-stay-motivated-in-challenging-times",
+    "content": "Staying motivated during tough times can be difficult. Here are some strategies to help you keep going.",
+    "createdAt": "2025-04-14T21:00:00Z",
+    "updatedAt": "2025-04-14T21:00:00Z",
+    "author": "William Johnson"
+  },
+  {
+    "id": 15,
+    "title": "The Power of Positive Thinking",
+    "slug": "power-of-positive-thinking",
+    "content": "Positive thinking can transform your life. Learn how adopting an optimistic mindset can change your outlook.",
+    "createdAt": "2025-04-15T22:00:00Z",
+    "updatedAt": "2025-04-15T22:00:00Z",
+    "author": "Elizabeth Martinez"
+  },
+  {
+    "id": 16,
+    "title": "Introduction to Digital Marketing",
+    "slug": "introduction-to-digital-marketing",
+    "content": "Digital marketing is essential for any business in the modern world. Discover the key components of a digital marketing strategy.",
+    "createdAt": "2025-04-16T23:00:00Z",
+    "updatedAt": "2025-04-16T23:00:00Z",
+    "author": "Daniel Lee"
+  },
+  {
+    "id": 17,
+    "title": "The Best Practices for Remote Work",
+    "slug": "best-practices-for-remote-work",
+    "content": "Remote work is becoming more common. Here are some tips to stay productive and maintain a healthy work-life balance.",
+    "createdAt": "2025-04-17T00:00:00Z",
+    "updatedAt": "2025-04-17T00:00:00Z",
+    "author": "Isabella Young"
+  },
+  {
+    "id": 18,
+    "title": "The Benefits of Daily Journaling",
+    "slug": "benefits-of-daily-journaling",
+    "content": "Journaling can help you reflect and improve your mental well-being. Learn how to make journaling a daily habit.",
+    "createdAt": "2025-04-18T01:00:00Z",
+    "updatedAt": "2025-04-18T01:00:00Z",
+    "author": "Joshua Harris"
+  },
+  {
+    "id": 19,
+    "title": "The Importance of Self-Care",
+    "slug": "importance-of-self-care",
+    "content": "Self-care is essential for maintaining physical and mental health. Here are simple self-care practices you can incorporate into your life.",
+    "createdAt": "2025-04-19T02:00:00Z",
+    "updatedAt": "2025-04-19T02:00:00Z",
+    "author": "Emily Wilson"
+  },
+  {
+    "id": 20,
+    "title": "How to Set Achievable Goals",
+    "slug": "how-to-set-achievable-goals",
+    "content": "Setting achievable goals is the first step to success. Learn how to set SMART goals that you can actually accomplish.",
+    "createdAt": "2025-04-20T03:00:00Z",
+    "updatedAt": "2025-04-20T03:00:00Z",
+    "author": "John White"
+  },
+  {
+    "id": 21,
+    "title": "The Best Time to Start Investing",
+    "slug": "best-time-to-start-investing",
+    "content": "Many people wonder when is the best time to start investing. The earlier you start, the better the compounding effect.",
+    "createdAt": "2025-04-21T04:00:00Z",
+    "updatedAt": "2025-04-21T04:00:00Z",
+    "author": "Hannah Taylor"
+  },
+  {
+    "id": 22,
+    "title": "How to Manage Work and Life Balance",
+    "slug": "manage-work-life-balance",
+    "content": "Work-life balance is essential for personal well-being. Here are ways to effectively manage your time between work and life.",
+    "createdAt": "2025-04-22T05:00:00Z",
+    "updatedAt": "2025-04-22T05:00:00Z",
+    "author": "Megan Lee"
+  },
+  {
+    "id": 23,
+    "title": "Why Sustainable Living Matters",
+    "slug": "why-sustainable-living-matters",
+    "content": "Sustainable living helps preserve the environment for future generations. Here’s why you should consider adopting a sustainable lifestyle.",
+    "createdAt": "2025-04-23T06:00:00Z",
+    "updatedAt": "2025-04-23T06:00:00Z",
+    "author": "Lucas Wright"
+  },
+  {
+    "id": 24,
+    "title": "How to Build Healthy Relationships",
+    "slug": "how-to-build-healthy-relationships",
+    "content": "Healthy relationships are key to emotional well-being. Learn the steps to build and maintain strong relationships with those around you.",
+    "createdAt": "2025-04-24T07:00:00Z",
+    "updatedAt": "2025-04-24T07:00:00Z",
+    "author": "Charlotte Lewis"
+  },
+  {
+    "id": 25,
+    "title": "The Impact of Social Media on Society",
+    "slug": "impact-of-social-media-on-society",
+    "content": "Social media has a profound effect on society. In this article, we explore both the positive and negative impacts of social media.",
+    "createdAt": "2025-04-25T08:00:00Z",
+    "updatedAt": "2025-04-25T08:00:00Z",
+    "author": "James Miller"
+  },
+  {
+    "id": 26,
+    "title": "How to Overcome Procrastination",
+    "slug": "how-to-overcome-procrastination",
+    "content": "Procrastination can hold you back from achieving your goals. Discover effective strategies to beat procrastination.",
+    "createdAt": "2025-04-26T09:00:00Z",
+    "updatedAt": "2025-04-26T09:00:00Z",
+    "author": "Grace Evans"
+  },
+  {
+    "id": 27,
+    "title": "The Benefits of Meditation for Stress Relief",
+    "slug": "benefits-of-meditation-for-stress-relief",
+    "content": "Meditation is a powerful tool for managing stress. Learn how it can help you find calm and peace in your daily life.",
+    "createdAt": "2025-04-27T10:00:00Z",
+    "updatedAt": "2025-04-27T10:00:00Z",
+    "author": "Johnathan Cooper"
+  },
+  {
+    "id": 28,
+    "title": "Building Emotional Intelligence for Success",
+    "slug": "building-emotional-intelligence-for-success",
+    "content": "Emotional intelligence plays a crucial role in personal and professional success. Learn how to develop this vital skill.",
+    "createdAt": "2025-04-28T11:00:00Z",
+    "updatedAt": "2025-04-28T11:00:00Z",
+    "author": "Sophia Robinson"
+  },
+  {
+    "id": 29,
+    "title": "How to Build Strong Habits That Stick",
+    "slug": "how-to-build-strong-habits-that-stick",
+    "content": "Building strong habits is the key to long-term success. Here are strategies that will help you create habits that last.",
+    "createdAt": "2025-04-29T12:00:00Z",
+    "updatedAt": "2025-04-29T12:00:00Z",
+    "author": "Oliver Thompson"
+  },
+  {
+    "id": 30,
+    "title": "The Future of Renewable Energy",
+    "slug": "future-of-renewable-energy",
+    "content": "Renewable energy is the future of sustainable power. Learn about the technologies shaping the future of energy production.",
+    "createdAt": "2025-04-30T13:00:00Z",
+    "updatedAt": "2025-04-30T13:00:00Z",
+    "author": "Victoria Harris"
+  },
+  {
+    "id": 31,
+    "title": "Understanding Cryptocurrency and Blockchain",
+    "slug": "understanding-cryptocurrency-and-blockchain",
+    "content": "Cryptocurrency and blockchain are changing the financial landscape. Learn about how they work and their impact on the economy.",
+    "createdAt": "2025-05-01T14:00:00Z",
+    "updatedAt": "2025-05-01T14:00:00Z",
+    "author": "Ethan Moore"
+  },
+  {
+    "id": 32,
+    "title": "How to Deal with Difficult People at Work",
+    "slug": "how-to-deal-with-difficult-people-at-work",
+    "content": "Dealing with difficult people is a challenge many of us face at work. Learn effective strategies for managing these situations.",
+    "createdAt": "2025-05-02T15:00:00Z",
+    "updatedAt": "2025-05-02T15:00:00Z",
+    "author": "Lily Mitchell"
+  },
+  {
+    "id": 33,
+    "title": "The Science of Habit Formation",
+    "slug": "science-of-habit-formation",
+    "content": "Understanding the science behind habit formation can help you break bad habits and establish good ones.",
+    "createdAt": "2025-05-03T16:00:00Z",
+    "updatedAt": "2025-05-03T16:00:00Z",
+    "author": "Mason Adams"
+  },
+  {
+    "id": 34,
+    "title": "How to Maximize Your Productivity",
+    "slug": "how-to-maximize-your-productivity",
+    "content": "Maximizing productivity requires smart strategies and good habits. Learn how to boost your productivity every day.",
+    "createdAt": "2025-05-04T17:00:00Z",
+    "updatedAt": "2025-05-04T17:00:00Z",
+    "author": "Charlotte Harris"
+  },
+  {
+    "id": 35,
+    "title": "The Importance of Giving Back to the Community",
+    "slug": "importance-of-giving-back-to-the-community",
+    "content": "Giving back to the community is an essential part of creating positive change. Here are ways to get involved.",
+    "createdAt": "2025-05-05T18:00:00Z",
+    "updatedAt": "2025-05-05T18:00:00Z",
+    "author": "James Lee"
+  },
+  {
+    "id": 36,
+    "title": "How to Create a Budget That Works for You",
+    "slug": "how-to-create-a-budget-that-works-for-you",
+    "content": "Creating a budget is key to financial success. Learn how to set a budget that fits your financial goals and lifestyle.",
+    "createdAt": "2025-05-06T19:00:00Z",
+    "updatedAt": "2025-05-06T19:00:00Z",
+    "author": "Ava Smith"
+  },
+  {
+    "id": 37,
+    "title": "The Role of Data in Business Decision-Making",
+    "slug": "role-of-data-in-business-decision-making",
+    "content": "Data-driven decisions are crucial in today’s business world. Learn how to use data effectively in decision-making processes.",
+    "createdAt": "2025-05-07T20:00:00Z",
+    "updatedAt": "2025-05-07T20:00:00Z",
+    "author": "Ethan White"
+  },
+  {
+    "id": 38,
+    "title": "The Power of Gratitude in Daily Life",
+    "slug": "power-of-gratitude-in-daily-life",
+    "content": "Practicing gratitude can improve your overall happiness. Here’s how to make gratitude a part of your daily routine.",
+    "createdAt": "2025-05-08T21:00:00Z",
+    "updatedAt": "2025-05-08T21:00:00Z",
+    "author": "Oliver Brown"
+  },
+  {
+    "id": 39,
+    "title": "Mastering Public Speaking Skills",
+    "slug": "mastering-public-speaking-skills",
+    "content": "Public speaking is a valuable skill that can boost your career. Here are tips to help you speak confidently in front of an audience.",
+    "createdAt": "2025-05-09T22:00:00Z",
+    "updatedAt": "2025-05-09T22:00:00Z",
+    "author": "Sophia Johnson"
+  },
+  {
+    "id": 40,
+    "title": "How to Stay Focused in a Distracting World",
+    "slug": "how-to-stay-focused-in-a-distracting-world",
+    "content": "Staying focused in today’s world full of distractions can be tough. Learn strategies to maintain focus and boost your productivity.",
+    "createdAt": "2025-05-10T23:00:00Z",
+    "updatedAt": "2025-05-10T23:00:00Z",
+    "author": "James White"
+  },
+  {
+    "id": 41,
+    "title": "The Art of Negotiation in Business",
+    "slug": "art-of-negotiation-in-business",
+    "content": "Negotiation is a key skill in business. Learn the strategies that can help you successfully negotiate deals.",
+    "createdAt": "2025-05-11T00:00:00Z",
+    "updatedAt": "2025-05-11T00:00:00Z",
+    "author": "Isabella Taylor"
+  },
+  {
+    "id": 42,
+    "title": "How to Stay Organized with a Busy Schedule",
+    "slug": "how-to-stay-organized-with-a-busy-schedule",
+    "content": "Staying organized is essential when managing a busy life. Here are tips to keep your schedule under control.",
+    "createdAt": "2025-05-12T01:00:00Z",
+    "updatedAt": "2025-05-12T01:00:00Z",
+    "author": "George Evans"
+  },
+  {
+    "id": 43,
+    "title": "How to Deal with Burnout",
+    "slug": "how-to-deal-with-burnout",
+    "content": "Burnout can affect anyone. Learn how to recognize the signs of burnout and strategies for dealing with it.",
+    "createdAt": "2025-05-13T02:00:00Z",
+    "updatedAt": "2025-05-13T02:00:00Z",
+    "author": "Mia Brown"
+  },
+  {
+    "id": 44,
+    "title": "The Benefits of Working in Teams",
+    "slug": "benefits-of-working-in-teams",
+    "content": "Teamwork can help you accomplish more than working alone. Discover the benefits of collaborating with others.",
+    "createdAt": "2025-05-14T03:00:00Z",
+    "updatedAt": "2025-05-14T03:00:00Z",
+    "author": "William Harris"
+  },
+  {
+    "id": 45,
+    "title": "The Impact of Leadership on Organizational Success",
+    "slug": "impact-of-leadership-on-organizational-success",
+    "content": "Leadership plays a crucial role in shaping an organization’s success. Learn how effective leadership can drive growth.",
+    "createdAt": "2025-05-15T04:00:00Z",
+    "updatedAt": "2025-05-15T04:00:00Z",
+    "author": "Linda Williams"
+  },
+  {
+    "id": 46,
+    "title": "How to Build a Resilient Mindset",
+    "slug": "how-to-build-a-resilient-mindset",
+    "content": "A resilient mindset is key to overcoming life’s challenges. Learn how to develop resilience and stay strong in tough times.",
+    "createdAt": "2025-05-16T05:00:00Z",
+    "updatedAt": "2025-05-16T05:00:00Z",
+    "author": "Sophia Moore"
+  },
+  {
+    "id": 47,
+    "title": "The Importance of Continuous Learning",
+    "slug": "importance-of-continuous-learning",
+    "content": "Continuous learning is essential for personal and professional growth. Learn how to keep improving throughout your life.",
+    "createdAt": "2025-05-17T06:00:00Z",
+    "updatedAt": "2025-05-17T06:00:00Z",
+    "author": "Lucas Clark"
+  },
+  {
+    "id": 48,
+    "title": "How to Use Social Media for Business Growth",
+    "slug": "how-to-use-social-media-for-business-growth",
+    "content": "Social media is a powerful tool for business growth. Learn how to use platforms like Facebook, Instagram, and LinkedIn to grow your brand.",
+    "createdAt": "2025-05-18T07:00:00Z",
+    "updatedAt": "2025-05-18T07:00:00Z",
+    "author": "Ella Turner"
+  },
+  {
+    "id": 49,
+    "title": "The Importance of Work-Life Integration",
+    "slug": "importance-of-work-life-integration",
+    "content": "Work-life integration is a more flexible approach to balancing work and personal life. Here’s how you can achieve it.",
+    "createdAt": "2025-05-19T08:00:00Z",
+    "updatedAt": "2025-05-19T08:00:00Z",
+    "author": "Alexander Green"
+  },
+  {
+    "id": 50,
+    "title": "How to Handle Criticism Gracefully",
+    "slug": "how-to-handle-criticism-gracefully",
+    "content": "Handling criticism can be difficult. Learn how to respond to feedback in a positive and constructive way.",
+    "createdAt": "2025-05-20T09:00:00Z",
+    "updatedAt": "2025-05-20T09:00:00Z",
+    "author": "Chloe Scott"
+  },
+  {
+    "id": 51,
+    "title": "The Role of Innovation in Business Success",
+    "slug": "role-of-innovation-in-business-success",
+    "content": "Innovation is a key driver of success in business. Learn how to foster a culture of innovation in your organization.",
+    "createdAt": "2025-05-21T10:00:00Z",
+    "updatedAt": "2025-05-21T10:00:00Z",
+    "author": "Michael Evans"
+  },
+  {
+    "id": 52,
+    "title": "How to Improve Your Public Speaking Skills",
+    "slug": "how-to-improve-your-public-speaking-skills",
+    "content": "Public speaking is a crucial skill in both personal and professional settings. Learn tips to improve your speaking ability.",
+    "createdAt": "2025-05-22T11:00:00Z",
+    "updatedAt": "2025-05-22T11:00:00Z",
+    "author": "Sophia Adams"
+  },
+  {
+    "id": 53,
+    "title": "How to Be More Productive in the Morning",
+    "slug": "how-to-be-more-productive-in-the-morning",
+    "content": "Starting your day off right can set the tone for productivity. Here’s how to maximize your mornings for success.",
+    "createdAt": "2025-05-23T12:00:00Z",
+    "updatedAt": "2025-05-23T12:00:00Z",
+    "author": "Benjamin Lee"
+  },
+  {
+    "id": 54,
+    "title": "The Importance of Emotional Wellness",
+    "slug": "importance-of-emotional-wellness",
+    "content": "Emotional wellness is key to overall health. Learn how to nurture your emotional well-being for a more balanced life.",
+    "createdAt": "2025-05-24T13:00:00Z",
+    "updatedAt": "2025-05-24T13:00:00Z",
+    "author": "Sarah Walker"
+  },
+  {
+    "id": 55,
+    "title": "How to Build Self-Confidence",
+    "slug": "how-to-build-self-confidence",
+    "content": "Self-confidence is crucial for success. Learn strategies to build and maintain confidence in yourself and your abilities.",
+    "createdAt": "2025-05-25T14:00:00Z",
+    "updatedAt": "2025-05-25T14:00:00Z",
+    "author": "James Turner"
+  },
+  {
+    "id": 56,
+    "title": "How to Stay Healthy While Working from Home",
+    "slug": "how-to-stay-healthy-while-working-from-home",
+    "content": "Working from home has its challenges, especially when it comes to health. Here are tips to maintain your physical and mental well-being.",
+    "createdAt": "2025-05-26T15:00:00Z",
+    "updatedAt": "2025-05-26T15:00:00Z",
+    "author": "Lily Johnson"
+  },
+  {
+    "id": 57,
+    "title": "The Power of Networking for Career Advancement",
+    "slug": "power-of-networking-for-career-advancement",
+    "content": "Networking is an essential skill for advancing your career. Learn how to effectively build connections that help you grow.",
+    "createdAt": "2025-05-27T16:00:00Z",
+    "updatedAt": "2025-05-27T16:00:00Z",
+    "author": "Daniel Brown"
+  },
+  {
+    "id": 58,
+    "title": "How to Manage Stress at Work",
+    "slug": "how-to-manage-stress-at-work",
+    "content": "Stress at work is inevitable, but it can be managed. Learn strategies to reduce stress and stay productive at work.",
+    "createdAt": "2025-05-28T17:00:00Z",
+    "updatedAt": "2025-05-28T17:00:00Z",
+    "author": "Emily White"
+  },
+  {
+    "id": 59,
+    "title": "The Importance of Goal Setting for Success",
+    "slug": "importance-of-goal-setting-for-success",
+    "content": "Setting clear goals is crucial for success. Learn how to set and achieve meaningful goals in your personal and professional life.",
+    "createdAt": "2025-05-29T18:00:00Z",
+    "updatedAt": "2025-05-29T18:00:00Z",
+    "author": "Matthew Green"
+  },
+  {
+    "id": 60,
+    "title": "How to Overcome Impostor Syndrome",
+    "slug": "how-to-overcome-impostor-syndrome",
+    "content": "Impostor syndrome can undermine your confidence. Learn how to overcome these feelings and recognize your true value.",
+    "createdAt": "2025-05-30T19:00:00Z",
+    "updatedAt": "2025-05-30T19:00:00Z",
+    "author": "Natalie Lewis"
+  },
+  {
+    "id": 61,
+    "title": "The Benefits of Minimalism in Daily Life",
+    "slug": "benefits-of-minimalism-in-daily-life",
+    "content": "Minimalism can lead to a more intentional and fulfilling life. Learn the benefits of living with less and focusing on what truly matters.",
+    "createdAt": "2025-06-01T20:00:00Z",
+    "updatedAt": "2025-06-01T20:00:00Z",
+    "author": "Anna Davis"
+  },
+  {
+    "id": 62,
+    "title": "How to Find Your Passion in Life",
+    "slug": "how-to-find-your-passion-in-life",
+    "content": "Finding your passion is essential for a fulfilling life. Here are tips on how to discover what truly excites you and bring it into your life.",
+    "createdAt": "2025-06-02T21:00:00Z",
+    "updatedAt": "2025-06-02T21:00:00Z",
+    "author": "Oliver Martinez"
+  },
+  {
+    "id": 63,
+    "title": "The Power of Positive Affirmations",
+    "slug": "power-of-positive-affirmations",
+    "content": "Positive affirmations can help you reframe your mindset and boost confidence. Learn how to incorporate them into your daily routine.",
+    "createdAt": "2025-06-03T22:00:00Z",
+    "updatedAt": "2025-06-03T22:00:00Z",
+    "author": "Sophie Johnson"
+  },
+  {
+    "id": 64,
+    "title": "How to Deal with Failure and Learn from It",
+    "slug": "how-to-deal-with-failure-and-learn-from-it",
+    "content": "Failure is part of life. Learn how to embrace failure, learn from it, and use it as a stepping stone toward success.",
+    "createdAt": "2025-06-04T23:00:00Z",
+    "updatedAt": "2025-06-04T23:00:00Z",
+    "author": "Benjamin Harris"
+  },
+  {
+    "id": 65,
+    "title": "The Importance of Financial Literacy",
+    "slug": "importance-of-financial-literacy",
+    "content": "Financial literacy is crucial for managing your finances effectively. Learn how to improve your financial knowledge and make informed decisions.",
+    "createdAt": "2025-06-05T00:00:00Z",
+    "updatedAt": "2025-06-05T00:00:00Z",
+    "author": "Emily Walker"
+  },
+  {
+    "id": 66,
+    "title": "How to Build a Healthy Morning Routine",
+    "slug": "how-to-build-a-healthy-morning-routine",
+    "content": "A healthy morning routine sets the tone for a productive day. Discover the key habits to incorporate into your mornings for success.",
+    "createdAt": "2025-06-06T01:00:00Z",
+    "updatedAt": "2025-06-06T01:00:00Z",
+    "author": "Chloe Turner"
+  },
+  {
+    "id": 67,
+    "title": "The Role of Artificial Intelligence in Healthcare",
+    "slug": "role-of-artificial-intelligence-in-healthcare",
+    "content": "AI is transforming the healthcare industry. Learn how artificial intelligence is being used to improve patient care and streamline operations.",
+    "createdAt": "2025-06-07T02:00:00Z",
+    "updatedAt": "2025-06-07T02:00:00Z",
+    "author": "Lucas Taylor"
+  },
+  {
+    "id": 68,
+    "title": "How to Cultivate a Growth Mindset",
+    "slug": "how-to-cultivate-a-growth-mindset",
+    "content": "A growth mindset can help you achieve more in life by embracing challenges and learning from failures. Learn how to develop a growth mindset.",
+    "createdAt": "2025-06-08T03:00:00Z",
+    "updatedAt": "2025-06-08T03:00:00Z",
+    "author": "John White"
+  }
+]

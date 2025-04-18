@@ -63,7 +63,7 @@ export const notes = pgTable('notes', {
   slug: varchar('slug').notNull(),
   content: text('content').notNull(),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
-  updatedAt: timestamp('updated_at', { withTimezone: true }),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
   author: text('author')
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
