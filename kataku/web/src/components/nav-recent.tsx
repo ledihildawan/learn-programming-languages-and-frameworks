@@ -15,35 +15,32 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import {
-  FolderIcon,
-  MoreHorizontalIcon,
-  ShareIcon,
-  type LucideIcon,
-} from "lucide-react";
+import { FolderIcon, MoreHorizontalIcon, ShareIcon } from "lucide-react";
+import Link from "next/link";
 
 export function NavRecent({
   items,
 }: {
   items: {
-    name: string;
-    url: string;
-    icon: LucideIcon;
+    slug: string;
+    title: string;
   }[];
 }) {
   const { isMobile } = useSidebar();
+
+  console.log(items);
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel>Recent</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (
-          <SidebarMenuItem key={item.name}>
+          <SidebarMenuItem key={item.slug}>
             <SidebarMenuButton asChild>
-              <a href={item.url}>
-                <item.icon />
-                <span>{item.name}</span>
-              </a>
+              <Link href={`/dashboard/notes/${item.slug}`}>
+                {/* <item.icon /> */}
+                <span>{item.title}</span>
+              </Link>
             </SidebarMenuButton>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>

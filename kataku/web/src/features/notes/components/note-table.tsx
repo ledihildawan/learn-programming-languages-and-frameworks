@@ -92,7 +92,10 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
     accessorKey: "title",
     header: "Title",
     cell: ({ row }) => (
-      <Link href={`/dashboard/notes/${row.original.slug}`}>
+      <Link
+        href={`/dashboard/notes/${row.original.slug}`}
+        className="hover:underline"
+      >
         {row.original.title}
       </Link>
     ),
@@ -320,7 +323,10 @@ export function NoteTable() {
               <Select
                 value={`${table.getState().pagination.pageSize}`}
                 onValueChange={(value) => {
-                  table.setPageSize(Number(value));
+                  setPagination(() => ({
+                    pageIndex: 0,
+                    pageSize: value,
+                  }));
                 }}
               >
                 <SelectTrigger className="w-20" id="rows-per-page">
