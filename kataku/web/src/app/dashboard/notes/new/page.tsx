@@ -4,15 +4,25 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useAppForm } from "@/components/ui/tanstack-form";
+import { env } from "@/env/client";
 import { eden } from "@/lib/eden";
 import { useMutation } from "@tanstack/react-query";
 import MDEditor from "@uiw/react-md-editor";
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useTheme } from "next-themes";
+import { useRouter } from "next/navigation";
+import { debounce, isEqual } from "radash";
 import { useCallback } from "react";
+import { toast } from "sonner";
 import { z } from "zod";
 
+interface NotePayload {
+  title: string;
+  content: string;
+}
+
 const formSchema = {
-  title: z.string().min(3, {
+  title: z.string().min(1, {
     message: "Title is required.",
   }),
   content: z.string().min(1, {
@@ -20,15 +30,32 @@ const formSchema = {
   }),
 };
 
+const defaultValues = {
+  title: "",
+  content: "",
+};
+
 const FormSchema = z.object(formSchema);
 
 export default function Page() {
   const { theme } = useTheme();
+  const router = useRouter();
 
   const mutation = useMutation({
-    mutationFn: eden.api.note.index.post,
-    onSuccess: (data) => {
-      console.log(data);
+    mutationFn: async (payload: NotePayload) => {
+      try {
+        await eden.api.note.index.post(payload);
+      } catch (error) {}
+    },
+    onSuccess: () => {
+      dismissToasts();
+
+      toast.success("Note has been successfully created!");
+
+      router.push(`${env.NEXT_PUBLIC_WEB_URL}/dashboard/notes`);
+    },
+    onError: () => {
+      toast.error("Oops, something went wrong on the server's end!");
     },
   });
 
@@ -36,23 +63,54 @@ export default function Page() {
     onSubmit: async ({ value }) => mutation.mutate(value),
     validators: {
       onSubmit: FormSchema,
+      onChange: debounce({ delay: 400 }, ({ value }) => {
+        if (isEqual(defaultValues, value)) {
+          dismissToasts();
+          return;
+        }
+
+        if (toast.getToasts().length) {
+          return;
+        }
+
+        toast.info("Unsaved changes", {
+          position: "bottom-center",
+          duration: Infinity,
+          action: (
+            <div className="ml-auto flex gap-2">
+              <Button variant="outline" size="sm" onClick={discard}>
+                Discard
+              </Button>
+              <Button
+                size="sm"
+                onClick={() => {
+                  form.handleSubmit();
+                }}
+              >
+                Save
+              </Button>
+            </div>
+          ),
+        });
+      }),
     },
-    defaultValues: {
-      title: "asjdklasj",
-      content: "",
+    defaultValues,
+    onSubmitInvalid: (data) => {
+      console.log(data);
     },
   });
 
-  const handleSubmit = useCallback(
-    (e: React.FormEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-      form.handleSubmit();
-    },
-    [form],
-  );
+  const dismissToasts = () => {
+    toast.getToasts().forEach((t) => toast.dismiss(t.id));
+  };
 
-  function focusToMDEditor() {
+  const discard = useCallback(() => {
+    form.reset();
+
+    dismissToasts();
+  }, [form]);
+
+  const focusToMDEditor = useCallback(() => {
     const textareaEl = document.querySelector(
       ".w-md-editor-text-input",
     ) as HTMLTextAreaElement;
@@ -62,14 +120,33 @@ export default function Page() {
       textareaEl.value.length,
       textareaEl.value.length,
     );
-  }
+  }, []);
 
   return (
-    <div className="px-4 lg:px-6">
-      <Card>
-        <CardContent>
-          <form.AppForm>
-            <form onSubmit={handleSubmit}>
+    <div className="grid gap-4">
+      <div className="flex items-center justify-end px-4 lg:px-6">
+        <div className="flex items-center gap-2">
+          <Button
+            className="sm"
+            onClick={() => {
+              form.handleSubmit();
+            }}
+          >
+            Save
+          </Button>
+          <Button className="sm" variant="outline">
+            <ChevronLeftIcon />
+          </Button>
+          <Button className="sm" variant="outline">
+            <ChevronRightIcon />
+          </Button>
+        </div>
+      </div>
+
+      <div className="px-4 lg:px-6">
+        <Card>
+          <CardContent>
+            <form.AppForm>
               <div className="grid gap-6">
                 <div className="grid gap-2">
                   <form.AppField
@@ -98,6 +175,10 @@ export default function Page() {
                 <div className="grid gap-2" data-color-mode={theme}>
                   <form.AppField
                     name="content"
+                    validators={{
+                      onChangeAsync: formSchema.content,
+                      onChangeAsyncDebounceMs: 400,
+                    }}
                     children={(field) => (
                       <field.FormItem>
                         <field.FormLabel
@@ -114,7 +195,7 @@ export default function Page() {
                               : "var(--input)",
                           }}
                           value={field.state.value}
-                          height={300}
+                          height={420}
                           preview="edit"
                           onChange={(e) => field.handleChange(e!)}
                           previewOptions={{
@@ -126,12 +207,11 @@ export default function Page() {
                     )}
                   />
                 </div>
-                <Button type="submit">Save</Button>
               </div>
-            </form>
-          </form.AppForm>
-        </CardContent>
-      </Card>
+            </form.AppForm>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

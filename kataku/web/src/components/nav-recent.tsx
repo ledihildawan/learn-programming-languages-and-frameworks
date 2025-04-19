@@ -28,8 +28,6 @@ export function NavRecent({
 }) {
   const { isMobile } = useSidebar();
 
-  console.log(items);
-
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel>Recent</SidebarGroupLabel>

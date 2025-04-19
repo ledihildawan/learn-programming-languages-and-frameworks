@@ -26,6 +26,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { env } from "@/env/client";
 import { eden } from "@/lib/eden";
 import { Nullable } from "@/types";
 import { useQuery } from "@tanstack/react-query";
@@ -33,6 +34,7 @@ import {
   ColumnDef,
   Row,
   flexRender,
+  getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import {
@@ -49,7 +51,6 @@ import Link from "next/link";
 import * as React from "react";
 import removeMd from "remove-markdown";
 import { z } from "zod";
-import { getCoreRowModel } from "./get-core-row-model";
 
 export const schema = z.object({
   id: z.number(),
@@ -212,7 +213,7 @@ export function NoteTable() {
     pageIndex: 0,
   });
 
-  const { data, isLoading, newPagination } = useGetNotes({ pagination });
+  const { data, newPagination } = useGetNotes({ pagination });
 
   const table = useReactTable({
     data,
@@ -223,8 +224,6 @@ export function NoteTable() {
     rowCount: newPagination?.total as number | undefined,
     getCoreRowModel: getCoreRowModel(),
   });
-
-  if (isLoading) return <h1 className="text-xl">Loading...</h1>;
 
   return (
     <div className="grid gap-4">
@@ -265,7 +264,12 @@ export function NoteTable() {
           </DropdownMenu>
           <Button variant="outline" size="sm">
             <PlusIcon />
-            <span className="hidden lg:inline">Add Note</span>
+            <Link
+              href={`${env.NEXT_PUBLIC_WEB_URL}/dashboard/notes/new`}
+              className="hidden lg:inline"
+            >
+              Add Note
+            </Link>
           </Button>
         </div>
       </div>
