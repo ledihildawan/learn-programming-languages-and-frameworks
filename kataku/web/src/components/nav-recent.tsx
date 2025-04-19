@@ -15,7 +15,8 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { FolderIcon, MoreHorizontalIcon, ShareIcon } from "lucide-react";
+import { env } from "@/env/client";
+import { MoreHorizontalIcon, PencilIcon, ShareIcon } from "lucide-react";
 import Link from "next/link";
 
 export function NavRecent({
@@ -56,8 +57,12 @@ export function NavRecent({
                 align={isMobile ? "end" : "start"}
               >
                 <DropdownMenuItem>
-                  <FolderIcon />
-                  <span>Open</span>
+                  <PencilIcon />
+                  <Link
+                    href={`${env.NEXT_PUBLIC_WEB_URL}/dashboard/notes/${item.slug}/edit`}
+                  >
+                    Edit
+                  </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <ShareIcon />

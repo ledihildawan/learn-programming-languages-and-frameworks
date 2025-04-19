@@ -24,11 +24,7 @@ export default function Page() {
         const res = await eden.api.note({ slug: params.slug }).get();
 
         batch(() => {
-          updateBreadcrumbs({
-            pathname,
-            customTitle: res.data.data.title,
-          });
-          updateIsLazy(false);
+          updateBreadcrumbs(`/dashboard/notes/${res.data.data.title}`);
           updateIsLoading(false);
         });
 

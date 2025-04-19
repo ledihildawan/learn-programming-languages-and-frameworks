@@ -1,4 +1,7 @@
+import * as schema from "@server/db/schema";
 import { authClient } from "./lib/auth-client";
+
+export type Note = typeof schema.notes.$inferInsert;
 
 export type Nullable<T = void> = T | null | undefined;
 

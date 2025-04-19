@@ -7,7 +7,7 @@ import { useAppForm } from "@/components/ui/tanstack-form";
 import { env } from "@/env/client";
 import { eden } from "@/lib/eden";
 import { updateBreadcrumbs, updateIsLoading } from "@/store/breadcrumbs-store";
-import { updateRecent } from "@/store/recent-store";
+import { updateRecent, updateRecentItem } from "@/store/recent-store";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { batch } from "@tanstack/react-store";
 import MDEditor from "@uiw/react-md-editor";
@@ -74,15 +74,19 @@ export default function Page() {
   const mutation = useMutation({
     mutationFn: async (payload: NotePayload) => {
       try {
-        await eden.api
+        const res = await eden.api
           .note({ slug: params.slug })
           .patch(payload, { fetch: { method: "PATCH" } });
+
+        return res;
       } catch (error) {}
     },
-    onSuccess: () => {
+    onSuccess: (res) => {
       dismissToasts();
 
       toast.success("Note has been successfully updated!");
+
+      updateRecentItem(res!.data!.data);
 
       router.push(`${env.NEXT_PUBLIC_WEB_URL}/dashboard/notes`);
     },

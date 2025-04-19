@@ -51,7 +51,7 @@ export async function doestSlugExits(slug: string) {
 export async function generateUniqueSlug(value: string) {
   const slug = slugify(value, { lower: true, strict: true });
 
-  let uniqueSlug = `${slug}-${randomUUIDv7()}`;
+  let uniqueSlug = slug;
 
   while (await doestSlugExits(uniqueSlug)) {
     uniqueSlug = `${slug}-${randomUUIDv7()}`;
