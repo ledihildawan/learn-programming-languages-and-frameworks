@@ -106,14 +106,27 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
   {
     accessorKey: "slug",
     header: "Slug",
+    cell: ({ row }) => {
+      let value = removeMd(row.original.slug);
+
+      if (row.original.slug.length > 47) {
+        value = `${removeMd(row.original.slug.slice(0, 47))}...`;
+      }
+
+      return value;
+    },
   },
   {
     accessorKey: "content",
     header: "Content",
     cell: ({ row }) => {
-      const trimmedContent = removeMd(row.original.content.slice(0, 75));
+      let value = removeMd(row.original.content);
 
-      return `${trimmedContent}...`;
+      if (row.original.content.length > 72) {
+        value = `${removeMd(row.original.content.slice(0, 72))}...`;
+      }
+
+      return value;
     },
   },
   {
