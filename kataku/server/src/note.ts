@@ -22,7 +22,7 @@ export const note = new Elysia({ prefix: '/note', tags: ['note'] })
         })
         .from(schema.notes)
         .leftJoin(schema.users, eq(schema.users.id, schema.notes.author));
-      const notes = await withPagination(query.$dynamic(), asc(schema.notes.id), page, pageSize);
+      const notes = await withPagination(query.$dynamic(), asc(schema.notes.createdAt), page, pageSize);
       const total = (await first(db.select({ total: count() }).from(schema.notes)))?.total || 0;
 
       return {
@@ -117,6 +117,7 @@ export const note = new Elysia({ prefix: '/note', tags: ['note'] })
         .set({
           ...body,
           slug: newSlug || note.slug,
+          updatedAt: new Date(),
         })
         .where(eq(schema.notes.slug, slug))
         .returning();

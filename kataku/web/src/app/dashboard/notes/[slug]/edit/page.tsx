@@ -114,16 +114,10 @@ export default function Page() {
           duration: Infinity,
           action: (
             <div className="ml-auto flex gap-2">
-              <Button
-                className="cursor-pointer"
-                variant="outline"
-                size="sm"
-                onClick={discard}
-              >
+              <Button variant="outline" size="sm" onClick={discard}>
                 Discard
               </Button>
               <Button
-                className="cursor-pointer"
                 size="sm"
                 onClick={() => {
                   form.handleSubmit();
@@ -180,7 +174,6 @@ export default function Page() {
         <div className="flex items-center gap-2">
           <Button
             size="sm"
-            className="cursor-pointer"
             onClick={() => {
               form.handleSubmit();
             }}
@@ -189,7 +182,6 @@ export default function Page() {
           </Button>
           <Button
             size="sm"
-            className="cursor-pointer"
             variant="outline"
             disabled={!prevNote}
             onClick={() => goToNote(prevNote.slug)}
@@ -198,7 +190,6 @@ export default function Page() {
           </Button>
           <Button
             size="sm"
-            className="cursor-pointer"
             variant="outline"
             disabled={!nextNote}
             onClick={() => goToNote(nextNote.slug)}

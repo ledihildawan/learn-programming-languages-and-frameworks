@@ -48,6 +48,7 @@ import {
   PlusIcon,
 } from "lucide-react";
 import Link from "next/link";
+import { parseAsInteger, useQueryState } from "nuqs";
 import * as React from "react";
 import removeMd from "remove-markdown";
 import { z } from "zod";
@@ -214,10 +215,22 @@ function useGetNotes({ pagination }: any) {
 }
 
 export function NoteTable() {
-  const [pagination, setPagination] = React.useState({
-    pageSize: 10,
-    pageIndex: 0,
-  });
+  const [page, setPage] = useQueryState(
+    "page",
+    parseAsInteger.withDefault(1).withOptions({ history: "push" }),
+  );
+  const [perPage, setPerPage] = useQueryState(
+    "perPage",
+    parseAsInteger.withDefault(10).withOptions({ history: "push" }),
+  );
+
+  const pagination = React.useMemo(
+    () => ({
+      pageSize: perPage,
+      pageIndex: page - 1,
+    }),
+    [page, perPage],
+  );
 
   const { data, newPagination } = useGetNotes({ pagination });
 
@@ -268,7 +281,7 @@ export function NoteTable() {
                 })}
             </DropdownMenuContent>
           </DropdownMenu>
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" className="cursor-pointer">
             <PlusIcon />
             <Link
               href={`${env.NEXT_PUBLIC_WEB_URL}/dashboard/notes/new`}
@@ -332,12 +345,7 @@ export function NoteTable() {
               </Label>
               <Select
                 value={`${table.getState().pagination.pageSize}`}
-                onValueChange={(value) => {
-                  setPagination(() => ({
-                    pageIndex: 0,
-                    pageSize: value,
-                  }));
-                }}
+                onValueChange={(value) => setPerPage(Number(value))}
               >
                 <SelectTrigger className="w-20" id="rows-per-page">
                   <SelectValue
@@ -362,12 +370,7 @@ export function NoteTable() {
               <Button
                 variant="outline"
                 className="hidden h-8 w-8 p-0 lg:flex"
-                onClick={() =>
-                  setPagination((value) => ({
-                    ...value,
-                    pageIndex: 0,
-                  }))
-                }
+                onClick={() => setPage(1)}
                 disabled={!table.getCanPreviousPage()}
               >
                 <span className="sr-only">Go to first page</span>
@@ -377,12 +380,7 @@ export function NoteTable() {
                 variant="outline"
                 className="size-8"
                 size="icon"
-                onClick={() =>
-                  setPagination((value) => ({
-                    ...value,
-                    pageIndex: value.pageIndex - 1,
-                  }))
-                }
+                onClick={() => setPage((value) => value - 1)}
                 disabled={!table.getCanPreviousPage()}
               >
                 <span className="sr-only">Go to previous page</span>
@@ -392,12 +390,7 @@ export function NoteTable() {
                 variant="outline"
                 className="size-8"
                 size="icon"
-                onClick={() =>
-                  setPagination((value) => ({
-                    ...value,
-                    pageIndex: value.pageIndex + 1,
-                  }))
-                }
+                onClick={() => setPage((value) => value + 1)}
                 disabled={!table.getCanNextPage()}
               >
                 <span className="sr-only">Go to next page</span>
@@ -407,12 +400,7 @@ export function NoteTable() {
                 variant="outline"
                 className="hidden size-8 lg:flex"
                 size="icon"
-                onClick={() =>
-                  setPagination((value) => ({
-                    ...value,
-                    pageIndex: (newPagination?.totalPages as number) - 1,
-                  }))
-                }
+                onClick={() => setPage(newPagination?.totalPages!)}
                 disabled={!table.getCanNextPage()}
               >
                 <span className="sr-only">Go to last page</span>

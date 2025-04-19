@@ -3,7 +3,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import Script from "next/script";
 import NextTopLoader from "nextjs-toploader";
-import { NuqsAdapter } from "nuqs/adapters/next/pages";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 import "./globals.css";
 
 export default function RootLayout({
