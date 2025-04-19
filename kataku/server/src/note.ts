@@ -1,7 +1,8 @@
 import { db } from '@/db';
 import * as schema from '@/db/schema';
-import { asc, count, eq, gt, lt } from 'drizzle-orm';
+import { asc, count, desc, eq, gt, lt } from 'drizzle-orm';
 import { Elysia, t } from 'elysia';
+import slugify from 'slugify';
 import { first, generateUniqueSlug, getPaginationInfo, withPagination } from './db/utils';
 import { getUserId } from './user';
 
@@ -74,25 +75,16 @@ export const note = new Elysia({ prefix: '/note', tags: ['note'] })
     }
 
     const nextNote = await first(
-      db.select().from(schema.notes).where(gt(schema.notes.id, note.id)).orderBy(schema.notes.id).limit(1)
+      db.select().from(schema.notes).where(gt(schema.notes.id, note.id)).orderBy(asc(schema.notes.id)).limit(1)
     );
-    const prevNote = await first(db.select().from(schema.notes).where(lt(schema.notes.id, note.id)).limit(1));
+    const prevNote = await first(
+      db.select().from(schema.notes).where(lt(schema.notes.id, note.id)).orderBy(desc(schema.notes.id)).limit(1)
+    );
 
     return {
       data: note,
       nextNote,
       prevNote,
-    };
-  })
-  .get('/:slug/next', async ({ params: { slug }, error }) => {
-    const note = await db.select().from(schema.notes).where(lt(schema.notes.slug, slug));
-
-    if (!note) {
-      return error(404, 'Not Found :(');
-    }
-
-    return {
-      data: note?.at(0),
     };
   })
   .delete('/:slug', async ({ params: { slug }, error }) => {
@@ -110,21 +102,27 @@ export const note = new Elysia({ prefix: '/note', tags: ['note'] })
   })
   .patch(
     '/:slug',
-    async ({ params: { slug }, body, error, userId }) => {
-      const note = await db.select().from(schema.notes).where(eq(schema.notes.slug, slug));
+    async ({ params: { slug }, body, error }) => {
+      const note = await first(db.select().from(schema.notes).where(eq(schema.notes.slug, slug)));
 
       if (!note) {
         return error(404, 'Not Found :(');
       }
 
+      const isEqualSlug = note.slug === slugify(body.title!);
+      const newSlug = !isEqualSlug && (await generateUniqueSlug(body.title!));
+
       const updatedNote = await db
         .update(schema.notes)
-        .set({ ...body, author: userId })
+        .set({
+          ...body,
+          slug: newSlug || note.slug,
+        })
         .where(eq(schema.notes.slug, slug))
         .returning();
 
       return {
-        data: updatedNote?.at(0),
+        data: updatedNote.at(0),
       };
     },
     {

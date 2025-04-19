@@ -1,28 +1,10 @@
+import { BreadcrumbItem, BreadcrumbStore } from "@/types";
 import { Store } from "@tanstack/react-store";
 
-export interface BreadcrumbItem {
-  link: string;
-  title: string;
-}
-
-interface BreadcrumbStore {
-  data: BreadcrumbItem[];
-  isLazy: boolean;
-  isLoading: boolean;
-}
-
-export function updateData({
-  isLazy,
-  pathname,
-  customTitle,
-}: {
-  isLazy?: boolean;
-  pathname: string;
-  customTitle?: string;
-}) {
+export function updateBreadcrumbs(value: string) {
   breadcrumbsStore.setState((state) => ({
     ...state,
-    data: generateBreadcrumbsFromPath({ pathname, customTitle }),
+    data: generateBreadcrumbsFromPath(value),
   }));
 }
 
@@ -32,6 +14,7 @@ export function updateIsLoading(loading: boolean) {
     isLoading: loading,
   }));
 }
+
 export function updateIsLazy(lazy: boolean) {
   breadcrumbsStore.setState((state) => ({
     ...state,
@@ -39,30 +22,17 @@ export function updateIsLazy(lazy: boolean) {
   }));
 }
 
-export function generateBreadcrumbsFromPath({
-  isLazy,
-  pathname,
-  customTitle,
-}: {
-  isLazy?: boolean;
-  pathname: string;
-  customTitle?: string;
-}) {
-  if (routeMapping[pathname]) {
-    return routeMapping[pathname];
+export function generateBreadcrumbsFromPath(value: string) {
+  if (routeMapping[value]) {
+    return routeMapping[value];
   }
 
-  const segments = pathname.split("/").filter(Boolean);
+  const segments = value.split("/").filter(Boolean);
 
-  return segments.map((segment, index) => {
-    const title = segment.charAt(0).toUpperCase() + segment.slice(1);
-    const isLastIndex = index === segments.length - 1;
-
-    return {
-      link: `/${segments.slice(0, index + 1).join("/")}`,
-      title: isLastIndex ? customTitle! || title : title,
-    };
-  });
+  return segments.map((segment, index) => ({
+    link: `/${segments.slice(0, index + 1).join("/")}`,
+    title: segment.charAt(0).toUpperCase() + segment.slice(1),
+  }));
 }
 
 const routeMapping: Record<string, BreadcrumbItem[]> = {
@@ -70,7 +40,7 @@ const routeMapping: Record<string, BreadcrumbItem[]> = {
 };
 
 export const breadcrumbsStore = new Store<BreadcrumbStore>({
-  data: generateBreadcrumbsFromPath({ pathname: "/dashboard" }),
+  data: generateBreadcrumbsFromPath("/dashboard"),
   isLazy: false,
   isLoading: false,
 });

@@ -131,7 +131,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
   },
   {
     id: "actions",
-    cell: () => (
+    cell: ({ row }) => (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
@@ -144,7 +144,13 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-32">
-          <DropdownMenuItem>Edit</DropdownMenuItem>
+          <DropdownMenuItem>
+            <Link
+              href={`${env.NEXT_PUBLIC_WEB_URL}/dashboard/notes/${row.original.slug}/edit`}
+            >
+              Edit
+            </Link>
+          </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem>Delete</DropdownMenuItem>
         </DropdownMenuContent>

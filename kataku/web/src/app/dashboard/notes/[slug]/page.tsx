@@ -2,7 +2,7 @@
 
 import { eden } from "@/lib/eden";
 import {
-  updateData,
+  updateBreadcrumbs,
   updateIsLazy,
   updateIsLoading,
 } from "@/store/breadcrumbs-store";
@@ -24,7 +24,7 @@ export default function Page() {
         const res = await eden.api.note({ slug: params.slug }).get();
 
         batch(() => {
-          updateData({
+          updateBreadcrumbs({
             pathname,
             customTitle: res.data.data.title,
           });
@@ -39,23 +39,12 @@ export default function Page() {
     },
   });
 
-  const query2 = useQuery({
-    queryKey: ["note-next", params.slug],
-    queryFn: async () => {
-      try {
-        const res = await eden.api.note({ slug: params.slug }).next.get();
-
-        return res.data.data;
-      } catch (error) {}
-    },
-  });
-
   useEffect(() => {
     updateIsLazy(true);
     updateIsLoading(true);
   }, []);
 
-  const result = marked.parse(query.data?.content || "xxxx");
+  const result = marked.parse(query.data?.content || "");
 
   return (
     <div className="relative flex flex-col justify-center overflow-hidden px-4 lg:px-6">

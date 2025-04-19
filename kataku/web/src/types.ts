@@ -2,6 +2,8 @@ import { authClient } from "./lib/auth-client";
 
 export type Nullable<T = void> = T | null | undefined;
 
+// Auth
+
 export type AuthUser = typeof authClient.$Infer.Session.user;
 export type AuthSession = typeof authClient.$Infer.Session.session;
 
@@ -46,3 +48,18 @@ export type LinkAccountProviderType =
   | "roblox"
   | "vk"
   | "kick";
+
+export interface BreadcrumbItem {
+  link: string;
+  title: string;
+}
+
+export interface BreadcrumbStore {
+  data: BreadcrumbItem[];
+  isLazy: boolean;
+  isLoading: boolean;
+}
+
+export interface Store<T> {
+  setState: (updater: (state: T) => T) => void;
+}

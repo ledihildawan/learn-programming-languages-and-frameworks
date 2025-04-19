@@ -6,13 +6,16 @@ import { Input } from "@/components/ui/input";
 import { useAppForm } from "@/components/ui/tanstack-form";
 import { env } from "@/env/client";
 import { eden } from "@/lib/eden";
-import { useMutation } from "@tanstack/react-query";
+import { updateBreadcrumbs, updateIsLoading } from "@/store/breadcrumbs-store";
+import { updateRecent } from "@/store/recent-store";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { batch } from "@tanstack/react-store";
 import MDEditor from "@uiw/react-md-editor";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useTheme } from "next-themes";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { debounce, isEqual } from "radash";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -38,19 +41,48 @@ const defaultValues = {
 const FormSchema = z.object(formSchema);
 
 export default function Page() {
+  const [nextNote, setNextNote] = useState<any>();
+  const [prevNote, setPrevNote] = useState<any>();
+
+  const params = useParams<{ slug: string }>();
   const { theme } = useTheme();
   const router = useRouter();
+
+  const query = useQuery({
+    queryKey: ["note", params.slug],
+    queryFn: async ({ signal }) => {
+      try {
+        const res = await eden.api
+          .note({ slug: params.slug })
+          .get({ fetch: { signal } });
+
+        batch(() => {
+          updateBreadcrumbs(`/dashboard/notes/${res.data.data.title}/edit`);
+          updateIsLoading(false);
+        });
+
+        updateRecent(res.data.data);
+
+        setNextNote(res.data.nextNote);
+        setPrevNote(res.data.prevNote);
+
+        return res.data.data;
+      } catch (error) {}
+    },
+  });
 
   const mutation = useMutation({
     mutationFn: async (payload: NotePayload) => {
       try {
-        await eden.api.note.index.post(payload);
+        await eden.api
+          .note({ slug: params.slug })
+          .patch(payload, { fetch: { method: "PATCH" } });
       } catch (error) {}
     },
     onSuccess: () => {
       dismissToasts();
 
-      toast.success("Note has been successfully created!");
+      toast.success("Note has been successfully updated!");
 
       router.push(`${env.NEXT_PUBLIC_WEB_URL}/dashboard/notes`);
     },
@@ -64,7 +96,7 @@ export default function Page() {
     validators: {
       onSubmit: FormSchema,
       onChange: debounce({ delay: 400 }, ({ value }) => {
-        if (isEqual(defaultValues, value)) {
+        if (isEqual(query.data, value)) {
           dismissToasts();
           return;
         }
@@ -78,10 +110,16 @@ export default function Page() {
           duration: Infinity,
           action: (
             <div className="ml-auto flex gap-2">
-              <Button variant="outline" size="sm" onClick={discard}>
+              <Button
+                className="cursor-pointer"
+                variant="outline"
+                size="sm"
+                onClick={discard}
+              >
                 Discard
               </Button>
               <Button
+                className="cursor-pointer"
                 size="sm"
                 onClick={() => {
                   form.handleSubmit();
@@ -94,7 +132,7 @@ export default function Page() {
         });
       }),
     },
-    defaultValues,
+    defaultValues: query.data,
     onSubmitInvalid: (data) => {
       console.log(data);
     },
@@ -122,22 +160,45 @@ export default function Page() {
     );
   }, []);
 
+  useEffect(() => {
+    updateIsLoading(true);
+  }, []);
+
+  const goToNote = (slug: string) => {
+    dismissToasts();
+
+    router.push(`${env.NEXT_PUBLIC_WEB_URL}/dashboard/notes/${slug}/edit`);
+  };
+
   return (
     <div className="grid gap-4">
       <div className="flex items-center justify-end px-4 lg:px-6">
         <div className="flex items-center gap-2">
           <Button
-            className="sm"
+            size="sm"
+            className="cursor-pointer"
             onClick={() => {
               form.handleSubmit();
             }}
           >
             Save
           </Button>
-          <Button className="sm" variant="outline">
+          <Button
+            size="sm"
+            className="cursor-pointer"
+            variant="outline"
+            disabled={!prevNote}
+            onClick={() => goToNote(prevNote.slug)}
+          >
             <ChevronLeftIcon />
           </Button>
-          <Button className="sm" variant="outline">
+          <Button
+            size="sm"
+            className="cursor-pointer"
+            variant="outline"
+            disabled={!nextNote}
+            onClick={() => goToNote(nextNote.slug)}
+          >
             <ChevronRightIcon />
           </Button>
         </div>
