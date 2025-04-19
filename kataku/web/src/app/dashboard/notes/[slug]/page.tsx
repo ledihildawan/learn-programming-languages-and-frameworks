@@ -6,9 +6,9 @@ import {
   updateIsLazy,
   updateIsLoading,
 } from "@/store/breadcrumbs-store";
-import { recentStore, updateRecent } from "@/store/recent-store";
+import { updateRecent } from "@/store/recent-store";
 import { useQuery } from "@tanstack/react-query";
-import { batch, useStore } from "@tanstack/react-store";
+import { batch } from "@tanstack/react-store";
 import { marked } from "marked";
 import { useParams, usePathname } from "next/navigation";
 import { useEffect } from "react";
@@ -16,7 +16,6 @@ import { useEffect } from "react";
 export default function Page() {
   const params = useParams<{ slug: string }>();
   const pathname = usePathname();
-  const recent = useStore(recentStore);
 
   const query = useQuery({
     queryKey: ["note", params.slug],
@@ -34,6 +33,17 @@ export default function Page() {
         });
 
         updateRecent(res.data.data);
+
+        return res.data.data;
+      } catch (error) {}
+    },
+  });
+
+  const query2 = useQuery({
+    queryKey: ["note-next", params.slug],
+    queryFn: async () => {
+      try {
+        const res = await eden.api.note({ slug: params.slug }).next.get();
 
         return res.data.data;
       } catch (error) {}

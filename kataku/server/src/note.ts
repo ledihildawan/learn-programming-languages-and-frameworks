@@ -1,6 +1,6 @@
 import { db } from '@/db';
 import * as schema from '@/db/schema';
-import { asc, count, eq } from 'drizzle-orm';
+import { asc, count, eq, gt, lt } from 'drizzle-orm';
 import { Elysia, t } from 'elysia';
 import { first, generateUniqueSlug, getPaginationInfo, withPagination } from './db/utils';
 import { getUserId } from './user';
@@ -67,7 +67,25 @@ export const note = new Elysia({ prefix: '/note', tags: ['note'] })
     }),
   })
   .get('/:slug', async ({ params: { slug }, error }) => {
-    const note = await db.select().from(schema.notes).where(eq(schema.notes.slug, slug));
+    const note = await first(db.select().from(schema.notes).where(eq(schema.notes.slug, slug)));
+
+    if (!note) {
+      return error(404, 'Not Found :(');
+    }
+
+    const nextNote = await first(
+      db.select().from(schema.notes).where(gt(schema.notes.id, note.id)).orderBy(schema.notes.id).limit(1)
+    );
+    const prevNote = await first(db.select().from(schema.notes).where(lt(schema.notes.id, note.id)).limit(1));
+
+    return {
+      data: note,
+      nextNote,
+      prevNote,
+    };
+  })
+  .get('/:slug/next', async ({ params: { slug }, error }) => {
+    const note = await db.select().from(schema.notes).where(lt(schema.notes.slug, slug));
 
     if (!note) {
       return error(404, 'Not Found :(');
