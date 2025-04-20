@@ -6,13 +6,14 @@ import { Input } from "@/components/ui/input";
 import { useAppForm } from "@/components/ui/tanstack-form";
 import { env } from "@/env/client";
 import { eden } from "@/lib/eden";
+import { Link } from "@/lib/next-route-guard/link";
+import { useRouteGuard } from "@/lib/next-route-guard/use-route-guard";
 import { useMutation } from "@tanstack/react-query";
 import MDEditor from "@uiw/react-md-editor";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import { debounce, isEqual } from "radash";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -110,6 +111,12 @@ export default function Page() {
     dismissToasts();
   }, [form]);
 
+  const [note, setNote] = useState("");
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [pendingAction, setPendingAction] = useState<() => void>();
+
+  useRouteGuard(() => note.length > 0);
+
   const focusToMDEditor = useCallback(() => {
     const textareaEl = document.querySelector(
       ".w-md-editor-text-input",
@@ -123,87 +130,107 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="grid gap-4">
-      <div className="flex items-center justify-end px-4 lg:px-6">
-        <div className="flex items-center gap-2">
-          <Button
-            className="sm"
-            onClick={() => {
-              form.handleSubmit();
-            }}
+    <>
+      <div className="grid gap-4">
+        <div className="flex items-center justify-between px-4 lg:px-6">
+          <Link
+            href="/dashboard/notes"
+            onBeforeNavigate={() =>
+              new Promise((resolve) => {
+                setShowConfirm(true);
+                setPendingAction(() => () => resolve(true));
+              })
+            }
           >
-            Save
-          </Button>
-          <Button className="sm" variant="outline">
-            <ChevronLeftIcon />
-          </Button>
-          <Button className="sm" variant="outline">
-            <ChevronRightIcon />
-          </Button>
+            Notes
+          </Link>
+          <div className="flex items-center gap-2">
+            <Button
+              className="sm"
+              onClick={() => {
+                form.handleSubmit();
+              }}
+            >
+              Save
+            </Button>
+          </div>
+        </div>
+
+        <div className="px-4 lg:px-6">
+          <Card>
+            <CardContent>
+              <form.AppForm>
+                <div className="grid gap-6">
+                  <div className="grid gap-2">
+                    <form.AppField
+                      name="title"
+                      children={(field) => (
+                        <field.FormItem>
+                          <field.FormLabel htmlFor="title">
+                            Title
+                          </field.FormLabel>
+                          <field.FormControl>
+                            <Input
+                              id="title"
+                              name="email"
+                              type="text"
+                              value={field.state.value}
+                              onChange={(e) => {
+                                setNote(e.target.value);
+                                field.handleChange(e.target.value);
+                              }}
+                            />
+                          </field.FormControl>
+                          <field.FormMessage />
+                        </field.FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="grid gap-2" data-color-mode={theme}>
+                    <form.AppField
+                      name="content"
+                      children={(field) => (
+                        <field.FormItem>
+                          <field.FormLabel
+                            htmlFor="content"
+                            onClick={focusToMDEditor}
+                          >
+                            Content
+                          </field.FormLabel>
+                          <MDEditor
+                            id="content"
+                            style={{
+                              borderColor: field.state.meta.errors.length
+                                ? "var(--destructive)"
+                                : "var(--input)",
+                            }}
+                            value={field.state.value}
+                            height={420}
+                            preview="edit"
+                            onChange={(e) => field.handleChange(e!)}
+                            previewOptions={{
+                              disallowedElements: ["style"],
+                            }}
+                          />
+                          <field.FormMessage />
+                        </field.FormItem>
+                      )}
+                    />
+                  </div>
+                </div>
+              </form.AppForm>
+            </CardContent>
+          </Card>
         </div>
       </div>
 
-      <div className="px-4 lg:px-6">
-        <Card>
-          <CardContent>
-            <form.AppForm>
-              <div className="grid gap-6">
-                <div className="grid gap-2">
-                  <form.AppField
-                    name="title"
-                    children={(field) => (
-                      <field.FormItem>
-                        <field.FormLabel htmlFor="title">Title</field.FormLabel>
-                        <field.FormControl>
-                          <Input
-                            id="title"
-                            name="email"
-                            type="text"
-                            value={field.state.value}
-                            onChange={(e) => field.handleChange(e.target.value)}
-                          />
-                        </field.FormControl>
-                        <field.FormMessage />
-                      </field.FormItem>
-                    )}
-                  />
-                </div>
-                <div className="grid gap-2" data-color-mode={theme}>
-                  <form.AppField
-                    name="content"
-                    children={(field) => (
-                      <field.FormItem>
-                        <field.FormLabel
-                          htmlFor="content"
-                          onClick={focusToMDEditor}
-                        >
-                          Content
-                        </field.FormLabel>
-                        <MDEditor
-                          id="content"
-                          style={{
-                            borderColor: field.state.meta.errors.length
-                              ? "var(--destructive)"
-                              : "var(--input)",
-                          }}
-                          value={field.state.value}
-                          height={420}
-                          preview="edit"
-                          onChange={(e) => field.handleChange(e!)}
-                          previewOptions={{
-                            disallowedElements: ["style"],
-                          }}
-                        />
-                        <field.FormMessage />
-                      </field.FormItem>
-                    )}
-                  />
-                </div>
-              </div>
-            </form.AppForm>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
+      {showConfirm && (
+        <div className="modal">
+          <p>Yakin mau keluar? Perubahan belum disimpan.</p>
+          <button onClick={() => pendingAction?.()}>Ya, lanjut</button>
+          <button onClick={() => setShowConfirm(false)}>Batal</button>
+        </div>
+      )}
+    </>
   );
 }

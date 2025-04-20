@@ -11,6 +11,7 @@ import { useQuery } from "@tanstack/react-query";
 import { batch } from "@tanstack/react-store";
 import { marked } from "marked";
 import { useParams, usePathname } from "next/navigation";
+import Script from "next/script";
 import { useEffect } from "react";
 
 export default function Page() {
@@ -43,11 +44,23 @@ export default function Page() {
   const result = marked.parse(query.data?.content || "");
 
   return (
-    <div className="relative flex flex-col justify-center overflow-hidden px-4 lg:px-6">
-      <article
-        className="dark:prose-invert prose w-full max-w-none"
-        dangerouslySetInnerHTML={{ __html: result }}
-      ></article>
-    </div>
+    <>
+      <div className="relative flex flex-col justify-center overflow-hidden px-4 lg:px-6">
+        <article
+          className="dark:prose-invert prose w-full max-w-none"
+          dangerouslySetInnerHTML={{ __html: result }}
+        ></article>
+      </div>
+
+      <Script id="markdown-it-fix" strategy="beforeInteractive">
+        {`
+            if (typeof window !== 'undefined' && typeof window.isSpace === 'undefined') {
+              window.isSpace = function(code) {
+                return code === 0x20 || code === 0x09 || code === 0x0A || code === 0x0B || code === 0x0C || code === 0x0D;
+              };
+            }
+          `}
+      </Script>
+    </>
   );
 }
