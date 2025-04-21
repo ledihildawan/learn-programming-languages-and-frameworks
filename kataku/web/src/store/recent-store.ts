@@ -1,3 +1,5 @@
+"use client";
+
 import { Note } from "@/types";
 import { Store } from "@tanstack/store";
 import { produce } from "immer";
@@ -5,7 +7,7 @@ import { produce } from "immer";
 let recentLocalStorage: Note[] = [];
 
 if (typeof window !== "undefined") {
-  recentLocalStorage = localStorage.getItem("recent")
+  recentLocalStorage = localStorage?.getItem("recent")
     ? (JSON.parse(localStorage.getItem("recent") as string) as Note[])
     : [];
 }

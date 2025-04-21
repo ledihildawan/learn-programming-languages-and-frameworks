@@ -111,6 +111,8 @@ function useGetNotes({ pagination }: any) {
 
       setData(res.data);
       setNewPagination(res.pagination);
+
+      return res.data;
     },
   });
 

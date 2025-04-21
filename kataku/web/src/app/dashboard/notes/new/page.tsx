@@ -123,7 +123,7 @@ export default function Page() {
                 <ArrowLeftIcon />
               </CustomLink>
             </Button>
-            <span className="text-xl font-bold">Add product</span>
+            <span className="text-xl font-bold">Add Note</span>
           </div>
           <div className="flex items-center gap-2">
             <Button size="sm" onClick={save} disabled={mutation.isPending}>
