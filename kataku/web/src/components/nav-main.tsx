@@ -10,6 +10,7 @@ import {
 import { PlusCircleIcon, type LucideIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { CustomLink } from "./custom-link";
 
 export function NavMain({
   items,
@@ -44,7 +45,7 @@ export function NavMain({
                 isActive={pathname === item.url}
               >
                 {item.icon && <item.icon />}
-                <Link href={item.url}>{item.title}</Link>
+                <CustomLink href={item.url}>{item.title}</CustomLink>
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}

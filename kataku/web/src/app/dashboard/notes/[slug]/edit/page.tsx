@@ -57,11 +57,11 @@ export default function Page() {
           .get({ fetch: { signal } });
 
         batch(() => {
+          updateRecent(res.data.data);
           updateBreadcrumbs(`/dashboard/notes/${res.data.data.title}/edit`);
+
           updateIsLoading(false);
         });
-
-        updateRecent(res.data.data);
 
         setNextNote(res.data.nextNote);
         setPrevNote(res.data.prevNote);

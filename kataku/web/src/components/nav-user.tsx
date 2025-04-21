@@ -70,6 +70,9 @@ export function NavUser({
           topBarLoader.done();
 
           router.push("/sign-in");
+
+          localStorage.removeItem("theme");
+          localStorage.removeItem("recent");
         },
       },
     });

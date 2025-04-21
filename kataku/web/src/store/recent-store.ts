@@ -1,16 +1,22 @@
-import { Note } from "@/types";
+import { Note, Nullable } from "@/types";
 import { Store } from "@tanstack/store";
 import { produce } from "immer";
 
-export const recentStore = new Store<Note[]>([]);
+const recentLocalStorage: Nullable<Note[]> = localStorage.getItem("recent")
+  ? (JSON.parse(localStorage.getItem("recent") as string) as Note[])
+  : null;
+
+export const recentStore = new Store<Note[]>(recentLocalStorage || []);
 
 export const updateRecent = (note: Note) => {
-  recentStore.setState((notes) => {
-    return [note, ...notes.filter((_note) => _note.id !== note.id)].slice(
-      0,
-      10,
-    );
-  });
+  const newRecent = [
+    note,
+    ...recentStore.state.filter((_note) => _note.id !== note.id),
+  ].slice(0, 10);
+
+  localStorage.setItem("recent", JSON.stringify(newRecent));
+
+  recentStore.setState(() => newRecent);
 };
 
 export const updateRecentItem = (note: Note) => {
@@ -19,7 +25,7 @@ export const updateRecentItem = (note: Note) => {
     draft[noteIndex] = note;
   });
 
-  console.log(newRecent);
-
   recentStore.setState(() => newRecent);
+
+  localStorage.setItem("recent", JSON.stringify(recentStore.state));
 };

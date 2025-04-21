@@ -18,6 +18,8 @@ import {
 import { env } from "@/env/client";
 import { MoreHorizontalIcon, PencilIcon, ShareIcon } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useTopLoader } from "nextjs-toploader";
 
 export function NavRecent({
   items,
@@ -28,6 +30,15 @@ export function NavRecent({
   }[];
 }) {
   const { isMobile } = useSidebar();
+
+  const router = useRouter();
+  const topLoader = useTopLoader();
+
+  const goToNote = (slug: string) => {
+    topLoader.start();
+
+    router.push(`${env.NEXT_PUBLIC_WEB_URL}/dashboard/notes/${slug}/edit`);
+  };
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
@@ -56,13 +67,9 @@ export function NavRecent({
                 side={isMobile ? "bottom" : "right"}
                 align={isMobile ? "end" : "start"}
               >
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={() => goToNote(item.slug)}>
                   <PencilIcon />
-                  <Link
-                    href={`${env.NEXT_PUBLIC_WEB_URL}/dashboard/notes/${item.slug}/edit`}
-                  >
-                    Edit
-                  </Link>
+                  <span>Edit</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <ShareIcon />

@@ -1,28 +1,25 @@
 "use client";
 
-import {
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+import { CustomLink } from "@/components/custom-link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useAppForm } from "@/components/ui/tanstack-form";
 import { env } from "@/env/client";
 import { eden } from "@/lib/eden";
+import {
+  updateEnabledNavigationGuard,
+  updateStateNavigationGuard,
+} from "@/store/navigation-guard-store";
+import { updateTopLoader } from "@/store/top-loader-store";
 import { useMutation } from "@tanstack/react-query";
+import { batch } from "@tanstack/react-store";
 import MDEditor from "@uiw/react-md-editor";
 import { ArrowLeftIcon } from "lucide-react";
-import { useNavigationGuard } from "next-navigation-guard";
 import { useTheme } from "next-themes";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { isEqual } from "radash";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -66,8 +63,6 @@ export default function Page() {
     },
   });
   const router = useRouter();
-  const navGuard = useNavigationGuard({ enabled: isFromValuesChange });
-
   const mutation = useMutation({
     mutationFn: async (payload: NotePayload) => {
       try {
@@ -75,30 +70,23 @@ export default function Page() {
       } catch (error) {}
     },
     onSuccess: async () => {
-      dismissToasts();
-
       toast.success("Note has been successfully created!");
 
-      if (navGuard.active) {
-        await navGuard.accept();
-      } else {
-        router.push(`${env.NEXT_PUBLIC_WEB_URL}/dashboard/notes`);
-      }
+      router.push(`${env.NEXT_PUBLIC_WEB_URL}/dashboard/notes`);
     },
     onError: () => {
       toast.error("Oops, something went wrong on the server's end!");
     },
   });
 
-  const dismissToasts = () => {
-    toast.dismiss();
+  const save = () => {
+    updateStateNavigationGuard({
+      active: false,
+      enabled: false,
+    });
+
+    form.handleSubmit();
   };
-
-  const discard = useCallback(() => {
-    form.reset();
-
-    dismissToasts();
-  }, [form]);
 
   const focusToMDEditor = useCallback(() => {
     const textareaEl = document.querySelector(
@@ -112,25 +100,33 @@ export default function Page() {
     );
   }, []);
 
+  useEffect(() => {
+    batch(() => {
+      updateTopLoader(!isFromValuesChange);
+      updateEnabledNavigationGuard(isFromValuesChange);
+    });
+  }, [isFromValuesChange]);
+
+  useEffect(() => {
+    return () => {
+      updateEnabledNavigationGuard(false);
+    };
+  }, []);
+
   return (
     <>
       <div className="grid gap-6">
         <div className="flex items-center justify-between px-4 lg:px-6">
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="sm" asChild>
-              <Link href="/dashboard/notes">
+              <CustomLink href="/dashboard/notes">
                 <ArrowLeftIcon />
-              </Link>
+              </CustomLink>
             </Button>
             <span className="text-xl font-bold">Add product</span>
           </div>
           <div className="flex items-center gap-2">
-            <Button
-              className="sm"
-              onClick={() => {
-                form.handleSubmit();
-              }}
-            >
+            <Button className="sm" onClick={save}>
               Save
             </Button>
           </div>
@@ -202,23 +198,6 @@ export default function Page() {
           </Card>
         </div>
       </div>
-
-      <AlertDialog open={navGuard.active}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Leave site?</AlertDialogTitle>
-            <AlertDialogDescription>
-              Changes you made may not be saved.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <Button variant="outline" onClick={navGuard.reject}>
-              Cancel
-            </Button>
-            <Button onClick={navGuard.accept}>Leave</Button>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </>
   );
 }

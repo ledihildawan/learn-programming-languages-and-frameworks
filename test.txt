@@ -207,3 +207,12 @@ Kubernetes
 .toast-shake {
   animation: shake 0.65s cubic-bezier(0.42, 0, 0.58, 1);
 }
+
+export function updateStateNavigationGuard<
+  T extends keyof NavigationGuardStore,
+>(key: T, value: NavigationGuardStore[T]) {
+  navigationGuardStore.setState((state: NavigationGuardStore) => ({
+    ...state,
+    [key]: value,
+  }));
+}

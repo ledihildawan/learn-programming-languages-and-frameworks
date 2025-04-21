@@ -9,29 +9,31 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 
+export type DeleteDialogClickEvent = "cancel" | "delete";
+
 export function DeleteDialog({
   open,
   onClick,
 }: {
   open: boolean;
-  onClick: (open: boolean) => void;
+  onClick: (action: DeleteDialogClickEvent) => void;
 }) {
   return (
     <AlertDialog open={open}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-          <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your note
-            and remove your note from our servers.
+          <AlertDialogTitle>Delete Note?</AlertDialogTitle>
+          <AlertDialogDescription className="leading-6">
+            Are you sure you want to delete this note? This action cannot be
+            undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel onClick={() => onClick(!open)}>
+          <AlertDialogCancel onClick={() => onClick("cancel")}>
             Cancel
           </AlertDialogCancel>
-          <AlertDialogAction onClick={() => onClick(!open)}>
-            Continue
+          <AlertDialogAction onClick={() => onClick("delete")}>
+            Delete
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

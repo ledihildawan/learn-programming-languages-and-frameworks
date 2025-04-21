@@ -63,6 +63,11 @@ export interface BreadcrumbStore {
   isLoading: boolean;
 }
 
+export interface NavigationGuardStore {
+  active: boolean;
+  enabled: boolean;
+}
+
 export interface Store<T> {
   setState: (updater: (state: T) => T) => void;
 }

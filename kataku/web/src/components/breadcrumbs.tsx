@@ -32,8 +32,6 @@ export function Breadcrumbs() {
     }));
   }, [pathname]);
 
-  console.log(pathname);
-
   if (isLoading) {
     return (
       <Breadcrumb>

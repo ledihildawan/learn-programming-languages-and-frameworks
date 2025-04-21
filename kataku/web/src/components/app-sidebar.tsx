@@ -24,8 +24,8 @@ import {
   NotebookIcon,
   SettingsIcon,
 } from "lucide-react";
-import Link from "next/link";
 import * as React from "react";
+import { CustomLink } from "./custom-link";
 
 const data = {
   user: {
@@ -114,10 +114,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <Link href="/dashboard">
+              <CustomLink href="/dashboard">
                 <ArrowUpCircleIcon className="h-5 w-5" />
                 <span className="text-base font-semibold">KataKu</span>
-              </Link>
+              </CustomLink>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

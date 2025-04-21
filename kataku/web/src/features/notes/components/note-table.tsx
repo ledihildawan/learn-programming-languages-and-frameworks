@@ -1,5 +1,7 @@
 "use client";
 
+import { CustomLink } from "@/components/custom-link";
+import { queryClient } from "@/components/query-provider";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -29,7 +31,7 @@ import {
 import { env } from "@/env/client";
 import { eden } from "@/lib/eden";
 import { Nullable } from "@/types";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   ColumnDef,
   Row,
@@ -51,8 +53,9 @@ import Link from "next/link";
 import { parseAsInteger, useQueryState } from "nuqs";
 import * as React from "react";
 import removeMd from "remove-markdown";
+import { toast } from "sonner";
 import { z } from "zod";
-import { DeleteDialog } from "./delete-dialog";
+import { DeleteDialog, DeleteDialogClickEvent } from "./delete-dialog";
 
 export const schema = z.object({
   id: z.number(),
@@ -127,8 +130,27 @@ export function NoteTable() {
     "perPage",
     parseAsInteger.withDefault(10).withOptions({ history: "push" }),
   );
-
+  const [deletedNote, setDeletedNote] =
+    React.useState<Nullable<z.infer<typeof schema>>>();
   const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
+
+  const deleteNoteMutation = useMutation({
+    mutationFn: async () => {
+      try {
+        await eden.api.note({ slug: deletedNote!.slug }).delete();
+      } catch (error) {}
+    },
+    onSuccess: async () => {
+      setOpenDeleteDialog(false);
+
+      toast.success("Note has been successfully deleted!");
+
+      queryClient.refetchQueries({ queryKey: ["notes", pagination] });
+    },
+    onError: () => {
+      toast.error("Oops, something went wrong on the server's end!");
+    },
+  });
 
   const columns: ColumnDef<z.infer<typeof schema>>[] = React.useMemo(
     () => [
@@ -236,7 +258,12 @@ export function NoteTable() {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => setOpenDeleteDialog(true)}>
+              <DropdownMenuItem
+                onClick={() => {
+                  setDeletedNote(row.original);
+                  setOpenDeleteDialog(true);
+                }}
+              >
                 Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -267,7 +294,16 @@ export function NoteTable() {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const handleDeleteDialog = React.useCallback(setOpenDeleteDialog, []);
+  const handleDeleteDialog = React.useCallback(
+    (event: DeleteDialogClickEvent) => {
+      if (event === "cancel") {
+        setOpenDeleteDialog(false);
+      } else {
+        deleteNoteMutation.mutate();
+      }
+    },
+    [deletedNote],
+  );
 
   return (
     <>
@@ -307,14 +343,14 @@ export function NoteTable() {
                   })}
               </DropdownMenuContent>
             </DropdownMenu>
-            <Button variant="outline" size="sm" className="cursor-pointer">
+            <Button variant="outline" size="sm">
               <PlusIcon />
-              <Link
-                href={`${env.NEXT_PUBLIC_WEB_URL}/dashboard/notes/new`}
+              <CustomLink
+                href="/dashboard/notes/new"
                 className="hidden lg:inline"
               >
                 Add Note
-              </Link>
+              </CustomLink>
             </Button>
           </div>
         </div>
@@ -438,9 +474,7 @@ export function NoteTable() {
         </div>
       </div>
 
-      {openDeleteDialog && (
-        <DeleteDialog open={openDeleteDialog} onClick={handleDeleteDialog} />
-      )}
+      <DeleteDialog open={openDeleteDialog} onClick={handleDeleteDialog} />
     </>
   );
 }

@@ -1,18 +1,12 @@
 "use client";
 
-import { ChartAreaInteractive } from "@/components/chart-area-interactive";
-import { DataTable } from "@/components/data-table";
-import { SectionCards } from "@/components/section-cards";
-import data from "./data.json";
-
 export default function Page() {
   return (
-    <>
-      <SectionCards />
-      <div className="px-4 lg:px-6">
-        <ChartAreaInteractive />
+    <div className="px-4 lg:px-6">
+      <div>
+        <div className="text-2xl font-bold">Welcome to KataKu!</div>
+        <div className="mt-4">Add a new note or view existing ones.</div>
       </div>
-      <DataTable data={data} />
-    </>
+    </div>
   );
 }
