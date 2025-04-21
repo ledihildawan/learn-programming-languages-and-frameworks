@@ -55,7 +55,7 @@ export function NavUser({
       value += firstName[0].toUpperCase();
     }
 
-    if (lastName) {
+    if (nameArr!.length > 1 && lastName) {
       value += lastName[0].toUpperCase();
     }
 
