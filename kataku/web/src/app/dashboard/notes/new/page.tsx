@@ -1,18 +1,27 @@
 "use client";
 
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useAppForm } from "@/components/ui/tanstack-form";
 import { env } from "@/env/client";
 import { eden } from "@/lib/eden";
-import { Link } from "@/lib/next-route-guard/link";
-import { useRouteGuard } from "@/lib/next-route-guard/use-route-guard";
 import { useMutation } from "@tanstack/react-query";
 import MDEditor from "@uiw/react-md-editor";
+import { ArrowLeftIcon } from "lucide-react";
+import { useNavigationGuard } from "next-navigation-guard";
 import { useTheme } from "next-themes";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { debounce, isEqual } from "radash";
+import { isEqual } from "radash";
 import { useCallback, useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -40,7 +49,24 @@ const FormSchema = z.object(formSchema);
 
 export default function Page() {
   const { theme } = useTheme();
+
+  const [isFromValuesChange, setIsFormValuesChange] = useState(false);
+
+  const form = useAppForm({
+    onSubmit: async ({ value }) => mutation.mutate(value),
+    validators: {
+      onSubmit: FormSchema,
+      onChange: ({ value }) => {
+        setIsFormValuesChange(!isEqual(defaultValues, value));
+      },
+    },
+    defaultValues,
+    onSubmitInvalid: (data) => {
+      console.log(data);
+    },
+  });
   const router = useRouter();
+  const navGuard = useNavigationGuard({ enabled: isFromValuesChange });
 
   const mutation = useMutation({
     mutationFn: async (payload: NotePayload) => {
@@ -48,61 +74,24 @@ export default function Page() {
         await eden.api.note.index.post(payload);
       } catch (error) {}
     },
-    onSuccess: () => {
+    onSuccess: async () => {
       dismissToasts();
 
       toast.success("Note has been successfully created!");
 
-      router.push(`${env.NEXT_PUBLIC_WEB_URL}/dashboard/notes`);
+      if (navGuard.active) {
+        await navGuard.accept();
+      } else {
+        router.push(`${env.NEXT_PUBLIC_WEB_URL}/dashboard/notes`);
+      }
     },
     onError: () => {
       toast.error("Oops, something went wrong on the server's end!");
     },
   });
 
-  const form = useAppForm({
-    onSubmit: async ({ value }) => mutation.mutate(value),
-    validators: {
-      onSubmit: FormSchema,
-      onChange: debounce({ delay: 400 }, ({ value }) => {
-        if (isEqual(defaultValues, value)) {
-          dismissToasts();
-          return;
-        }
-
-        if (toast.getToasts().length) {
-          return;
-        }
-
-        toast.info("Unsaved changes", {
-          position: "bottom-center",
-          duration: Infinity,
-          action: (
-            <div className="ml-auto flex gap-2">
-              <Button variant="outline" size="sm" onClick={discard}>
-                Discard
-              </Button>
-              <Button
-                size="sm"
-                onClick={() => {
-                  form.handleSubmit();
-                }}
-              >
-                Save
-              </Button>
-            </div>
-          ),
-        });
-      }),
-    },
-    defaultValues,
-    onSubmitInvalid: (data) => {
-      console.log(data);
-    },
-  });
-
   const dismissToasts = () => {
-    toast.getToasts().forEach((t) => toast.dismiss(t.id));
+    toast.dismiss();
   };
 
   const discard = useCallback(() => {
@@ -110,12 +99,6 @@ export default function Page() {
 
     dismissToasts();
   }, [form]);
-
-  const [note, setNote] = useState("");
-  const [showConfirm, setShowConfirm] = useState(false);
-  const [pendingAction, setPendingAction] = useState<() => void>();
-
-  useRouteGuard(() => note.length > 0);
 
   const focusToMDEditor = useCallback(() => {
     const textareaEl = document.querySelector(
@@ -131,19 +114,16 @@ export default function Page() {
 
   return (
     <>
-      <div className="grid gap-4">
+      <div className="grid gap-6">
         <div className="flex items-center justify-between px-4 lg:px-6">
-          <Link
-            href="/dashboard/notes"
-            onBeforeNavigate={() =>
-              new Promise((resolve) => {
-                setShowConfirm(true);
-                setPendingAction(() => () => resolve(true));
-              })
-            }
-          >
-            Notes
-          </Link>
+          <div className="flex items-center gap-2">
+            <Button variant="ghost" size="sm" asChild>
+              <Link href="/dashboard/notes">
+                <ArrowLeftIcon />
+              </Link>
+            </Button>
+            <span className="text-xl font-bold">Add product</span>
+          </div>
           <div className="flex items-center gap-2">
             <Button
               className="sm"
@@ -175,10 +155,9 @@ export default function Page() {
                               name="email"
                               type="text"
                               value={field.state.value}
-                              onChange={(e) => {
-                                setNote(e.target.value);
-                                field.handleChange(e.target.value);
-                              }}
+                              onChange={(e) =>
+                                field.handleChange(e.target.value)
+                              }
                             />
                           </field.FormControl>
                           <field.FormMessage />
@@ -224,13 +203,22 @@ export default function Page() {
         </div>
       </div>
 
-      {showConfirm && (
-        <div className="modal">
-          <p>Yakin mau keluar? Perubahan belum disimpan.</p>
-          <button onClick={() => pendingAction?.()}>Ya, lanjut</button>
-          <button onClick={() => setShowConfirm(false)}>Batal</button>
-        </div>
-      )}
+      <AlertDialog open={navGuard.active}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Leave site?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Changes you made may not be saved.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <Button variant="outline" onClick={navGuard.reject}>
+              Cancel
+            </Button>
+            <Button onClick={navGuard.accept}>Leave</Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 }

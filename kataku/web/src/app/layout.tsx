@@ -1,7 +1,7 @@
 import { QueryProvider } from "@/components/query-provider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
-import { NextRouteGuardProvider } from "@/lib/next-route-guard/next-route-guard-provider";
+import { NavigationGuardProvider } from "next-navigation-guard";
 import NextTopLoader from "nextjs-toploader";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import "./globals.css";
@@ -24,7 +24,7 @@ export default function RootLayout({
           <NextTopLoader showSpinner={false} color="var(--primary)" />
           <NuqsAdapter>
             <QueryProvider>
-              <NextRouteGuardProvider>{children}</NextRouteGuardProvider>
+              <NavigationGuardProvider>{children}</NavigationGuardProvider>
             </QueryProvider>
           </NuqsAdapter>
           <Toaster />
