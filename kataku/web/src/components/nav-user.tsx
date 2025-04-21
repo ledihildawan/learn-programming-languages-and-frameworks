@@ -21,6 +21,7 @@ import { authStore } from "@/store/auth-store";
 import { deleteRecent } from "@/store/recent-store";
 import { useStore } from "@tanstack/react-store";
 import { LogOutIcon, MoreVerticalIcon, UserCircleIcon } from "lucide-react";
+import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import { useTopLoader } from "nextjs-toploader";
 import { useMemo } from "react";
@@ -35,6 +36,7 @@ export function NavUser({
   };
 }) {
   const auth = useStore(authStore);
+  const theme = useTheme();
   const router = useRouter();
   const sidebar = useSidebar();
   const topBarLoader = useTopLoader();
@@ -68,14 +70,13 @@ export function NavUser({
     authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
-          topBarLoader.done();
-
-          router.push("/sign-in");
-
           deleteRecent();
 
-          localStorage.removeItem("theme");
-          localStorage.removeItem("recent");
+          setTimeout(() => {
+            theme.setTheme("system");
+          }, 400);
+
+          router.push("/sign-in");
         },
       },
     });

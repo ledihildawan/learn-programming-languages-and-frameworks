@@ -126,7 +126,7 @@ export default function Page() {
             <span className="text-xl font-bold">Add product</span>
           </div>
           <div className="flex items-center gap-2">
-            <Button size="sm" onClick={save}>
+            <Button size="sm" onClick={save} disabled={mutation.isPending}>
               {mutation.isPending && <Loader2 className="animate-spin" />}
               Save
             </Button>

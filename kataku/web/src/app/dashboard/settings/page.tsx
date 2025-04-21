@@ -25,6 +25,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { env } from "@/env/client";
 import { authClient } from "@/lib/auth-client";
+import { deleteRecent } from "@/store/recent-store";
 import { LinkAccountProviderType, ListAccount, Nullable } from "@/types";
 import { useTheme } from "next-themes";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -159,6 +160,15 @@ export default function Page() {
   async function deleteAccount() {
     await authClient.deleteUser({
       callbackURL: "/sing-in",
+      fetchOptions: {
+        onSuccess: () => {
+          deleteRecent();
+
+          setTimeout(() => {
+            setTheme("system");
+          }, 400);
+        },
+      },
     });
   }
 

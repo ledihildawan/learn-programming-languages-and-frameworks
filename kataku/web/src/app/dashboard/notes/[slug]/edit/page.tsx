@@ -1,5 +1,6 @@
 "use client";
 
+import { CustomLink } from "@/components/custom-link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -11,10 +12,14 @@ import { updateRecent, updateRecentItem } from "@/store/recent-store";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { batch } from "@tanstack/react-store";
 import MDEditor from "@uiw/react-md-editor";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import {
+  ArrowLeftIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  Loader2,
+} from "lucide-react";
 import { useTheme } from "next-themes";
 import { useParams, useRouter } from "next/navigation";
-import { debounce, isEqual } from "radash";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -99,36 +104,6 @@ export default function Page() {
     onSubmit: async ({ value }) => mutation.mutate(value),
     validators: {
       onSubmit: FormSchema,
-      onChange: debounce({ delay: 400 }, ({ value }) => {
-        if (isEqual(query.data, value)) {
-          dismissToasts();
-          return;
-        }
-
-        if (toast.getToasts().length) {
-          return;
-        }
-
-        toast.info("Unsaved changes", {
-          position: "bottom-center",
-          duration: Infinity,
-          action: (
-            <div className="ml-auto flex gap-2">
-              <Button variant="outline" size="sm" onClick={discard}>
-                Discard
-              </Button>
-              <Button
-                size="sm"
-                onClick={() => {
-                  form.handleSubmit();
-                }}
-              >
-                Save
-              </Button>
-            </div>
-          ),
-        });
-      }),
     },
     defaultValues: query.data,
     onSubmitInvalid: (data) => {
@@ -170,14 +145,24 @@ export default function Page() {
 
   return (
     <div className="grid gap-4">
-      <div className="flex items-center justify-end px-4 lg:px-6">
+      <div className="flex items-center justify-between px-4 lg:px-6">
+        <div className="flex items-center gap-2">
+          <Button variant="ghost" size="sm" asChild>
+            <CustomLink href="/dashboard/notes">
+              <ArrowLeftIcon />
+            </CustomLink>
+          </Button>
+          <span className="text-xl font-bold">{query.data?.title}</span>
+        </div>
         <div className="flex items-center gap-2">
           <Button
             size="sm"
             onClick={() => {
               form.handleSubmit();
             }}
+            disabled={mutation.isPending}
           >
+            {mutation.isPending && <Loader2 className="animate-spin" />}
             Save
           </Button>
           <Button
