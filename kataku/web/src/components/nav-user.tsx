@@ -51,13 +51,13 @@ export function NavUser({
     const nameArr = auth.user?.name.split(" ");
 
     const firstName = nameArr?.[0];
-    const lastName = nameArr?.[nameArr.length - 1];
+    const lastName = nameArr?.[nameArr?.length - 1];
 
     if (firstName) {
       value += firstName[0].toUpperCase();
     }
 
-    if (nameArr!.length > 1 && lastName) {
+    if (nameArr?.length! > 1 && lastName) {
       value += lastName[0].toUpperCase();
     }
 

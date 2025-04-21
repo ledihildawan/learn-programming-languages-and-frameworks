@@ -1,10 +1,14 @@
-import { Note, Nullable } from "@/types";
+import { Note } from "@/types";
 import { Store } from "@tanstack/store";
 import { produce } from "immer";
 
-const recentLocalStorage: Nullable<Note[]> = localStorage.getItem("recent")
-  ? (JSON.parse(localStorage.getItem("recent") as string) as Note[])
-  : null;
+let recentLocalStorage: Note[] = [];
+
+if (typeof window !== "undefined") {
+  recentLocalStorage = localStorage.getItem("recent")
+    ? (JSON.parse(localStorage.getItem("recent") as string) as Note[])
+    : [];
+}
 
 export const recentStore = new Store<Note[]>(recentLocalStorage || []);
 
