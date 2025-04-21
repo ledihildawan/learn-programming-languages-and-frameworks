@@ -474,7 +474,11 @@ export function NoteTable() {
         </div>
       </div>
 
-      <DeleteDialog open={openDeleteDialog} onClick={handleDeleteDialog} />
+      <DeleteDialog
+        open={openDeleteDialog}
+        onClick={handleDeleteDialog}
+        isPending={deleteNoteMutation.isPending}
+      />
     </>
   );
 }

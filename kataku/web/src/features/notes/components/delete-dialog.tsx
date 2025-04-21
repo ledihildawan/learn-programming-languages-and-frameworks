@@ -8,15 +8,18 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Loader2 } from "lucide-react";
 
 export type DeleteDialogClickEvent = "cancel" | "delete";
 
 export function DeleteDialog({
   open,
   onClick,
+  isPending,
 }: {
   open: boolean;
   onClick: (action: DeleteDialogClickEvent) => void;
+  isPending: boolean;
 }) {
   return (
     <AlertDialog open={open}>
@@ -33,6 +36,7 @@ export function DeleteDialog({
             Cancel
           </AlertDialogCancel>
           <AlertDialogAction onClick={() => onClick("delete")}>
+            {isPending && <Loader2 className="animate-spin" />}
             Delete
           </AlertDialogAction>
         </AlertDialogFooter>

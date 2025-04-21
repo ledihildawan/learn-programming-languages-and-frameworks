@@ -15,7 +15,7 @@ import { updateTopLoader } from "@/store/top-loader-store";
 import { useMutation } from "@tanstack/react-query";
 import { batch } from "@tanstack/react-store";
 import MDEditor from "@uiw/react-md-editor";
-import { ArrowLeftIcon } from "lucide-react";
+import { ArrowLeftIcon, Loader2 } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import { isEqual } from "radash";
@@ -126,7 +126,8 @@ export default function Page() {
             <span className="text-xl font-bold">Add product</span>
           </div>
           <div className="flex items-center gap-2">
-            <Button className="sm" onClick={save}>
+            <Button size="sm" onClick={save}>
+              {mutation.isPending && <Loader2 className="animate-spin" />}
               Save
             </Button>
           </div>
