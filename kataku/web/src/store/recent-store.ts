@@ -8,6 +8,12 @@ const recentLocalStorage: Nullable<Note[]> = localStorage.getItem("recent")
 
 export const recentStore = new Store<Note[]>(recentLocalStorage || []);
 
+export const deleteRecent = () => {
+  recentStore.setState(() => []);
+
+  localStorage.removeItem("recent");
+};
+
 export const updateRecent = (note: Note) => {
   const newRecent = [
     note,

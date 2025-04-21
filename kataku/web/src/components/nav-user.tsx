@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/sidebar";
 import { authClient } from "@/lib/auth-client";
 import { authStore } from "@/store/auth-store";
+import { deleteRecent } from "@/store/recent-store";
 import { useStore } from "@tanstack/react-store";
 import { LogOutIcon, MoreVerticalIcon, UserCircleIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -70,6 +71,8 @@ export function NavUser({
           topBarLoader.done();
 
           router.push("/sign-in");
+
+          deleteRecent();
 
           localStorage.removeItem("theme");
           localStorage.removeItem("recent");

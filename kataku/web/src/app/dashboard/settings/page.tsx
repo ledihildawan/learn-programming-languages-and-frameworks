@@ -1,5 +1,16 @@
 "use client";
 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -12,39 +23,80 @@ import {
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { env } from "@/env/client";
 import { authClient } from "@/lib/auth-client";
 import { LinkAccountProviderType, ListAccount, Nullable } from "@/types";
 import { useTheme } from "next-themes";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useTopLoader } from "nextjs-toploader";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export default function Page() {
   const { setTheme, theme } = useTheme();
 
   const [listAccounts, setListAccounts] = useState<Nullable<ListAccount[]>>();
 
+  const router = useRouter();
+  const topLoader = useTopLoader();
+  const searchParams = useSearchParams();
+
+  const tab = searchParams.get("tab");
+
   useEffect(() => {
+    const message = searchParams.get("message");
+
+    if (message) {
+      toast.success(message);
+
+      router.replace(`${env.NEXT_PUBLIC_WEB_URL}/dashboard/settings`);
+    }
+
     getListAccounts();
   }, []);
 
-  function link(provider: LinkAccountProviderType) {
+  function link({
+    provider,
+    providerId,
+  }: {
+    provider: string;
+    providerId: LinkAccountProviderType;
+  }) {
     authClient.linkSocial({
-      provider,
-      callbackURL: window.location.href,
-      fetchOptions: {
-        onError: () => {},
-        onSuccess: () => {},
-      },
+      provider: providerId,
+      callbackURL: `${window.location.href}?tab=account&message=Your account has been successfully linked with ${provider}!`,
     });
   }
 
   function unlink({
+    provider,
     accountId,
     providerId,
   }: {
+    provider?: string;
     accountId?: string;
     providerId: LinkAccountProviderType;
   }) {
-    authClient.unlinkAccount({ accountId, providerId }).then(() => {});
+    authClient
+      .unlinkAccount({ accountId, providerId })
+      .then(() => {
+        toast.success(
+          `Your ${provider} account has been successfully unlinked.`,
+        );
+
+        getListAccounts();
+
+        router.replace(`${env.NEXT_PUBLIC_WEB_URL}/dashboard/settings`);
+      })
+      .catch(() => {
+        toast.error(
+          `We couldn't unlink your ${provider} account at the moment. Please try again later.!`,
+        );
+      })
+      .finally(() => {
+        topLoader.done();
+        topLoader.remove();
+      });
   }
 
   function getListAccounts() {
@@ -73,24 +125,29 @@ export default function Page() {
   }
 
   function handleLinkAccount({
+    name,
     state,
     accountId,
     providerId,
   }: {
+    name: string;
     state: boolean;
     accountId?: string;
     providerId: LinkAccountProviderType;
   }) {
+    topLoader.start();
+
     if (state) {
-      unlink({ accountId, providerId });
+      unlink({ accountId, providerId, provider: name });
     } else {
-      link(providerId);
+      link({ providerId, provider: name });
     }
   }
 
   function handleChangeTheme(value: "system" | "light" | "dark") {
     if (!document.startViewTransition) {
-      setTheme(newMode);
+      setTheme(value);
+
       return;
     }
 
@@ -99,9 +156,15 @@ export default function Page() {
     });
   }
 
+  async function deleteAccount() {
+    await authClient.deleteUser({
+      callbackURL: "/sing-in",
+    });
+  }
+
   return (
     <div className="px-4 lg:px-6">
-      <Tabs defaultValue="display">
+      <Tabs defaultValue={tab || "display"}>
         <TabsList className="grid grid-cols-2">
           <TabsTrigger value="display">Diplay</TabsTrigger>
           <TabsTrigger value="account">Account</TabsTrigger>
@@ -215,6 +278,7 @@ export default function Page() {
                               <Button
                                 onClick={() =>
                                   handleLinkAccount({
+                                    name: listAccount.name,
                                     state: listAccount.linked,
                                     accountId: listAccount.accountId,
                                     providerId: listAccount.provider,
@@ -235,7 +299,7 @@ export default function Page() {
               <Card>
                 <CardContent>
                   <div className="mb-4">
-                    <div className="mb-1 font-medium text-red-500">
+                    <div className="text-destructive mb-1 font-medium">
                       Delete Account
                     </div>
                     <div className="text-muted-foreground text-sm leading-6">
@@ -249,12 +313,34 @@ export default function Page() {
                     </div>
                   </div>
 
-                  <Button
-                    variant="outline"
-                    className="font-medium text-red-500"
-                  >
-                    Delete your account
-                  </Button>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button className="bg-destructive hover:bg-destructive font-medium">
+                        Delete your account
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>
+                          Are you absolutely sure?
+                        </AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This action cannot be undone. This will permanently
+                          delete your account and remove your data from our
+                          servers.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          className="bg-destructive hover:bg-destructive"
+                          onClick={deleteAccount}
+                        >
+                          Continue
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 </CardContent>
               </Card>
             </CardContent>
