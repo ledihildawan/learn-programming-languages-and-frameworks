@@ -9,7 +9,8 @@
     "db:studio": "drizzle-kit studio",
     "db:refresh": "rm -rf drizzle && bun src/db/reset.ts && bun run db:generate && bun run db:migrate && drizzle-kit up",
     "db:seed": "bun run src/db/seed.ts",
-    "email": "email dev --dir src/emails --port 60408"
+    "email": "email dev --dir src/emails --port 60408",
+    "gen:auth:schema": "npx @better-auth/cli generate"
   },
   "dependencies": {
     "@elysiajs/cors": "^1.2.0",
