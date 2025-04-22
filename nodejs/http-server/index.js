@@ -28,6 +28,8 @@ server.on('request', (req, res) => {
       console.log('Request:', friend);
       friends.push(friend);
     });
+
+    req.pipe(res);
   } else if (req.method === 'GET' && items[1] === 'friends') {
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
@@ -40,6 +42,20 @@ server.on('request', (req, res) => {
       res.end(JSON.stringify(friends));
     }
   } else if (req.method === 'GET' && items[1] === 'messages') {
+    res.setHeader('Content-Type', 'text/html');
+    res.write(`
+      <html>
+        <body>
+          <ul>
+            <li>Hello Isacc!</li>
+            <li>What are your thoughts on astronomy?</li>
+          </ul>
+        </body>
+      </html>  
+    `);
+    res.end();
+  } else {
+    res.statusCode = 404;
   }
 });
 
