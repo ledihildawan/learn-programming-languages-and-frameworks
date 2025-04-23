@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import Product from '../models/product.modal.js';
 
 export const getAllProducts = async (req, res) => {
@@ -33,7 +34,7 @@ export const createProduct = async (req, res) => {
 export const deleteProduct = async (req, res) => {
   const { id } = req.params;
 
-  if (!mongoose.Types.ObjectId.isInvalid(id)) {
+  if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).json({ success: false, message: 'Invalid Product id' });
   }
 
@@ -51,7 +52,7 @@ export const updateProduct = async (req, res) => {
   const { id } = req.params;
   const product = req.body;
 
-  if (!mongoose.Types.ObjectId.isInvalid(id)) {
+  if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).json({ success: false, message: 'Invalid Product id' });
   }
 
