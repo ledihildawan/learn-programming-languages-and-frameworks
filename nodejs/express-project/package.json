@@ -1,0 +1,17 @@
+{
+  "name": "express-project",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon server"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "express": "^5.1.0",
+    "hbs": "^4.2.0",
+    "nodemon": "^3.1.9"
+  }
+}
