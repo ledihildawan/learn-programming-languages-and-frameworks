@@ -1,4 +1,4 @@
-import { Box, Button, Container, Heading, Input, useToast, VStack } from '@chakra-ui/react';
+import { Box, Button, Container, Heading, Input, useColorModeValue, useToast, VStack } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useProductStore } from '../store/product';
 
@@ -24,6 +24,10 @@ export default function CreatePage() {
       isClosable: true,
       description: message,
     });
+
+    if (success) {
+      setNewProduct({ image: '', name: '', price: '' });
+    }
   };
 
   return (
@@ -33,7 +37,7 @@ export default function CreatePage() {
           Create New Product
         </Heading>
 
-        <Box w="full">
+        <Box w="full" bg={useColorModeValue('white', 'gray.800')} p={6} rounded="lg">
           <VStack spacing={4}>
             <Input
               placeholder="Product Name"
