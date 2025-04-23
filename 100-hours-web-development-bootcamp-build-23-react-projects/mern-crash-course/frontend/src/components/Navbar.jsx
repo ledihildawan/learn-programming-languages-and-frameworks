@@ -1,9 +1,9 @@
 import { MoonIcon, PlusSquareIcon, SunIcon } from '@chakra-ui/icons';
-import { Button, Container, Flex, HStack, Text, useColorMode } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Button, Container, Flex, HStack, Text, useColorMode } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
 
 export default function Navbar() {
-  const {colorMode, toggleColorMode} = useColorMode()
+  const { colorMode, toggleColorMode } = useColorMode();
 
   return (
     <Container maxW="1440px" px={4}>
@@ -12,8 +12,8 @@ export default function Navbar() {
         alignItems="center"
         justifyContent="space-between"
         flexDir={{
-          base: "column",
-          sm: "row"
+          base: 'column',
+          sm: 'row',
         }}
       >
         <Text
@@ -34,10 +34,10 @@ export default function Navbar() {
             </Button>
           </Link>
           <Button onClick={toggleColorMode}>
-            {colorMode === "light" ? <MoonIcon fontSize={20} /> : <SunIcon fontSize={20} />}
+            {colorMode === 'light' ? <MoonIcon fontSize={20} /> : <SunIcon fontSize={20} />}
           </Button>
         </HStack>
       </Flex>
     </Container>
-  )
+  );
 }

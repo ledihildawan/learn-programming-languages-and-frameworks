@@ -1,3 +1,5 @@
+import Product from '../models/product.modal.js';
+
 export const getAllProducts = async (req, res) => {
   try {
     const products = await Product.find({});
