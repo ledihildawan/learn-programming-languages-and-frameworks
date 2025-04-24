@@ -18,17 +18,19 @@ func calculateFutureValues(investmentAmount, expectedReturnRate, years float64) 
 	return fv, rfv
 }
 
+func getUserInput(text string) float64 {
+	var userInput float64
+
+	outputText(text)
+	fmt.Scan(&userInput)
+
+	return userInput
+}
+
 func main() {
-	var investmentAmount, years, expectedReturnRate float64
-
-	outputText("Investment Amount: ")
-	fmt.Scan(&investmentAmount)
-
-	outputText("Expected Return Rate: ")
-	fmt.Scan(&expectedReturnRate)
-
-	outputText("Years: ")
-	fmt.Scan(&years)
+	investmentAmount := getUserInput("Investment Amount: ")
+	expectedReturnRate := getUserInput("Expected Return Rate: ")
+	years := getUserInput("Years: ")
 
 	futureValue, futureRealValue := calculateFutureValues(investmentAmount, expectedReturnRate, years)
 
