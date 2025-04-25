@@ -8,7 +8,9 @@ import { useAppForm } from "@/components/ui/tanstack-form";
 import { env } from "@/env/client";
 import { eden } from "@/lib/eden";
 import { updateBreadcrumbs, updateIsLoading } from "@/store/breadcrumbs-store";
+import { updateEnabledNavigationGuard } from "@/store/navigation-guard-store";
 import { updateRecent, updateRecentItem } from "@/store/recent-store";
+import { updateTopLoader } from "@/store/top-loader-store";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { batch } from "@tanstack/react-store";
 import MDEditor from "@uiw/react-md-editor";
@@ -20,6 +22,7 @@ import {
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useParams, useRouter } from "next/navigation";
+import { isEqual } from "radash";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -48,13 +51,16 @@ const FormSchema = z.object(formSchema);
 export default function Page() {
   const [nextNote, setNextNote] = useState<any>();
   const [prevNote, setPrevNote] = useState<any>();
+  const [isFromValuesChange, setIsFormValuesChange] = useState(false);
+
+  const { theme } = useTheme();
 
   const params = useParams<{ slug: string }>();
-  const { theme } = useTheme();
   const router = useRouter();
 
   const query = useQuery({
     queryKey: ["note", params.slug],
+
     queryFn: async ({ signal }) => {
       try {
         const res = await eden.api
@@ -87,8 +93,6 @@ export default function Page() {
       } catch (error) {}
     },
     onSuccess: (res) => {
-      dismissToasts();
-
       toast.success("Note has been successfully updated!");
 
       updateRecentItem(res!.data!.data);
@@ -104,22 +108,16 @@ export default function Page() {
     onSubmit: async ({ value }) => mutation.mutate(value),
     validators: {
       onSubmit: FormSchema,
+      onChange: ({ value }) => {
+        setIsFormValuesChange(!isEqual(defaultValues, value));
+      },
     },
     defaultValues: query.data,
-    onSubmitInvalid: (data) => {
-      console.log(data);
-    },
   });
 
-  const dismissToasts = () => {
-    toast.getToasts().forEach((t) => toast.dismiss(t.id));
+  const goToNote = (slug: string) => {
+    router.push(`${env.NEXT_PUBLIC_WEB_URL}/dashboard/notes/${slug}/edit`);
   };
-
-  const discard = useCallback(() => {
-    form.reset();
-
-    dismissToasts();
-  }, [form]);
 
   const focusToMDEditor = useCallback(() => {
     const textareaEl = document.querySelector(
@@ -134,14 +132,18 @@ export default function Page() {
   }, []);
 
   useEffect(() => {
+    batch(() => {
+      updateTopLoader(!isFromValuesChange);
+      updateEnabledNavigationGuard(isFromValuesChange);
+    });
+  }, [isFromValuesChange]);
+
+  useEffect(() => {
     updateIsLoading(true);
+    return () => {
+      updateEnabledNavigationGuard(false);
+    };
   }, []);
-
-  const goToNote = (slug: string) => {
-    dismissToasts();
-
-    router.push(`${env.NEXT_PUBLIC_WEB_URL}/dashboard/notes/${slug}/edit`);
-  };
 
   return (
     <div className="grid gap-4">

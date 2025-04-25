@@ -58,9 +58,6 @@ export default function Page() {
       },
     },
     defaultValues,
-    onSubmitInvalid: (data) => {
-      console.log(data);
-    },
   });
   const router = useRouter();
   const mutation = useMutation({
