@@ -118,7 +118,7 @@ export function AuditLogTable() {
   );
   const [perPage, setPerPage] = useQueryState(
     "perPage",
-    parseAsInteger.withDefault(10).withOptions({ history: "push" }),
+    parseAsInteger.withDefault(100).withOptions({ history: "push" }),
   );
 
   const columns: ColumnDef<z.infer<typeof schema>>[] = React.useMemo(
@@ -283,7 +283,7 @@ export function AuditLogTable() {
                   />
                 </SelectTrigger>
                 <SelectContent side="top">
-                  {[10, 20, 30, 40, 50].map((pageSize) => (
+                  {[25, 50, 100, 300].map((pageSize) => (
                     <SelectItem key={pageSize} value={`${pageSize}`}>
                       {pageSize}
                     </SelectItem>

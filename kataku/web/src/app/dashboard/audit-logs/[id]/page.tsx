@@ -106,7 +106,7 @@ export default function Page() {
                 <ArrowLeftIcon />
               </CustomLink>
             </Button>
-            <span className="text-xl font-bold">Details</span>
+            <span className="text-xl font-bold">Audit Log Details</span>
           </div>
           <div className="flex items-center gap-2">
             <Button

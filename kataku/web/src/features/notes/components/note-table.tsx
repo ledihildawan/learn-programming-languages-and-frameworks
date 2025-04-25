@@ -130,7 +130,7 @@ export function NoteTable() {
   );
   const [perPage, setPerPage] = useQueryState(
     "perPage",
-    parseAsInteger.withDefault(10).withOptions({ history: "push" }),
+    parseAsInteger.withDefault(25).withOptions({ history: "push" }),
   );
   const [deletedNote, setDeletedNote] =
     React.useState<Nullable<z.infer<typeof schema>>>();
@@ -419,7 +419,7 @@ export function NoteTable() {
                     />
                   </SelectTrigger>
                   <SelectContent side="top">
-                    {[10, 20, 30, 40, 50].map((pageSize) => (
+                    {[25, 50, 100, 300].map((pageSize) => (
                       <SelectItem key={pageSize} value={`${pageSize}`}>
                         {pageSize}
                       </SelectItem>
