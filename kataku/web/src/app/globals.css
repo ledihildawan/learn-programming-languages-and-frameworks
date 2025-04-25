@@ -154,3 +154,7 @@
 .w-md-editor-text {
   @apply h-full;
 }
+
+.json-diff-viewer tr .line-modify {
+  background: #2ea04326 !important;
+}

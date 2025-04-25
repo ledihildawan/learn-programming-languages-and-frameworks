@@ -1,6 +1,6 @@
 import { db } from '@/db';
 import * as schema from '@/db/schema';
-import { count, desc, eq } from 'drizzle-orm';
+import { asc, count, desc, eq, gt, lt } from 'drizzle-orm';
 import { Elysia, t } from 'elysia';
 import { first, getPaginationInfo, withPagination } from './db/utils';
 import { getUserId } from './user';
@@ -67,6 +67,44 @@ export const auditLog = new Elysia({ prefix: '/audit-log', tags: ['audit-log'] }
         module: t.String(),
         createdAt: t.Date(),
         userId: t.Optional(t.String()),
+      }),
+    }
+  )
+  .get(
+    '/:id',
+    async ({ params: { id }, error }) => {
+      const auditLog = await first(db.select().from(schema.auditLogs).where(eq(schema.auditLogs.id, id)));
+
+      if (!auditLog) {
+        return error(404, 'Not Found :(');
+      }
+
+      const nextNote = await first(
+        db
+          .select()
+          .from(schema.auditLogs)
+          .where(gt(schema.auditLogs.id, auditLog.id))
+          .orderBy(asc(schema.auditLogs.id))
+          .limit(1)
+      );
+      const prevNote = await first(
+        db
+          .select()
+          .from(schema.auditLogs)
+          .where(lt(schema.auditLogs.id, auditLog.id))
+          .orderBy(desc(schema.auditLogs.id))
+          .limit(1)
+      );
+
+      return {
+        data: auditLog,
+        nextNote,
+        prevNote,
+      };
+    },
+    {
+      params: t.Object({
+        id: t.Number(),
       }),
     }
   );
