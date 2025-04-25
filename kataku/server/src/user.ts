@@ -29,8 +29,9 @@ export const userService = new Elysia({ name: 'user/service' })
     },
   });
 
-export const getUserId = new Elysia()
-  .use(userService)
-  .guard({ isSignIn: true })
-  .resolve(({ user }) => ({ userId: user!.id }))
-  .as('plugin');
+export const getUserId = (isSignIn = true) =>
+  new Elysia()
+    .use(userService)
+    .guard({ isSignIn })
+    .resolve(({ user }) => ({ userId: user?.id }))
+    .as('plugin');

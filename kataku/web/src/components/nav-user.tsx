@@ -17,6 +17,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { authClient } from "@/lib/auth-client";
+import { eden } from "@/lib/eden";
 import { authStore } from "@/store/auth-store";
 import { deleteRecent } from "@/store/recent-store";
 import { useStore } from "@tanstack/react-store";
@@ -26,15 +27,7 @@ import { useRouter } from "next/navigation";
 import { useTopLoader } from "nextjs-toploader";
 import { useMemo } from "react";
 
-export function NavUser({
-  user,
-}: {
-  user: {
-    name: string;
-    email: string;
-    avatar: string;
-  };
-}) {
+export function NavUser() {
   const auth = useStore(authStore);
   const theme = useTheme();
   const router = useRouter();
@@ -64,12 +57,19 @@ export function NavUser({
     return value;
   }, [auth]);
 
-  function signOut() {
+  async function signOut() {
     topBarLoader.start();
+
+    await eden.api["audit-log"].index.post({
+      action: "sign-out",
+      module: "auth",
+      createdAt: new Date(),
+      description: `You have successfully signed out on ${new Date().toLocaleString()} from a device with the IP ${localStorage.getItem("ip")}.`,
+    });
 
     authClient.signOut({
       fetchOptions: {
-        onSuccess: () => {
+        onSuccess: async () => {
           deleteRecent();
 
           setTimeout(() => {

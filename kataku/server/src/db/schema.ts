@@ -68,3 +68,14 @@ export const notes = pgTable('notes', {
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
 });
+
+export const auditLogs = pgTable('audit_logs', {
+  id: bigserial({ mode: 'number' }).primaryKey().notNull(),
+  userId: text('user_id').references(() => users.id, { onDelete: 'cascade' }),
+  action: varchar().notNull(),
+  module: varchar().notNull(),
+  oldValue: text('old_value'),
+  newValue: text('new_value'),
+  description: text().notNull(),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
+});

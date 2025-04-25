@@ -1,5 +1,6 @@
 "use client";
 
+import { useIp } from "@/hooks/use-ip";
 import { authClient } from "@/lib/auth-client";
 import { GalleryVerticalEnd } from "lucide-react";
 import { redirect } from "next/navigation";
@@ -9,9 +10,10 @@ export default function AuthLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const ip = useIp();
   const auth = authClient.useSession();
 
-  if (auth.isPending) {
+  if (auth.isPending || ip.isPending) {
     return;
   }
 

@@ -7,7 +7,7 @@ import { first, generateUniqueSlug, getPaginationInfo, withPagination } from './
 import { getUserId } from './user';
 
 export const note = new Elysia({ prefix: '/note', tags: ['note'] })
-  .use(getUserId)
+  .use(getUserId())
   .get(
     '/',
     async ({ query: { page, pageSize }, userId }) => {
@@ -22,7 +22,7 @@ export const note = new Elysia({ prefix: '/note', tags: ['note'] })
         })
         .from(schema.notes)
         .leftJoin(schema.users, eq(schema.users.id, schema.notes.author))
-        .where(eq(schema.users.id, userId));
+        .where(eq(schema.users.id, userId!));
 
       const notes = await withPagination(query.$dynamic(), asc(schema.notes.createdAt), page, pageSize);
       const total =
@@ -32,7 +32,7 @@ export const note = new Elysia({ prefix: '/note', tags: ['note'] })
               .select({ id: schema.users.id, total: count() })
               .from(schema.notes)
               .leftJoin(schema.users, eq(schema.users.id, schema.notes.author))
-              .where(eq(schema.users.id, userId))
+              .where(eq(schema.users.id, userId!))
               .groupBy(schema.users.id)
           )
         )?.total || 0;
@@ -60,7 +60,7 @@ export const note = new Elysia({ prefix: '/note', tags: ['note'] })
         .values({
           slug,
           title: newTitle,
-          author: userId,
+          author: userId!,
           content,
         })
         .returning();

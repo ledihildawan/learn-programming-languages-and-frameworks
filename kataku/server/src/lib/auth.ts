@@ -60,7 +60,7 @@ export const auth = betterAuth({
   plugins: [openAPI({ disableDefaultReference: true }), username(), nextCookies(), oAuthProxy(), admin()],
   account: {
     accountLinking: {
-      eenabled: true,
+      enabled: true,
       trustedProviders: ['google', 'github'],
     },
   },

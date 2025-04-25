@@ -6,6 +6,7 @@ import { Elysia } from 'elysia';
 import * as React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { Resend } from 'resend';
+import { auditLog } from './audit-log';
 import { WEB_URL } from './constants';
 import OTPEmail from './emails/otp';
 import { note } from './note';
@@ -67,6 +68,7 @@ export const app = new Elysia()
         }
       })
       .use(note)
+      .use(auditLog)
   )
   .listen(process.env.APP_PORT!);
 

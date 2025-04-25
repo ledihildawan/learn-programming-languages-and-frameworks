@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { env } from "@/env/client";
 import { authClient } from "@/lib/auth-client";
+import { eden } from "@/lib/eden";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -55,7 +56,14 @@ export function SignInForm({
       password,
       rememberMe: false,
       fetchOptions: {
-        onSuccess: () => {
+        onSuccess: async () => {
+          await eden.api["audit-log"].index.post({
+            action: "sign-in",
+            module: "auth",
+            createdAt: new Date(),
+            description: `The sign-in was successful on ${new Date().toLocaleString()} from a device with the IP ${localStorage.getItem("ip")}.`,
+          });
+
           toggleLoading(true);
         },
         onError: (data) => {
@@ -90,6 +98,9 @@ export function SignInForm({
           toast.error(data.error.statusText);
 
           toggleLoading(false);
+        },
+        onSuccess() {
+          localStorage.setItem("isOAuthSignInSuccess", "true");
         },
       },
     });

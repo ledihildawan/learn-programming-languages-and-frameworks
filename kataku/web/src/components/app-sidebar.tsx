@@ -17,10 +17,8 @@ import { recentStore } from "@/store/recent-store";
 import { useStore } from "@tanstack/react-store";
 import {
   ArrowUpCircleIcon,
-  CameraIcon,
-  FileCodeIcon,
-  FileTextIcon,
   LayoutDashboardIcon,
+  ListIcon,
   NotebookIcon,
   SettingsIcon,
 } from "lucide-react";
@@ -28,11 +26,6 @@ import * as React from "react";
 import { CustomLink } from "./custom-link";
 
 const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
   navMain: [
     {
       title: "Dashboard",
@@ -44,53 +37,10 @@ const data = {
       url: "/dashboard/notes",
       icon: NotebookIcon,
     },
-  ],
-  navClouds: [
     {
-      title: "Capture",
-      icon: CameraIcon,
-      isActive: true,
-      url: "#",
-      items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Proposal",
-      icon: FileTextIcon,
-      url: "#",
-      items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Prompts",
-      icon: FileCodeIcon,
-      url: "#",
-      items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
-      ],
+      title: "Audit Logs",
+      url: "/dashboard/audit-logs",
+      icon: ListIcon,
     },
   ],
   navSecondary: [
@@ -128,7 +78,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser />
       </SidebarFooter>
     </Sidebar>
   );

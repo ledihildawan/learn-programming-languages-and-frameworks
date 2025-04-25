@@ -6,6 +6,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { useServerStatus } from "@/hooks/use-server-status";
 import { authClient } from "@/lib/auth-client";
+import { eden } from "@/lib/eden";
 import { authStore } from "@/store/auth-store";
 import { useRouter } from "next/navigation";
 import { useTopLoader } from "nextjs-toploader";
@@ -16,6 +17,21 @@ export default function Layout({ children }: { children: ReactNode }) {
   const router = useRouter();
   const serverStatus = useServerStatus();
   const topBarLoader = useTopLoader();
+
+  useEffect(() => {
+    if (localStorage.getItem("isOAuthSignInSuccess")) {
+      eden.api["audit-log"].index
+        .post({
+          action: "sign-in",
+          module: "auth",
+          createdAt: new Date(),
+          description: `The sign-in was successful on ${new Date().toLocaleString()} from a device with the IP ${localStorage.getItem("ip")}.`,
+        })
+        .then(() => {
+          localStorage.removeItem("isOAuthSignInSuccess");
+        });
+    }
+  }, []);
 
   useEffect(() => {
     topBarLoader.start();
@@ -31,7 +47,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         session: auth.data!.session,
       }));
     }
-  }, [auth.isPending]);
+  }, [auth.data]);
 
   if (serverStatus.isPending || auth.isPending) {
     return;

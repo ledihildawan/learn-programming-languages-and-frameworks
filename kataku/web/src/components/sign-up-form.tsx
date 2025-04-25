@@ -11,6 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { authClient } from "@/lib/auth-client";
+import { eden } from "@/lib/eden";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -54,8 +55,17 @@ export function SignUpForm({
           toast.error(data.error.message);
           topBarLoader.done();
         },
-        onSuccess: () => {
+        onSuccess: (ctx) => {
           toast.success("You’ve successfully signed up!");
+
+          eden.api["audit-log"].index.post({
+            userId: ctx.data?.user.id!,
+            action: "sign-up",
+            module: "auth",
+            createdAt: new Date(),
+            description: `The account registration process was successful on ${new Date().toLocaleString()}.`,
+          });
+
           router.push("/dashboard");
         },
       },
