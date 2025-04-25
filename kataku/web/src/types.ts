@@ -71,3 +71,6 @@ export interface NavigationGuardStore {
 export interface Store<T> {
   setState: (updater: (state: T) => T) => void;
 }
+
+// Audit Logs
+export type AuditLog = typeof schema.auditLogs.$inferSelect;

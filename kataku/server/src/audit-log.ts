@@ -73,7 +73,22 @@ export const auditLog = new Elysia({ prefix: '/audit-log', tags: ['audit-log'] }
   .get(
     '/:id',
     async ({ params: { id }, error }) => {
-      const auditLog = await first(db.select().from(schema.auditLogs).where(eq(schema.auditLogs.id, id)));
+      const auditLog = await first(
+        db
+          .select({
+            id: schema.auditLogs.id,
+            user: schema.users.name,
+            action: schema.auditLogs.action,
+            module: schema.auditLogs.module,
+            newValue: schema.auditLogs.newValue,
+            oldValue: schema.auditLogs.oldValue,
+            description: schema.auditLogs.description,
+            createdAt: schema.auditLogs.createdAt,
+          })
+          .from(schema.auditLogs)
+          .leftJoin(schema.users, eq(schema.users.id, schema.auditLogs.userId))
+          .where(eq(schema.auditLogs.id, id))
+      );
 
       if (!auditLog) {
         return error(404, 'Not Found :(');

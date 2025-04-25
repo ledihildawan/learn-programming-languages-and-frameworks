@@ -4,7 +4,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -21,7 +20,7 @@ import { eden } from "@/lib/eden";
 import { authStore } from "@/store/auth-store";
 import { deleteAllRecent } from "@/store/recent-store";
 import { useStore } from "@tanstack/react-store";
-import { LogOutIcon, MoreVerticalIcon, UserCircleIcon } from "lucide-react";
+import { LogOutIcon, MoreVerticalIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import { useTopLoader } from "nextjs-toploader";
@@ -130,13 +129,6 @@ export function NavUser() {
                 </div>
               </div>
             </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <UserCircleIcon />
-                Account
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={signOut}>
               <LogOutIcon />

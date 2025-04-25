@@ -93,7 +93,7 @@ function useGetAuditLogs({ pagination }: any) {
   }>();
 
   const { isLoading } = useQuery({
-    queryKey: ["auditLog", pagination],
+    queryKey: ["auditLogs", pagination],
     queryFn: async () => {
       const res = await getAuditLogsFn({ pagination });
 
@@ -186,7 +186,10 @@ export function AuditLogTable() {
 
   return (
     <div className="grid gap-4">
-      <div className="flex items-center justify-end px-4 lg:px-6">
+      <div className="flex items-center justify-between px-4 lg:px-6">
+        <div className="flex items-center gap-2">
+          <span className="text-xl font-bold">Activity Logs</span>
+        </div>
         <div className="flex items-center gap-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

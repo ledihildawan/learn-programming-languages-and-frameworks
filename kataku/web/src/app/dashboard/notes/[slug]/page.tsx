@@ -1,7 +1,11 @@
 "use client";
 
 import { eden } from "@/lib/eden";
-import { updateIsLazy, updateIsLoading } from "@/store/breadcrumbs-store";
+import {
+  updateBreadcrumbs,
+  updateIsLazy,
+  updateIsLoading,
+} from "@/store/breadcrumbs-store";
 import { updateRecent } from "@/store/recent-store";
 import { useQuery } from "@tanstack/react-query";
 import { batch } from "@tanstack/react-store";
@@ -20,9 +24,11 @@ export default function Page() {
         const res = await eden.api.note({ slug: params.slug }).get();
 
         batch(() => {
-          updateRecent(res.data.data);
+          updateBreadcrumbs(`/dashboard/notes/${res.data.data.title}`);
           updateIsLoading(false);
         });
+
+        updateRecent(res.data.data);
 
         return res.data.data;
       } catch (error) {}

@@ -156,5 +156,5 @@
 }
 
 .json-diff-viewer tr .line-modify {
-  background: #2ea04326 !important;
+  background: rgba(255, 224, 130, 0.149) !important;
 }

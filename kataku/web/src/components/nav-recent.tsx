@@ -16,7 +16,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { env } from "@/env/client";
-import { MoreHorizontalIcon, PencilIcon, ShareIcon } from "lucide-react";
+import { MoreHorizontalIcon, PencilIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTopLoader } from "nextjs-toploader";
@@ -70,10 +70,6 @@ export function NavRecent({
                 <DropdownMenuItem onClick={() => goToNote(item.slug)}>
                   <PencilIcon />
                   <span>Edit</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <ShareIcon />
-                  <span>Share</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
