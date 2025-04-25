@@ -1,5 +1,6 @@
 "use client";
 
+import { CustomLink } from "@/components/custom-link";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -47,12 +48,11 @@ import { z } from "zod";
 
 export const schema = z.object({
   id: z.number(),
-  title: z.string(),
-  slug: z.string(),
-  content: z.string(),
+  description: z.string(),
+  action: z.string(),
   createdAt: z.string(),
-  updatedAt: z.string(),
-  author: z.string(),
+  module: z.string(),
+  user: z.string(),
 });
 
 function DraggableRow({ row }: { row: Row<z.infer<typeof schema>> }) {
@@ -138,15 +138,26 @@ export function AuditLogTable() {
       {
         accessorKey: "description",
         header: "Description",
+        cell: ({ row }) => {
+          let value = row.original.description;
+
+          if (row.original.description.length > 120) {
+            value = `${value.slice(0, 120)}...`;
+          }
+
+          return (
+            <CustomLink
+              href={`/dashboard/audit-logs/${row.original.id}`}
+              className="hover:underline"
+            >
+              {value}
+            </CustomLink>
+          );
+        },
       },
       {
         accessorKey: "createdAt",
         header: "Created At",
-        cell: ({ row }) => new Date(row.original.createdAt).toLocaleString(),
-      },
-      {
-        accessorKey: "id",
-        header: "",
         cell: ({ row }) => new Date(row.original.createdAt).toLocaleString(),
       },
     ],

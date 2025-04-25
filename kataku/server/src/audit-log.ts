@@ -12,6 +12,7 @@ export const auditLog = new Elysia({ prefix: '/audit-log', tags: ['audit-log'] }
     async ({ query: { page, pageSize }, userId }) => {
       const query = db
         .select({
+          id: schema.auditLogs.id,
           user: schema.users.name,
           action: schema.auditLogs.action,
           module: schema.auditLogs.module,

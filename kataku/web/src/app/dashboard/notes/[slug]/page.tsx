@@ -1,22 +1,17 @@
 "use client";
 
 import { eden } from "@/lib/eden";
-import {
-  updateBreadcrumbs,
-  updateIsLazy,
-  updateIsLoading,
-} from "@/store/breadcrumbs-store";
+import { updateIsLazy, updateIsLoading } from "@/store/breadcrumbs-store";
 import { updateRecent } from "@/store/recent-store";
 import { useQuery } from "@tanstack/react-query";
 import { batch } from "@tanstack/react-store";
 import { marked } from "marked";
-import { useParams, usePathname } from "next/navigation";
+import { useParams } from "next/navigation";
 import Script from "next/script";
 import { useEffect } from "react";
 
 export default function Page() {
   const params = useParams<{ slug: string }>();
-  const pathname = usePathname();
 
   const query = useQuery({
     queryKey: ["note", params.slug],
@@ -25,11 +20,9 @@ export default function Page() {
         const res = await eden.api.note({ slug: params.slug }).get();
 
         batch(() => {
-          updateBreadcrumbs(`/dashboard/notes/${res.data.data.title}`);
+          updateRecent(res.data.data);
           updateIsLoading(false);
         });
-
-        updateRecent(res.data.data);
 
         return res.data.data;
       } catch (error) {}

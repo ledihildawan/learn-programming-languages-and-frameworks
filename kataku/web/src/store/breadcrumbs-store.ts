@@ -1,5 +1,6 @@
 import { BreadcrumbItem, BreadcrumbStore } from "@/types";
 import { Store } from "@tanstack/react-store";
+import { dash, title } from "radash";
 
 export function updateBreadcrumbs(value: string) {
   breadcrumbsStore.setState((state) => ({
@@ -30,8 +31,8 @@ export function generateBreadcrumbsFromPath(value: string) {
   const segments = value.split("/").filter(Boolean);
 
   return segments.map((segment, index) => ({
-    link: `/${segments.slice(0, index + 1).join("/")}`,
-    title: segment.charAt(0).toUpperCase() + segment.slice(1),
+    link: `/${dash(segments.slice(0, index + 1).join("/")).trim()}`,
+    title: title(segment),
   }));
 }
 
