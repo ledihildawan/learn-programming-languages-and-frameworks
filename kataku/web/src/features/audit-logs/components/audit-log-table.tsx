@@ -1,7 +1,5 @@
 "use client";
 
-import { CustomLink } from "@/components/custom-link";
-import { queryClient } from "@/components/query-provider";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -27,7 +25,7 @@ import {
 } from "@/components/ui/table";
 import { eden } from "@/lib/eden";
 import { Nullable } from "@/types";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import {
   ColumnDef,
   Row,
@@ -42,11 +40,9 @@ import {
   ChevronsLeftIcon,
   ChevronsRightIcon,
   ColumnsIcon,
-  PlusIcon,
 } from "lucide-react";
 import { parseAsInteger, useQueryState } from "nuqs";
 import * as React from "react";
-import { toast } from "sonner";
 import { z } from "zod";
 
 export const schema = z.object({
@@ -124,34 +120,9 @@ export function AuditLogTable() {
     "perPage",
     parseAsInteger.withDefault(10).withOptions({ history: "push" }),
   );
-  const [deletedNote, setDeletedNote] =
-    React.useState<Nullable<z.infer<typeof schema>>>();
-  const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
-
-  const deleteNoteMutation = useMutation({
-    mutationFn: async () => {
-      try {
-        await eden.api.note({ slug: deletedNote!.slug }).delete();
-      } catch (error) {}
-    },
-    onSuccess: async () => {
-      setOpenDeleteDialog(false);
-
-      toast.success("Note has been successfully deleted!");
-
-      queryClient.refetchQueries({ queryKey: ["notes", pagination] });
-    },
-    onError: () => {
-      toast.error("Oops, something went wrong on the server's end!");
-    },
-  });
 
   const columns: ColumnDef<z.infer<typeof schema>>[] = React.useMemo(
     () => [
-      {
-        accessorKey: "user",
-        header: "User",
-      },
       {
         accessorKey: "action",
         header: "Action",
@@ -161,12 +132,21 @@ export function AuditLogTable() {
         header: "Module",
       },
       {
+        accessorKey: "user",
+        header: "User",
+      },
+      {
         accessorKey: "description",
         header: "Description",
       },
       {
         accessorKey: "createdAt",
         header: "Created At",
+        cell: ({ row }) => new Date(row.original.createdAt).toLocaleString(),
+      },
+      {
+        accessorKey: "id",
+        header: "",
         cell: ({ row }) => new Date(row.original.createdAt).toLocaleString(),
       },
     ],
@@ -230,15 +210,6 @@ export function AuditLogTable() {
                 })}
             </DropdownMenuContent>
           </DropdownMenu>
-          <Button variant="outline" size="sm">
-            <PlusIcon />
-            <CustomLink
-              href="/dashboard/notes/new"
-              className="hidden lg:inline"
-            >
-              Add Note
-            </CustomLink>
-          </Button>
         </div>
       </div>
 
@@ -282,11 +253,7 @@ export function AuditLogTable() {
           </Table>
         </div>
 
-        <div className="flex items-center justify-between px-4">
-          <div className="text-muted-foreground hidden flex-1 text-sm lg:flex">
-            {table.getFilteredSelectedRowModel().rows.length} of{" "}
-            {table.getFilteredRowModel().rows.length} row(s) selected.
-          </div>
+        <div className="flex items-center justify-end px-4">
           <div className="flex w-full items-center gap-8 lg:w-fit">
             <div className="hidden items-center gap-2 lg:flex">
               <Label htmlFor="rows-per-page" className="text-sm font-medium">

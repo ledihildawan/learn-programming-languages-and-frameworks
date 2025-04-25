@@ -14,7 +14,17 @@ if (typeof window !== "undefined") {
 
 export const recentStore = new Store<Note[]>(recentLocalStorage || []);
 
-export const deleteRecent = () => {
+export const deleteRecent = (slug: string) => {
+  const newRecent = recentStore.state
+    .filter((_note) => _note.slug !== slug)
+    .slice(0, 10);
+
+  localStorage.setItem("recent", JSON.stringify(newRecent));
+
+  recentStore.setState(() => newRecent);
+};
+
+export const deleteAllRecent = () => {
   recentStore.setState(() => []);
 
   localStorage.removeItem("recent");

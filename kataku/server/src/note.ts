@@ -52,18 +52,24 @@ export const note = new Elysia({ prefix: '/note', tags: ['note'] })
   .post(
     '/',
     async ({ body: { title, content }, userId }) => {
-      const newTitle = title || 'Untitled';
-      const slug = await generateUniqueSlug(newTitle);
+      const slug = await generateUniqueSlug(title);
 
       const note = await db
         .insert(schema.notes)
         .values({
           slug,
-          title: newTitle,
+          title,
           author: userId!,
           content,
         })
         .returning();
+      const auditLog = await db.insert(schema.auditLogs).values({
+        userId,
+        action: 'create',
+        module: 'note',
+        createdAt: new Date(),
+        description: `A new note titled '${title}' was created on ${new Date().toLocaleString()}.`,
+      });
 
       return { success: true, data: note?.[0] };
     },
@@ -99,8 +105,8 @@ export const note = new Elysia({ prefix: '/note', tags: ['note'] })
       prevNote,
     };
   })
-  .delete('/:slug', async ({ params: { slug }, error }) => {
-    const note = await db.select().from(schema.notes).where(eq(schema.notes.slug, slug));
+  .delete('/:slug', async ({ params: { slug }, error, userId }) => {
+    const note = await first(db.select().from(schema.notes).where(eq(schema.notes.slug, slug)));
 
     if (!note) {
       return error(404, 'Not Found :(');
@@ -108,13 +114,21 @@ export const note = new Elysia({ prefix: '/note', tags: ['note'] })
 
     await db.delete(schema.notes).where(eq(schema.notes.slug, slug));
 
+    const auditLog = await db.insert(schema.auditLogs).values({
+      userId,
+      action: 'delete',
+      module: 'note',
+      createdAt: new Date(),
+      description: `Note titled '${note.title}' was deleted on ${new Date().toLocaleString()}.`,
+    });
+
     return {
       data: null,
     };
   })
   .patch(
     '/:slug',
-    async ({ params: { slug }, body, error }) => {
+    async ({ params: { slug }, body, error, userId }) => {
       const note = await first(db.select().from(schema.notes).where(eq(schema.notes.slug, slug)));
 
       if (!note) {
@@ -124,18 +138,30 @@ export const note = new Elysia({ prefix: '/note', tags: ['note'] })
       const isEqualSlug = note.slug === slugify(body.title!);
       const newSlug = !isEqualSlug && (await generateUniqueSlug(body.title!));
 
-      const updatedNote = await db
-        .update(schema.notes)
-        .set({
-          ...body,
-          slug: newSlug || note.slug,
-          updatedAt: new Date(),
-        })
-        .where(eq(schema.notes.slug, slug))
-        .returning();
+      const updatedNote = await first(
+        db
+          .update(schema.notes)
+          .set({
+            ...body,
+            slug: newSlug || note.slug,
+            updatedAt: new Date(),
+          })
+          .where(eq(schema.notes.slug, slug))
+          .returning()
+      );
+
+      const auditLog = await db.insert(schema.auditLogs).values({
+        userId,
+        action: 'update',
+        module: 'note',
+        oldValue: JSON.stringify(note),
+        newValue: JSON.stringify(updatedNote),
+        createdAt: new Date(),
+        description: `Note titled '${note.title}' was updated on ${new Date().toLocaleString()}.`,
+      });
 
       return {
-        data: updatedNote.at(0),
+        data: updatedNote,
       };
     },
     {

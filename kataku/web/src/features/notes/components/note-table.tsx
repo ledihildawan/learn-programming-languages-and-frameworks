@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/table";
 import { env } from "@/env/client";
 import { eden } from "@/lib/eden";
+import { deleteRecent } from "@/store/recent-store";
 import { Nullable } from "@/types";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
@@ -49,7 +50,6 @@ import {
   MoreVerticalIcon,
   PlusIcon,
 } from "lucide-react";
-import Link from "next/link";
 import { parseAsInteger, useQueryState } from "nuqs";
 import * as React from "react";
 import removeMd from "remove-markdown";
@@ -145,6 +145,8 @@ export function NoteTable() {
     onSuccess: async () => {
       setOpenDeleteDialog(false);
 
+      deleteRecent(deletedNote!.slug);
+
       toast.success("Note has been successfully deleted!");
 
       queryClient.refetchQueries({ queryKey: ["notes", pagination] });
@@ -188,12 +190,12 @@ export function NoteTable() {
         accessorKey: "title",
         header: "Title",
         cell: ({ row }) => (
-          <Link
+          <CustomLink
             href={`/dashboard/notes/${row.original.slug}`}
             className="hover:underline"
           >
             {row.original.title}
-          </Link>
+          </CustomLink>
         ),
         enableHiding: false,
       },
@@ -253,11 +255,11 @@ export function NoteTable() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-32">
               <DropdownMenuItem>
-                <Link
+                <CustomLink
                   href={`${env.NEXT_PUBLIC_WEB_URL}/dashboard/notes/${row.original.slug}/edit`}
                 >
                   Edit
-                </Link>
+                </CustomLink>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem

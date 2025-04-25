@@ -19,7 +19,7 @@ import {
 import { authClient } from "@/lib/auth-client";
 import { eden } from "@/lib/eden";
 import { authStore } from "@/store/auth-store";
-import { deleteRecent } from "@/store/recent-store";
+import { deleteAllRecent } from "@/store/recent-store";
 import { useStore } from "@tanstack/react-store";
 import { LogOutIcon, MoreVerticalIcon, UserCircleIcon } from "lucide-react";
 import { useTheme } from "next-themes";
@@ -70,7 +70,7 @@ export function NavUser() {
     authClient.signOut({
       fetchOptions: {
         onSuccess: async () => {
-          deleteRecent();
+          deleteAllRecent();
 
           setTimeout(() => {
             theme.setTheme("system");
