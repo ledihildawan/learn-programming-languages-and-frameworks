@@ -1,47 +1,10 @@
 import { BreadcrumbItem, BreadcrumbStore } from "@/types";
 import { Store } from "@tanstack/react-store";
-import { dash, title } from "radash";
 
-export function updateBreadcrumbs(value: string) {
-  breadcrumbsStore.setState((state) => ({
-    ...state,
-    data: generateBreadcrumbsFromPath(value),
-  }));
+export function updateBreadcrumbs(values: BreadcrumbItem[]) {
+  breadcrumbsStore.setState(() => values);
 }
 
-export function updateIsLoading(loading: boolean) {
-  breadcrumbsStore.setState((state) => ({
-    ...state,
-    isLoading: loading,
-  }));
-}
-
-export function updateIsLazy(lazy: boolean) {
-  breadcrumbsStore.setState((state) => ({
-    ...state,
-    isLazy: lazy,
-  }));
-}
-
-export function generateBreadcrumbsFromPath(value: string) {
-  if (routeMapping[value]) {
-    return routeMapping[value];
-  }
-
-  const segments = value.split("/").filter(Boolean);
-
-  return segments.map((segment, index) => ({
-    link: `/${dash(segments.slice(0, index + 1).join("/")).trim()}`,
-    title: title(segment),
-  }));
-}
-
-const routeMapping: Record<string, BreadcrumbItem[]> = {
-  "/dashboard": [{ title: "Dashboard", link: "/dashboard" }],
-};
-
-export const breadcrumbsStore = new Store<BreadcrumbStore>({
-  data: generateBreadcrumbsFromPath("/dashboard"),
-  isLazy: false,
-  isLoading: false,
-});
+export const breadcrumbsStore = new Store<BreadcrumbStore>([
+  { title: "Dashboard", link: "/dashboard" },
+]);

@@ -3,9 +3,16 @@
 import { CustomLink } from "@/components/custom-link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { env } from "@/env/client";
 import { eden } from "@/lib/eden";
 import { updateBreadcrumbs } from "@/store/breadcrumbs-store";
+import { updateNotFoundDashboard } from "@/store/dashboard-store";
 import { AuditLog, Nullable } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { Differ, Viewer } from "json-diff-kit";
@@ -16,8 +23,8 @@ import { useTopLoader } from "nextjs-toploader";
 import { useEffect, useMemo, useState } from "react";
 
 export default function Page() {
-  const [nextNote, setNextNote] = useState<Nullable<AuditLog>>(null);
-  const [prevNote, setPrevNote] = useState<Nullable<AuditLog>>(null);
+  const [nextAuditLog, setNextAuditLog] = useState<Nullable<AuditLog>>(null);
+  const [prevAuditLog, setPrevAuditLog] = useState<Nullable<AuditLog>>(null);
 
   const params = useParams<{ id: string }>();
   const router = useRouter();
@@ -31,6 +38,19 @@ export default function Page() {
           id: Number(params.id),
         }).get();
 
+        if ([404, 422].includes(res.error?.status)) {
+          throw new Error("Not Found :(");
+        }
+
+        updateBreadcrumbs([
+          { title: "Dashboard", link: "/dashboard" },
+          { title: "Audit Logs", link: "/dashboard/audit-logs" },
+          {
+            title: "Details",
+            link: `/dashboard/audit-logs/${res.data?.data?.id}`,
+          },
+        ]);
+
         if (res.data.data.newValue) {
           res.data.data.newValue = JSON.parse(res.data.data.newValue);
         }
@@ -39,11 +59,17 @@ export default function Page() {
           res.data.data.oldValue = JSON.parse(res.data.data.oldValue);
         }
 
-        setNextNote(res.data.nextNote);
-        setPrevNote(res.data.prevNote);
+        setNextAuditLog(res.data.nextAuditLog);
+        setPrevAuditLog(res.data.prevAuditLog);
 
-        return res.data.data;
-      } catch (error) {}
+        return res.data?.data;
+      } catch (error) {
+        const message = (error as Error).message;
+
+        if (message.toLowerCase().includes("not found")) {
+          updateNotFoundDashboard(true);
+        }
+      }
     },
   });
 
@@ -82,19 +108,36 @@ export default function Page() {
     [],
   );
 
-  useEffect(() => {
-    updateBreadcrumbs("/dashboard/audit-logs/details");
-  }, []);
-
-  if (query.isPending) {
-    return;
-  }
-
   const goToNote = (id: number) => {
     topBarLoader.start();
 
     router.push(`${env.NEXT_PUBLIC_WEB_URL}/dashboard/audit-logs/${id}`);
   };
+
+  useEffect(() => {
+    const handleNavigation = (e) => {
+      if (document.activeElement!.tagName.toLocaleLowerCase() !== "body") {
+        return;
+      }
+
+      switch (e.key) {
+        case "j":
+          return goToNote(prevAuditLog!.id);
+        case "k":
+          return goToNote(nextAuditLog!.id);
+      }
+    };
+
+    window.addEventListener("keypress", handleNavigation);
+
+    return () => {
+      window.removeEventListener("keypress", handleNavigation);
+    };
+  }, [prevAuditLog, nextAuditLog]);
+
+  if (query.isPending) {
+    return;
+  }
 
   return (
     <div className="gap-6 px-4 lg:px-6">
@@ -109,22 +152,40 @@ export default function Page() {
             <span className="text-xl font-bold">Audit Log Details</span>
           </div>
           <div className="flex items-center gap-2">
-            <Button
-              size="sm"
-              variant="outline"
-              disabled={!prevNote}
-              onClick={() => goToNote(prevNote!.id)}
-            >
-              <ChevronLeftIcon />
-            </Button>
-            <Button
-              size="sm"
-              variant="outline"
-              disabled={!nextNote}
-              onClick={() => goToNote(nextNote!.id)}
-            >
-              <ChevronRightIcon />
-            </Button>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    disabled={!prevAuditLog}
+                    onClick={() => goToNote(prevAuditLog!.id)}
+                  >
+                    <ChevronLeftIcon />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Prev (J)</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    disabled={!nextAuditLog}
+                    onClick={() => goToNote(nextAuditLog!.id)}
+                  >
+                    <ChevronRightIcon />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Next (K)</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
         </div>
 
@@ -153,7 +214,8 @@ export default function Page() {
             <div className="grid gap-2">
               <div className="text-xs">Created At</div>
               <div className="font-bold">
-                {new Date(query.data.createdAt).toLocaleString()}
+                {query.data?.createdAt &&
+                  new Date(query.data.createdAt).toLocaleString()}
               </div>
             </div>
             <div className="grid gap-2">

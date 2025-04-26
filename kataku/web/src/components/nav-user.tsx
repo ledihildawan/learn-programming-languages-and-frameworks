@@ -66,7 +66,7 @@ export function NavUser() {
       description: `You have successfully signed out on ${new Date().toLocaleString()} from a device with the IP ${localStorage.getItem("ip")}.`,
     });
 
-    authClient.signOut({
+    await authClient.signOut({
       fetchOptions: {
         onSuccess: async () => {
           deleteAllRecent();

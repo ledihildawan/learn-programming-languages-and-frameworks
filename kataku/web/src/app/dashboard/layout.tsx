@@ -8,13 +8,16 @@ import { useServerStatus } from "@/hooks/use-server-status";
 import { authClient } from "@/lib/auth-client";
 import { eden } from "@/lib/eden";
 import { authStore } from "@/store/auth-store";
-import { useRouter } from "next/navigation";
+import { dashboardStore } from "@/store/dashboard-store";
+import { useStore } from "@tanstack/react-store";
+import { notFound, useRouter } from "next/navigation";
 import { useTopLoader } from "nextjs-toploader";
 import { ReactNode, useEffect } from "react";
 
 export default function Layout({ children }: { children: ReactNode }) {
   const auth = authClient.useSession();
   const router = useRouter();
+  const dashboard = useStore(dashboardStore);
   const serverStatus = useServerStatus();
   const topBarLoader = useTopLoader();
 
@@ -59,6 +62,10 @@ export default function Layout({ children }: { children: ReactNode }) {
 
   if (!auth.data) {
     return router.push("/sign-in");
+  }
+
+  if (dashboard.notFound) {
+    return notFound();
   }
 
   return (

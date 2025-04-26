@@ -7,8 +7,12 @@ import { Input } from "@/components/ui/input";
 import { useAppForm } from "@/components/ui/tanstack-form";
 import { env } from "@/env/client";
 import { eden } from "@/lib/eden";
-import { updateBreadcrumbs, updateIsLoading } from "@/store/breadcrumbs-store";
-import { updateEnabledNavigationGuard } from "@/store/navigation-guard-store";
+import { updateBreadcrumbs } from "@/store/breadcrumbs-store";
+import { updateNotFoundDashboard } from "@/store/dashboard-store";
+import {
+  updateEnabledNavigationGuard,
+  updateStateNavigationGuard,
+} from "@/store/navigation-guard-store";
 import { updateRecent, updateRecentItem } from "@/store/recent-store";
 import { updateTopLoader } from "@/store/top-loader-store";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -22,7 +26,8 @@ import {
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useParams, useRouter } from "next/navigation";
-import { isEqual } from "radash";
+import { useTopLoader } from "nextjs-toploader";
+import { debounce, isEqual } from "radash";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -57,7 +62,7 @@ export default function Page() {
 
   const params = useParams<{ slug: string }>();
   const router = useRouter();
-
+  const topBarLoader = useTopLoader();
   const query = useQuery({
     queryKey: ["note", params.slug],
 
@@ -67,18 +72,39 @@ export default function Page() {
           .note({ slug: params.slug })
           .get({ fetch: { signal } });
 
-        batch(() => {
-          updateRecent(res.data.data);
-          updateBreadcrumbs(`/dashboard/notes/${res.data.data.title}/edit`);
+        if (res.error) {
+          throw new Error(res.error);
+        }
 
-          updateIsLoading(false);
-        });
+        defaultValues.title = res.data.data.title;
+        defaultValues.content = res.data.data.content;
+
+        updateBreadcrumbs([
+          { title: "Dashboard", link: "/dashboard" },
+          { title: "Notes", link: "/dashboard/notes" },
+          {
+            title: res.data?.data.title,
+            link: `/dashboard/notes/${res.data?.data.slug}`,
+          },
+          {
+            title: "Edit",
+            link: `/dashboard/notes/${res.data?.data.slug}/edit`,
+          },
+        ]);
+
+        updateRecent({ ...res.data.data, viewedAt: new Date() });
 
         setNextNote(res.data.nextNote);
         setPrevNote(res.data.prevNote);
 
         return res.data.data;
-      } catch (error) {}
+      } catch (error) {
+        const message = (error as Error).message;
+
+        if (message.toLowerCase().includes("not found")) {
+          updateNotFoundDashboard(true);
+        }
+      }
     },
   });
 
@@ -93,6 +119,8 @@ export default function Page() {
       } catch (error) {}
     },
     onSuccess: (res) => {
+      topBarLoader.start();
+
       toast.success("Note has been successfully updated!");
 
       updateRecentItem(res!.data!.data);
@@ -108,12 +136,27 @@ export default function Page() {
     onSubmit: async ({ value }) => mutation.mutate(value),
     validators: {
       onSubmit: FormSchema,
-      onChange: ({ value }) => {
+      onChange: debounce({ delay: 400 }, ({ value }) => {
         setIsFormValuesChange(!isEqual(defaultValues, value));
-      },
+      }),
     },
-    defaultValues: query.data,
+    defaultValues: {
+      title: query.data?.title || "",
+      content: query.data?.content || "",
+    },
   });
+
+  const save = () => {
+    batch(() => {
+      updateTopLoader(true);
+      updateStateNavigationGuard({
+        active: false,
+        enabled: false,
+      });
+    });
+
+    form.handleSubmit();
+  };
 
   const goToNote = (slug: string) => {
     router.push(`${env.NEXT_PUBLIC_WEB_URL}/dashboard/notes/${slug}/edit`);
@@ -139,9 +182,11 @@ export default function Page() {
   }, [isFromValuesChange]);
 
   useEffect(() => {
-    updateIsLoading(true);
     return () => {
-      updateEnabledNavigationGuard(false);
+      updateStateNavigationGuard({
+        active: false,
+        enabled: false,
+      });
     };
   }, []);
 
@@ -157,13 +202,7 @@ export default function Page() {
           <span className="text-xl font-bold">{query.data?.title}</span>
         </div>
         <div className="flex items-center gap-2">
-          <Button
-            size="sm"
-            onClick={() => {
-              form.handleSubmit();
-            }}
-            disabled={mutation.isPending}
-          >
+          <Button size="sm" onClick={save} disabled={mutation.isPending}>
             {mutation.isPending && <Loader2 className="animate-spin" />}
             Save
           </Button>

@@ -8,53 +8,14 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import {
-  breadcrumbsStore,
-  generateBreadcrumbsFromPath,
-} from "@/store/breadcrumbs-store";
+import { breadcrumbsStore } from "@/store/breadcrumbs-store";
 import { useStore } from "@tanstack/react-store";
 import { Slash } from "lucide-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Fragment, useEffect, useMemo } from "react";
-import { Skeleton } from "./ui/skeleton";
+import { Fragment } from "react";
+import { CustomLink } from "./custom-link";
 
 export function Breadcrumbs() {
-  const pathname = usePathname();
-  const { data: breadcrumbs, isLoading } = useStore(breadcrumbsStore);
-
-  const pathnameArr = useMemo(() => pathname.split("/"), [pathname]);
-
-  useEffect(() => {
-    breadcrumbsStore.setState((state) => ({
-      ...state,
-      data: generateBreadcrumbsFromPath(pathname),
-    }));
-  }, [pathname]);
-
-  if (isLoading) {
-    return (
-      <Breadcrumb>
-        <BreadcrumbList>
-          {pathnameArr.map((_, index) => (
-            <Fragment key={`breadcrumb-${index}-loading`}>
-              {index !== pathnameArr.length - 1 && (
-                <Skeleton className={`h-3 w-[68px] rounded-full`} />
-              )}
-              {index < pathnameArr.length - 1 && (
-                <BreadcrumbSeparator className="hidden md:block">
-                  <Slash />
-                </BreadcrumbSeparator>
-              )}
-              {index === pathnameArr.length - 1 && (
-                <Skeleton className="h-3 w-[68px] rounded-full" />
-              )}
-            </Fragment>
-          ))}
-        </BreadcrumbList>
-      </Breadcrumb>
-    );
-  }
+  const breadcrumbs = useStore(breadcrumbsStore);
 
   return (
     <Breadcrumb>
@@ -64,7 +25,7 @@ export function Breadcrumbs() {
             {index !== breadcrumbs.length - 1 && (
               <BreadcrumbItem className="hidden md:block">
                 <BreadcrumbLink asChild={true}>
-                  <Link href={item.link}>{item.title}</Link>
+                  <CustomLink href={item.link}>{item.title}</CustomLink>
                 </BreadcrumbLink>
               </BreadcrumbItem>
             )}

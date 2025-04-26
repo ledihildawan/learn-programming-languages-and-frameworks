@@ -1,6 +1,6 @@
 import { db } from '@/db';
 import * as schema from '@/db/schema';
-import { asc, count, desc, eq, gt, lt } from 'drizzle-orm';
+import { and, asc, count, desc, eq, gt, lt } from 'drizzle-orm';
 import { Elysia, t } from 'elysia';
 import slugify from 'slugify';
 import { first, generateUniqueSlug, getPaginationInfo, withPagination } from './db/utils';
@@ -85,18 +85,33 @@ export const note = new Elysia({ prefix: '/note', tags: ['note'] })
       slug: t.String(),
     }),
   })
-  .get('/:slug', async ({ params: { slug }, error }) => {
-    const note = await first(db.select().from(schema.notes).where(eq(schema.notes.slug, slug)));
+  .get('/:slug', async ({ params: { slug }, error, userId }) => {
+    const note = await first(
+      db
+        .select()
+        .from(schema.notes)
+        .where(and(eq(schema.notes.slug, slug), eq(schema.notes.author, userId!)))
+    );
 
     if (!note) {
       return error(404, 'Not Found :(');
     }
 
     const nextNote = await first(
-      db.select().from(schema.notes).where(gt(schema.notes.id, note.id)).orderBy(asc(schema.notes.id)).limit(1)
+      db
+        .select()
+        .from(schema.notes)
+        .where(and(gt(schema.notes.id, note.id), eq(schema.notes.author, userId!)))
+        .orderBy(asc(schema.notes.id))
+        .limit(1)
     );
     const prevNote = await first(
-      db.select().from(schema.notes).where(lt(schema.notes.id, note.id)).orderBy(desc(schema.notes.id)).limit(1)
+      db
+        .select()
+        .from(schema.notes)
+        .where(and(lt(schema.notes.id, note.id), eq(schema.notes.author, userId!)))
+        .orderBy(desc(schema.notes.id))
+        .limit(1)
     );
 
     return {

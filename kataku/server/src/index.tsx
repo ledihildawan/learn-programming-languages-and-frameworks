@@ -8,6 +8,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { Resend } from 'resend';
 import { auditLog } from './audit-log';
 import { WEB_URL } from './constants';
+import { dashboard } from './dashboard';
 import OTPEmail from './emails/otp';
 import { note } from './note';
 import { store } from './store';
@@ -67,6 +68,7 @@ export const app = new Elysia()
           error(405);
         }
       })
+      .use(dashboard)
       .use(note)
       .use(auditLog)
   )

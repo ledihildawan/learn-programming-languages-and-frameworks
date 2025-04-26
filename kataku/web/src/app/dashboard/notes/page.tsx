@@ -1,6 +1,17 @@
+"use client";
+
 import { NoteTable } from "@/features/notes/components/note-table";
+import { updateBreadcrumbs } from "@/store/breadcrumbs-store";
+import { useEffect } from "react";
 
 export default function Page() {
+  useEffect(() => {
+    updateBreadcrumbs([
+      { title: "Dashboard", link: "/dashboard" },
+      { title: "Notes", link: "/dashboard/notes" },
+    ]);
+  }, []);
+
   return (
     <div className="gap-6 px-4 lg:px-6">
       <NoteTable />

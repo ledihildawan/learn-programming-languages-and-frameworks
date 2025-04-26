@@ -57,10 +57,10 @@ export interface BreadcrumbItem {
   title: string;
 }
 
-export interface BreadcrumbStore {
-  data: BreadcrumbItem[];
-  isLazy: boolean;
-  isLoading: boolean;
+export type BreadcrumbStore = BreadcrumbItem[];
+
+export interface DashboardStore {
+  notFound: boolean;
 }
 
 export interface NavigationGuardStore {

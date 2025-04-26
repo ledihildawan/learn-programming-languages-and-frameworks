@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { useAppForm } from "@/components/ui/tanstack-form";
 import { env } from "@/env/client";
 import { eden } from "@/lib/eden";
+import { updateBreadcrumbs } from "@/store/breadcrumbs-store";
 import {
   updateEnabledNavigationGuard,
   updateStateNavigationGuard,
@@ -18,7 +19,8 @@ import MDEditor from "@uiw/react-md-editor";
 import { ArrowLeftIcon, Loader2 } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
-import { isEqual } from "radash";
+import { useTopLoader } from "nextjs-toploader";
+import { debounce, isEqual } from "radash";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -49,13 +51,14 @@ export default function Page() {
 
   const [isFromValuesChange, setIsFormValuesChange] = useState(false);
 
+  const topBarLoader = useTopLoader();
   const form = useAppForm({
     onSubmit: async ({ value }) => mutation.mutate(value),
     validators: {
       onSubmit: FormSchema,
-      onChange: ({ value }) => {
+      onChange: debounce({ delay: 400 }, ({ value }) => {
         setIsFormValuesChange(!isEqual(defaultValues, value));
-      },
+      }),
     },
     defaultValues,
   });
@@ -68,6 +71,7 @@ export default function Page() {
     },
     onSuccess: async () => {
       toast.success("Note has been successfully created!");
+      topBarLoader.start();
 
       router.push(`${env.NEXT_PUBLIC_WEB_URL}/dashboard/notes`);
     },
@@ -77,9 +81,12 @@ export default function Page() {
   });
 
   const save = () => {
-    updateStateNavigationGuard({
-      active: false,
-      enabled: false,
+    batch(() => {
+      updateTopLoader(true);
+      updateStateNavigationGuard({
+        active: false,
+        enabled: false,
+      });
     });
 
     form.handleSubmit();
@@ -105,8 +112,17 @@ export default function Page() {
   }, [isFromValuesChange]);
 
   useEffect(() => {
+    updateBreadcrumbs([
+      { title: "Dashboard", link: "/dashboard" },
+      { title: "Notes", link: "/dashboard/notes" },
+      { title: "New", link: "/dashboard/notes/new" },
+    ]);
+
     return () => {
-      updateEnabledNavigationGuard(false);
+      updateStateNavigationGuard({
+        active: false,
+        enabled: false,
+      });
     };
   }, []);
 

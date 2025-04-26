@@ -94,7 +94,7 @@ export const auditLog = new Elysia({ prefix: '/audit-log', tags: ['audit-log'] }
         return error(404, 'Not Found :(');
       }
 
-      const nextNote = await first(
+      const nextAuditLog = await first(
         db
           .select()
           .from(schema.auditLogs)
@@ -102,7 +102,7 @@ export const auditLog = new Elysia({ prefix: '/audit-log', tags: ['audit-log'] }
           .orderBy(asc(schema.auditLogs.id))
           .limit(1)
       );
-      const prevNote = await first(
+      const prevAuditLog = await first(
         db
           .select()
           .from(schema.auditLogs)
@@ -113,8 +113,8 @@ export const auditLog = new Elysia({ prefix: '/audit-log', tags: ['audit-log'] }
 
       return {
         data: auditLog,
-        nextNote,
-        prevNote,
+        nextAuditLog,
+        prevAuditLog,
       };
     },
     {
