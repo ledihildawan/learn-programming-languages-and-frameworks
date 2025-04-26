@@ -159,6 +159,8 @@ export default function Page() {
   };
 
   const goToNote = (slug: string) => {
+    topBarLoader.start();
+
     router.push(`${env.NEXT_PUBLIC_WEB_URL}/dashboard/notes/${slug}/edit`);
   };
 
@@ -183,6 +185,7 @@ export default function Page() {
 
   useEffect(() => {
     return () => {
+      updateTopLoader(true);
       updateStateNavigationGuard({
         active: false,
         enabled: false,

@@ -127,91 +127,85 @@ export default function Page() {
   }, []);
 
   return (
-    <>
-      <div className="grid gap-6">
-        <div className="flex items-center justify-between px-4 lg:px-6">
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" asChild>
-              <CustomLink href="/dashboard/notes">
-                <ArrowLeftIcon />
-              </CustomLink>
-            </Button>
-            <span className="text-xl font-bold">Add Note</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Button size="sm" onClick={save} disabled={mutation.isPending}>
-              {mutation.isPending && <Loader2 className="animate-spin" />}
-              Save
-            </Button>
-          </div>
+    <div className="grid gap-6">
+      <div className="flex items-center justify-between px-4 lg:px-6">
+        <div className="flex items-center gap-2">
+          <Button variant="ghost" size="sm" asChild>
+            <CustomLink href="/dashboard/notes">
+              <ArrowLeftIcon />
+            </CustomLink>
+          </Button>
+          <span className="text-xl font-bold">Add Note</span>
         </div>
-
-        <div className="px-4 lg:px-6">
-          <Card>
-            <CardContent>
-              <form.AppForm>
-                <div className="grid gap-6">
-                  <div className="grid gap-2">
-                    <form.AppField
-                      name="title"
-                      children={(field) => (
-                        <field.FormItem>
-                          <field.FormLabel htmlFor="title">
-                            Title
-                          </field.FormLabel>
-                          <field.FormControl>
-                            <Input
-                              id="title"
-                              name="email"
-                              type="text"
-                              value={field.state.value}
-                              onChange={(e) =>
-                                field.handleChange(e.target.value)
-                              }
-                            />
-                          </field.FormControl>
-                          <field.FormMessage />
-                        </field.FormItem>
-                      )}
-                    />
-                  </div>
-                  <div className="grid gap-2" data-color-mode={theme}>
-                    <form.AppField
-                      name="content"
-                      children={(field) => (
-                        <field.FormItem>
-                          <field.FormLabel
-                            htmlFor="content"
-                            onClick={focusToMDEditor}
-                          >
-                            Content
-                          </field.FormLabel>
-                          <MDEditor
-                            id="content"
-                            style={{
-                              borderColor: field.state.meta.errors.length
-                                ? "var(--destructive)"
-                                : "var(--input)",
-                            }}
-                            value={field.state.value}
-                            height={420}
-                            preview="edit"
-                            onChange={(e) => field.handleChange(e!)}
-                            previewOptions={{
-                              disallowedElements: ["style"],
-                            }}
-                          />
-                          <field.FormMessage />
-                        </field.FormItem>
-                      )}
-                    />
-                  </div>
-                </div>
-              </form.AppForm>
-            </CardContent>
-          </Card>
+        <div className="flex items-center gap-2">
+          <Button size="sm" onClick={save} disabled={mutation.isPending}>
+            {mutation.isPending && <Loader2 className="animate-spin" />}
+            Save
+          </Button>
         </div>
       </div>
-    </>
+
+      <div className="px-4 lg:px-6">
+        <Card>
+          <CardContent>
+            <form.AppForm>
+              <div className="grid gap-6">
+                <div className="grid gap-2">
+                  <form.AppField
+                    name="title"
+                    children={(field) => (
+                      <field.FormItem>
+                        <field.FormLabel htmlFor="title">Title</field.FormLabel>
+                        <field.FormControl>
+                          <Input
+                            id="title"
+                            name="email"
+                            type="text"
+                            value={field.state.value}
+                            onChange={(e) => field.handleChange(e.target.value)}
+                          />
+                        </field.FormControl>
+                        <field.FormMessage />
+                      </field.FormItem>
+                    )}
+                  />
+                </div>
+                <div className="grid gap-2" data-color-mode={theme}>
+                  <form.AppField
+                    name="content"
+                    children={(field) => (
+                      <field.FormItem>
+                        <field.FormLabel
+                          htmlFor="content"
+                          onClick={focusToMDEditor}
+                        >
+                          Content
+                        </field.FormLabel>
+                        <MDEditor
+                          id="content"
+                          style={{
+                            borderColor: field.state.meta.errors.length
+                              ? "var(--destructive)"
+                              : "var(--input)",
+                          }}
+                          value={field.state.value}
+                          height={420}
+                          preview="edit"
+                          onChange={(e) => field.handleChange(e!)}
+                          previewOptions={{
+                            disallowedElements: ["style"],
+                          }}
+                        />
+                        <field.FormMessage />
+                      </field.FormItem>
+                    )}
+                  />
+                </div>
+              </div>
+            </form.AppForm>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
   );
 }

@@ -25,6 +25,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { env } from "@/env/client";
 import { authClient } from "@/lib/auth-client";
+import { updateBreadcrumbs } from "@/store/breadcrumbs-store";
 import { deleteAllRecent } from "@/store/recent-store";
 import { LinkAccountProviderType, ListAccount, Nullable } from "@/types";
 import { useTheme } from "next-themes";
@@ -171,6 +172,13 @@ export default function Page() {
       },
     });
   }
+
+  useEffect(() => {
+    updateBreadcrumbs([
+      { title: "Dashboard", link: "/dashboard" },
+      { title: "Settings", link: "/dashboard/settings" },
+    ]);
+  }, []);
 
   return (
     <div className="px-4 lg:px-6">
