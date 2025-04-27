@@ -1,4 +1,5 @@
 import * as schema from "@server/db/schema";
+import { ColumnSort } from "@tanstack/react-table";
 import { authClient } from "./lib/auth-client";
 
 export type Note = typeof schema.notes.$inferInsert;
@@ -74,3 +75,7 @@ export interface Store<T> {
 
 // Audit Logs
 export type AuditLog = typeof schema.auditLogs.$inferSelect;
+
+export interface ExtendedColumnSort<TData> extends Omit<ColumnSort, "id"> {
+  id: Extract<keyof TData, string>;
+}

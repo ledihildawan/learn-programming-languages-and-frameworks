@@ -10,7 +10,11 @@ export const note = new Elysia({ prefix: '/note', tags: ['note'] })
   .use(getUserId())
   .get(
     '/',
-    async ({ query: { page, pageSize }, userId }) => {
+    async ({ query: { page, pageSize, sort }, userId }) => {
+      const orderBy = sort?.length
+        ? sort.map((item) => (item.desc ? desc(schema.notes[item.id]) : asc(schema.notes[item.id])))
+        : [asc(schema.notes.createdAt)];
+
       const query = db
         .select({
           title: schema.notes.title,
@@ -24,7 +28,7 @@ export const note = new Elysia({ prefix: '/note', tags: ['note'] })
         .leftJoin(schema.users, eq(schema.users.id, schema.notes.author))
         .where(eq(schema.users.id, userId!));
 
-      const notes = await withPagination(query.$dynamic(), asc(schema.notes.createdAt), page, pageSize);
+      const notes = await withPagination(query.$dynamic(), orderBy, page, pageSize);
       const total =
         (
           await first(
@@ -46,6 +50,15 @@ export const note = new Elysia({ prefix: '/note', tags: ['note'] })
       query: t.Object({
         page: t.Number(),
         pageSize: t.Number(),
+        sort: t.Optional(
+          t.Array(
+            t.Object({
+              desc: t.Boolean(),
+              id: t.String(),
+            })
+          )
+        ),
+        // sort: t.Any(),
       }),
     }
   )

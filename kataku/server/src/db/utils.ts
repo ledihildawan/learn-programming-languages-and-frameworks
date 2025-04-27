@@ -1,18 +1,13 @@
 import { randomUUIDv7 } from 'bun';
-import { eq, SQL } from 'drizzle-orm';
-import { PgColumn, PgSelect } from 'drizzle-orm/pg-core';
+import { eq } from 'drizzle-orm';
+import { PgSelect } from 'drizzle-orm/pg-core';
 import slugify from 'slugify';
 import { db } from '.';
 import * as schema from './schema';
 
-export function withPagination<T extends PgSelect>(
-  qb: T,
-  orderByColumn: PgColumn | SQL | SQL.Aliased,
-  page = 1,
-  pageSize = 3
-) {
+export function withPagination<T extends PgSelect>(qb: T, orderByColumn: any, page = 1, pageSize = 3) {
   return qb
-    .orderBy(orderByColumn)
+    .orderBy(...orderByColumn)
     .limit(pageSize)
     .offset((page - 1) * pageSize);
 }

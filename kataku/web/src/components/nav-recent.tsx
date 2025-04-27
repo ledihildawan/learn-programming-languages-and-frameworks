@@ -67,7 +67,7 @@ export function NavRecent({
                 side={isMobile ? "bottom" : "right"}
                 align={isMobile ? "end" : "start"}
               >
-                <DropdownMenuItem onClick={() => goToNote(item.slug)}>
+                <DropdownMenuItem onSelect={() => goToNote(item.slug)}>
                   <PencilIcon />
                   <span>Edit</span>
                 </DropdownMenuItem>
