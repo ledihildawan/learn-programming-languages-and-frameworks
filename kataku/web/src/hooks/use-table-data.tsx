@@ -61,7 +61,7 @@ export function useTableData(props: any) {
   );
   const [perPage, setPerPage] = useQueryState(
     PER_PAGE_KEY,
-    parseAsInteger.withDefault(25).withOptions({ history: "push" }),
+    parseAsInteger.withDefault(10).withOptions({ history: "push" }),
   );
 
   const pagination: PaginationState = useMemo(

@@ -58,7 +58,6 @@ export const note = new Elysia({ prefix: '/note', tags: ['note'] })
             })
           )
         ),
-        // sort: t.Any(),
       }),
     }
   )

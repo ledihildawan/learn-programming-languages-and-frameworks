@@ -1,12 +1,14 @@
 "use client";
 
 import { CustomLink } from "@/components/custom-link";
+import { DataTableCustomizeColumns } from "@/components/data-table/data-table-customize-columns";
+import { DataTableColumnHeader } from "@/components/data-table/data-table-header";
+import { DataTablePagination } from "@/components/data-table/data-table-pagination";
 import { queryClient } from "@/components/query-provider";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
@@ -21,25 +23,18 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { env } from "@/env/client";
+import { useTableData } from "@/hooks/use-table-data";
 import { eden } from "@/lib/eden";
 import { deleteRecent } from "@/store/recent-store";
 import { Nullable } from "@/types";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { ColumnDef, flexRender, Row } from "@tanstack/react-table";
-import {
-  ChevronDownIcon,
-  ColumnsIcon,
-  MoreVerticalIcon,
-  PlusIcon,
-} from "lucide-react";
+import { MoreVerticalIcon, PlusIcon } from "lucide-react";
 import * as React from "react";
 import removeMd from "remove-markdown";
 import { toast } from "sonner";
 import { z } from "zod";
-import { DataTablePagination } from "./data-table-pagination";
 import { DeleteDialog, DeleteDialogClickEvent } from "./delete-dialog";
-import { DataTableColumnHeader } from "./table-header";
-import { useTableData } from "./use-table-data";
 
 export const schema = z.object({
   id: z.number(),
@@ -267,7 +262,7 @@ export function NoteTable() {
     [],
   );
 
-  const { table, pagination } = useTableData({
+  const { table } = useTableData({
     columns,
     useGetData: useGetNotes,
   });
@@ -291,40 +286,7 @@ export function NoteTable() {
             <span className="text-xl font-bold">Notes</span>
           </div>
           <div className="flex items-center gap-2">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm">
-                  <ColumnsIcon />
-                  <span className="hidden lg:inline">Customize Columns</span>
-                  <span className="lg:hidden">Columns</span>
-                  <ChevronDownIcon />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                {table
-                  .getAllColumns()
-                  .filter(
-                    (column) =>
-                      typeof column.accessorFn !== "undefined" &&
-                      column.getCanHide(),
-                  )
-                  .map((column) => {
-                    console.log(column);
-                    return (
-                      <DropdownMenuCheckboxItem
-                        key={column.id}
-                        className="capitalize"
-                        checked={column.getIsVisible()}
-                        onCheckedChange={(value) =>
-                          column.toggleVisibility(!!value)
-                        }
-                      >
-                        {column.columnDef.meta?.label ?? column.id}
-                      </DropdownMenuCheckboxItem>
-                    );
-                  })}
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <DataTableCustomizeColumns table={table} />
             <Button variant="outline" size="sm">
               <PlusIcon />
               <CustomLink
@@ -377,10 +339,7 @@ export function NoteTable() {
             </Table>
           </div>
 
-          <DataTablePagination
-            table={table}
-            pageSizeOptions={[25, 50, 75, 100]}
-          />
+          <DataTablePagination table={table} />
         </div>
       </div>
 

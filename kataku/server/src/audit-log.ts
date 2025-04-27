@@ -9,7 +9,11 @@ export const auditLog = new Elysia({ prefix: '/audit-log', tags: ['audit-log'] }
   .use(getUserId(false))
   .get(
     '/',
-    async ({ query: { page, pageSize }, userId }) => {
+    async ({ query: { page, pageSize, sort }, userId }) => {
+      const orderBy = sort?.length
+        ? sort.map((item) => (item.desc ? desc(schema.auditLogs[item.id]) : asc(schema.auditLogs[item.id])))
+        : [asc(schema.auditLogs.createdAt)];
+
       const query = db
         .select({
           id: schema.auditLogs.id,
@@ -23,7 +27,7 @@ export const auditLog = new Elysia({ prefix: '/audit-log', tags: ['audit-log'] }
         .leftJoin(schema.users, eq(schema.users.id, schema.auditLogs.userId))
         .where(eq(schema.auditLogs.userId, userId!));
 
-      const auditLogs = await withPagination(query.$dynamic(), desc(schema.auditLogs.createdAt), page, pageSize);
+      const auditLogs = await withPagination(query.$dynamic(), orderBy, page, pageSize);
       const total =
         (
           await first(
@@ -45,6 +49,14 @@ export const auditLog = new Elysia({ prefix: '/audit-log', tags: ['audit-log'] }
       query: t.Object({
         page: t.Number(),
         pageSize: t.Number(),
+        sort: t.Optional(
+          t.Array(
+            t.Object({
+              desc: t.Boolean(),
+              id: t.String(),
+            })
+          )
+        ),
       }),
     }
   )

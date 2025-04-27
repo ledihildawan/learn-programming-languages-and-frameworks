@@ -1,21 +1,9 @@
 "use client";
 
 import { CustomLink } from "@/components/custom-link";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { DataTableCustomizeColumns } from "@/components/data-table/data-table-customize-columns";
+import { DataTableColumnHeader } from "@/components/data-table/data-table-header";
+import { DataTablePagination } from "@/components/data-table/data-table-pagination";
 import {
   Table,
   TableBody,
@@ -24,25 +12,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useTableData } from "@/hooks/use-table-data";
 import { eden } from "@/lib/eden";
 import { Nullable } from "@/types";
 import { useQuery } from "@tanstack/react-query";
-import {
-  ColumnDef,
-  Row,
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import {
-  ChevronDownIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  ChevronsLeftIcon,
-  ChevronsRightIcon,
-  ColumnsIcon,
-} from "lucide-react";
-import { parseAsInteger, useQueryState } from "nuqs";
+import { ColumnDef, Row, flexRender } from "@tanstack/react-table";
 import * as React from "react";
 import { z } from "zod";
 
@@ -70,18 +44,19 @@ function DraggableRow({ row }: { row: Row<z.infer<typeof schema>> }) {
   );
 }
 
-async function getAuditLogsFn({ pagination }: any) {
+async function getAuditLogsFn({ pagination, sorting }: any) {
   const res = await eden.api["audit-log"].index.get({
     query: {
       page: pagination.pageIndex + 1,
       pageSize: pagination.pageSize,
+      sort: JSON.stringify(sorting),
     },
   });
 
   return res.data;
 }
 
-function useGetAuditLogs({ pagination }: any) {
+function useGetAuditLogs({ pagination, sorting }: any) {
   const [data, setData] = React.useState([]);
   const [newPagination, setNewPagination] = React.useState<{
     total: Nullable<number>;
@@ -93,9 +68,9 @@ function useGetAuditLogs({ pagination }: any) {
   }>();
 
   const { isLoading } = useQuery({
-    queryKey: ["auditLogs", pagination],
+    queryKey: ["auditLogs", pagination, sorting],
     queryFn: async () => {
-      const res = await getAuditLogsFn({ pagination });
+      const res = await getAuditLogsFn({ pagination, sorting });
 
       setData(res.data);
       setNewPagination(res.pagination);
@@ -112,24 +87,19 @@ function useGetAuditLogs({ pagination }: any) {
 }
 
 export function AuditLogTable() {
-  const [page, setPage] = useQueryState(
-    "page",
-    parseAsInteger.withDefault(1).withOptions({ history: "push" }),
-  );
-  const [perPage, setPerPage] = useQueryState(
-    "perPage",
-    parseAsInteger.withDefault(100).withOptions({ history: "push" }),
-  );
-
   const columns: ColumnDef<z.infer<typeof schema>>[] = React.useMemo(
     () => [
       {
         accessorKey: "action",
-        header: "Action",
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title="Action" />
+        ),
       },
       {
         accessorKey: "module",
-        header: "Module",
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title="Module" />
+        ),
       },
       {
         accessorKey: "user",
@@ -154,34 +124,26 @@ export function AuditLogTable() {
             </CustomLink>
           );
         },
+        enableSorting: false,
+        enableHiding: false,
       },
       {
         accessorKey: "createdAt",
-        header: "Created At",
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title="Created At" />
+        ),
         cell: ({ row }) => new Date(row.original.createdAt).toLocaleString(),
+        meta: {
+          label: "Created At",
+        },
       },
     ],
     [],
   );
 
-  const pagination = React.useMemo(
-    () => ({
-      pageSize: perPage,
-      pageIndex: page - 1,
-    }),
-    [page, perPage],
-  );
-
-  const { data, newPagination } = useGetAuditLogs({ pagination });
-
-  const table = useReactTable({
-    data,
+  const { table } = useTableData({
     columns,
-    state: {
-      pagination,
-    },
-    rowCount: newPagination?.total as number | undefined,
-    getCoreRowModel: getCoreRowModel(),
+    useGetData: useGetAuditLogs,
   });
 
   return (
@@ -191,39 +153,7 @@ export function AuditLogTable() {
           <span className="text-xl font-bold">Activity Logs</span>
         </div>
         <div className="flex items-center gap-2">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm">
-                <ColumnsIcon />
-                <span className="hidden lg:inline">Customize Columns</span>
-                <span className="lg:hidden">Columns</span>
-                <ChevronDownIcon />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              {table
-                .getAllColumns()
-                .filter(
-                  (column) =>
-                    typeof column.accessorFn !== "undefined" &&
-                    column.getCanHide(),
-                )
-                .map((column) => {
-                  return (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize"
-                      checked={column.getIsVisible()}
-                      onCheckedChange={(value) =>
-                        column.toggleVisibility(!!value)
-                      }
-                    >
-                      {column.columnDef.header as string}
-                    </DropdownMenuCheckboxItem>
-                  );
-                })}
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <DataTableCustomizeColumns table={table} />
         </div>
       </div>
 
@@ -267,78 +197,7 @@ export function AuditLogTable() {
           </Table>
         </div>
 
-        <div className="flex items-center justify-end px-4">
-          <div className="flex w-full items-center gap-8 lg:w-fit">
-            <div className="hidden items-center gap-2 lg:flex">
-              <Label htmlFor="rows-per-page" className="text-sm font-medium">
-                Rows per page
-              </Label>
-              <Select
-                value={`${table.getState().pagination.pageSize}`}
-                onValueChange={(value) => setPerPage(Number(value))}
-              >
-                <SelectTrigger className="w-20" id="rows-per-page">
-                  <SelectValue
-                    placeholder={table.getState().pagination.pageSize}
-                  />
-                </SelectTrigger>
-                <SelectContent side="top">
-                  {[25, 50, 100, 300].map((pageSize) => (
-                    <SelectItem key={pageSize} value={`${pageSize}`}>
-                      {pageSize}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="flex w-fit items-center justify-center text-sm font-medium">
-              Page {table.getState().pagination.pageIndex + 1} of{" "}
-              {table.getPageCount()}
-            </div>
-            <div className="ml-auto flex items-center gap-2 lg:ml-0">
-              <Button
-                variant="outline"
-                className="hidden h-8 w-8 p-0 lg:flex"
-                onClick={() => setPage(1)}
-                disabled={!table.getCanPreviousPage()}
-              >
-                <span className="sr-only">Go to first page</span>
-                <ChevronsLeftIcon />
-              </Button>
-              <Button
-                variant="outline"
-                className="size-8"
-                size="icon"
-                onClick={() => setPage((value) => value - 1)}
-                disabled={!table.getCanPreviousPage()}
-              >
-                <span className="sr-only">Go to previous page</span>
-                <ChevronLeftIcon />
-              </Button>
-              <Button
-                variant="outline"
-                className="size-8"
-                size="icon"
-                onClick={() => setPage((value) => value + 1)}
-                disabled={!table.getCanNextPage()}
-              >
-                <span className="sr-only">Go to next page</span>
-                <ChevronRightIcon />
-              </Button>
-              <Button
-                variant="outline"
-                className="hidden size-8 lg:flex"
-                size="icon"
-                onClick={() => setPage(newPagination?.totalPages!)}
-                disabled={!table.getCanNextPage()}
-              >
-                <span className="sr-only">Go to last page</span>
-                <ChevronsRightIcon />
-              </Button>
-            </div>
-          </div>
-        </div>
+        <DataTablePagination table={table} hideInfoSelection={true} />
       </div>
     </div>
   );

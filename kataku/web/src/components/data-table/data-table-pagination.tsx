@@ -7,6 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { cn } from "@/lib/utils";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -17,13 +18,25 @@ import {
 export function DataTablePagination({
   table,
   pageSizeOptions = [10, 20, 30, 40, 50],
+  hideInfoSelection,
+}: {
+  table: any;
+  pageSizeOptions?: number[];
+  hideInfoSelection?: boolean;
 }) {
   return (
-    <div className="flex items-center justify-between px-4">
-      <div className="text-muted-foreground hidden flex-1 text-sm lg:flex">
-        {table.getFilteredSelectedRowModel().rows.length} of{" "}
-        {table.getFilteredRowModel().rows.length} row(s) selected.
-      </div>
+    <div
+      className={cn(
+        "flex items-center px-4",
+        hideInfoSelection ? "justify-end" : "justify-between",
+      )}
+    >
+      {!hideInfoSelection && (
+        <div className="text-muted-foreground hidden flex-1 text-sm lg:flex">
+          {table.getFilteredSelectedRowModel().rows.length} of{" "}
+          {table.getFilteredRowModel().rows.length} row(s) selected.
+        </div>
+      )}
       <div className="flex w-full items-center gap-8 lg:w-fit">
         <div className="hidden items-center gap-2 lg:flex">
           <Label htmlFor="rows-per-page" className="text-sm font-medium">
