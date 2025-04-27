@@ -87,7 +87,7 @@ function useGetNotes({ pagination, sorting }) {
   return {
     data: data || [],
     isLoading,
-    newPagination,
+    pagination: newPagination,
   };
 }
 
@@ -211,6 +211,9 @@ export function NoteTable() {
           <DataTableColumnHeader column={column} title="Created At" />
         ),
         cell: ({ row }) => new Date(row.original.createdAt).toLocaleString(),
+        meta: {
+          label: "Created At",
+        },
       },
       {
         accessorKey: "updatedAt",
@@ -218,6 +221,9 @@ export function NoteTable() {
           <DataTableColumnHeader column={column} title="Updated At" />
         ),
         cell: ({ row }) => new Date(row.original.updatedAt).toLocaleString(),
+        meta: {
+          label: "Updated At",
+        },
       },
       {
         accessorKey: "author",

@@ -32,11 +32,10 @@ export const auditLog = new Elysia({ prefix: '/audit-log', tags: ['audit-log'] }
         (
           await first(
             db
-              .select({ id: schema.auditLogs.id, total: count() })
+              .select({ total: count() })
               .from(schema.auditLogs)
               .leftJoin(schema.users, eq(schema.users.id, schema.auditLogs.userId))
               .where(eq(schema.auditLogs.userId, userId!))
-              .groupBy(schema.auditLogs.id)
           )
         )?.total || 0;
 

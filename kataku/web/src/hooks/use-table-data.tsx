@@ -127,6 +127,7 @@ export function useTableData(props: any) {
     manualPagination: true,
     manualSorting: true,
     manualFiltering: true,
+    pageCount: query?.pagination?.totalPages,
   });
 
   return {

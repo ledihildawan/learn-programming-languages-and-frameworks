@@ -82,7 +82,7 @@ function useGetAuditLogs({ pagination, sorting }: any) {
   return {
     data: data || [],
     isLoading,
-    newPagination,
+    pagination: newPagination,
   };
 }
 
