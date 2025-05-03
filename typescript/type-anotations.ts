@@ -1,14 +1,6 @@
 const guestCount: number = 50;
 const favoriteDessert: string = 'Cheesecake';
-const ingredients: string[] = [
-  'butter',
-  'flour',
-  'baking powder',
-  'sugar',
-  'eggs',
-  'vanilla',
-  'salt',
-];
+const ingredients: string[] = ['butter', 'flour', 'baking powder', 'sugar', 'eggs', 'vanilla', 'salt'];
 const menu: {
   courses: number;
   veganOption: boolean;
@@ -26,11 +18,8 @@ function eatFruit(fruit: { name: string }): void {
   }
 }
 
-function transformFruit(
-  fruitList: string[],
-  transformFunction: (fruit: string) => string
-): string[] {
-  return fruitList.map(transformFruit);
+function transformFruit(fruitList: string[], transformFunction: (fruit: string) => string): string[] {
+  return fruitList.map(transformFunction);
 }
 
 const fruitList = ['Apple', 'Banana', 'Orange'];
@@ -39,7 +28,7 @@ function bakeFruit(fruitName: string): string {
   return `Baked ${fruitName}`;
 }
 
-const bakedFruit: string[] = transformFruit(fruit, bakeFruit);
+const bakedFruit: string[] = transformFruit(fruitList, bakeFruit);
 
 async function getFruitList(): Promise<string[]> {
   const res = await fetch('https://example.com/fuits');
@@ -48,17 +37,11 @@ async function getFruitList(): Promise<string[]> {
   return fruits;
 }
 
-function mapNumbersToNumbers(
-  list: number[],
-  callback: (item: number) => number
-): number[] {
+function mapNumbersToNumbers(list: number[], callback: (item: number) => number): number[] {
   return list.map(callback);
 }
 
-const doubledNumbers: number[] = mapNumbersToNumbers(
-  [1, 2, 3],
-  (num) => num * 2
-);
+const doubledNumbers: number[] = mapNumbersToNumbers([1, 2, 3], (num) => num * 2);
 
 function logOutput(message: string, yell = true): void {
   if (yell) {
@@ -77,3 +60,19 @@ function logManyOutput(...messages: string[]): void {
 }
 
 logManyOutput('Hello', 'Hey!');
+
+function doSomething(value: unknown) {
+  const me: unknown = 'Stefan';
+  // const name: string = me;
+
+  if (typeof value === 'string') {
+    console.log("It's a sting", value.toUpperCase());
+  } else if (typeof value === 'number') {
+    console.log("It's a number", value * 2);
+  }
+}
+
+doSomething(undefined);
+
+let obj = {};
+obj = 'teasing';
