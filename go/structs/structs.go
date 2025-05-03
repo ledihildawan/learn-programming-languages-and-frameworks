@@ -13,16 +13,20 @@ func main() {
 
 	var appUser *user.User
 
-	appUser, err := user.NewUser(firstName, lastName, birthdate)
+	appUser, err := user.New(firstName, lastName, birthdate)
 
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	appUser.OutputUserDetails()
-	appUser.ClearUserName()
-	appUser.OutputUserDetails()
+	appAdmin := user.NewAdmin("lhildawan@gmail.com", "12345678")
+
+	appUser.OutputDetails()
+	appUser.ClearName()
+	appUser.OutputDetails()
+
+	appAdmin.OutputDetails()
 }
 
 func getUserData(promptText string) string {
