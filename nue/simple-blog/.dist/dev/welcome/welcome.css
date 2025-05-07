@@ -1,22 +1,23 @@
+/* simple-blog/welcome/welcome.css */
 * {
   box-sizing: border-box;
 }
 
 body {
-  background: #000 url("img/editor-split-big.png") 50% / 100%;
+  background: #000 url("/img/editor-split.png") 50% / 100%;
   margin: 0;
   transition: background-size 1s;
 }
 
 @starting-style {
   body {
-    background-size: 500%;
+    background-size: 150%;
   }
 }
 
 body main {
   backdrop-filter: blur(3px);
-  background: radial-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, .6));
+  background: radial-gradient(#0000, #0009);
   height: 100vh;
   padding-top: 22vh;
   transition-delay: .5s;
@@ -29,7 +30,7 @@ body article {
   margin: 0 auto;
   padding: 2em 2.2em 3em;
   transition-delay: 1s;
-  box-shadow: 0 0 3em rgba(0, 0, 0, .533);
+  box-shadow: 0 0 3em #0008;
 }
 
 body article h1 {

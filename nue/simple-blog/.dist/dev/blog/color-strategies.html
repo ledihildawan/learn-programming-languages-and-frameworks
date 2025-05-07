@@ -4,16 +4,13 @@
 
   <head>
     <meta charset="utf-8">
-<title>Emma Bennet / Practical strategies for using colors in CSS</title>
-<meta name="date.updated" content="2024-08-24T04:42:57.997Z">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Minimalist, designer, and UX developer">
-<meta name="author" content="Emma Bennet">
-<meta property="og:image" content="https://simple-blog.nuejs.org/img/og_emma.png">
-<meta property="article:published_time" content="Thu May 23 2024 07:00:00 GMT+0700 (Western Indonesia Time)">
-<meta name="nue:components" content=" ">
+<title>Emma Bennet / Practical strategies for using colors in CSS</title>
 <link rel="icon" type="image/jpg" href="/img/favicon.jpg">
-<style href="/@global/colors.css">:root {
+<script src="/@nue/hotreload.js" type="module"></script>
+<script src="/@nue/view-transitions.js" type="module"></script>
+<style href="/@global/colors.css">/* simple-blog/@global/colors.css */
+:root {
   --gray-100: #f3f4f6;
   --gray-200: #e5e7eb;
   --gray-300: #d1d5db;
@@ -22,12 +19,11 @@
   --gray-900: #111827;
   --main-500: #3b82f6;
   --main-600: #2563eb;
-  --pink-gradient: linear-gradient(#e879f9, #ec4899);
-  --blue-gradient: linear-gradient(#0ea5e9, #67e8f9);
   --marker: #ffff7a;
 }
 </style>
-<style href="/@global/layout.css">*, :before, :after {
+<style href="/@global/layout.css">/* simple-blog/@global/layout.css */
+*, *:before, *:after {
   box-sizing: border-box;
 }
 
@@ -42,9 +38,9 @@ body {
 }
 
 body > header nav {
+  display: flex;
   justify-content: space-between;
   margin-bottom: 4rem;
-  display: flex;
 }
 
 body > header nav > a:first-child {
@@ -61,28 +57,35 @@ body article > header {
 }
 
 body article > section {
-  max-width: 650px;
+  max-width: 700px;
   margin: 0 auto;
 }
 
 body > footer {
   border-top: 1px solid var(--gray-200);
-  justify-content: space-between;
-  margin-top: 6rem;
-  padding: 1rem 0;
-  display: flex;
+  margin-top: 8rem;
 }
 
-body > footer > :last-child {
+body > footer nav {
+  display: flex;
   gap: .5em;
-  display: flex;
+  padding: 1rem 0;
 }
 
-body > footer > :last-child a:hover {
-  transform: scale(1.1);
+body > footer nav a {
+  opacity: .8;
+}
+
+body > footer nav a:hover {
+  opacity: 1;
+}
+
+body > footer nav a:nth-child(2) {
+  margin-left: auto;
 }
 </style>
-<style href="/@global/typography.css">body {
+<style href="/@global/typography.css">/* simple-blog/@global/typography.css */
+body {
   font-family: -apple-system, BlinkMacSystemFont, Avenir Next, Segoe UI, Roboto;
 }
 
@@ -91,7 +94,14 @@ h1 {
   font-size: 2.6rem;
 }
 
-h1, h1 + p {
+h1 {
+  text-align: center;
+  text-wrap: balance;
+  max-width: 40rem;
+  margin: 0 auto .2em;
+}
+
+h1 + p {
   text-align: center;
   text-wrap: balance;
   max-width: 40rem;
@@ -113,7 +123,7 @@ nav :is(a) {
   font-weight: 500;
 }
 
-nav :is(a)[aria-selected] {
+nav :is(a)[aria-current] {
   text-decoration: 2px underline var(--main-500);
   text-underline-offset: 8px;
 }
@@ -127,12 +137,18 @@ p, li {
   color: var(--gray-800);
 }
 </style>
-<style href="/@library/cards.css">.pink, .blue {
+<style href="/@library/cards.css">/* simple-blog/@library/cards.css */
+:root {
+  --pink-gradient: linear-gradient(#e879f9, #ec4899);
+  --blue-gradient: linear-gradient(#0ea5e9, #67e8f9);
+}
+
+.pink, .blue {
   background-image: var(--pink-gradient);
+  overflow: hidden;
   border-radius: .8em;
   margin: 1.5em 0 2em;
   padding: 3em 0 0 3em;
-  overflow: hidden;
 }
 
 :is(.pink, .blue) pre {
@@ -148,7 +164,8 @@ p, li {
   background-image: var(--blue-gradient);
 }
 </style>
-<style href="/@library/content.css">article a {
+<style href="/@library/content.css">/* simple-blog/@library/content.css */
+article a {
   text-decoration: underline var(--main-500) 1px;
   text-underline-offset: 3px;
   color: var(--gray-800);
@@ -157,8 +174,8 @@ p, li {
 
 article a:hover {
   text-decoration-color: var(--main-600);
-  color: #000;
   text-decoration-thickness: 2px;
+  color: #000;
 }
 
 h2 {
@@ -204,11 +221,13 @@ blockquote p {
 blockquote strong {
   background-color: var(--marker);
   font-weight: inherit;
-  margin-inline: -.2em;
+  margin-inline-start: -.2em;
+  margin-inline-end: -.2em;
   padding: .1em .2em;
 }
 </style>
-<style href="/@library/motion.css">header, h1, h1 + p, h1 + p + * {
+<style href="/@library/motion.css">/* simple-blog/@library/motion.css */
+header, h1, h1 + p, h1 + p + * {
   filter: none;
   opacity: 1;
   transition: opacity .5s, filter .7s;
@@ -243,20 +262,28 @@ article {
 }
 </style>
 <link href="/@nue/syntax.css" rel="stylesheet">
-<script src="/@nue/hotreload.js" type="module"></script>
-<script src="/@nue/view-transitions.js" type="module"></script>
+<meta name="generator" content="Nue v1.0.0-RC.4 (nuejs.org)">
+<meta name="date.updated" content="2025-05-07T00:28:32.264Z">
+<meta name="description" content="Working with color is one of the most fun parts of web design. In this post, we&apos;ll explore simple, real-world tips for effectively using color in your stylesheets.">
+<meta name="author" content="Emma Bennet">
+<meta property="og:title" content="Practical strategies for using colors in CSS">
+<meta property="og:description" content="Working with color is one of the most fun parts of web design. In this post, we&apos;ll explore simple, real-world tips for effectively using color in your stylesheets.">
+<meta property="og:image" content="https://simple-blog.nuejs.org/img/og_emma.png">
+<meta property="article:published_time" content="Sat Nov 23 2024 07:00:00 GMT+0700 (Western Indonesia Time)">
+<meta name="nue:components" content=" ">
+<meta name="nue:include" content="content cards motion">
+<meta name="nue:globals" content="@global">
+<meta name="nue:libs" content="@library">
     
   </head>
 
   <body>
     
     <header>
-    <nav aria-label="navigation"><a href="/">Emma Bennet</a>
+  <nav><a href="/">Emma Bennet</a>
 <a href="/contact/">Contact</a></nav>
+</header>
     
-  </header>
-    
-
     <main>
     
 
@@ -264,18 +291,24 @@ article {
       <header>
   <h1>Practical strategies for using colors in CSS</h1>
   <p>
-    <time datetime="2024-05-23T00:00:00.000Z">May 23, 2024</time> &#x2022; Content by AI &#x2022;
+    <time datetime="2024-11-23T00:00:00.000Z">November 23, 2024</time> &#x2022; Content by AI &#x2022;
     Photo credits: <a href="//dribbble.com/BalkanBrothers">BalkanBrothers</a>
   </p>
 
   <img width="1000" height="800" src="img/colors-2.jpg" alt="Hero image for Practical strategies for using colors in CSS">
 </header>
-      <section><p>Working with color is one of the most fun parts of web design. But if you don&apos;t use them right in your CSS code, colors can also tank a site&apos;s usability and accessibility. In this post, we&apos;ll explore simple, real-world tips for effectively using color in your stylesheets.</p>
+      <section><p>Working with color is one of the most fun parts of web design. In this post, we&apos;ll explore simple, real-world tips for effectively using color in your stylesheets.</p></section>
 
+<section><h2>How to create a foolproof color palette</h2>
+<p>Choosing the right colors for a website can be tricky. Get one wrong and your entire design can feel off. Luckily, there are some simple strategies to create a foolproof web color palette:</p>
+<ul><li><p><strong>Limit your palette</strong> &#x2014; Stick to just 2-4 core colors for most sites. Too many colors look disjointed.</p></li>
+<li><p><strong>Focus on one dominant hue</strong> &#x2014; Pick one main color and derive the rest of the palette from it. This creates cohesion.</p></li>
+<li><p><strong>Use color wheel relationships</strong> &#x2014; Choose adjacent or complementary colors on the wheel for built-in harmony.</p></li>
+<li><p><strong>Consider tone and contrast</strong> &#x2014; Include light, medium and dark tones for visual interest. Test contrast for accessibility.</p></li></ul>
 <div class="blue"><pre><code language="css"><sup>/* Tab styling */</sup>
 <i>[</i><b>role</b><i>=</i>tablist<i>]</i> <i>{</i>
   <b>background</b><i>:</i> <b>rgba</b><i>(</i><em>0</em><i>,</i> <em>0</em><i>,</i> <em>0</em><i>,</i> <i>.</i><em>7</em><i>)</i><i>;</i>
-  <b>background-size</b><i>:</i> <em>3.5em</em><i>;</i>
+  <b>background-size</b><i>:</i> <em>3.8em</em><i>;</i>
 <dfn>  <b>padding</b><i>:</i> <i>.</i><em>7em</em> <em>1.3em</em> <em>0</em><i>;</i></dfn>
 <dfn>  <b>overflow</b><i>:</i> hidden<i>;</i></dfn>
 <dfn>  <b>display</b><i>:</i> flex<i>;</i></dfn>
@@ -287,24 +320,9 @@ article {
     <b>cursor</b><i>:</i> pointer<i>;</i>
   <i>}</i>
 <i>}</i></code></pre></div>
-<h2 id="how-to-create-a-foolproof-color"><a href="#how-to-create-a-foolproof-color" title="How to create a foolproof color palette"></a>How to create a foolproof color palette</h2><p>Choosing the right colors for a website can be tricky. Get one wrong and your entire design can feel off. Luckily, there are some simple strategies to create a foolproof web color palette:</p>
-<ul>
-<li><p><strong>Limit your palette</strong> - Stick to just 2-4 core colors for most sites. Too many colors look disjointed.</p>
-</li>
-<li><p><strong>Focus on one dominant hue</strong> - Pick one main color and derive the rest of the palette from it. This creates cohesion.</p>
-</li>
-<li><p><strong>Use color wheel relationships</strong> - Choose adjacent or complementary colors on the wheel for built-in harmony.</p>
-</li>
-<li><p><strong>Consider tone and contrast</strong> - Include light, medium and dark tones for visual interest. Test contrast for accessibility.</p>
-</li>
-</ul>
-
-<figure><img loading="lazy" src="img/colors-1.png"></figure>
-<p>Considering the different formatting options, you can optimize CSS color usage for any need. Use hex for one-off values, RGBA where you need opacity control, HSL for color adjustments, variables for theming, and preprocessor operations for transformations. With the right format, implementing colors in CSS becomes much more flexible and manageable.</p>
+<p>Considering the different formatting options, you can optimize CSS color usage for any need. Use hex for one-off values, RGBA where you require opacity control, HSL for color adjustments, variables for theming, and preprocessor operations for transformations. With the right format, implementing colors in CSS becomes much more flexible and manageable.</p>
 <p>Following these simple tips will ensure you have a tightly edited, flexible, and foolproof palette ready for your next web project.</p>
-<blockquote>
-<p>Focus on one dominant hue - Pick one main color and derive the rest of the palette from it. This creates cohesion.</p>
-</blockquote>
+<blockquote><p>Focus on one dominant hue &#x2014; Pick one main color and derive the rest of the palette from it. This creates cohesion.</p></blockquote>
 
 <div class="pink"><pre><code language="*"><sup>/* Tab styling */</sup>
 <i>[</i><b>role</b><i>=</i>tablist<i>]</i> <i>{</i>
@@ -313,25 +331,39 @@ article {
   <b>padding</b><i>:</i> <i>.</i><em>7em</em> <em>1.3em</em> <em>0</em><i>;</i>
   <b>overflow</b><i>:</i> hidden<i>;</i>
   <b>display</b><i>:</i> flex<i>;</i>
-<i>}</i></code></pre></div>
-<h2 id="the-best-css-color-formats-for-d"><a href="#the-best-css-color-formats-for-d" title="The best CSS color formats for different needs"></a>The best CSS color formats for different needs</h2><p>When adding color in CSS, you have a few formatting options to choose from. Each has their own strengths depending on the use case. For specifying plain color values, hex codes are the usual default.</p>
+<i>}</i></code></pre></div></section>
 
+<section><h2>The best CSS color formats for different needs</h2>
+<p>When adding color in CSS, you have a few formatting options to choose from. Each has their own strengths depending on the use case. For specifying plain color values, hex codes are the usual default.</p>
 <figure><img loading="lazy" src="img/colors-3.png"></figure>
 <p>They allow for millions of specific color values in a compact 6-character string. But RGB and HSL values also have advantages. RGB provides an easy way to adjust opacity with the alpha channel. And HSL makes it simple to tweak hue, saturation and lightness independently.</p>
-<p>For colors tied to theme values, CSS custom properties (variables) are extremely useful. You can update colors site-wide just by changing the variable values. Preprocessors like Sass take this a step further, allowing color operations like lightening and darkening right in the stylesheet.</p>
-</section>
+<div class="blue"><pre><code language="css"><sup>/* Tab styling */</sup>
+<i>[</i><b>role</b><i>=</i>tablist<i>]</i> <i>{</i>
+  <b>background</b><i>:</i> <b>rgba</b><i>(</i><em>0</em><i>,</i> <em>0</em><i>,</i> <em>0</em><i>,</i> <i>.</i><em>7</em><i>)</i><i>;</i>
+  <b>background-size</b><i>:</i> <em>3.8em</em><i>;</i>
+<dfn>  <b>padding</b><i>:</i> <i>.</i><em>7em</em> <em>1.3em</em> <em>0</em><i>;</i></dfn>
+<dfn>  <b>overflow</b><i>:</i> hidden<i>;</i></dfn>
+<dfn>  <b>display</b><i>:</i> flex<i>;</i></dfn>
+
+  a <i>{</i>
+    <b>color</b><i>:</i> <strong>#fff9</strong><i>;</i>
+    <b>padding</b><i>:</i> <i>.</i><em>2em</em> <em>1em</em> <i>.</i><em>4em</em><i>;</i>
+    <b>font-size</b><i>:</i> <em>90%</em><i>;</i>
+    <b>cursor</b><i>:</i> pointer<i>;</i>
+  <i>}</i>
+<i>}</i></code></pre></div>
+<p>For colors tied to theme values, CSS custom properties (variables) are extremely useful. You can update colors site-wide just by changing the variable values. Preprocessors like Sass take this a step further, allowing color operations like lightening and darkening right in the stylesheet.</p></section>
       
     </article>
 
     
   </main>
-
     <footer>
-    <nav aria-label="copyright"><a href="/">&#xa9; Emma Bennet</a></nav><nav aria-label="social"><a href="//x.com/tipiirai"><img src="/img/twitter.svg" width="22" height="22" alt="Twitter (X) profile"></a>
-<a href="//github.com/nuejs/"><img src="/img/github.svg" width="22" height="22" alt="Github Projects"></a>
+  <nav><a href="/">&#xa9; Emma Bennet</a>
+<a href="//x.com/tipiirai"><img src="/img/twitter.svg" width="22" height="22" alt="Twitter (X) profile"></a>
+<a href="//github.com/nuejs/nue/"><img src="/img/github.svg" width="22" height="22" alt="Github Projects"></a>
 <a href="//linkedin.com/in/tipiirai"><img src="/img/linkedin.svg" width="22" height="22" alt="LinkedIn profile"></a></nav>
-  </footer>
-    
+</footer>
     
   </body>
 

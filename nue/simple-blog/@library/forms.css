@@ -7,7 +7,6 @@
   outline-offset: 1px;
 }
 
-
 label {
   display: block;
   margin-bottom: 1em;
@@ -28,6 +27,7 @@ input, textarea {
 }
 
 textarea {
+  resize: vertical;
   form-sizing: normal;
   min-height: 80px;
 }
@@ -52,5 +52,3 @@ button, [role=button] {
     transform: translateY(1px);
   }
 }
-
-

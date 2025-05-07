@@ -1,11 +1,14 @@
-globals: ['@global']
-libs: ['@library']
+# yaml-language-server: $schema=https://json.schemastore.org/nuejs-site.json
+
+globals: ["@global"]
+libs: ["@library"]
 
 view_transitions: true
 native_css_nesting: true
 inline_css: true
+sections: true
 
-title_template: 'Emma Bennet / %s'
+title_template: "Emma Bennet / %s"
 og_image: /img/og_emma.png
 author: Emma Bennet
 favicon: /img/favicon.jpg
@@ -16,24 +19,22 @@ port: 8083
 origin: https://simple-blog.nuejs.org
 og: /img/og.jpg
 
-header:
-  navigation:
+
+navigation:
+  header:
     - Emma Bennet: /
     - Contact: /contact/
-    - Test: /test/
 
-footer:
-  copyright:
+  footer:
     - © Emma Bennet: /
 
-  social:
     - image: /img/twitter.svg
       url: //x.com/tipiirai
       alt: Twitter (X) profile
       size: 22 x 22
 
     - image: /img/github.svg
-      url: //github.com/nuejs/
+      url: //github.com/nuejs/nue/
       alt: Github Projects
       size: 22 x 22
 

@@ -1,3 +1,4 @@
+/* simple-blog/@library/content.css */
 article a {
   text-decoration: underline var(--main-500) 1px;
   text-underline-offset: 3px;
@@ -7,8 +8,8 @@ article a {
 
 article a:hover {
   text-decoration-color: var(--main-600);
-  color: #000;
   text-decoration-thickness: 2px;
+  color: #000;
 }
 
 h2 {
@@ -54,6 +55,7 @@ blockquote p {
 blockquote strong {
   background-color: var(--marker);
   font-weight: inherit;
-  margin-inline: -.2em;
+  margin-inline-start: -.2em;
+  margin-inline-end: -.2em;
   padding: .1em .2em;
 }

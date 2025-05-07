@@ -4,16 +4,13 @@
 
   <head>
     <meta charset="utf-8">
-<title>Emma Bennet / CSS class naming strategies for scaleable dasboard design</title>
-<meta name="date.updated" content="2024-08-24T04:42:57.927Z">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Minimalist, designer, and UX developer">
-<meta name="author" content="Emma Bennet">
-<meta property="og:image" content="https://simple-blog.nuejs.org/img/og_emma.png">
-<meta property="article:published_time" content="Wed Mar 13 2024 07:00:00 GMT+0700 (Western Indonesia Time)">
-<meta name="nue:components" content=" ">
+<title>Emma Bennet / CSS class naming strategies for scalable dashboard design</title>
 <link rel="icon" type="image/jpg" href="/img/favicon.jpg">
-<style href="/@global/colors.css">:root {
+<script src="/@nue/hotreload.js" type="module"></script>
+<script src="/@nue/view-transitions.js" type="module"></script>
+<style href="/@global/colors.css">/* simple-blog/@global/colors.css */
+:root {
   --gray-100: #f3f4f6;
   --gray-200: #e5e7eb;
   --gray-300: #d1d5db;
@@ -22,12 +19,11 @@
   --gray-900: #111827;
   --main-500: #3b82f6;
   --main-600: #2563eb;
-  --pink-gradient: linear-gradient(#e879f9, #ec4899);
-  --blue-gradient: linear-gradient(#0ea5e9, #67e8f9);
   --marker: #ffff7a;
 }
 </style>
-<style href="/@global/layout.css">*, :before, :after {
+<style href="/@global/layout.css">/* simple-blog/@global/layout.css */
+*, *:before, *:after {
   box-sizing: border-box;
 }
 
@@ -42,9 +38,9 @@ body {
 }
 
 body > header nav {
+  display: flex;
   justify-content: space-between;
   margin-bottom: 4rem;
-  display: flex;
 }
 
 body > header nav > a:first-child {
@@ -61,28 +57,35 @@ body article > header {
 }
 
 body article > section {
-  max-width: 650px;
+  max-width: 700px;
   margin: 0 auto;
 }
 
 body > footer {
   border-top: 1px solid var(--gray-200);
-  justify-content: space-between;
-  margin-top: 6rem;
-  padding: 1rem 0;
-  display: flex;
+  margin-top: 8rem;
 }
 
-body > footer > :last-child {
+body > footer nav {
+  display: flex;
   gap: .5em;
-  display: flex;
+  padding: 1rem 0;
 }
 
-body > footer > :last-child a:hover {
-  transform: scale(1.1);
+body > footer nav a {
+  opacity: .8;
+}
+
+body > footer nav a:hover {
+  opacity: 1;
+}
+
+body > footer nav a:nth-child(2) {
+  margin-left: auto;
 }
 </style>
-<style href="/@global/typography.css">body {
+<style href="/@global/typography.css">/* simple-blog/@global/typography.css */
+body {
   font-family: -apple-system, BlinkMacSystemFont, Avenir Next, Segoe UI, Roboto;
 }
 
@@ -91,7 +94,14 @@ h1 {
   font-size: 2.6rem;
 }
 
-h1, h1 + p {
+h1 {
+  text-align: center;
+  text-wrap: balance;
+  max-width: 40rem;
+  margin: 0 auto .2em;
+}
+
+h1 + p {
   text-align: center;
   text-wrap: balance;
   max-width: 40rem;
@@ -113,7 +123,7 @@ nav :is(a) {
   font-weight: 500;
 }
 
-nav :is(a)[aria-selected] {
+nav :is(a)[aria-current] {
   text-decoration: 2px underline var(--main-500);
   text-underline-offset: 8px;
 }
@@ -127,12 +137,18 @@ p, li {
   color: var(--gray-800);
 }
 </style>
-<style href="/@library/cards.css">.pink, .blue {
+<style href="/@library/cards.css">/* simple-blog/@library/cards.css */
+:root {
+  --pink-gradient: linear-gradient(#e879f9, #ec4899);
+  --blue-gradient: linear-gradient(#0ea5e9, #67e8f9);
+}
+
+.pink, .blue {
   background-image: var(--pink-gradient);
+  overflow: hidden;
   border-radius: .8em;
   margin: 1.5em 0 2em;
   padding: 3em 0 0 3em;
-  overflow: hidden;
 }
 
 :is(.pink, .blue) pre {
@@ -148,7 +164,8 @@ p, li {
   background-image: var(--blue-gradient);
 }
 </style>
-<style href="/@library/content.css">article a {
+<style href="/@library/content.css">/* simple-blog/@library/content.css */
+article a {
   text-decoration: underline var(--main-500) 1px;
   text-underline-offset: 3px;
   color: var(--gray-800);
@@ -157,8 +174,8 @@ p, li {
 
 article a:hover {
   text-decoration-color: var(--main-600);
-  color: #000;
   text-decoration-thickness: 2px;
+  color: #000;
 }
 
 h2 {
@@ -204,11 +221,13 @@ blockquote p {
 blockquote strong {
   background-color: var(--marker);
   font-weight: inherit;
-  margin-inline: -.2em;
+  margin-inline-start: -.2em;
+  margin-inline-end: -.2em;
   padding: .1em .2em;
 }
 </style>
-<style href="/@library/motion.css">header, h1, h1 + p, h1 + p + * {
+<style href="/@library/motion.css">/* simple-blog/@library/motion.css */
+header, h1, h1 + p, h1 + p + * {
   filter: none;
   opacity: 1;
   transition: opacity .5s, filter .7s;
@@ -243,39 +262,47 @@ article {
 }
 </style>
 <link href="/@nue/syntax.css" rel="stylesheet">
-<script src="/@nue/hotreload.js" type="module"></script>
-<script src="/@nue/view-transitions.js" type="module"></script>
+<meta name="generator" content="Nue v1.0.0-RC.4 (nuejs.org)">
+<meta name="date.updated" content="2025-05-07T00:28:32.237Z">
+<meta name="description" content="In web development, CSS and design work hand-in-hand to create compelling user experiences. CSS brings designs to life digitally, translating visual mockups into actual rendered elements.">
+<meta name="author" content="Emma Bennet">
+<meta property="og:title" content="CSS class naming strategies for scalable dashboard design">
+<meta property="og:description" content="In web development, CSS and design work hand-in-hand to create compelling user experiences. CSS brings designs to life digitally, translating visual mockups into actual rendered elements.">
+<meta property="og:image" content="https://simple-blog.nuejs.org/img/og_emma.png">
+<meta property="article:published_time" content="Tue Aug 13 2024 07:00:00 GMT+0700 (Western Indonesia Time)">
+<meta name="nue:components" content=" ">
+<meta name="nue:include" content="content cards motion">
+<meta name="nue:globals" content="@global">
+<meta name="nue:libs" content="@library">
     
   </head>
 
   <body>
     
     <header>
-    <nav aria-label="navigation"><a href="/">Emma Bennet</a>
+  <nav><a href="/">Emma Bennet</a>
 <a href="/contact/">Contact</a></nav>
+</header>
     
-  </header>
-    
-
     <main>
     
 
     <article>
       <header>
-  <h1>CSS class naming strategies for scaleable dasboard design</h1>
+  <h1>CSS class naming strategies for scalable dashboard design</h1>
   <p>
-    <time datetime="2024-03-13T00:00:00.000Z">March 13, 2024</time> &#x2022; Content by AI &#x2022;
+    <time datetime="2024-08-13T00:00:00.000Z">August 13, 2024</time> &#x2022; Content by AI &#x2022;
     Photo credits: <a href="//dribbble.com/ui8">ui8</a>
   </p>
 
-  <img width="1000" height="800" src="img/dashboard-3.png" alt="Hero image for CSS class naming strategies for scaleable dasboard design">
+  <img width="1000" height="800" src="img/dashboard-3.png" alt="Hero image for CSS class naming strategies for scalable dashboard design">
 </header>
-      <section><p>In web development, CSS and design work hand-in-hand to create compelling user experiences. CSS brings designs to life digitally, translating visual mockups into actual rendered elements. But CSS also informs the design process itself. Understanding its capabilities and limitations allows designers to craft effective layouts and interfaces.</p>
-<h2 id="keep-them-short"><a href="#keep-them-short" title="Keep them short"></a>Keep them short</h2><p>When designing for the web, keeping CSS in mind from the start prevents frustration down the road. For example, layered graphical elements must be broken down into achievable HTML components. Typography and color schemes are also heavily influenced by CSS possibilities.</p>
+      <section><p>In web development, CSS and design work hand-in-hand to create compelling user experiences. CSS brings designs to life digitally, translating visual mockups into actual rendered elements.</p></section>
+
+<section><h2>Keep them short</h2>
+<p>When designing for the web, keeping CSS in mind from the start prevents frustration down the road. For example, layered graphical elements must be broken down into achievable HTML components. Typography and color schemes are also heavily influenced by CSS possibilities.</p>
 <p>Designers should have a strong handle on core CSS concepts like the box model, selectors, specificity and inheritance.</p>
-<blockquote>
-<p>When designing for the web, keeping CSS in mind from the start prevents frustration down the road. For example, <strong>typography and color schemes are  heavily influenced by CSS</strong> and layered graphical elements must be broken down into achievable HTML components.</p>
-</blockquote>
+<blockquote><p>When designing for the web, keeping CSS in mind from the start prevents frustration down the road. For example, <strong>typography and color schemes are heavily influenced by CSS</strong> and layered graphical elements must be broken down into achievable HTML components.</p></blockquote>
 
 <div class="blue"><pre><code language="js"><strong>function</strong> <b>toggleAttr</b><i>(</i>el<i>,</i> name<i>,</i> flag<i>)</i> <i>{</i>
   flag <i>?</i> <b>el</b><i>.</i><b>setAttribute</b><i>(</i>name<i>,</i> <em>1</em><i>)</i> <i>:</i>  <b>el</b><i>.</i><b>removeAttribute</b><i>(</i>name<i>)</i>
@@ -288,14 +315,17 @@ article {
     <b>toggleAttr</b><i>(</i>el<i>,</i> <em>&apos;aria-selected&apos;</em><i>,</i> <b>flags</b><i>[</i>i<i>]</i><i>)</i>
     <b>toggleAttr</b><i>(</i><b>panels</b><i>[</i>i<i>]</i><i>,</i> <em>&apos;hidden&apos;</em><i>,</i> <i>!</i><b>flags</b><i>[</i>i<i>]</i><i>)</i>
   <i>}</i><i>)</i>
-<i>}</i></code></pre></div>
-<h2 id="exploit-the-power-of-selectors"><a href="#exploit-the-power-of-selectors" title="Exploit the power of selectors"></a>Exploit the power of selectors</h2><p>On the development side, CSS itself involves visual design skills.Bringing a layout to life requires not just coding, but typographic, spacing and color sensibilities. CSS skills give developers control over the final look and feel.</p>
+<i>}</i></code></pre></div></section>
 
+<section><h2>Exploit the power of selectors</h2>
+<p>On the development side, CSS itself involves visual design skills. Bringing a layout to life requires not just coding, but typographic, spacing and color sensibilities. CSS skills give developers control over the final look and feel.</p>
 <figure><img loading="lazy" src="img/dashboard-1.png"></figure>
-<p>Overall, CSS is a uniquely visual language, with a direct impact on user-facing design. By embracing its connection to the design process, both designers and developers can build interfaces that are engaging and &quot;CSS-native&quot;. The closer these roles work together, the better the end result. (edited)</p>
+<p>Overall, CSS is a uniquely visual language, with a direct impact on user-facing design. By embracing its connection to the design process, both designers and developers can build interfaces that are engaging and <q>CSS-native</q>. The closer these roles work together, the better the end result. (edited)</p></section>
 
-<div class="pink"><pre><code language="*"><i>.</i>pink <i>{</i>
-  <b>background-image</b><i>:</i> <b>linear-gradient</b><i>(</i><i>#</i>e879f9<i>,</i> <i>#</i>ec4899<i>)</i><i>;</i>
+<section><h2>Conclusion</h2>
+<p>In conclusion, thoughtfully naming CSS classes, IDs, and other selectors is an important part of keeping stylesheets scalable and maintainable. Use semantic, descriptive names that communicate what a selector is styling. Implement methodical naming conventions and structures for better organization.</p>
+<div class="pink"><pre><code language="css"><i>.</i>pink <i>{</i>
+  <b>background-image</b><i>:</i> <b>linear-gradient</b><i>(</i><strong>#e879f9</strong><i>,</i> <strong>#ec4899</strong><i>)</i><i>;</i>
   <b>padding</b><i>:</i> <em>3em</em> <em>0</em> <em>0</em> <em>3em</em><i>;</i>
   <b>border-radius</b><i>:</i> <i>.</i><em>8em</em><i>;</i>
   <b>overflow</b><i>:</i> hidden<i>;</i>
@@ -306,23 +336,18 @@ article {
     <b>margin</b><i>:</i> <em>0</em><i>;</i>
   <i>}</i>
 <i>}</i></code></pre></div>
-<h2 id="conclusion"><a href="#conclusion" title="Conclusion"></a>Conclusion</h2><p>In conclusion, thoughtfully naming CSS classes, IDs, and other selectors is an important part of keeping stylesheets scalable and maintainable. Use semantic, descriptive names that communicate what a selector is styling. Implement methodical naming conventions and structures for better organization</p>
-
-<figure><img loading="lazy" src="img/dashboard-2.png"></figure>
-<p>Avoid repetitive and overly specific names by separating structural styles from visual ones. And don&#x2019;t be afraid to chain multiple classes together for more modular and flexible selectors.</p>
-</section>
+<p>Avoid repetitive and overly specific names by separating structural styles from visual ones. And don&#x2019;t be afraid to chain multiple classes together for more modular and flexible selectors.</p></section>
       
     </article>
 
     
   </main>
-
     <footer>
-    <nav aria-label="copyright"><a href="/">&#xa9; Emma Bennet</a></nav><nav aria-label="social"><a href="//x.com/tipiirai"><img src="/img/twitter.svg" width="22" height="22" alt="Twitter (X) profile"></a>
-<a href="//github.com/nuejs/"><img src="/img/github.svg" width="22" height="22" alt="Github Projects"></a>
+  <nav><a href="/">&#xa9; Emma Bennet</a>
+<a href="//x.com/tipiirai"><img src="/img/twitter.svg" width="22" height="22" alt="Twitter (X) profile"></a>
+<a href="//github.com/nuejs/nue/"><img src="/img/github.svg" width="22" height="22" alt="Github Projects"></a>
 <a href="//linkedin.com/in/tipiirai"><img src="/img/linkedin.svg" width="22" height="22" alt="LinkedIn profile"></a></nav>
-  </footer>
-    
+</footer>
     
   </body>
 

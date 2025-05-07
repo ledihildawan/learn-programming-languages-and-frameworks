@@ -4,15 +4,14 @@
 
   <head>
     <meta charset="utf-8">
-<title>Emma Bennet / Thank you!</title>
-<meta name="date.updated" content="2024-08-24T04:42:58.084Z">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Minimalist, designer, and UX developer">
-<meta name="author" content="Emma Bennet">
-<meta property="og:image" content="https://simple-blog.nuejs.org/img/og_emma.png">
-<meta name="nue:components" content="/contact/contact.js">
+<title>Emma Bennet / Thank you!</title>
 <link rel="icon" type="image/jpg" href="/img/favicon.jpg">
-<style href="/@global/colors.css">:root {
+<script src="/@nue/hotreload.js" type="module"></script>
+<script src="/@nue/mount.js" type="module"></script>
+<script src="/@nue/view-transitions.js" type="module"></script>
+<style href="/@global/colors.css">/* simple-blog/@global/colors.css */
+:root {
   --gray-100: #f3f4f6;
   --gray-200: #e5e7eb;
   --gray-300: #d1d5db;
@@ -21,12 +20,11 @@
   --gray-900: #111827;
   --main-500: #3b82f6;
   --main-600: #2563eb;
-  --pink-gradient: linear-gradient(#e879f9, #ec4899);
-  --blue-gradient: linear-gradient(#0ea5e9, #67e8f9);
   --marker: #ffff7a;
 }
 </style>
-<style href="/@global/layout.css">*, :before, :after {
+<style href="/@global/layout.css">/* simple-blog/@global/layout.css */
+*, *:before, *:after {
   box-sizing: border-box;
 }
 
@@ -41,9 +39,9 @@ body {
 }
 
 body > header nav {
+  display: flex;
   justify-content: space-between;
   margin-bottom: 4rem;
-  display: flex;
 }
 
 body > header nav > a:first-child {
@@ -60,28 +58,35 @@ body article > header {
 }
 
 body article > section {
-  max-width: 650px;
+  max-width: 700px;
   margin: 0 auto;
 }
 
 body > footer {
   border-top: 1px solid var(--gray-200);
-  justify-content: space-between;
-  margin-top: 6rem;
-  padding: 1rem 0;
-  display: flex;
+  margin-top: 8rem;
 }
 
-body > footer > :last-child {
+body > footer nav {
+  display: flex;
   gap: .5em;
-  display: flex;
+  padding: 1rem 0;
 }
 
-body > footer > :last-child a:hover {
-  transform: scale(1.1);
+body > footer nav a {
+  opacity: .8;
+}
+
+body > footer nav a:hover {
+  opacity: 1;
+}
+
+body > footer nav a:nth-child(2) {
+  margin-left: auto;
 }
 </style>
-<style href="/@global/typography.css">body {
+<style href="/@global/typography.css">/* simple-blog/@global/typography.css */
+body {
   font-family: -apple-system, BlinkMacSystemFont, Avenir Next, Segoe UI, Roboto;
 }
 
@@ -90,7 +95,14 @@ h1 {
   font-size: 2.6rem;
 }
 
-h1, h1 + p {
+h1 {
+  text-align: center;
+  text-wrap: balance;
+  max-width: 40rem;
+  margin: 0 auto .2em;
+}
+
+h1 + p {
   text-align: center;
   text-wrap: balance;
   max-width: 40rem;
@@ -112,7 +124,7 @@ nav :is(a) {
   font-weight: 500;
 }
 
-nav :is(a)[aria-selected] {
+nav :is(a)[aria-current] {
   text-decoration: 2px underline var(--main-500);
   text-underline-offset: 8px;
 }
@@ -126,17 +138,22 @@ p, li {
   color: var(--gray-800);
 }
 </style>
-<style href="/contact/contact.css">main article section {
+<style href="/contact/contact.css">/* simple-blog/contact/contact.css */
+main article section {
   max-width: none;
 }
 
-main article section h1, main article section p {
+main article section h1 {
+  text-align: left;
+}
+
+main article section p {
   text-align: left;
 }
 
 .stack {
-  gap: 3em;
   display: flex;
+  gap: 3em;
 }
 
 .stack > * {
@@ -151,48 +168,52 @@ main article section h1, main article section p {
   border-radius: 4px;
 }
 
-@media (width <= 1000px) {
+@media (max-width: 1000px) {
   .stack {
     flex-direction: column;
     max-width: 460px;
   }
 }
 </style>
-<script src="/@nue/hotreload.js" type="module"></script>
-<script src="/@nue/mount.js" type="module"></script>
-<script src="/@nue/view-transitions.js" type="module"></script>
+<meta name="generator" content="Nue v1.0.0-RC.4 (nuejs.org)">
+<meta name="date.updated" content="2025-05-07T00:28:32.318Z">
+<meta name="description" content="I&apos;ll send you a calendar invitation">
+<meta name="author" content="Emma Bennet">
+<meta property="og:title" content="Thank you!">
+<meta property="og:description" content="I&apos;ll send you a calendar invitation">
+<meta property="og:image" content="https://simple-blog.nuejs.org/img/og_emma.png">
+<meta name="nue:components" content="/contact/contact.js">
+<meta name="nue:globals" content="@global">
+<meta name="nue:libs" content="@library">
     
   </head>
 
   <body>
     
     <header>
-    <nav aria-label="navigation"><a href="/">Emma Bennet</a>
+  <nav><a href="/">Emma Bennet</a>
 <a href="/contact/">Contact</a></nav>
+</header>
     
-  </header>
-    
-
     <main>
     
 
     <article>
       
-      <section><h1>Thank you!</h1><p>I&apos;ll send you a calendar invitation</p>
-
-<figure><img loading="lazy" width="500" src="/blog/img/ui-1.png"></figure></section>
+      <section><h1>Thank you!</h1>
+<p>I&apos;ll send you a calendar invitation</p>
+<figure><img loading="lazy" src="/blog/img/ui-1.png" width="500"></figure></section>
       
     </article>
 
     
   </main>
-
     <footer>
-    <nav aria-label="copyright"><a href="/">&#xa9; Emma Bennet</a></nav><nav aria-label="social"><a href="//x.com/tipiirai"><img src="/img/twitter.svg" width="22" height="22" alt="Twitter (X) profile"></a>
-<a href="//github.com/nuejs/"><img src="/img/github.svg" width="22" height="22" alt="Github Projects"></a>
+  <nav><a href="/">&#xa9; Emma Bennet</a>
+<a href="//x.com/tipiirai"><img src="/img/twitter.svg" width="22" height="22" alt="Twitter (X) profile"></a>
+<a href="//github.com/nuejs/nue/"><img src="/img/github.svg" width="22" height="22" alt="Github Projects"></a>
 <a href="//linkedin.com/in/tipiirai"><img src="/img/linkedin.svg" width="22" height="22" alt="LinkedIn profile"></a></nav>
-  </footer>
-    
+</footer>
     
   </body>
 

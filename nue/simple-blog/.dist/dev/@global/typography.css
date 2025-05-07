@@ -1,3 +1,4 @@
+/* simple-blog/@global/typography.css */
 body {
   font-family: -apple-system, BlinkMacSystemFont, Avenir Next, Segoe UI, Roboto;
 }
@@ -7,7 +8,14 @@ h1 {
   font-size: 2.6rem;
 }
 
-h1, h1 + p {
+h1 {
+  text-align: center;
+  text-wrap: balance;
+  max-width: 40rem;
+  margin: 0 auto .2em;
+}
+
+h1 + p {
   text-align: center;
   text-wrap: balance;
   max-width: 40rem;
@@ -29,7 +37,7 @@ nav :is(a) {
   font-weight: 500;
 }
 
-nav :is(a)[aria-selected] {
+nav :is(a)[aria-current] {
   text-decoration: 2px underline var(--main-500);
   text-underline-offset: 8px;
 }
