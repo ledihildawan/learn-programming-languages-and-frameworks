@@ -40,11 +40,13 @@ function fetchFile<List extends URLList, Keys extends keyof List>(urls: List, ke
 
 const de_and_fr = fetchFile(languages, ['de', 'fr']);
 
-for (const entry of de_and_fr) {
-  const result = await entry;
-  if (result[0] === 'en') {
+(async () => {
+  for await (const entry of de_and_fr) {
+    const result = entry;
+    if (result[0] === 'en') {
+    }
   }
-}
+})();
 
 function identity<T>(t: T): T {
   return t;
