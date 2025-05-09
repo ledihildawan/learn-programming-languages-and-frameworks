@@ -50,6 +50,16 @@ class State<T> {
 
     return this.#state;
   }
+
+  addToindex(index: number, item: T): T[] {
+    this.#state = [
+      ...this.#state.slice(0, index),
+      item,
+      ...this.#state.slice(index),
+    ];
+
+    return this.#state;
+  }
 }
 
 const initialState = [1, 2, 3, 4, 5];
@@ -63,5 +73,6 @@ numbers.addToLastElement(6);
 numbers.clearArray();
 numbers.resetInitialState(initialState);
 numbers.replaceAll(1, 10);
+numbers.addToindex(2, 20);
 
 console.log(numbers.state);
