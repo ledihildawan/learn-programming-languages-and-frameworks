@@ -23,5 +23,6 @@
     "editor.defaultFormatter": "ms-python.python"
   },
   "python.formatting.provider": "none",
-  "vsicons.presets.angular": true
+  "vsicons.presets.angular": true,
+  "git.ignoreLimitWarning": true
 }
