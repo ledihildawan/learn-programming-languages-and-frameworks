@@ -57,6 +57,8 @@ export default function Layout({ children }: { children: ReactNode }) {
   }
 
   if (serverStatus.isError) {
+    topBarLoader.done();
+
     return <Error500 />;
   }
 

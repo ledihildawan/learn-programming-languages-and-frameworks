@@ -1,17 +1,24 @@
-import { db } from '@/db';
-import * as schema from '@/db/schema';
-import { asc, count, desc, eq, gt, lt } from 'drizzle-orm';
-import { Elysia, t } from 'elysia';
-import { first, getPaginationInfo, withPagination } from './db/utils';
-import { getUserId } from './user';
+import { db } from "@/db";
+import * as schema from "@/db/schema";
+import { and, asc, count, desc, eq, gt, lt } from "drizzle-orm";
+import { Elysia, t } from "elysia";
+import { first, getPaginationInfo, withPagination } from "./db/utils";
+import { getUserId } from "./user";
 
-export const auditLog = new Elysia({ prefix: '/audit-log', tags: ['audit-log'] })
+export const auditLog = new Elysia({
+  prefix: "/audit-log",
+  tags: ["audit-log"],
+})
   .use(getUserId(false))
   .get(
-    '/',
+    "/",
     async ({ query: { page, pageSize, sort }, userId }) => {
       const orderBy = sort?.length
-        ? sort.map((item) => (item.desc ? desc(schema.auditLogs[item.id]) : asc(schema.auditLogs[item.id])))
+        ? sort.map((item) =>
+            item.desc
+              ? desc(schema.auditLogs[item.id])
+              : asc(schema.auditLogs[item.id])
+          )
         : [asc(schema.auditLogs.createdAt)];
 
       const query = db
@@ -27,14 +34,22 @@ export const auditLog = new Elysia({ prefix: '/audit-log', tags: ['audit-log'] }
         .leftJoin(schema.users, eq(schema.users.id, schema.auditLogs.userId))
         .where(eq(schema.auditLogs.userId, userId!));
 
-      const auditLogs = await withPagination(query.$dynamic(), orderBy, page, pageSize);
+      const auditLogs = await withPagination(
+        query.$dynamic(),
+        orderBy,
+        page,
+        pageSize
+      );
       const total =
         (
           await first(
             db
               .select({ total: count() })
               .from(schema.auditLogs)
-              .leftJoin(schema.users, eq(schema.users.id, schema.auditLogs.userId))
+              .leftJoin(
+                schema.users,
+                eq(schema.users.id, schema.auditLogs.userId)
+              )
               .where(eq(schema.auditLogs.userId, userId!))
           )
         )?.total || 0;
@@ -60,7 +75,7 @@ export const auditLog = new Elysia({ prefix: '/audit-log', tags: ['audit-log'] }
     }
   )
   .post(
-    '/',
+    "/",
     async ({ body, userId }) => {
       const auditLog = await db
         .insert(schema.auditLogs)
@@ -82,8 +97,8 @@ export const auditLog = new Elysia({ prefix: '/audit-log', tags: ['audit-log'] }
     }
   )
   .get(
-    '/:id',
-    async ({ params: { id }, error }) => {
+    "/:id",
+    async ({ params: { id }, error, userId }) => {
       const auditLog = await first(
         db
           .select({
@@ -98,18 +113,28 @@ export const auditLog = new Elysia({ prefix: '/audit-log', tags: ['audit-log'] }
           })
           .from(schema.auditLogs)
           .leftJoin(schema.users, eq(schema.users.id, schema.auditLogs.userId))
-          .where(eq(schema.auditLogs.id, id))
+          .where(
+            and(
+              eq(schema.auditLogs.id, id),
+              eq(schema.auditLogs.userId, userId!)
+            )
+          )
       );
 
       if (!auditLog) {
-        return error(404, 'Not Found :(');
+        return error(404, "Not Found :(");
       }
 
       const nextAuditLog = await first(
         db
           .select()
           .from(schema.auditLogs)
-          .where(gt(schema.auditLogs.id, auditLog.id))
+          .where(
+            and(
+              gt(schema.auditLogs.id, auditLog.id),
+              eq(schema.auditLogs.userId, userId!)
+            )
+          )
           .orderBy(asc(schema.auditLogs.id))
           .limit(1)
       );
@@ -117,7 +142,12 @@ export const auditLog = new Elysia({ prefix: '/audit-log', tags: ['audit-log'] }
         db
           .select()
           .from(schema.auditLogs)
-          .where(lt(schema.auditLogs.id, auditLog.id))
+          .where(
+            and(
+              lt(schema.auditLogs.id, auditLog.id),
+              eq(schema.auditLogs.userId, userId!)
+            )
+          )
           .orderBy(desc(schema.auditLogs.id))
           .limit(1)
       );

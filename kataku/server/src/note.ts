@@ -1,18 +1,25 @@
-import { db } from '@/db';
-import * as schema from '@/db/schema';
-import { and, asc, count, desc, eq, gt, lt } from 'drizzle-orm';
-import { Elysia, t } from 'elysia';
-import slugify from 'slugify';
-import { first, generateUniqueSlug, getPaginationInfo, withPagination } from './db/utils';
-import { getUserId } from './user';
+import { db } from "@/db";
+import * as schema from "@/db/schema";
+import { and, asc, count, desc, eq, gt, lt } from "drizzle-orm";
+import { Elysia, t } from "elysia";
+import slugify from "slugify";
+import {
+  first,
+  generateUniqueSlug,
+  getPaginationInfo,
+  withPagination,
+} from "./db/utils";
+import { getUserId } from "./user";
 
-export const note = new Elysia({ prefix: '/note', tags: ['note'] })
+export const note = new Elysia({ prefix: "/note", tags: ["note"] })
   .use(getUserId())
   .get(
-    '/',
+    "/",
     async ({ query: { page, pageSize, sort }, userId }) => {
       const orderBy = sort?.length
-        ? sort.map((item) => (item.desc ? desc(schema.notes[item.id]) : asc(schema.notes[item.id])))
+        ? sort.map((item) =>
+            item.desc ? desc(schema.notes[item.id]) : asc(schema.notes[item.id])
+          )
         : [asc(schema.notes.createdAt)];
 
       const query = db
@@ -28,7 +35,12 @@ export const note = new Elysia({ prefix: '/note', tags: ['note'] })
         .leftJoin(schema.users, eq(schema.users.id, schema.notes.author))
         .where(eq(schema.users.id, userId!));
 
-      const notes = await withPagination(query.$dynamic(), orderBy, page, pageSize);
+      const notes = await withPagination(
+        query.$dynamic(),
+        orderBy,
+        page,
+        pageSize
+      );
       const total =
         (
           await first(
@@ -62,7 +74,7 @@ export const note = new Elysia({ prefix: '/note', tags: ['note'] })
     }
   )
   .post(
-    '/',
+    "/",
     async ({ body: { title, content }, userId }) => {
       const slug = await generateUniqueSlug(title);
 
@@ -77,8 +89,8 @@ export const note = new Elysia({ prefix: '/note', tags: ['note'] })
         .returning();
       const auditLog = await db.insert(schema.auditLogs).values({
         userId,
-        action: 'create',
-        module: 'note',
+        action: "create",
+        module: "note",
         createdAt: new Date(),
         description: `A new note titled '${title}' was created on ${new Date().toLocaleString()}.`,
       });
@@ -97,23 +109,27 @@ export const note = new Elysia({ prefix: '/note', tags: ['note'] })
       slug: t.String(),
     }),
   })
-  .get('/:slug', async ({ params: { slug }, error, userId }) => {
+  .get("/:slug", async ({ params: { slug }, error, userId }) => {
     const note = await first(
       db
         .select()
         .from(schema.notes)
-        .where(and(eq(schema.notes.slug, slug), eq(schema.notes.author, userId!)))
+        .where(
+          and(eq(schema.notes.slug, slug), eq(schema.notes.author, userId!))
+        )
     );
 
     if (!note) {
-      return error(404, 'Not Found :(');
+      return error(404, "Not Found :(");
     }
 
     const nextNote = await first(
       db
         .select()
         .from(schema.notes)
-        .where(and(gt(schema.notes.id, note.id), eq(schema.notes.author, userId!)))
+        .where(
+          and(gt(schema.notes.id, note.id), eq(schema.notes.author, userId!))
+        )
         .orderBy(asc(schema.notes.id))
         .limit(1)
     );
@@ -121,7 +137,9 @@ export const note = new Elysia({ prefix: '/note', tags: ['note'] })
       db
         .select()
         .from(schema.notes)
-        .where(and(lt(schema.notes.id, note.id), eq(schema.notes.author, userId!)))
+        .where(
+          and(lt(schema.notes.id, note.id), eq(schema.notes.author, userId!))
+        )
         .orderBy(desc(schema.notes.id))
         .limit(1)
     );
@@ -132,19 +150,21 @@ export const note = new Elysia({ prefix: '/note', tags: ['note'] })
       prevNote,
     };
   })
-  .delete('/:slug', async ({ params: { slug }, error, userId }) => {
-    const note = await first(db.select().from(schema.notes).where(eq(schema.notes.slug, slug)));
+  .delete("/:slug", async ({ params: { slug }, error, userId }) => {
+    const note = await first(
+      db.select().from(schema.notes).where(eq(schema.notes.slug, slug))
+    );
 
     if (!note) {
-      return error(404, 'Not Found :(');
+      return error(404, "Not Found :(");
     }
 
     await db.delete(schema.notes).where(eq(schema.notes.slug, slug));
 
     const auditLog = await db.insert(schema.auditLogs).values({
       userId,
-      action: 'delete',
-      module: 'note',
+      action: "delete",
+      module: "note",
       createdAt: new Date(),
       description: `Note titled '${note.title}' was deleted on ${new Date().toLocaleString()}.`,
     });
@@ -154,12 +174,14 @@ export const note = new Elysia({ prefix: '/note', tags: ['note'] })
     };
   })
   .patch(
-    '/:slug',
+    "/:slug",
     async ({ params: { slug }, body, error, userId }) => {
-      const note = await first(db.select().from(schema.notes).where(eq(schema.notes.slug, slug)));
+      const note = await first(
+        db.select().from(schema.notes).where(eq(schema.notes.slug, slug))
+      );
 
       if (!note) {
-        return error(404, 'Not Found :(');
+        return error(404, "Not Found :(");
       }
 
       const isEqualSlug = note.slug === slugify(body.title!);
@@ -179,8 +201,8 @@ export const note = new Elysia({ prefix: '/note', tags: ['note'] })
 
       const auditLog = await db.insert(schema.auditLogs).values({
         userId,
-        action: 'update',
-        module: 'note',
+        action: "update",
+        module: "note",
         oldValue: JSON.stringify(note),
         newValue: JSON.stringify(updatedNote),
         createdAt: new Date(),

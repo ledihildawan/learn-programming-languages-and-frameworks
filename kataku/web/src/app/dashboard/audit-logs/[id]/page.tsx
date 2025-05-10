@@ -140,99 +140,97 @@ export default function Page() {
   }
 
   return (
-    <div className="gap-6 px-4 lg:px-6">
-      <div className="grid gap-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" asChild>
-              <CustomLink href="/dashboard/audit-logs">
-                <ArrowLeftIcon />
-              </CustomLink>
-            </Button>
-            <span className="text-xl font-bold">Audit Log Details</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    disabled={!prevAuditLog}
-                    onClick={() => goToNote(prevAuditLog!.id)}
-                  >
-                    <ChevronLeftIcon />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Prev (J)</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    disabled={!nextAuditLog}
-                    onClick={() => goToNote(nextAuditLog!.id)}
-                  >
-                    <ChevronRightIcon />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Next (K)</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </div>
+    <div className="grid gap-4 px-4 lg:px-6">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Button variant="ghost" size="sm" asChild>
+            <CustomLink href="/dashboard/audit-logs">
+              <ArrowLeftIcon />
+            </CustomLink>
+          </Button>
+          <span className="text-xl font-bold">Audit Log Details</span>
         </div>
+        <div className="flex items-center gap-2">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  disabled={!prevAuditLog}
+                  onClick={() => goToNote(prevAuditLog!.id)}
+                >
+                  <ChevronLeftIcon />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Prev (J)</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  disabled={!nextAuditLog}
+                  onClick={() => goToNote(nextAuditLog!.id)}
+                >
+                  <ChevronRightIcon />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Next (K)</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+      </div>
 
+      <Card>
+        <CardContent className="grid gap-4">
+          <div className="grid md:grid-cols-2">
+            <div className="grid gap-2">
+              <div className="text-xs">ID</div>
+              <div className="font-bold">{query.data?.id}</div>
+            </div>
+            <div className="grid gap-2">
+              <div className="text-xs">User</div>
+              <div className="font-bold">{query.data?.user}</div>
+            </div>
+          </div>
+          <div className="grid md:grid-cols-2">
+            <div className="grid gap-2">
+              <div className="text-xs">Action</div>
+              <div className="font-bold">{query.data?.action}</div>
+            </div>
+            <div className="grid gap-2">
+              <div className="text-xs">Module</div>
+              <div className="font-bold">{query.data?.module}</div>
+            </div>
+          </div>
+          <div className="grid gap-2">
+            <div className="text-xs">Created At</div>
+            <div className="font-bold">
+              {query.data?.createdAt &&
+                new Date(query.data.createdAt).toLocaleString()}
+            </div>
+          </div>
+          <div className="grid gap-2">
+            <div className="text-xs">Description</div>
+            <div className="font-bold">{query.data?.description}</div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {query.data?.oldValue && query.data?.newValue && (
         <Card>
-          <CardContent className="grid gap-4">
-            <div className="grid md:grid-cols-2">
-              <div className="grid gap-2">
-                <div className="text-xs">ID</div>
-                <div className="font-bold">{query.data?.id}</div>
-              </div>
-              <div className="grid gap-2">
-                <div className="text-xs">User</div>
-                <div className="font-bold">{query.data?.user}</div>
-              </div>
-            </div>
-            <div className="grid md:grid-cols-2">
-              <div className="grid gap-2">
-                <div className="text-xs">Action</div>
-                <div className="font-bold">{query.data?.action}</div>
-              </div>
-              <div className="grid gap-2">
-                <div className="text-xs">Module</div>
-                <div className="font-bold">{query.data?.module}</div>
-              </div>
-            </div>
-            <div className="grid gap-2">
-              <div className="text-xs">Created At</div>
-              <div className="font-bold">
-                {query.data?.createdAt &&
-                  new Date(query.data.createdAt).toLocaleString()}
-              </div>
-            </div>
-            <div className="grid gap-2">
-              <div className="text-xs">Description</div>
-              <div className="font-bold">{query.data?.description}</div>
-            </div>
+          <CardContent>
+            <Viewer diff={diff} {...viewerProps} />
           </CardContent>
         </Card>
-
-        {query.data?.oldValue && query.data?.newValue && (
-          <Card>
-            <CardContent>
-              <Viewer diff={diff} {...viewerProps} />
-            </CardContent>
-          </Card>
-        )}
-      </div>
+      )}
     </div>
   );
 }
