@@ -23,7 +23,9 @@ CREATE TABLE
         title VARCHAR NOT NULL,
         author VARCHAR NOT NULL,
         price DECIMAL(10, 2) NOT NULL,
-        stock INT NOT NULL discount INTEGER DEFAULT 0,
+        stock INT NOT NULL,
+        discount INTEGER DEFAULT 0,
+        markup INTEGER DEFAULT 0
     );
 
 INSERT INTO
@@ -34,14 +36,16 @@ VALUES
         'F. Scott Fitzgerald',
         15.99,
         5,
-        1
+        1,
+        1.10
     ),
     (
         'To Kill a Mockingbird',
         'Harper Lee',
         15.99,
         8,
-        3
+        3,
+        1.15
     ),
     ('1984', 'George Orwell', 12.99, 3, 2),
     (
@@ -49,14 +53,16 @@ VALUES
         'Jane Austen',
         10.99,
         10,
-        0
+        0,
+        1.05
     ),
     (
         'The Catcher in the Rye',
         'J.D. Salinger',
         14.99,
         2,
-        1
+        1,
+        1.12
     ),
     ('The Hobbit', 'J.R.R. Tolkien', 20.99, 4, 0),
     ('Fahrenheit 451', 'Ray Bradbury', 18.99, 6, 2),
@@ -66,9 +72,17 @@ VALUES
         'Oscar Wilde',
         11.99,
         9,
-        0
+        0,
+        1.15
     ),
-    ('The Alchemist', 'Paulo Coelho', 13.99, 1, 0);
+    (
+        'The Alchemist',
+        'Paulo Coelho',
+        13.99,
+        1,
+        0,
+        1.10
+    );
 
 SELECT
     title,
@@ -420,3 +434,23 @@ SELECT
     email
 FROM
     customers;
+
+-- Project Challaenge
+SELECT
+    name AS "Full Name",
+    email AS "Email"
+FROM
+    customers;
+
+SELECT
+    title,
+    price + markup - discount AS final_price
+FROM
+    books;
+
+SELECT DISTINCT
+    customer_id
+FROM
+    order
+WHERE
+    status = 'pending';
