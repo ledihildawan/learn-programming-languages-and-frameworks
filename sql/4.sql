@@ -146,19 +146,63 @@ CREATE TABLE
     customers (
         id SERIAL PRIMARY KEY,
         name VARCHAR NOT NULL,
+        phone VARCHAR NULL,
+        email VARCHAR NOT NULL,
         registred_at DATE NOT NULL,
         is_active BOOLEAN NOT NULL,
         country VARCHAR NOT NULL
     );
 
 INSERT INTO
-    customers (name, registred_at, is_active, country)
+    customers (
+        name,
+        registred_at,
+        is_active,
+        country,
+        phone,
+        email
+    )
 VALUES
-    ('John Doe', '2024-01-01', TRUE, 'USA'),
-    ('Jane Smith', '2024-01-02', FALSE, 'Canada'),
-    ('Alice Johnson', '2024-01-03', TRUE, 'USA'),
-    ('Bob Smith', '2024-01-04', TRUE, 'Canada'),
-    ('Charlie Davis', '2024-01-05', FALSE, 'USA');
+    (
+        'John Doe',
+        '2024-01-01',
+        TRUE,
+        'USA',
+        NUL,
+        'johndoe@example.com'
+    ),
+    (
+        'Jane Smith',
+        '2024-01-02',
+        FALSE,
+        'Canada',
+        NULL,
+        'janesmith@example.com'
+    ),
+    (
+        'Alice Johnson',
+        '2024-01-03',
+        TRUE,
+        'USA',
+        NULL,
+        'slicejohnson@example.com'
+    ),
+    (
+        'Bob Smith',
+        '2024-01-04',
+        TRUE,
+        'Canada',
+        NULL,
+        'bobsmith@example.com'
+    ),
+    (
+        'Charlie Davis',
+        '2024-01-05',
+        FALSE,
+        'USA',
+        '555-555-5555',
+        'charliedavis@example.com'
+    );
 
 SELECT
     *
@@ -354,3 +398,25 @@ ORDER BY
     total ASC
 LIMIT
     1;
+
+-- Handling NULL values
+SELECT
+    *
+FROM
+    customers
+WHERE
+    phone IS NULL;
+
+SELECT
+    *
+FROM
+    customers
+WHERE
+    phone IS NOT NULL;
+
+SELECT
+    name,
+    COALESCE('phone', '- missing - ') AS phone,
+    email
+FROM
+    customers;
