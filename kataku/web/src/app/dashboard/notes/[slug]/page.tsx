@@ -71,8 +71,6 @@ export default function Page() {
   const goToNote = (slug: string) => {
     topBarLoader.start();
 
-    console.log(`${env.NEXT_PUBLIC_WEB_URL}/dashboard/notes/${slug}`);
-
     router.push(`${env.NEXT_PUBLIC_WEB_URL}/dashboard/notes/${slug}`);
   };
 
