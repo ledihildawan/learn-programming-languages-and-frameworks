@@ -1,0 +1,58 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto';
+    background-color: steelblue;
+}
+
+header{
+    width: 230px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 20px;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    width: 230px;
+    margin: 0 auto;
+    padding: 20px;
+    margin-top: 0px;
+    gap: 5px;
+    border-radius: 5px;
+    box-shadow: 1px 1px 30px 2px whitesmoke;
+}
+ 
+label{
+    color: #0B3D91;
+    color: whitesmoke;
+    font-size: 20px;
+    margin-top: 15px; 
+}
+
+label:first-child{
+    margin-top: 0;
+}
+
+input{
+    border: 1px solid #0891b2;
+    padding: 8px;
+    border-radius: 5px;  
+}
+
+input[type="submit"], button{
+    margin-top: 10px;
+    padding: 12px 17px;
+    border: none;
+    background-color: #FC3D21;
+    color: #ecfeff;
+    text-transform: uppercase;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer; 
+}
+
+img{
+    width: 140px
+}

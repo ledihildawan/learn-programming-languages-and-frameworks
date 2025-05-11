@@ -1,0 +1,65 @@
+<html>
+
+    <head>
+        <link rel="stylesheet" href="index.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Special+Elite&display=swap" rel="stylesheet">
+    </head>
+
+    <body>        
+        <header>
+            <img src="NASA.png">
+        </header>
+        <main>
+            <form>
+              <label for="astronautName">Choose a username</label>
+                <input 
+                    required
+                    type="text" 
+                    id="astronautName" 
+                    name="astronautName"
+                    placeholder="Neil Armstrong"
+                    minlength="2"
+                    maxlength="7"
+                    pattern="[a-zA-Z0-9]+"
+                    >
+              <label for="astronautName">How old are you?</label>
+<!-- Challenge:
+1. Use 'min' and 'max' to make sure that only ages of 
+   21 and over and 120 and under can be inputted.
+  -->
+                <input 
+                    required
+                    type="number" 
+                    id="astronautAge" 
+                    name="astronautAge"
+                    placeholder="21"
+                    min="21"
+                    max="120"
+                    >
+              <label for="astronautName">Country Code</label>
+<!-- Challenge:
+1. Make sure users can only input a 3 character country 
+   code. These can be lower or upper case but exactly 
+   3 characters in length and no special characters or
+   numbers.
+   
+   USA, FRA, GBR, SWE ✅
+   US, UK, AB1, !USA ❌ 
+  -->
+                <input 
+                    required
+                    type="text" 
+                    id="astronautCountryCode" 
+                    name="astronautCountryCode"
+                    placeholder="Fra"
+                    pattern="[a-zA-Z]{3}"
+                    > 
+                <button type="submit">submit</button>
+            </form>    
+        </main>
+        <script src="index.js"></script>
+    </body>
+
+</html>
