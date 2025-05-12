@@ -435,22 +435,49 @@ SELECT
 FROM
     customers;
 
--- Project Challaenge
+-- Project Challenge
 SELECT
     name AS "Full Name",
     email AS "Email"
 FROM
     customers;
 
+-- Select Expression
 SELECT
     title,
     price + markup - discount AS final_price
 FROM
     books;
 
+-- Select Unique
 SELECT DISTINCT
     customer_id
 FROM
     order
 WHERE
     status = 'pending';
+
+-- Logical Operators
+SELECT
+    *
+FROM
+    books
+WHERE
+    genre IN ('Fiction', 'Mystery')
+    AND price < 20
+    AND (
+        year > 2018
+        OR stock > 10
+    );
+
+-- Sorting Challenge
+SELECT
+    *
+FROM
+    books
+WHERE
+    genre IN ('Fiction', 'Science')
+    AND price BETWEEN 10 and 20
+ORDER BY
+    stock DESC,
+    price ASC;
