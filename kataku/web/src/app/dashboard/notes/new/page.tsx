@@ -1,6 +1,9 @@
 "use client";
 
 import { CustomLink } from "@/components/custom-link";
+import KataGeneratorButton, {
+  KataGenerator,
+} from "@/components/kata-generator";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -104,6 +107,12 @@ export default function Page() {
     );
   }, []);
 
+  const handleGenerated = useCallback((data: KataGenerator) => {
+    form.reset();
+    form.setFieldValue("title", data.title);
+    form.setFieldValue("content", data.content);
+  }, []);
+
   useEffect(() => {
     batch(() => {
       updateTopLoader(!isFromValuesChange);
@@ -119,6 +128,7 @@ export default function Page() {
     ]);
 
     return () => {
+      updateTopLoader(true);
       updateStateNavigationGuard({
         active: false,
         enabled: false,
@@ -142,6 +152,7 @@ export default function Page() {
             {mutation.isPending && <Loader2 className="animate-spin" />}
             Save
           </Button>
+          <KataGeneratorButton onGenerated={handleGenerated} />
         </div>
       </div>
 
