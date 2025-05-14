@@ -481,3 +481,30 @@ WHERE
 ORDER BY
     stock DESC,
     price ASC;
+
+-- Sorting and Limiting
+SELECT
+    *
+FROM
+    customers
+WHERE
+    status IN ('Completed', 'Shipped')
+ORDER BY
+    order_date DESC
+LIMIT
+    3;
+
+-- Sorting and Filtering
+SELECT
+    *
+FROM
+    customers
+WHERE
+    shipped_at IS NULL
+ORDER BY
+    total DESC
+LIMIT
+    3;
+
+-- INSERT Operations
+CREATE
