@@ -15,7 +15,6 @@ import { authClient } from "@/lib/auth-client";
 import { eden } from "@/lib/eden";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useTopLoader } from "nextjs-toploader";
 import queryString from "query-string";
 import { FormEvent, useEffect, useState } from "react";
@@ -27,7 +26,6 @@ export function SignInForm({
 }: React.ComponentPropsWithoutRef<"div">) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const router = useRouter();
   const loader = useTopLoader();
 
   function toggleLoading(state: boolean) {
@@ -57,7 +55,7 @@ export function SignInForm({
       rememberMe: false,
       fetchOptions: {
         onSuccess: async () => {
-          await eden.api["audit-log"].index.post({
+          await eden.api["audit-log"].post({
             action: "sign-in",
             module: "auth",
             createdAt: new Date(),

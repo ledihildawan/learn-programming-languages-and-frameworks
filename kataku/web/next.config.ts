@@ -8,6 +8,12 @@ const jiti = createJiti(fileURLToPath(import.meta.url));
 jiti("./src/env/client.ts");
 jiti("./src/env/server.ts");
 
-const nextConfig: NextConfig = {};
+const nextConfig: NextConfig = {
+  images: {
+    remotePatterns: [
+      new URL("https://res.cloudinary.com/dtzuqhpsy/image/upload/**"),
+    ],
+  },
+};
 
 export default nextConfig;

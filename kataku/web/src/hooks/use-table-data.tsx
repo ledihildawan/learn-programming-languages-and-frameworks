@@ -63,6 +63,7 @@ export function useTableData(props: any) {
     PER_PAGE_KEY,
     parseAsInteger.withDefault(10).withOptions({ history: "push" }),
   );
+  const [rowSelection, setRowSelection] = React.useState({});
 
   const pagination: PaginationState = useMemo(
     () => ({
@@ -128,6 +129,7 @@ export function useTableData(props: any) {
     manualSorting: true,
     manualFiltering: true,
     pageCount: query?.pagination?.totalPages,
+    getRowId: (originalRow: any) => originalRow.id,
   });
 
   return {
