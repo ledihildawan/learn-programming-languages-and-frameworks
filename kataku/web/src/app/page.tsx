@@ -94,7 +94,7 @@ export default function Home() {
               src="https://res.cloudinary.com/dtzuqhpsy/image/upload/v1747317578/jm6xqf7s64ouvqn43cpm.png"
               alt="KataKu App Interface"
               fill
-              className="radius-xl object-contain dark:brightness-90"
+              className="object-contain dark:brightness-90"
               priority
             />
           </div>
