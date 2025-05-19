@@ -1,0 +1,41 @@
+body {
+  font-family: 'Roboto', sans-serif;
+  color: #333;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+.radios {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+main {
+  width: 300px;
+  margin: 0 auto;
+}
+
+.opponents {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+}
+
+.small {
+  font-size: 30px;
+}
+
+.large {
+  font-size: 70px;
+}
+
+button {
+  width: 50%;
+  margin: 20px auto;
+  padding: 10px 0;
+  cursor: pointer;
+}
