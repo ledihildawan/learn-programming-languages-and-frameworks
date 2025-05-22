@@ -51,7 +51,7 @@ export default function Page() {
     if (message) {
       toast.success(message);
 
-      router.replace(`${env.NEXT_PUBLIC_WEB_URL}/dashboard/settings`);
+      router.replace(`${env.NEXT_PUBLIC_WEB_URL}/settings`);
     }
 
     getListAccounts();
@@ -88,7 +88,7 @@ export default function Page() {
 
         getListAccounts();
 
-        router.replace(`${env.NEXT_PUBLIC_WEB_URL}/dashboard/settings`);
+        router.replace(`${env.NEXT_PUBLIC_WEB_URL}/settings`);
       })
       .catch(() => {
         toast.error(
@@ -174,10 +174,7 @@ export default function Page() {
   }
 
   useEffect(() => {
-    updateBreadcrumbs([
-      { title: "Dashboard", link: "/dashboard" },
-      { title: "Settings", link: "/dashboard/settings" },
-    ]);
+    updateBreadcrumbs([{ title: "Settings", link: "/settings" }]);
   }, []);
 
   return (

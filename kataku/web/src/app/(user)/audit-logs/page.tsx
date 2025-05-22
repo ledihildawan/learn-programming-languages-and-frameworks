@@ -6,10 +6,7 @@ import { useEffect } from "react";
 
 export default function Page() {
   useEffect(() => {
-    updateBreadcrumbs([
-      { title: "Dashboard", link: "/dashboard" },
-      { title: "Audit Logs", link: "/dashboard/audit-logs" },
-    ]);
+    updateBreadcrumbs([{ title: "Audit Logs", link: "/audit-logs" }]);
   }, []);
 
   return (

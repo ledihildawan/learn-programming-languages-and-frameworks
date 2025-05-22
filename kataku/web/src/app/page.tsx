@@ -208,7 +208,7 @@ export default function Home() {
             className="bg-indigo-600 px-8 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600"
             asChild
           >
-            <Link href="/dashboard/notes/new">Start Writing Today</Link>
+            <Link href="/notes/new">Start Writing Today</Link>
           </Button>
         </div>
 

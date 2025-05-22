@@ -117,7 +117,7 @@ export function AuditLogTable() {
 
           return (
             <CustomLink
-              href={`/dashboard/audit-logs/${row.original.id}`}
+              href={`/audit-logs/${row.original.id}`}
               className="hover:underline"
             >
               {value}

@@ -76,7 +76,7 @@ export default function Page() {
       toast.success("Note has been successfully created!");
       topBarLoader.start();
 
-      router.push(`${env.NEXT_PUBLIC_WEB_URL}/dashboard/notes`);
+      router.push(`${env.NEXT_PUBLIC_WEB_URL}/notes`);
     },
     onError: () => {
       toast.error("Oops, something went wrong on the server's end!");
@@ -122,9 +122,8 @@ export default function Page() {
 
   useEffect(() => {
     updateBreadcrumbs([
-      { title: "Dashboard", link: "/dashboard" },
-      { title: "Notes", link: "/dashboard/notes" },
-      { title: "New", link: "/dashboard/notes/new" },
+      { title: "Notes", link: "/notes" },
+      { title: "New", link: "/notes/new" },
     ]);
 
     return () => {
@@ -141,7 +140,7 @@ export default function Page() {
       <div className="flex items-center justify-between px-4 lg:px-6">
         <div className="flex items-center gap-2">
           <Button variant="ghost" size="sm" asChild>
-            <CustomLink href="/dashboard/notes">
+            <CustomLink href="/notes">
               <ArrowLeftIcon />
             </CustomLink>
           </Button>

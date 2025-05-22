@@ -169,7 +169,7 @@ export function NoteTable() {
         headerTitle: "Title",
         cell: ({ row }) => (
           <CustomLink
-            href={`/dashboard/notes/${row.original.slug}`}
+            href={`/notes/${row.original.slug}`}
             className="hover:underline"
           >
             {row.original.title}
@@ -246,7 +246,7 @@ export function NoteTable() {
             <DropdownMenuContent align="end" className="w-32">
               <DropdownMenuItem>
                 <CustomLink
-                  href={`${env.NEXT_PUBLIC_WEB_URL}/dashboard/notes/${row.original.slug}/edit`}
+                  href={`${env.NEXT_PUBLIC_WEB_URL}/notes/${row.original.slug}/edit`}
                 >
                   Edit
                 </CustomLink>
@@ -295,10 +295,7 @@ export function NoteTable() {
             <DataTableCustomizeColumns table={table} />
             <Button variant="outline" size="sm">
               <PlusIcon />
-              <CustomLink
-                href="/dashboard/notes/new"
-                className="hidden lg:inline"
-              >
+              <CustomLink href="/notes/new" className="hidden lg:inline">
                 Add Note
               </CustomLink>
             </Button>

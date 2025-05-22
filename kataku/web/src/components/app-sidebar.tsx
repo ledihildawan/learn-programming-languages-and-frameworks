@@ -34,19 +34,19 @@ const data = {
     },
     {
       title: "Notes",
-      url: "/dashboard/notes",
+      url: "/notes",
       icon: NotebookIcon,
     },
     {
       title: "Audit Logs",
-      url: "/dashboard/audit-logs",
+      url: "/audit-logs",
       icon: ListIcon,
     },
   ],
   navSecondary: [
     {
       title: "Settings",
-      url: "/dashboard/settings",
+      url: "/settings",
       icon: SettingsIcon,
     },
   ],

@@ -37,7 +37,7 @@ export function NavRecent({
   const goToNote = (slug: string) => {
     topLoader.start();
 
-    router.push(`${env.NEXT_PUBLIC_WEB_URL}/dashboard/notes/${slug}/edit`);
+    router.push(`${env.NEXT_PUBLIC_WEB_URL}/notes/${slug}/edit`);
   };
 
   return (
@@ -47,7 +47,7 @@ export function NavRecent({
         {items.map((item) => (
           <SidebarMenuItem key={item.slug}>
             <SidebarMenuButton asChild>
-              <Link href={`/dashboard/notes/${item.slug}`}>
+              <Link href={`/notes/${item.slug}`}>
                 {/* <item.icon /> */}
                 <span>{item.title}</span>
               </Link>

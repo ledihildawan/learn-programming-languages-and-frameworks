@@ -43,11 +43,10 @@ export default function Page() {
         }
 
         updateBreadcrumbs([
-          { title: "Dashboard", link: "/dashboard" },
-          { title: "Audit Logs", link: "/dashboard/audit-logs" },
+          { title: "Audit Logs", link: "/audit-logs" },
           {
             title: "Details",
-            link: `/dashboard/audit-logs/${res.data?.data?.id}`,
+            link: `/audit-logs/${res.data?.data?.id}`,
           },
         ]);
 
@@ -111,7 +110,7 @@ export default function Page() {
   const goToNote = (id: number) => {
     topBarLoader.start();
 
-    router.push(`${env.NEXT_PUBLIC_WEB_URL}/dashboard/audit-logs/${id}`);
+    router.push(`${env.NEXT_PUBLIC_WEB_URL}/audit-logs/${id}`);
   };
 
   useEffect(() => {
@@ -144,7 +143,7 @@ export default function Page() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Button variant="ghost" size="sm" asChild>
-            <CustomLink href="/dashboard/audit-logs">
+            <CustomLink href="/audit-logs">
               <ArrowLeftIcon />
             </CustomLink>
           </Button>

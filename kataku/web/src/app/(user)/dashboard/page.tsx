@@ -23,11 +23,11 @@ export default function Page() {
           {format(new Date(), "'Today is ' eeee")},{" "}
           {new Date().toLocaleDateString()}. Ready to capture your next great
           idea?{" "}
-          <CustomLink className="underline" href="/dashboard/notes/new">
+          <CustomLink className="underline" href="/notes/new">
             Add a new note
           </CustomLink>{" "}
           or{" "}
-          <CustomLink className="underline" href="/dashboard/notes">
+          <CustomLink className="underline" href="/notes">
             revisit your existing ones to stay on track!
           </CustomLink>
           .

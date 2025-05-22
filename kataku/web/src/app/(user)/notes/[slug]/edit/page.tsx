@@ -83,15 +83,14 @@ export default function Page() {
         defaultValues.content = res.data.data.content;
 
         updateBreadcrumbs([
-          { title: "Dashboard", link: "/dashboard" },
-          { title: "Notes", link: "/dashboard/notes" },
+          { title: "Notes", link: "/notes" },
           {
             title: res.data?.data.title,
-            link: `/dashboard/notes/${res.data?.data.slug}`,
+            link: `/notes/${res.data?.data.slug}`,
           },
           {
             title: "Edit",
-            link: `/dashboard/notes/${res.data?.data.slug}/edit`,
+            link: `/notes/${res.data?.data.slug}/edit`,
           },
         ]);
 
@@ -128,7 +127,7 @@ export default function Page() {
 
       updateRecentItem(res!.data!.data);
 
-      router.push(`${env.NEXT_PUBLIC_WEB_URL}/dashboard/notes`);
+      router.push(`${env.NEXT_PUBLIC_WEB_URL}/notes`);
     },
     onError: () => {
       toast.error("Oops, something went wrong on the server's end!");
@@ -164,7 +163,7 @@ export default function Page() {
   const goToNote = (slug: string) => {
     topBarLoader.start();
 
-    router.push(`${env.NEXT_PUBLIC_WEB_URL}/dashboard/notes/${slug}/edit`);
+    router.push(`${env.NEXT_PUBLIC_WEB_URL}/notes/${slug}/edit`);
   };
 
   const focusToMDEditor = useCallback(() => {
@@ -207,7 +206,7 @@ export default function Page() {
       <div className="flex items-center justify-between px-4 lg:px-6">
         <div className="flex items-center gap-2">
           <Button variant="ghost" size="sm" asChild>
-            <CustomLink href="/dashboard/notes">
+            <CustomLink href="/notes">
               <ArrowLeftIcon />
             </CustomLink>
           </Button>

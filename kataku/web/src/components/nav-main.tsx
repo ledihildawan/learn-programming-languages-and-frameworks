@@ -33,25 +33,22 @@ export function NavMain({
               className="bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 duration-200 ease-linear"
             >
               <PlusCircleIcon />
-              <Link href="/dashboard/notes/new">Quick Create</Link>
+              <Link href="/notes/new">Quick Create</Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
         <SidebarMenu>
-          {items.map((item) => {
-            const isActive =
-              pathname === item.url ||
-              (pathname.startsWith(item.url + "/") && item.url !== "/");
-
-            return (
-              <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton tooltip={item.title} isActive={isActive}>
-                  {item.icon && <item.icon />}
-                  <CustomLink href={item.url}>{item.title}</CustomLink>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            );
-          })}
+          {items.map((item) => (
+            <SidebarMenuItem key={item.title}>
+              <SidebarMenuButton
+                tooltip={item.title}
+                isActive={pathname.includes(item.url)}
+              >
+                {item.icon && <item.icon />}
+                <CustomLink href={item.url}>{item.title}</CustomLink>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          ))}
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>
