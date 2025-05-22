@@ -1,6 +1,6 @@
 import { eden } from "@/lib/eden";
 import { useMutation } from "@tanstack/react-query";
-import { Loader2 } from "lucide-react";
+import { Loader2, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "./ui/button";
@@ -53,7 +53,10 @@ export default function KataGeneratorButton({
   return (
     <Dialog open={isOpen} onOpenChange={(isOpen) => setIsOpen(isOpen)}>
       <DialogTrigger asChild>
-        <Button variant="outline">KataGenerator</Button>
+        <Button variant="outline">
+          <Sparkles />
+          <span>KataGenerator</span>
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

@@ -16,7 +16,6 @@ import {
 import { recentStore } from "@/store/recent-store";
 import { useStore } from "@tanstack/react-store";
 import {
-  ArrowUpCircleIcon,
   LayoutDashboardIcon,
   ListIcon,
   NotebookIcon,
@@ -24,6 +23,7 @@ import {
 } from "lucide-react";
 import * as React from "react";
 import { CustomLink } from "./custom-link";
+import { KataKuLogo } from "./kataku-logo";
 
 const data = {
   navMain: [
@@ -64,8 +64,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <CustomLink href="/dashboard">
-                <ArrowUpCircleIcon className="h-5 w-5" />
+              <CustomLink href="/" className="flex items-center gap-2">
+                <KataKuLogo height={20} width={20}></KataKuLogo>
                 <span className="text-base font-semibold">KataKu</span>
               </CustomLink>
             </SidebarMenuButton>

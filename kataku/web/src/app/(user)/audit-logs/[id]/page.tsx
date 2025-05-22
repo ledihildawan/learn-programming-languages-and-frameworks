@@ -107,7 +107,7 @@ export default function Page() {
     [],
   );
 
-  const goToNote = (id: number) => {
+  const goToAuditLog = (id: number) => {
     topBarLoader.start();
 
     router.push(`${env.NEXT_PUBLIC_WEB_URL}/audit-logs/${id}`);
@@ -119,11 +119,10 @@ export default function Page() {
         return;
       }
 
-      switch (e.key) {
-        case "j":
-          return goToNote(prevAuditLog!.id);
-        case "k":
-          return goToNote(nextAuditLog!.id);
+      if (e.key === "j" && prevAuditLog) {
+        return goToAuditLog(prevAuditLog.id);
+      } else if (e.key === "k" && nextAuditLog) {
+        return goToAuditLog(nextAuditLog.id);
       }
     };
 
@@ -157,7 +156,7 @@ export default function Page() {
                   size="sm"
                   variant="outline"
                   disabled={!prevAuditLog}
-                  onClick={() => goToNote(prevAuditLog!.id)}
+                  onClick={() => goToAuditLog(prevAuditLog!.id)}
                 >
                   <ChevronLeftIcon />
                 </Button>
@@ -174,7 +173,7 @@ export default function Page() {
                   size="sm"
                   variant="outline"
                   disabled={!nextAuditLog}
-                  onClick={() => goToNote(nextAuditLog!.id)}
+                  onClick={() => goToAuditLog(nextAuditLog!.id)}
                 >
                   <ChevronRightIcon />
                 </Button>

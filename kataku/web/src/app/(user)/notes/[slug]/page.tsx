@@ -79,11 +79,10 @@ export default function Page() {
         return;
       }
 
-      switch (e.key) {
-        case "j":
-          return goToNote(prevNote!.slug);
-        case "k":
-          return goToNote(nextNote!.slug);
+      if (e.key === "j" && prevNote) {
+        return goToNote(prevNote.slug);
+      } else if (e.key === "k" && nextNote) {
+        return goToNote(nextNote.slug);
       }
     };
 

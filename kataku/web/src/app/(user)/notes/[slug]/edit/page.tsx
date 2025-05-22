@@ -8,6 +8,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useAppForm } from "@/components/ui/tanstack-form";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { env } from "@/env/client";
 import { eden } from "@/lib/eden";
 import { updateBreadcrumbs } from "@/store/breadcrumbs-store";
@@ -201,6 +207,26 @@ export default function Page() {
     };
   }, []);
 
+  useEffect(() => {
+    const handleNavigation = (e) => {
+      if (document.activeElement!.tagName.toLocaleLowerCase() !== "body") {
+        return;
+      }
+
+      if (e.key === "j" && prevNote) {
+        return goToNote(prevNote.slug);
+      } else if (e.key === "k" && nextNote) {
+        return goToNote(nextNote.slug);
+      }
+    };
+
+    window.addEventListener("keypress", handleNavigation);
+
+    return () => {
+      window.removeEventListener("keypress", handleNavigation);
+    };
+  }, [prevNote, nextNote]);
+
   return (
     <div className="grid gap-4">
       <div className="flex items-center justify-between px-4 lg:px-6">
@@ -218,22 +244,40 @@ export default function Page() {
             Save
           </Button>
           <KataGeneratorButton onGenerated={handleGenerated} />
-          <Button
-            size="sm"
-            variant="outline"
-            disabled={!prevNote}
-            onClick={() => goToNote(prevNote.slug)}
-          >
-            <ChevronLeftIcon />
-          </Button>
-          <Button
-            size="sm"
-            variant="outline"
-            disabled={!nextNote}
-            onClick={() => goToNote(nextNote.slug)}
-          >
-            <ChevronRightIcon />
-          </Button>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  disabled={!prevNote}
+                  onClick={() => goToNote(prevNote!.slug)}
+                >
+                  <ChevronLeftIcon />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Prev (J)</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  disabled={!nextNote}
+                  onClick={() => goToNote(nextNote!.slug)}
+                >
+                  <ChevronRightIcon />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Next (K)</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
       </div>
 

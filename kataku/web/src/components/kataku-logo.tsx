@@ -13,7 +13,7 @@ export const KataKuLogo = ({ width = 200, height = 200 }) => {
         r="90"
         fill="#f5f5f5"
         stroke="#3498db"
-        stroke-width="4"
+        strokeWidth="4"
       />
 
       {/* Speech bubble representing expression */}
@@ -21,7 +21,7 @@ export const KataKuLogo = ({ width = 200, height = 200 }) => {
         d="M60 80 C60 70 70 60 90 60 L130 60 C150 60 160 70 160 80 L160 120 C160 130 150 140 130 140 L110 140 L90 160 L90 140 L70 140 C50 140 40 130 40 120 Z"
         fill="#3498db"
         stroke="#2980b9"
-        stroke-width="2"
+        strokeWidth="2"
       />
 
       {/* Text "KataKu" */}
