@@ -282,8 +282,8 @@ export default function Page() {
                   </div>
 
                   {listAccounts?.map((listAccount) => (
-                    <div key={listAccount.accountId}>
-                      <Card className="mb-4" key={listAccount.provider}>
+                    <div key={listAccount.provider}>
+                      <Card className="mb-4">
                         <CardContent>
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-4 font-semibold">
