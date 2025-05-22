@@ -91,7 +91,7 @@ export default function Home() {
           </div>
           <div className="relative h-[400px] w-full flex-1">
             <Image
-              src="https://res.cloudinary.com/dtzuqhpsy/image/upload/v1747317578/jm6xqf7s64ouvqn43cpm.png"
+              src="https://res.cloudinary.com/dtzuqhpsy/image/upload/f_auto,q_auto/tsddae5e5pthkdzxe95k"
               alt="KataKu App Interface"
               fill
               className="object-contain dark:brightness-90"

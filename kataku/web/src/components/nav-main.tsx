@@ -38,17 +38,20 @@ export function NavMain({
           </SidebarMenuItem>
         </SidebarMenu>
         <SidebarMenu>
-          {items.map((item) => (
-            <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton
-                tooltip={item.title}
-                isActive={pathname === item.url}
-              >
-                {item.icon && <item.icon />}
-                <CustomLink href={item.url}>{item.title}</CustomLink>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          ))}
+          {items.map((item) => {
+            const isActive =
+              pathname === item.url ||
+              (pathname.startsWith(item.url + "/") && item.url !== "/");
+
+            return (
+              <SidebarMenuItem key={item.title}>
+                <SidebarMenuButton tooltip={item.title} isActive={isActive}>
+                  {item.icon && <item.icon />}
+                  <CustomLink href={item.url}>{item.title}</CustomLink>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            );
+          })}
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>
