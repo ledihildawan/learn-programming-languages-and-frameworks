@@ -208,6 +208,12 @@ export default function Page() {
   }, []);
 
   useEffect(() => {
+    document.title = query.data?.title
+      ? `${query.data.title} - KataKu`
+      : "Loading..";
+  }, [query.data]);
+
+  useEffect(() => {
     const handleNavigation = (e) => {
       if (document.activeElement!.tagName.toLocaleLowerCase() !== "body") {
         return;

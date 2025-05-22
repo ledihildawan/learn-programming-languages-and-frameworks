@@ -12,6 +12,8 @@ export default function Page() {
   const auth = useStore(authStore);
 
   useEffect(() => {
+    document.title = "Dashboard - KataKu";
+
     updateBreadcrumbs([{ title: "Dashboard", link: "/dashboard" }]);
   }, []);
 

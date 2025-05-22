@@ -7,14 +7,13 @@ import Link from "next/link";
 import { useEffect } from "react";
 
 export default function Home() {
-  // Detect system preference and apply theme on initial load
   useEffect(() => {
-    // Check if user prefers dark mode
+    document.title = "KataKu";
+
     const prefersDark = window.matchMedia(
       "(prefers-color-scheme: dark)",
     ).matches;
 
-    // Apply appropriate class to html element
     document.documentElement.classList.toggle("dark", prefersDark);
   }, []);
 

@@ -121,6 +121,8 @@ export default function Page() {
   }, [isFromValuesChange]);
 
   useEffect(() => {
+    document.title = "New Note - KataKu";
+
     updateBreadcrumbs([
       { title: "Notes", link: "/notes" },
       { title: "New", link: "/notes/new" },

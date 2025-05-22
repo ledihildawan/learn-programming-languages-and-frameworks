@@ -6,6 +6,8 @@ import { useEffect } from "react";
 
 export default function Page() {
   useEffect(() => {
+    document.title = "Audit Logs - KataKu";
+
     updateBreadcrumbs([{ title: "Audit Logs", link: "/audit-logs" }]);
   }, []);
 

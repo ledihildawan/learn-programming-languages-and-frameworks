@@ -114,6 +114,10 @@ export default function Page() {
   };
 
   useEffect(() => {
+    document.title = "Audit Log Details - KataKu";
+  }, []);
+
+  useEffect(() => {
     const handleNavigation = (e) => {
       if (document.activeElement!.tagName.toLocaleLowerCase() !== "body") {
         return;
