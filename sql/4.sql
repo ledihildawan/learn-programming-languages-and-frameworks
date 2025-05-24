@@ -508,3 +508,5 @@ LIMIT
 
 -- INSERT Operations
 CREATE
+-- Write query test
+SELECT * FROM users WHERE active = 1;
