@@ -1,0 +1,113 @@
+// Content Element
+.NotificationsFrame__content {
+	position: relative;
+	overflow: hidden;
+}
+
+// Line Element
+.NotificationsFrame__line {
+	position: absolute;
+	top: 0;
+	left: 40px;
+	bottom: 0;
+	width: 3px;
+	background: $border-color;
+}
+
+// Item Element
+.NotificationsFrame__item {
+	position: relative;
+	z-index: 2;
+	margin: 20px 30px 30px 70px;
+	display: block;
+
+	&:hover {
+		color: $primary-color;
+		cursor: pointer;
+	}
+}
+
+// Item Circle Element
+.NotificationsFrame__itemCircle {
+	box-sizing: border-box;
+	position: absolute;
+	height: 11px;
+	width: 11px;
+	background: $background-color;
+	border: 2px solid $primary-color;
+	box-shadow: 0 0 0 3px $background-color;
+	border-radius: 6px;
+	top: 0;
+	left: -20px;
+}
+
+// Avatar Element
+.NotificationsFrame__avatar {
+	position: absolute;
+	height: 40px;
+	width: 40px;
+	display: inline-block;
+	vertical-align: top;
+	overflow: hidden;
+	left: -49px;
+
+	img {
+		width: 100%;
+		border-radius: 50%;
+		position: absolute;
+		left: 0;
+		top: 0;
+	}
+}
+
+// Time Element
+.NotificationsFrame__time {
+	display: block;
+	font-size: 11px;
+	line-height: 11px;
+	margin-bottom: 2px;
+}
+
+// Text Element
+.NotificationsFrame__text {
+	font-size: 15px;
+	line-height: 20px;
+	margin: 0px 40px 0px 0px;
+	font-family: "Open Sans", Lora, Times, no-serif;
+
+	b {
+		font-weight: 600;
+	}
+}
+
+// Right Element
+.NotificationsFrame__right {
+	position: absolute;
+	right: 5px;
+	font-size: 11px;
+	top: 11px;
+}
+
+// Comment Count Element
+.NotificationsFrame__commentCount {
+	position: absolute;
+	right: 15px;
+	font-size: 12px;
+	top: 11px;
+
+	&:after {
+		content: "\f075";
+		font-family: FontAwesome;
+		position: absolute;
+		font-size: 20px;
+		color: $border-color;
+		top: -50%;
+		left: 100%;
+		margin-left: 10px;
+		z-index: 3;
+	}
+
+	&:hover:after {
+		color: lightblue;
+	}
+}

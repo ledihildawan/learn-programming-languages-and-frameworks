@@ -1,0 +1,72 @@
+// Header Element
+.NotificationsFrame__header {
+	position: relative;
+	height: 60px;
+	background: $primary-color;
+	padding-top: 0;
+}
+
+// Title Element
+.NotificationsFrame__title {
+	display: block;
+	text-align: center;
+	color: $background-color;
+	font-weight: 600;
+	font-size: 15px;
+	padding-top: 20px;
+}
+
+// Menu Icon Element
+.NotificationsFrame__menuIcon {
+	position: absolute;
+	width: 29px;
+	height: 15px;
+	top: 23px;
+	left: 20px;
+	cursor: pointer;
+
+	&:hover {
+		.NotificationsFrame__dashTop,
+		.NotificationsFrame__dashBottom,
+		.NotificationsFrame__circle {
+			background: $background-color;
+		}
+	}
+}
+
+// Dash Top Element
+.NotificationsFrame__dashTop {
+	position: absolute;
+	width: 20px;
+	height: 3px;
+	top: 0;
+	left: 0;
+	background: $secondary-color;
+	border-radius: 3px;
+	transition: all 0.2s ease-in-out;
+}
+
+// Dash Bottom Element
+.NotificationsFrame__dashBottom {
+	position: absolute;
+	width: 29px;
+	height: 3px;
+	top: auto;
+	left: 0;
+	bottom: 0;
+	background: $secondary-color;
+	border-radius: 3px;
+	transition: all 0.2s ease-in-out;
+}
+
+// Circle Element
+.NotificationsFrame__circle {
+	position: absolute;
+	height: 7px;
+	width: 7px;
+	border-radius: 4px;
+	top: -2px;
+	right: 0;
+	background: $secondary-color;
+	transition: all 0.2s ease-in-out;
+}

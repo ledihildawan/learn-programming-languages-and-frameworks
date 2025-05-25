@@ -1,0 +1,47 @@
+// Search Input Element
+.NotificationsFrame__searchInput {
+	border: 10px solid red;
+	box-sizing: border-box;
+	position: absolute;
+	top: 13px;
+	right: 55px;
+	width: 200px;
+	height: 34px;
+	border-radius: 17px;
+	border: none;
+	background: $background-color;
+	padding: 0 17px;
+	font-size: 13px;
+	color: $text-color;
+	transition: all 0.3s ease-in-out;
+	transform: translateX(15px);
+	opacity: 0;
+	pointer-events: none;
+
+	&:focus {
+		outline: none;
+	}
+
+	// Element modifier: active
+	&--active {
+		transform: translateX(0);
+		opacity: 1;
+		pointer-events: all;
+	}
+}
+
+// Search Icon Element
+.NotificationsFrame__searchIcon {
+	position: absolute;
+	z-index: 3;
+	font-size: 21px;
+	color: $background-color;
+	top: 18px;
+	right: 20px;
+	transition: all 0.3s ease;
+	cursor: pointer;
+
+	&:hover {
+		color: $background-color;
+	}
+}
