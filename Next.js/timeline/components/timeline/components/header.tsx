@@ -1,6 +1,9 @@
 import { Search } from "lucide-react";
+import { useState } from "react";
 
 export function Header({ title }: { title: string }) {
+    const [searchVisible, setSearchVisible] = useState(false);
+
     return (
         <div className="NotificationsFrame__header">
             <div className="NotificationsFrame__menuIcon">
@@ -13,10 +16,13 @@ export function Header({ title }: { title: string }) {
             </span>
             <input
                 type="text"
-                className="NotificationsFrame__searchInput"
+                className={`NotificationsFrame__searchInput ${searchVisible && "NotificationsFrame__searchInput--active"}`}
                 placeholder="Search"
             />
-            <Search className="NotificationsFrame__searchIcon" />
+            <Search
+                onClick={() => setSearchVisible(!searchVisible)}
+                className="NotificationsFrame__searchIcon"
+            />
         </div>
     )
 }

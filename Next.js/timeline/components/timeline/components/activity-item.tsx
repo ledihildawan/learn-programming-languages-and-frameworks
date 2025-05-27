@@ -3,7 +3,7 @@ export function ActivityItem({ activity }: { activity: Activity }) {
     
     return (
         <div className="NotificationsFrame__item">
-            {activity.user.name}
+            {activity.text}
             <div className="NotificationsFrame__avatar">
                 <img
                     alt={activity.user.avatar}
