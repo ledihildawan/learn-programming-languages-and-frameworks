@@ -1,50 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Repository Contents</title>
     <style>
-        body {
-            font-family: sans-serif;
-            margin: 20px;
-        }
-        h1 {
-            text-align: center;
-        }
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        li {
-            padding: 8px;
-            margin-bottom: 5px;
-            background-color: #f4f4f4;
-            border-radius: 4px;
-        }
-        .folder {
-            font-weight: bold;
-        }
+      body {
+        background-color: #111; /* Latar belakang gelap agar efek terlihat */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+      }
+
+      .video-container {
+        position: relative;
+        display: inline-block; /* Agar pas dengan ukuran video */
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Bayangan dasar untuk video */
+      }
+
+      #myVideo {
+        display: block; /* Menghilangkan spasi ekstra di bawah video */
+        position: relative; /* Agar di atas ambient light */
+        z-index: 2;
+      }
+
+      .ambient-light {
+        position: absolute;
+        top: -20px; /* Sesuaikan untuk ukuran dan posisi blur */
+        left: -20px;
+        right: -20px;
+        bottom: -20px;
+        z-index: 1;
+        background-color: transparent; /* Awalnya transparan */
+        transition: background-color 0.5s ease-out; /* Transisi halus */
+        filter: blur(50px); /* Efek blur utama */
+        opacity: 0.7; /* Sesuaikan opasitas */
+        /* Alternatif menggunakan box-shadow yang besar:
+  box-shadow: 0 0 80px 40px transparent;
+  transition: box-shadow 0.5s ease-out;
+  */
+      }
     </style>
-</head>
-<body>
-    <h1>Repository Contents</h1>
-    <ul>
-        <li>.gitignore</li>
-        <li class="folder">.trae/</li>
-        <li class="folder">01-testing/</li>
-        <li class="folder">30-days-React-challenge-by-FULLSTACK.io-deplicate/</li>
-        <li class="folder">30-days-of-react/</li>
-        <li class="folder">Next.js/</li>
-        <li>investasi.js</li>
-        <li class="folder">kataku/</li>
-        <li class="folder">laravel-youtube-clone/</li>
-        <li class="folder">next-server-action/</li>
-        <li>package.json</li>
-        <li>readme.md</li>
-        <li class="folder">scrimba/</li>
-        <li class="folder">sql/</li>
-        <li class="folder">typescript/</li>
-    </ul>
-</body>
+  </head>
+  <body>
+    <div class="video-container">
+      <div class="ambient-light" id="ambientLight"></div>
+      <video id="myVideo" controls width="640" height="360">
+        <source src="12674859_3840_2160_30fps.mp4" type="video/mp4" />
+        Browser Anda tidak mendukung tag video.
+      </video>
+    </div>
+    <canvas id="hiddenCanvas" style="display: none"></canvas>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const video = document.getElementById('myVideo');
+        const ambientLight = document.getElementById('ambientLight');
+        const hiddenCanvas = document.getElementById('hiddenCanvas');
+        const ctx = hiddenCanvas.getContext('2d', { willReadFrequently: true });
+
+        let intervalId = null;
+
+        function getAverageColor(imageData) {
+          const data = imageData.data;
+          let r = 0,
+            g = 0,
+            b = 0;
+          const pixelCount = data.length / 4;
+
+          // Kita bisa mengambil sampel, tidak harus semua piksel untuk performa
+          const sampleRate = 10; // Ambil 1 dari setiap 10 piksel
+          let sampledPixels = 0;
+
+          for (let i = 0; i < data.length; i += 4 * sampleRate) {
+            r += data[i];
+            g += data[i + 1];
+            b += data[i + 2];
+            sampledPixels++;
+          }
+
+          r = Math.floor(r / sampledPixels);
+          g = Math.floor(g / sampledPixels);
+          b = Math.floor(b / sampledPixels);
+
+          return `rgb(${r}, ${g}, ${b})`;
+        }
+
+        function updateAmbientLight() {
+          if (video.paused || video.ended) {
+            return;
+          }
+
+          // Sesuaikan ukuran canvas dengan video (bisa lebih kecil untuk performa)
+          const canvasWidth = video.videoWidth / 4; // Resolusi lebih rendah untuk performa
+          const canvasHeight = video.videoHeight / 4;
+          hiddenCanvas.width = canvasWidth;
+          hiddenCanvas.height = canvasHeight;
+
+          // Gambar frame video saat ini ke canvas
+          ctx.drawImage(video, 0, 0, canvasWidth, canvasHeight);
+
+          try {
+            // Dapatkan data piksel dari canvas
+            const imageData = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
+            const avgColor = getAverageColor(imageData);
+
+            // Terapkan warna ke elemen ambient light
+            ambientLight.style.backgroundColor = avgColor;
+
+            // Jika menggunakan box-shadow:
+            // ambientLight.style.boxShadow = `0 0 80px 40px ${avgColor}`;
+          } catch (e) {
+            console.error('Error processing video frame:', e);
+            // Ini bisa terjadi karena batasan CORS jika video dari domain lain
+            // dan tidak memiliki header 'Access-Control-Allow-Origin'
+            stopAmbientMode(); // Hentikan jika ada error
+          }
+        }
+
+        function startAmbientMode() {
+          if (!intervalId) {
+            // Update setiap 500ms (sesuaikan untuk keseimbangan performa/responsivitas)
+            intervalId = setInterval(updateAmbientLight, 500);
+            ambientLight.style.display = 'block'; // Tampilkan elemen cahaya
+          }
+        }
+
+        function stopAmbientMode() {
+          if (intervalId) {
+            clearInterval(intervalId);
+            intervalId = null;
+            ambientLight.style.backgroundColor = 'transparent';
+            // Jika menggunakan box-shadow:
+            // ambientLight.style.boxShadow = `0 0 80px 40px transparent`;
+            ambientLight.style.display = 'none'; // Sembunyikan elemen cahaya
+          }
+        }
+
+        video.addEventListener('play', () => {
+          // Pastikan metadata video sudah dimuat untuk mendapatkan dimensi
+          if (video.videoWidth > 0 && video.videoHeight > 0) {
+            startAmbientMode();
+          } else {
+            video.addEventListener(
+              'loadedmetadata',
+              () => {
+                startAmbientMode();
+              },
+              { once: true }
+            );
+          }
+        });
+
+        video.addEventListener('pause', stopAmbientMode);
+        video.addEventListener('ended', stopAmbientMode);
+        video.addEventListener('error', stopAmbientMode); // Hentikan jika ada error video
+
+        // Opsi: Sembunyikan efek saat video tidak dimainkan
+        stopAmbientMode();
+      });
+    </script>
+  </body>
 </html>
