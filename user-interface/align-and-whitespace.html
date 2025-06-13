@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Interface - Align and Whitespace</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        height: 100vh;
+        display: grid;
+        grid-template-columns: repeat(3, auto);
+        place-items: center;
+        background: lightblue;
+        grid-gap: 2em;
+      }
+
+      .card {
+        background: white;
+      }
+      span {
+        height: 100px;
+        display: block;
+        width: 100%;
+        background: #71a6b8;
+      }
+
+      p.date {
+        text-align: center;
+        font-size: 0.7em;
+        text-transform: uppercase;
+      }
+      h3 {
+        margin: 0;
+      }
+      p.desc {
+        font-size: 0.9em;
+      }
+
+      /* 
+   Use the following properties
+   to fix the alignment and white
+   space issues on the rulesets
+   below this comment.
+   
+   margin, padding, text-align
+   
+*/
+
+      body {
+        padding: 2em;
+      }
+      .content {
+        padding: 1em;
+      }
+
+      p.date {
+        text-align: left;
+        margin: 0;
+      }
+
+      h3 {
+      }
+
+      p.desc {
+        margin-bottom: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <span></span>
+      <div class="content">
+        <p class="date">July 12, 2024</p>
+        <h3>Awesome Title</h3>
+        <p class="desc">This is the lovely description for this particular card.</p>
+      </div>
+    </div>
+    <div class="card">
+      <span></span>
+      <div class="content">
+        <p class="date">July 12, 2024</p>
+        <h3>Awesome Title</h3>
+        <p class="desc">This is the lovely description for this particular card.</p>
+      </div>
+    </div>
+    <div class="card">
+      <span></span>
+      <div class="content">
+        <p class="date">July 12, 2024</p>
+        <h3>Awesome Title</h3>
+        <p class="desc">This is the lovely description for this particular card.</p>
+      </div>
+    </div>
+  </body>
+</html>
