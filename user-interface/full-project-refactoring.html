@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Full Project Refactoring</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css?family=Nunito:400,700&display=swap');
+
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background: #3b4acd;
+        color: #a5b2d3;
+        padding: 0.5em;
+        font-family: serif;
+        height: 100vh;
+        text-align: center;
+      }
+
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      header svg {
+        width: 1.5em;
+        cursor: pointer;
+      }
+
+      a {
+        color: white;
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      a.logo {
+        font-weight: bold;
+        margin: 0 1em;
+      }
+
+      a.cta-btn {
+        margin-left: auto;
+        background: #fc85ae;
+        padding: 1em;
+        display: inline-block;
+        border-radius: 2em;
+        font-size: 0.6em;
+        color: #303a52;
+        font-weight: bold;
+      }
+
+      /* Navigation */
+
+      nav {
+        position: fixed;
+        background: #576483;
+        height: 100vh;
+        left: 0;
+        top: 0;
+        width: 80%;
+        visibility: hidden;
+        transform: translateX(-50%);
+        opacity: 0;
+        transition: all 0.3s;
+        text-align: center;
+      }
+
+      nav p {
+        margin-bottom: 0;
+      }
+
+      nav svg {
+        cursor: pointer;
+        width: 1em;
+      }
+
+      nav ul li a {
+        display: block;
+        padding: 0.2em;
+        font-size: 1.8em;
+      }
+
+      .selected {
+        background: #9e579d;
+      }
+
+      .open-nav {
+        visibility: unset;
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      /* Main Section */
+
+      h1 {
+        color: white;
+        margin-top: 1em;
+      }
+
+      .panel {
+        background: #39445f;
+        border-radius: 0.3em;
+      }
+
+      h3 {
+        color: #fc85ae;
+        margin: 0;
+        font-size: 2em;
+      }
+
+      ul.data li p {
+        color: white;
+        font-weight: bold;
+        font-size: 1.8em;
+        margin: 0.3em 0 1em;
+      }
+
+      ul.data li:last-child p {
+        margin-bottom: 0;
+      }
+      ul.secondary {
+        margin-top: 2em;
+      }
+      ul.secondary li p {
+        font-size: 1.3em;
+      }
+
+      main {
+        border: 1px solid white;
+      }
+
+      /* Your Fixes Below */
+
+      body {
+        background: #303a52;
+        font-family: 'Nunito', sans-serif;
+      }
+
+      nav {
+        background: #2c354a;
+      }
+
+      main {
+        border: unset;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      p {
+        line-height: 1.4em;
+      }
+
+      a.cta-btn {
+        font-size: 0.9em;
+        padding: 0.2em 0.4em;
+        border-radius: 0.2em;
+      }
+
+      nav ul li a {
+        font-size: 1.2em;
+        padding: 0.8em 1em;
+      }
+
+      h3 {
+        font-size: unset;
+      }
+
+      nav {
+        text-align: left;
+      }
+
+      .inner-wrapper {
+        padding: 1em;
+      }
+      .panel {
+        padding: 0.5em 1em;
+        margin-bottom: 2em;
+      }
+
+      /* Large Phones */
+
+      @media (min-width: 420px) {
+        body {
+          padding: 1em;
+          text-align: left;
+        }
+        ul.data {
+          display: flex;
+          flex-wrap: wrap;
+        }
+        ul.data li {
+          flex: 0 0 50%;
+        }
+      }
+
+      @media (min-width: 550px) {
+        ul.data {
+          justify-content: center;
+        }
+        .panel ul.data li {
+          flex: 0 0 33%;
+        }
+        .panel ul.data li p {
+          margin-bottom: 0;
+        }
+        nav {
+          width: 40%;
+        }
+      }
+
+      @media (min-width: 720px) {
+        body {
+          padding: 1.5em;
+        }
+        .columns {
+          display: flex;
+        }
+        .col {
+          flex: 0 0 48%;
+        }
+        .secondary {
+          margin-left: 3em;
+        }
+        ul.secondary {
+          margin-top: 0;
+        }
+        nav {
+          width: 30%;
+        }
+      }
+
+      @media (min-width: 850px) {
+        body {
+          display: grid;
+          grid-template-columns: 200px auto;
+          grid-template-rows: 70px auto;
+          grid-template-areas:
+            'sidebar header'
+            'sidebar main';
+          padding: 0;
+        }
+
+        header,
+        main {
+          padding: 1.5em;
+        }
+
+        nav {
+          grid-area: sidebar;
+          opacity: 1;
+          visibility: unset;
+          transform: translateX(0);
+          width: 100%;
+          position: unset;
+        }
+
+        header {
+          grid-area: header;
+        }
+
+        main {
+          grid-area: main;
+        }
+
+        a.logo {
+          margin: 0;
+        }
+        svg {
+          display: none;
+        }
+      }
+
+      /*
+
+- White Space
+- Color 
+- Contrast 
+- Scale
+- Alignment
+- Typography
+- Visual Hierarchy
+
+*/
+
+      /* Ignore this -- for displaying the viewport width */
+      .width-container {
+        display: none;
+      }
+      .display-width {
+        display: block;
+        position: absolute;
+        right: 0;
+        top: 0;
+        background-color: #e6e6e6;
+        padding: 0.3em;
+        font-size: 0.85em;
+      }
+    </style>
+  </head>
+  <body>
+    <span id="width" class="width-container"></span>
+    <nav id="nav">
+      <div class="inner-wrapper">
+        <svg viewBox="0 0 32 37" id="exit-btn">
+          <path
+            id="back"
+            d="M15.9,4.492a3,3,0,0,1,5.194,0L34.4,27.5A3,3,0,0,1,31.8,32H5.2a3,3,0,0,1-2.6-4.5Z"
+            transform="translate(0 37) rotate(-90)"
+            fill="#fff"
+          />
+        </svg>
+
+        <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod</p>
+      </div>
+      <ul>
+        <li class="selected"><a href="#">Dashboard</a></li>
+        <li><a href="#">Settings</a></li>
+        <li><a href="#">Profile</a></li>
+        <li><a href="#">Reset Access</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+
+    <header>
+      <svg height="32px" id="menu-btn" class="open" viewBox="0 0 32 32">
+        <path
+          fill="white"
+          d="M4,10h24c1.104,0,2-0.896,2-2s-0.896-2-2-2H4C2.896,6,2,6.896,2,8S2.896,10,4,10z M28,14H4c-1.104,0-2,0.896-2,2  s0.896,2,2,2h24c1.104,0,2-0.896,2-2S29.104,14,28,14z M28,22H4c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2  S29.104,22,28,22z"
+        />
+      </svg>
+
+      <a href="#" class="logo">Company</a>
+
+      <a href="#" class="cta-btn">Dashboard</a>
+    </header>
+
+    <main>
+      <h1>Dashboard</h1>
+
+      <section class="panel">
+        <ul class="data">
+          <li>
+            <h3>Monthly</h3>
+            <p>$1,201.00</p>
+          </li>
+          <li>
+            <h3>Quarterly</h3>
+            <p>$5,737.60</p>
+          </li>
+          <li>
+            <h3>Annually</h3>
+            <p>$30,261.10</p>
+          </li>
+        </ul>
+      </section>
+
+      <div class="columns half">
+        <div class="col left">
+          <h3>Monthly Visitors</h3>
+
+          <p>
+            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+            dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
+            clita kasd gubergren, no.
+          </p>
+        </div>
+        <div class="col">
+          <ul class="data secondary">
+            <li>
+              <h3>Monthly</h3>
+              <p>$1,201.00</p>
+            </li>
+            <li>
+              <h3>Quarterly</h3>
+              <p>$5,737.60</p>
+            </li>
+            <li>
+              <h3>Annually</h3>
+              <p>$30,261.10</p>
+            </li>
+            <li>
+              <h3>Quarterly</h3>
+              <p>$5,201.00</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // javascript
+
+      const get = (element) => document.getElementById(element);
+
+      let open = get('menu-btn');
+      let nav = get('nav');
+      let exit = get('exit-btn');
+
+      open.addEventListener('click', () => {
+        nav.classList.add('open-nav');
+      });
+
+      exit.addEventListener('click', () => {
+        nav.classList.remove('open-nav');
+      });
+
+      // show viewport width
+
+      let width = document.getElementById('width');
+      var onresize = function () {
+        //your code here
+        //this is just an example
+        width.innerText = document.body.clientWidth;
+        width.classList.add('display-width');
+        setTimeout(() => {
+          width.classList.remove('display-width');
+        }, 2000);
+      };
+      window.addEventListener('resize', onresize);
+    </script>
+  </body>
+</html>
