@@ -507,6 +507,14 @@ LIMIT
     3;
 
 -- INSERT Operations
-CREATE
--- Write query test
-SELECT * FROM users WHERE active = 1;
+INSERT INTO
+    books (id, title, author, price)
+VALUES
+    (
+        8,
+        'The Catcher in the Rye',
+        'J.D. Salinger',
+        9.99
+    ),
+    (9, '1984', 'George Orwell', 12.99),
+    (10, 'To Kill a Mockingbird', 'Harper Lee', 8.99);
