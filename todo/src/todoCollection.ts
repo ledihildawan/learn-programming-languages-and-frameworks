@@ -1,27 +1,22 @@
 import { TodoItem } from './todoItem';
-
 export class TodoCollection {
-  #nextId = 1;
-
-  constructor(public userName: string, public todoItems: TodoItem[] = []) {}
-
-  getTodoById(id: number) {
-    return this.todoItems.find((todoItem) => todoItem.id === id);
+  private nextId: number = 1;
+  private itemMap = new Map<number, TodoItem>();
+  constructor(public userName: string, todoItems: TodoItem[] = []) {
+    todoItems.forEach((item) => this.itemMap.set(item.id, item));
   }
-
-  addTodo(task: string) {
-    while (this.getTodoById(this.#nextId)) {
-      this.#nextId++;
+  addTodo(task: string): number {
+    while (this.getTodoById(this.nextId)) {
+      this.nextId++;
     }
-
-    this.todoItems.push(new TodoItem(this.#nextId, task));
-
-    return this.#nextId;
+    this.itemMap.set(this.nextId, new TodoItem(this.nextId, task));
+    return this.nextId;
   }
-
+  getTodoById(id: number): TodoItem {
+    return this.itemMap.get(id);
+  }
   markComplete(id: number, complete: boolean) {
     const todoItem = this.getTodoById(id);
-
     if (todoItem) {
       todoItem.complete = complete;
     }
