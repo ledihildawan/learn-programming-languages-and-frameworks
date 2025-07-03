@@ -1,5 +1,10 @@
 import { TodoItem } from './todoItem';
 
+type ItemCounts = {
+  total: number;
+  incomplete: number;
+};
+
 export class TodoCollection {
   readonly #itemMap = new Map<number, TodoItem>();
 
@@ -33,5 +38,20 @@ export class TodoCollection {
     if (todoItem) {
       todoItem.complete = complete;
     }
+  }
+
+  removeComplete() {
+    this.#itemMap.forEach((item) => {
+      if (item.complete) {
+        this.#itemMap.delete(item.id);
+      }
+    });
+  }
+
+  getItemCount(): ItemCounts {
+    return {
+      total: this.#itemMap.size,
+      incomplete: this.getTodoItems(false).length,
+    };
   }
 }
