@@ -19,8 +19,22 @@ function displayTodoList() {
 }
 
 enum Commands {
+  Add = 'Add New Task',
   Quit = 'Quit',
   Toggle = 'Show/Hide Completed',
+}
+
+function promptAdd() {
+  console.clear();
+  inquirer.prompt({ type: 'input', name: 'add', message: 'Enter Task:' }).then((answers) => {
+    const task = answers['add'];
+
+    if (task !== '') {
+      collection.addTodo(task);
+    }
+
+    promptUser();
+  });
 }
 
 function promptUser() {
@@ -40,6 +54,9 @@ function promptUser() {
         case Commands.Toggle:
           showCompleted = !showCompleted;
           promptUser();
+          break;
+        case Commands.Add:
+          promptAdd();
           break;
       }
     });
