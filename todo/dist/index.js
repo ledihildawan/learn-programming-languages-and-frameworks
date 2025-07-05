@@ -1,20 +1,45 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const todoCollection_1 = require("./todoCollection");
-const todoItem_1 = require("./todoItem");
+import inquirer from 'inquirer';
+import { TodoCollection } from './todoCollection.js';
+import { TodoItem } from './todoItem.js';
 const todos = [
-    new todoItem_1.TodoItem(1, 'Buy Flowers'),
-    new todoItem_1.TodoItem(2, 'Get Shoes'),
-    new todoItem_1.TodoItem(3, 'Collect Tickets'),
-    new todoItem_1.TodoItem(4, 'Call Joe', true),
+    new TodoItem(1, 'Buy Flowers'),
+    new TodoItem(2, 'Get Shoes'),
+    new TodoItem(3, 'Collect Tickets'),
+    new TodoItem(4, 'Call Joe', true),
 ];
-const collection = new todoCollection_1.TodoCollection('Adam', todos);
-console.clear();
-console.log(`${collection.userName}'s Todo List`);
-console.log(`${collection.userName}'s Todo List`, `(${collection.getItemCount().incomplete} items to do)`);
+const collection = new TodoCollection('Adam', todos);
+let showCompleted = true;
+function displayTodoList() {
+    console.log(`${collection.userName}'s Todo List (${collection.getItemCount().incomplete} items to do)`);
+    collection.getTodoItems(showCompleted).forEach((item) => item.printDetails());
+}
+var Commands;
+(function (Commands) {
+    Commands["Quit"] = "Quit";
+    Commands["Toggle"] = "Show/Hide Completed";
+})(Commands || (Commands = {}));
+function promptUser() {
+    console.clear();
+    displayTodoList();
+    inquirer
+        .prompt({
+        type: 'list',
+        name: 'command',
+        message: 'Choose option',
+        choices: Object.values(Commands),
+    })
+        .then((answers) => {
+        switch (answers['command']) {
+            case Commands.Toggle:
+                showCompleted = !showCompleted;
+                promptUser();
+                break;
+        }
+    });
+}
+promptUser();
 // const newId = collection.addTodo('Go fo run');
 // const todoItem = collection.getTodoById(newId);
 // todoItem.printDetails();
 // collection.addTodo(todoItem);
 // collection.removeComplete();
-collection.getTodoItems(true).forEach((item) => item.printDetails());

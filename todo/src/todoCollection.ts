@@ -1,4 +1,4 @@
-import { TodoItem } from './todoItem';
+import { TodoItem } from './todoItem.js';
 
 type ItemCounts = {
   total: number;
@@ -41,11 +41,15 @@ export class TodoCollection {
   }
 
   removeComplete() {
+    const toDelete: number[] = [];
+
     this.#itemMap.forEach((item) => {
       if (item.complete) {
-        this.#itemMap.delete(item.id);
+        toDelete.push(item.id);
       }
     });
+
+    toDelete.forEach((id) => this.#itemMap.delete(id));
   }
 
   getItemCount(): ItemCounts {
