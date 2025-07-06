@@ -1,24 +1,24 @@
 import { TodoItem } from './todoItem.js';
 export class TodoCollection {
     userName;
-    #itemMap = new Map();
-    #nextId = 1;
+    _nextId = 1;
+    itemMap = new Map();
     constructor(userName, todoItems = []) {
         this.userName = userName;
-        todoItems.forEach((item) => this.#itemMap.set(item.id, item));
+        todoItems.forEach((item) => this.itemMap.set(item.id, item));
     }
     addTodo(task) {
-        while (this.getTodoById(this.#nextId)) {
-            this.#nextId++;
+        while (this.getTodoById(this._nextId)) {
+            this._nextId++;
         }
-        this.#itemMap.set(this.#nextId, new TodoItem(this.#nextId, task));
-        return this.#nextId;
+        this.itemMap.set(this._nextId, new TodoItem(this._nextId, task));
+        return this._nextId;
     }
     getTodoById(id) {
-        return this.#itemMap.get(id);
+        return this.itemMap.get(id);
     }
     getTodoItems(includeComplete) {
-        return [...this.#itemMap.values()].filter((item) => includeComplete || !item.complete);
+        return [...this.itemMap.values()].filter((item) => includeComplete || !item.complete);
     }
     markComplete(id, complete) {
         const todoItem = this.getTodoById(id);
@@ -28,16 +28,16 @@ export class TodoCollection {
     }
     removeComplete() {
         const toDelete = [];
-        this.#itemMap.forEach((item) => {
+        this.itemMap.forEach((item) => {
             if (item.complete) {
                 toDelete.push(item.id);
             }
         });
-        toDelete.forEach((id) => this.#itemMap.delete(id));
+        toDelete.forEach((id) => this.itemMap.delete(id));
     }
-    getItemCount() {
+    getItemCounts() {
         return {
-            total: this.#itemMap.size,
+            total: this.itemMap.size,
             incomplete: this.getTodoItems(false).length,
         };
     }

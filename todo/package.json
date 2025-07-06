@@ -15,6 +15,7 @@
   },
   "type": "module",
   "dependencies": {
-    "inquirer": "^9.1.4"
+    "inquirer": "^9.1.4",
+    "lowdb": "^5.1.0"
   }
 }

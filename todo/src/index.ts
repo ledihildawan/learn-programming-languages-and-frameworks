@@ -1,5 +1,5 @@
 import inquirer from 'inquirer';
-import { TodoCollection } from './todoCollection.js';
+import { JsonTodoCollection } from './jsonTodoCollection.js';
 import { TodoItem } from './todoItem.js';
 
 const todos = [
@@ -9,12 +9,12 @@ const todos = [
   new TodoItem(4, 'Call Joe', true),
 ];
 
-const collection = new TodoCollection('Adam', todos);
+const collection = new JsonTodoCollection('Adam', todos);
 
 let showCompleted = true;
 
 function displayTodoList() {
-  console.log(`${collection.userName}'s Todo List (${collection.getItemCount().incomplete} items to do)`);
+  console.log(`${collection.userName}'s Todo List (${collection.getItemCounts().incomplete} items to do)`);
   collection.getTodoItems(showCompleted).forEach((item) => item.printDetails());
 }
 
@@ -22,6 +22,8 @@ enum Commands {
   Add = 'Add New Task',
   Quit = 'Quit',
   Toggle = 'Show/Hide Completed',
+  Complete = 'Complete Task',
+  Purge = 'Remove Completed Tasks',
 }
 
 function promptAdd() {
@@ -35,6 +37,26 @@ function promptAdd() {
 
     promptUser();
   });
+}
+
+function promptComplete() {
+  console.clear();
+  inquirer
+    .prompt({
+      type: 'checkbox',
+      name: 'complete',
+      message: 'Mark Tasks Complete',
+      choices: collection
+        .getTodoItems(showCompleted)
+        .map((item) => ({ name: item.task, value: item.id, checked: item.complete })),
+    })
+    .then((answers) => {
+      let completedTasks = answers['complete'] as number[];
+      collection
+        .getTodoItems(true)
+        .forEach((item) => collection.markComplete(item.id, Boolean(completedTasks.find((id) => id === item.id))));
+      promptUser();
+    });
 }
 
 function promptUser() {
@@ -57,6 +79,17 @@ function promptUser() {
           break;
         case Commands.Add:
           promptAdd();
+          break;
+        case Commands.Complete:
+          if (collection.getItemCounts().incomplete) {
+            promptComplete();
+          } else {
+            promptUser();
+          }
+          break;
+        case Commands.Purge:
+          collection.removeComplete();
+          promptUser();
           break;
       }
     });
