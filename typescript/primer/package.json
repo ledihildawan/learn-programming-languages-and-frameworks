@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "tsc": "tsc"
   },
   "keywords": [],
   "author": "",
@@ -11,5 +11,9 @@
   "description": "",
   "dependencies": {
     "nodemon": "^2.0.20"
-  }
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  },
+  "type": "module"
 }
