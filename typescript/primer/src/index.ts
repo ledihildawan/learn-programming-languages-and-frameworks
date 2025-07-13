@@ -1,30 +1,46 @@
-let Product = function (name, price) {
-  this.name = name;
-  this.price = price;
-};
+class Product {
+  id;
+  name;
+  price;
 
-Product.prototype.toString = function () {
-  return `toString: Name: ${this.name}, Price: ${this.price}`;
-};
+  constructor(name, price) {
+    this.id = Symbol();
+    this.name = name;
+    this.price = price;
+  }
+}
 
-let TaxedProduct = function (name, price, taxRate) {
-  Product.call(this, name, price);
-  this.taxRate = taxRate;
-};
+class Supplier {
+  name;
+  productids;
 
-Object.setPrototypeOf(TaxedProduct.prototype, Product.prototype);
+  constructor(name, productids) {
+    this.name = name;
+    this.productids = productids;
+  }
+}
 
-TaxedProduct.prototype.getPriceIncTax = function () {
-  return Number(this.price) * this.taxRate;
-};
+let acmeProducts = [new Product('Hat', 100), new Product('Boots', 100)];
+let zoomProducts = [new Product('Hat', 100), new Product('Boots', 100)];
 
-TaxedProduct.prototype.toTaxString = function () {
-  let chainResult = Product.prototype.toString.call(this);
-  return `${chainResult}, Tax: ${this.getPriceIncTax()}`;
-};
+let products = new Map();
 
-let hat = new TaxedProduct('Hat', 100, 1.2);
-let boots = new Product('Boots', 100);
+[...acmeProducts, ...zoomProducts].forEach((p) => products.set(p.id, p));
 
-console.log(hat.toTaxString());
-console.log(boots.toString());
+let suppliers = new Map();
+
+suppliers.set(
+  'acme',
+  new Supplier(
+    'Acme Co',
+    acmeProducts.map((p) => p.id)
+  )
+);
+suppliers.set(
+  'zoom',
+  new Supplier(
+    'Zoom Shoes',
+    zoomProducts.map((p) => p.id)
+  )
+);
+suppliers.get('acme').productids.forEach((id) => console.log(`Name: ${products.get(id).name}`));

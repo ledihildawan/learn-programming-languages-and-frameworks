@@ -39,3 +39,4 @@ export class JsonTodoCollection extends TodoCollection {
         this._database.write();
     }
 }
+//# sourceMappingURL=jsonTodoCollection.js.map
