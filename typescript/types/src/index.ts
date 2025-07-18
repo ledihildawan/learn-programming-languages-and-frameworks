@@ -1,6 +1,8 @@
-function calculateTax(amount: number): number {
-  return amount * 1.2;
+function calculateTax(amount: number) {
+  return (amount * 1.2).toFixed(2);
 }
-console.log(`${12} = ${calculateTax(12)}`);
-console.log(`${'Hello'} = ${calculateTax('Hello')}`);
-console.log(`${true} = ${calculateTax(true)}`);
+let price = 100;
+let taxAmount = calculateTax(price);
+let halfShare = taxAmount / 2;
+console.log(`Full amount in tax: ${taxAmount}`);
+console.log(`Half share: ${halfShare}`);
