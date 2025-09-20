@@ -1,5 +1,5 @@
-import InteractiveGreeting from '/InteractiveGreeting';
+import RandomColor from '/RandomColor';
 
 export default function App() {
-  return <InteractiveGreeting />;
+  return <RandomColor />;
 }
