@@ -8,7 +8,7 @@ import config from './config/database.js';
 import bucketlist from './controllers/bucketlist.js';
 
 // Connect mongoose to our database
-mongoose.connect(config.database, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(config.database, { useNewUrlParser: true });
 
 // Declaring Port
 const port = 3000;

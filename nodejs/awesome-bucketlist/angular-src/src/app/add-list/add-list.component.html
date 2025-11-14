@@ -1,0 +1,21 @@
+<div class="container">
+  <form (ngSubmit)="onSubmit()">
+    <div>
+      <label for="title">Title</label>
+      <input type="text" [(ngModel)]="newList.title" name="title" required />
+    </div>
+    <div>
+      <label for="category">Select Category</label>
+      <select [(ngModel)]="newList.category" name="category">
+        <option value="High">High Priority</option>
+        <option value="Medium">Medium Priority</option>
+        <option value="Low">Low Priority</option>
+      </select>
+    </div>
+    <div>
+      <label for="description">description</label>
+      <input type="text" [(ngModel)]="newList.description" name="description" required />
+    </div>
+    <button type="submit">Submit</button>
+  </form>
+</div>

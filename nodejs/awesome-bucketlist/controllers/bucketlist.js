@@ -5,11 +5,11 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
   try {
-    const list = await getAllLists();
+    const lists = await getAllLists();
 
     res.json({
       success: true,
-      list,
+      lists: lists,
     });
   } catch (error) {
     res.json({ success: false, message: `Failed to load all list. Error: ${error}` });

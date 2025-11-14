@@ -1,0 +1,22 @@
+<table id="table">
+  <thead>
+    <tr>
+      <th>Priority Level</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Delete</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (item of lists(); track item._id) {
+    <tr>
+      <td>{{ item.category }}</td>
+      <td>{{ item.title }}</td>
+      <td>{{ item.description }}</td>
+      <td><button (click)="deleteList(item._id)">Delete</button></td>
+    </tr>
+    }
+  </tbody>
+</table>
+
+<app-add-list (addList)="onAddList($event)"> </app-add-list>
