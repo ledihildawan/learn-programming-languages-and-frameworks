@@ -13,10 +13,20 @@ const BucketlistSchema = mongoose.Schema({
   },
 });
 
-const BucketList = mongoose.model('BucketList', BucketlistSchema);
+export const BucketList = mongoose.model('BucketList', BucketlistSchema);
 
 export async function getAllLists() {
   const list = await BucketList.find({});
 
   return list;
+}
+
+export async function addList(newList) {
+  const list = new BucketList(newList);
+
+  list.save();
+}
+
+export async function deleteListById(id) {
+  await BucketList.deleteOne({ _id: id });
 }
