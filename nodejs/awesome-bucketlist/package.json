@@ -1,0 +1,19 @@
+{
+  "name": "awesome-bucketlist",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "express": "~5.1.0",
+    "mongoose": "~8.19.3",
+    "cors": "~2.8.5",
+    "body-parser": "~2.2.0"
+  }
+}
