@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "awesome-bucketlist",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
