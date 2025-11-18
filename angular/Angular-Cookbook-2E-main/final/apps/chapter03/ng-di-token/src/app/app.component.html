@@ -1,0 +1,17 @@
+<!-- Toolbar -->
+<ng-cb-ui-header
+  appTitle="Providing a class to Angular using DI Tokens"
+  appName="ng-di-token"
+  ><div class="spacer"></div
+></ng-cb-ui-header>
+
+<div class="content" role="main">
+  <!-- Your Code Here -->
+  <article class="text-center" *ngIf="joke">
+    <h2 class="text-2xl font-bold">Random Chuck Norris Joke:</h2>
+    <p class="text-lg max-w-md italic">
+      "<a href="{{ joke.url }}">{{ joke.value }}</a
+      >"
+    </p>
+  </article>
+</div>

@@ -1,0 +1,80 @@
+<a href="#" class="block group">
+  <img
+    src="https://images.unsplash.com/photo-1592921870789-04563d55041c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80"
+    alt="" class="h-[250px] w-full object-cover sm:h-[350px]" />
+
+  <form [formGroup]="productForm" (ngSubmit)="formSubmit(productForm)">
+    <div class="mt-1.5">
+      <p class="text-xs text-gray-500">{{productForm.controls.color.value || 'Pick a color'}}</p>
+
+      <div class="mt-1.5 flex gap-1">
+        <fieldset>
+          <legend class="sr-only">Color</legend>
+        </fieldset>
+
+        <!-- Color Options -->
+
+        <div class="flex flex-wrap justify-center gap-1 [&:hover_label]:opacity-75">
+          <div>
+            <input formControlName="color" name="color"  value="space-gray" type="radio" id="ColorSg" class="sr-only" />
+
+            <label tabindex="1" for="ColorSg"
+              class="color-option color-option--space-gray" [class.color-option--active]="productForm.controls.color.value === 'space-gray'">
+              <span class="sr-only"> Space Gray </span>
+            </label>
+          </div>
+
+          <div>
+            <input formControlName="color" name="color"  value="silver" type="radio" id="ColorS" class="sr-only" />
+
+            <label tabindex="2" for="ColorS"
+              class="color-option color-option--silver" [class.color-option--active]="productForm.controls.color.value === 'silver'">
+              <span class="sr-only"> Silver </span>
+            </label>
+          </div>
+
+          <div>
+            <input formControlName="color" name="color"  value="pink" type="radio" id="ColorP" class="sr-only" />
+
+            <label tabindex="3" for="ColorP"
+            class="color-option color-option--pink" [class.color-option--active]="productForm.controls.color.value === 'pink'">
+              <span class="sr-only"> Pink </span>
+            </label>
+          </div>
+
+          <div>
+            <input formControlName="color" name="color"  value="green" type="radio" id="ColorG" class="sr-only" />
+
+            <label tabindex="4" for="ColorG"
+            class="color-option color-option--green" [class.color-option--active]="productForm.controls.color.value === 'green'">
+              <span class="sr-only"> Green </span>
+            </label>
+          </div>
+
+          <div>
+            <input formControlName="color" name="color"  value="blue" type="radio" id="ColorSb" class="sr-only" />
+
+            <label tabindex="5" for="ColorSb"
+            class="color-option color-option--blue" [class.color-option--active]="productForm.controls.color.value === 'blue'">
+              <span class="sr-only"> Blue </span>
+            </label>
+          </div>
+        </div>
+        
+        <!-- Color Options end -->
+      </div>
+
+
+      <div class="flex justify-between mt-3 text-sm items-center">
+        <h3 class="text-gray-900">
+          Small Headphones
+        </h3>
+
+        <p class="text-gray-900">$299</p>
+      </div>
+      <button [disabled]="productForm.invalid" type="submit" class="block w-full rounded bg-yellow-400 p-4 text-sm font-medium transition hover:scale-105 disabled:cursor-not-allowed disabled:hover:scale-100">
+        Add to Cart
+      </button>
+    </div>
+  </form>
+</a>

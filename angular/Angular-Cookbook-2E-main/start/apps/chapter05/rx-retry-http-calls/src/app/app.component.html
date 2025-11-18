@@ -1,0 +1,15 @@
+<!-- Toolbar -->
+<ng-cb-ui-header
+  appTitle="Retry failed HTTP calls with RxJS"
+  appName="rx-retry-http-calls"
+  ><div class="spacer"></div
+></ng-cb-ui-header>
+
+<main class="content" role="main">
+  <div class="message" *ngIf="!isMakingHttpCall; else loader">
+    {{ error }}
+  </div>
+  <ng-template #loader>
+    <app-loader></app-loader>
+  </ng-template>
+</main>

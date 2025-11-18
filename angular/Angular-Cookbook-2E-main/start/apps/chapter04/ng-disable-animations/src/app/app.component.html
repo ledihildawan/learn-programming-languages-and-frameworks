@@ -1,0 +1,20 @@
+<!-- Toolbar -->
+<ng-cb-ui-header
+  appTitle="Disabling Angular animations conditionally"
+  appName="ng-disable-animations"
+  ><div class="spacer"></div>
+  <div class="logout-btn mx-4">
+    <button
+      type="button"
+      class="btn-light"
+      *ngIf="isLoggedIn"
+      (click)="logout()"
+    >
+      Logout
+    </button>
+  </div></ng-cb-ui-header
+>
+
+<main class="content" role="main">
+  <router-outlet></router-outlet>
+</main>

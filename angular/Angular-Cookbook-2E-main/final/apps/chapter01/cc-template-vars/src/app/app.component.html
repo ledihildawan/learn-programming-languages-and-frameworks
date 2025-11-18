@@ -1,0 +1,19 @@
+<!-- Toolbar -->
+<ng-cb-ui-header
+  appTitle="Component Communication using Template Variables"
+  appName="cc-template-vars"
+  ><div class="spacer"></div
+></ng-cb-ui-header>
+
+<div class="content" role="main">
+  <!-- Your Code Here -->
+  <div class="gallery-actions mb-4 flex gap-4">
+    <button class="btn btn-primary" (click)="addNewPicture(gallery)">
+      Add Picture
+    </button>
+    <button class="btn btn-danger" (click)="removeFirstPicture(gallery)">
+      Remove First
+    </button>
+  </div>
+  <app-gallery #gallery></app-gallery>
+</div>

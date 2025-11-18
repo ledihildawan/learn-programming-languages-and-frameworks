@@ -1,0 +1,16 @@
+<!-- Toolbar -->
+<ng-cb-ui-header
+  appTitle="*appShowFor Structural Directive"
+  appName="ng-show-for-directive"
+  ><div class="spacer"></div
+></ng-cb-ui-header>
+
+<main class="content" role="main">
+  <button (click)="toggleDialog()">Toggle Dialog</button>
+  <ng-template [appShowFor]="showDialog" (elementHidden)="toggleDialog()">
+    <div class="dialog">
+      <div class="dialog__heading">I am a Dialog</div>
+      <div class="dialog__body">And this is some random content</div>
+    </div>
+  </ng-template>
+</main>

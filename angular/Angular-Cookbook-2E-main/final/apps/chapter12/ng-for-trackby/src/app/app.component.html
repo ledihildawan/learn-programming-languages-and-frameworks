@@ -1,0 +1,21 @@
+<!-- Toolbar -->
+<ng-cb-ui-header
+  appTitle="Using trackBy for lists with *ngFor"
+  appName="ng-for-trackby"
+  ><div class="spacer"></div
+></ng-cb-ui-header>
+
+<main class="content" role="main">
+  <ng-container *ngIf="!showLoader; else loader">
+    <ng-container *ngIf="$listItemsData | async as listItemsData">
+      <app-users-list
+        (itemDeleted)="deleteUser($event)"
+        (itemClicked)="updateUser($event)"
+        [listItems]="listItemsData"
+      ></app-users-list>
+    </ng-container>
+  </ng-container>
+</main>
+<ng-template #loader>
+  <app-loader></app-loader>
+</ng-template>

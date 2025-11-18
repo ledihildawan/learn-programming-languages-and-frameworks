@@ -1,0 +1,18 @@
+<!-- Toolbar -->
+<ng-cb-ui-header
+  appTitle="Angular CDK Virtual Scroll"
+  appName="ng-cdk-virtual-scroll"
+  ><div class="spacer"></div
+></ng-cb-ui-header>
+
+<main class="content" role="main">
+  <button class="mb-4" (click)="getData()">Get Data</button>
+  <ng-container *ngIf="!showLoader; else loader">
+    <ng-container *ngIf="$listItemsData | async as listItemsData">
+      <app-users-list [listItems]="listItemsData"></app-users-list>
+    </ng-container>
+  </ng-container>
+</main>
+<ng-template #loader>
+  <app-loader></app-loader>
+</ng-template>

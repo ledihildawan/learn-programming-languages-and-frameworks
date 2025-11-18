@@ -1,0 +1,101 @@
+{
+  "name": "cc-ng-on-changes",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/chapter01/cc-ng-on-changes/src",
+  "prefix": "app",
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:browser",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "dist/apps/chapter01/cc-ng-on-changes",
+        "index": "apps/chapter01/cc-ng-on-changes/src/index.html",
+        "main": "apps/chapter01/cc-ng-on-changes/src/main.ts",
+        "polyfills": [
+          "zone.js"
+        ],
+        "tsConfig": "apps/chapter01/cc-ng-on-changes/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          "apps/chapter01/cc-ng-on-changes/src/favicon.ico",
+          "apps/chapter01/cc-ng-on-changes/src/assets"
+        ],
+        "styles": [
+          "apps/chapter01/cc-ng-on-changes/src/styles.scss"
+        ],
+        "scripts": []
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "outputHashing": "all",
+          "baseHref": "/"
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "configurations": {
+        "production": {
+          "buildTarget": "cc-ng-on-changes:build:production"
+        },
+        "development": {
+          "buildTarget": "cc-ng-on-changes:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "buildTarget": "cc-ng-on-changes:build"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": [
+        "{options.outputFile}"
+      ]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
+      "options": {
+        "jestConfig": "apps/chapter01/cc-ng-on-changes/jest.config.ts"
+      }
+    },
+    "rename": {
+      "executor": "@codewithahsan/ng-cookbook-recipe:rename",
+      "options": {
+        "chapter": "chapter01",
+        "app": "cc-ng-on-changes"
+      }
+    }
+  },
+  "tags": []
+}

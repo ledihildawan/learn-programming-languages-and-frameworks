@@ -1,0 +1,107 @@
+{
+  "name": "ngrx-actions-reducer",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/chapter06/ngrx-actions-reducer/src",
+  "prefix": "app",
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:browser",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "dist/apps/chapter06/ngrx-actions-reducer",
+        "index": "apps/chapter06/ngrx-actions-reducer/src/index.html",
+        "main": "apps/chapter06/ngrx-actions-reducer/src/main.ts",
+        "polyfills": [
+          "zone.js"
+        ],
+        "tsConfig": "apps/chapter06/ngrx-actions-reducer/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          "apps/chapter06/ngrx-actions-reducer/src/favicon.ico",
+          "apps/chapter06/ngrx-actions-reducer/src/assets",
+          {
+            "glob": "**/*",
+            "input": "node_modules/@codewithahsan/ng-cookbook-recipe/assets",
+            "output": "assets"
+          }
+        ],
+        "styles": [
+          "apps/chapter06/ngrx-actions-reducer/src/styles.scss",
+          "node_modules/@codewithahsan/ng-cb-ui/styles/globals.scss"
+        ],
+        "scripts": []
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "outputHashing": "all",
+          "baseHref": "/"
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "configurations": {
+        "production": {
+          "buildTarget": "ngrx-actions-reducer:build:production"
+        },
+        "development": {
+          "buildTarget": "ngrx-actions-reducer:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "buildTarget": "ngrx-actions-reducer:build"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": [
+        "{options.outputFile}"
+      ]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
+      "options": {
+        "jestConfig": "apps/chapter06/ngrx-actions-reducer/jest.config.ts"
+      }
+    },
+    "rename": {
+      "executor": "@codewithahsan/ng-cookbook-recipe:rename",
+      "options": {
+        "chapter": "chapter06",
+        "app": "ngrx-actions-reducer"
+      }
+    }
+  },
+  "tags": []
+}

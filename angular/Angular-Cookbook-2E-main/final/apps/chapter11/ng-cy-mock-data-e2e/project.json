@@ -1,0 +1,31 @@
+{
+  "name": "ng-cy-mock-data-e2e",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/chapter11/ng-cy-mock-data-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nx/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/chapter11/ng-cy-mock-data-e2e/cypress.config.ts",
+        "devServerTarget": "ng-cy-mock-data:serve:development",
+        "testingType": "e2e"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "ng-cy-mock-data:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": [
+        "{options.outputFile}"
+      ]
+    }
+  },
+  "tags": [],
+  "implicitDependencies": [
+    "ng-cy-mock-data"
+  ]
+}

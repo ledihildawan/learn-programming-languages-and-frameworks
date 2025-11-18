@@ -1,0 +1,20 @@
+<!-- Toolbar -->
+<ng-cb-ui-header
+  appTitle="Providing alternate classes against same DI Token"
+  appName="ng-aliased-class-providers"
+  ><div class="spacer"></div>
+  <div class="logout-btn mx-4">
+    <button
+      type="button"
+      class="btn-light"
+      *ngIf="isLoggedIn"
+      (click)="logout()"
+    >
+      Logout
+    </button>
+  </div></ng-cb-ui-header
+>
+
+<div class="content" role="main">
+  <router-outlet></router-outlet>
+</div>

@@ -1,0 +1,7 @@
+<ng-cb-ui-header appTitle="<%= title %>" appName="<%= recipeName %>">
+</ng-cb-ui-header>
+
+<main class="content" role="main">
+  <!-- Your code here -->
+</main>
+

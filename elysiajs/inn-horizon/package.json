@@ -1,0 +1,18 @@
+{
+  "name": "inn-horizon",
+  "version": "1.0.50",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "bun run --watch src/index.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.19.0",
+    "elysia": "latest",
+    "prismabox": "^1.1.25"
+  },
+  "devDependencies": {
+    "bun-types": "latest",
+    "prisma": "^6.19.0"
+  },
+  "module": "src/index.js"
+}

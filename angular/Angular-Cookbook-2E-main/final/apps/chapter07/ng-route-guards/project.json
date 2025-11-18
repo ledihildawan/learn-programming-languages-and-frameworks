@@ -1,0 +1,107 @@
+{
+  "name": "ng-route-guards",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/chapter07/ng-route-guards/src",
+  "prefix": "app",
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:browser",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "dist/apps/chapter07/ng-route-guards",
+        "index": "apps/chapter07/ng-route-guards/src/index.html",
+        "main": "apps/chapter07/ng-route-guards/src/main.ts",
+        "polyfills": [
+          "zone.js"
+        ],
+        "tsConfig": "apps/chapter07/ng-route-guards/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          "apps/chapter07/ng-route-guards/src/favicon.ico",
+          "apps/chapter07/ng-route-guards/src/assets",
+          {
+            "glob": "**/*",
+            "input": "node_modules/@codewithahsan/ng-cookbook-recipe/assets",
+            "output": "assets"
+          }
+        ],
+        "styles": [
+          "apps/chapter07/ng-route-guards/src/styles.scss",
+          "node_modules/@codewithahsan/ng-cb-ui/styles/globals.scss"
+        ],
+        "scripts": []
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "outputHashing": "all",
+          "baseHref": "/"
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "configurations": {
+        "production": {
+          "buildTarget": "ng-route-guards:build:production"
+        },
+        "development": {
+          "buildTarget": "ng-route-guards:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "buildTarget": "ng-route-guards:build"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": [
+        "{options.outputFile}"
+      ]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
+      "options": {
+        "jestConfig": "apps/chapter07/ng-route-guards/jest.config.ts"
+      }
+    },
+    "rename": {
+      "executor": "@codewithahsan/ng-cookbook-recipe:rename",
+      "options": {
+        "chapter": "chapter07",
+        "app": "ng-route-guards"
+      }
+    }
+  },
+  "tags": []
+}

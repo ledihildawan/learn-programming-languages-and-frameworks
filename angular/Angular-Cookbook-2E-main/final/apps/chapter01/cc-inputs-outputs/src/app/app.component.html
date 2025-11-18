@@ -1,0 +1,17 @@
+<!-- Toolbar -->
+<ng-cb-ui-header
+  appTitle="Component Communication using @Input() & @Output()"
+  appName="cc-inputs-outputs"
+  ><div class="spacer"></div>
+  <div class="notif-bell">
+    <app-notifications-button
+      [count]="notificationsCount"
+    ></app-notifications-button></div
+></ng-cb-ui-header>
+
+<div class="content" role="main">
+  <app-notifications-manager
+    (countChanged)="updateNotificationsCount($event)"
+    [count]="notificationsCount"
+  ></app-notifications-manager>
+</div>

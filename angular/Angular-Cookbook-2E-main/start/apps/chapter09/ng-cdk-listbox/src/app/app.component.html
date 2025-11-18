@@ -1,0 +1,26 @@
+<!-- Toolbar -->
+<ng-cb-ui-header
+  appTitle="Accessible Listbox interactions using CDK Listbox directives"
+  appName="ng-cdk-listbox"
+  ><div class="spacer"></div
+></ng-cb-ui-header>
+
+<main class="content" role="main">
+  <div class="flex gap-10">
+    <app-product-card
+      (colorChanged)="setSelectedColor($event)"
+    ></app-product-card>
+    <div class="flex flex-col gap-5">
+      <label class="text-2xl"> Selected Color: </label>
+      <p class="text-xl">
+        {{ selectedColor || 'No color selected' }}
+      </p>
+      <div
+        *ngIf="selectedColor"
+        class="color-option color-option--{{
+          selectedColor
+        }} !h-14 !w-14 hover:shadow-md"
+      ></div>
+    </div>
+  </div>
+</main>

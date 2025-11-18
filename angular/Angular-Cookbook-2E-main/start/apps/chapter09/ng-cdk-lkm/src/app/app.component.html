@@ -1,0 +1,15 @@
+<!-- Toolbar -->
+<ng-cb-ui-header
+  appTitle="Using Angular ListKeyManager for keyboard navigation"
+  appName="ng-cdk-lkm"
+  ><div class="spacer"></div
+></ng-cb-ui-header>
+
+<main class="content" role="main">
+  <ng-container *ngIf="$listItemsData | async as listItemsData; else loader">
+    <app-users-list [listItems]="listItemsData"></app-users-list>
+  </ng-container>
+</main>
+<ng-template #loader>
+  <app-loader></app-loader>
+</ng-template>

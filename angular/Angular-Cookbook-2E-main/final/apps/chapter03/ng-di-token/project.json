@@ -1,0 +1,101 @@
+{
+  "name": "ng-di-token",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/chapter03/ng-di-token/src",
+  "prefix": "app",
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:browser",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "dist/apps/chapter03/ng-di-token",
+        "index": "apps/chapter03/ng-di-token/src/index.html",
+        "main": "apps/chapter03/ng-di-token/src/main.ts",
+        "polyfills": [
+          "zone.js"
+        ],
+        "tsConfig": "apps/chapter03/ng-di-token/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          "apps/chapter03/ng-di-token/src/favicon.ico",
+          "apps/chapter03/ng-di-token/src/assets"
+        ],
+        "styles": [
+          "apps/chapter03/ng-di-token/src/styles.scss"
+        ],
+        "scripts": []
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "outputHashing": "all",
+          "baseHref": "/"
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "configurations": {
+        "production": {
+          "buildTarget": "ng-di-token:build:production"
+        },
+        "development": {
+          "buildTarget": "ng-di-token:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "buildTarget": "ng-di-token:build"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": [
+        "{options.outputFile}"
+      ]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
+      "options": {
+        "jestConfig": "apps/chapter03/ng-di-token/jest.config.ts"
+      }
+    },
+    "rename": {
+      "executor": "@codewithahsan/ng-cookbook-recipe:rename",
+      "options": {
+        "chapter": "chapter03",
+        "app": "ng-di-token"
+      }
+    }
+  },
+  "tags": []
+}

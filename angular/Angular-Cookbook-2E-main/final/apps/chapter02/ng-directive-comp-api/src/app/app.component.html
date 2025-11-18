@@ -1,0 +1,53 @@
+<!-- Toolbar -->
+<ng-cb-ui-header
+  appTitle="Directive Composition API"
+  appName="ng-directive-comp-api"
+  ><div class="spacer"></div
+></ng-cb-ui-header>
+
+<main class="content" role="main">
+  <!-- Your code here -->
+  <ul class="flex flex-col">
+    <li
+      class="flex gap-4 items-center border-b justify-between border-slate-300 py-3"
+    >
+      <h4 class="text-lg">Default Button:</h4>
+      <button>Click Me</button>
+    </li>
+    <li
+      class="flex gap-4 items-center border-b justify-between border-slate-300 py-3"
+    >
+      <h4 class="text-lg">Filled Button:</h4>
+      <button appButtonFilled color="yellow">Click Me</button>
+    </li>
+    <li
+      class="flex gap-4 items-center border-b justify-between border-slate-300 py-3"
+    >
+      <h4 class="text-lg">Outlined Button:</h4>
+      <button appButtonOutlined>Click Me</button>
+    </li>
+    <li
+      class="flex gap-4 items-center border-b justify-between border-slate-300 py-3"
+    >
+      <h4 class="text-lg">Button with Tooltip:</h4>
+      <div class="flex flex-col gap-4">
+        <button
+          appButtonWithTooltip
+          tooltip="code with ahsan"
+          fill="outlined"
+          color="blue"
+        >
+          Click Me
+        </button>
+        <button
+          appButtonWithTooltip
+          tooltip="code with ahsan"
+          fill="filled"
+          color="blue"
+        >
+          Click Me
+        </button>
+      </div>
+    </li>
+  </ul>
+</main>
