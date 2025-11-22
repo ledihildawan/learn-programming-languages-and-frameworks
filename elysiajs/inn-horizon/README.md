@@ -1,67 +1,43 @@
 # 🏨 Inn Horizon API
 
 ## Proyek
-Inn Horizon adalah platform pemesanan hotel komprehensif yang dirancang untuk mendukung manajemen inventaris, transaksi *real-time*, dan fitur globalisasi (multibahasa dan data geografis) dengan fokus pada akuntabilitas dan audit.
+Inn Horizon adalah platform pemesanan hotel komprehensif yang dirancang untuk mendukung manajemen inventaris, transaksi *real-time*, dan fitur globalisasi dengan fokus pada **integritas finansial** dan **akuntabilitas (audit)**.
 
-## ✨ Fitur Utama
+## ✨ Fitur Utama yang Didukung
 
-### 1. Sistem Pengguna Multi-Peran
-* **Customer:** Pencarian, pemesanan, *wishlist*, dan ulasan.
-* **Host/Owner:** Manajemen properti (`hotels.owner_user_id`), inventaris kamar, dan harga dinamis.
-* **Admin/Super User:** Kontrol penuh atas data master dan audit sistem (`users.is_admin = TRUE`).
+### 1. Sistem Pengguna & Otoritas (1:M Model)
+* **Peran Kunci:** Semua pengguna memiliki satu peran tunggal (`users.role_id`) yang ditentukan di tabel `roles` ('Admin', 'Host', atau 'Customer').
+* **Akses Terstruktur:** Otoritas dikontrol ketat melalui `role_id` dan `hotels.owner_user_id`, memastikan setiap pengguna hanya mengakses data sesuai perannya.
 
-### 2. Inventaris dan Transaksi Solid
-* **Manajemen Inventaris:** Pemisahan kamar (`rooms`) dan ketersediaan harian (`room_availability`) untuk mencegah *overbooking*.
-* **Keuangan:** Dukungan untuk diskon (`discounts`), kupon, dan pencatatan transaksi pembayaran mendalam (`payments`).
-* **Audit Trail:** Pelacakan aktivitas pengguna melalui `system_logs` dan `deleted_at` (Soft Delete) di entitas utama.
+### 2. Finansial & Legalitas (Comprehensive Coverage)
+* **Kebijakan Pembatalan:** Dukungan untuk berbagai aturan pengembalian dana (`cancellation_policies`) yang mengikat pada hotel.
+* **Manajemen Pajak:** Pengelolaan pajak dan biaya layanan (`taxes`, `hotel_taxes`) yang bervariasi per hotel dan menghitung `total_cost` secara akurat.
+* **Promosi:** Dukungan diskon, kupon, dan manajemen *validity* (`discounts`).
 
-### 3. Global & UX
-* **Globalisasi:** Dukungan multibahasa (`hotel_translations`) dan data geografis terstandarisasi.
-* **Akurasi Lokasi:** Penggunaan koordinat (`latitude`, `longitude`) untuk integrasi peta.
-* **Komunikasi:** Sistem notifikasi (`notifications`) *real-time* untuk Host dan Customer.
+### 3. Audit & Keamanan (Enterprise Grade)
+* **System Logs Lengkap:** Tabel `system_logs` mencatat setiap aksi kritis.
+    * **Konteks Keamanan:** Mencatat `ip_address` dan `user_agent` pelaku.
+    * **Bukti:** Menyimpan `old_data` dan `new_data` dalam format JSON untuk audit forensik.
+* **Soft Delete:** Penggunaan `deleted_at` di entitas utama untuk menjaga integritas transaksi lama.
 
-## 🏗️ Struktur Database (ERD)
+### 4. Inventaris & Global
+* **Inventaris Dinamis:** Pemisahan kamar (`rooms`) dan ketersediaan harian (`room_availability`) untuk mencegah *overbooking*.
+* **Globalisasi:** Dukungan multibahasa (`hotel_translations`) dan akurasi lokasi (koordinat `latitude`/`longitude`).
 
-Database ini dibangun dengan prinsip normalisasi yang tinggi dan memisahkan data berdasarkan fungsi:
+## 🏗️ Struktur Database Kunci (Final)
 
-### Kelompok Entitas
-1.  **Entitas Utama:** `users`, `hotels`, `rooms`.
-2.  **Transaksi:** `bookings`, `payments`, `reviews`.
-3.  **Master Data:** `countries`, `cities`, `amenities`, `statuses`, `languages`.
+Database menggunakan relasi **One-to-Many (1:M)** untuk peran pengguna dan pola **Many-to-Many (M:M)** untuk aset (Amenity, Tax, Policy).
 
-### Relasi Kunci (Foreign Keys)
-* **Pemilik Properti:** `hotels` terhubung ke `users` melalui `owner_user_id`.
-* **Lokalisasi:** `hotel_translations` menghubungkan `hotels` dengan `languages`.
-* **Inventaris:** `room_availability` terhubung ke `rooms`.
-* **Audit:** `system_logs` dan `notifications` terhubung ke `users`.
+| Kelompok Tabel      | Contoh Relasi Kunci                                                | Peran                                                     |
+| :------------------ | :----------------------------------------------------------------- | :-------------------------------------------------------- |
+| **Audit & Log**     | `system_logs.user_id`, `notifications.user_id`                     | Melacak siapa melakukan apa.                              |
+| **Inventaris**      | `rooms.hotel_id`, `room_availability.room_id`                      | Menentukan ketersediaan dan harga per hari.               |
+| **Finansial/Legal** | `bookings.status_id`, `hotel_taxes`, `hotel_cancellation_policies` | Mengelola harga, status, dan ketentuan pengembalian dana. |
 
-## 🛠️ Panduan Pengembangan Awal (Bootstrap)
+---
 
-Untuk menginisialisasi sistem ini, tabel harus dibuat berdasarkan urutan ketergantungan:
+## ⚠️ Panduan Pengembangan Lanjut
 
-### Fase I: Persiapan Keamanan & Master Data Dasar
-1.  `countries` (Wajib diisi/seeding pertama kali)
-2.  `users` (Buat Super Admin pertama)
-3.  `system_logs` (Aktifkan pencatatan)
-4.  `cities`, `languages`, `statuses`, `payment_methods`, `amenities`, `hotel_types`, `discounts`
-
-### Fase II: Inventaris & Properti
-1.  `hotels`
-2.  `rooms`, `room_photos`, `room_amenities` (dan tabel penghubungnya)
-3.  `room_availability`, `user_wishlist`, `hotel_translations`
-
-### Fase III: Transaksi & Audit
-1.  `bookings`
-2.  `payments`, `booking_discounts`
-3.  `reviews`, `review_replies`, `notifications`
-
-## 🛡️ Aturan Integritas Data (Wajib Impelementasi)
-
-Pastikan aturan ini diterapkan di *backend* dan *database* Anda:
-
-| Aturan                | Tabel yang Terlibat                                                                       | Logika                                                                                                                        |
-| :-------------------- | :---------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------- |
-| **Soft Delete**       | `users`, `hotels`, `rooms`                                                                | Gunakan kolom `deleted_at` (TIMESTAMP) daripada `HARD DELETE` untuk menjaga integritas FK.                                    |
-| **Unique Constraint** | `users.email`, `room_availability` (`room_id`, `date`), `reviews` (`hotel_id`, `user_id`) | Mencegah duplikasi data kritis (akun ganda, *overbooking*, ulasan ganda).                                                     |
-| **ON DELETE CASCADE** | `room_photos`, `hotel_amenities`, `room_room_amenities`                                   | Jika entitas induk (misalnya `rooms`) dihapus secara permanen, detailnya (misalnya `room_photos`) harus otomatis dihapus.     |
-| **Otorisasi Host**    | *Backend Logic*                                                                           | Host hanya boleh memodifikasi data `hotels`, `rooms`, atau `room_availability` di mana `owner_user_id` sama dengan ID mereka. |
+1.  **Otorisasi:** Logika *backend* harus memverifikasi `user_id` terhadap `hotels.owner_user_id` untuk setiap aksi `Host`.
+2.  **Trigger:** Logika *backend* harus memicu entri ke tabel `system_logs` dan `notifications` pada setiap perubahan kritis (misalnya, perubahan `bookings.status_id`).
+3.  **Seeding:** `countries`, `roles`, dan `statuses` harus diisi via *database seeding* sebelum aplikasi dijalankan.

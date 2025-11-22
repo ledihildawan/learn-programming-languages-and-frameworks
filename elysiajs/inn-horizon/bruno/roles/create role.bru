@@ -1,18 +1,17 @@
 meta {
-  name: create country
+  name: create role
   type: http
   seq: 1
 }
 
 post {
-  url: {{host}}/api/countries
+  url: {{host}}/api/roles
   body: json
   auth: inherit
 }
 
 body:json {
   {
-    "name": "Japan",
-    "code": "JP"
+    "name": "System"
   }
 }

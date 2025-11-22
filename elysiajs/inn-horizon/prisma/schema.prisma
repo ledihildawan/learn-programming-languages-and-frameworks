@@ -1,0 +1,80 @@
+generator client {
+  provider   = "prisma-client" // or `prisma-client-js`
+  output     = "./../generated/prisma"
+  engineType = "client" // enable Prisma ORM without Rust
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+generator prismabox {
+  provider                    = "prismabox"
+  typeboxImportDependencyName = "elysia"
+  typeboxImportVariableName   = "t"
+  inputModel                  = true
+  output                      = "./../generated/prismabox"
+}
+
+model Roles {
+  id         String    @id @default(cuid())
+  name       String    @db.VarChar(50)
+  created_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt
+  deleted_at DateTime?
+  users      Users[]
+
+  @@map("roles")
+}
+
+model Countries {
+  id         String    @id @default(cuid())
+  name       String    @db.VarChar(100)
+  code       String    @unique @db.VarChar(2)
+  created_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt
+  deleted_at DateTime?
+  users      Users[]
+
+  @@map("countries")
+}
+
+model Users {
+  id                String       @id @default(cuid())
+  role              Roles        @relation(fields: [role_id], references: [id])
+  role_id           String
+  username          String       @unique @db.VarChar(50)
+  email             String       @unique @db.VarChar(255)
+  password_hash     String       @db.VarChar(255)
+  first_name        String?      @db.VarChar(100)
+  last_name         String?      @db.VarChar(100)
+  phone_number      String?      @db.VarChar(20)
+  country           Countries    @relation(fields: [country_id], references: [id])
+  country_id        String
+  profile_image_url String?      @db.VarChar(512)
+  created_at        DateTime?    @default(now())
+  updated_at        DateTime?    @updatedAt
+  deleted_at        DateTime?
+  systemLogs        SystemLogs[]
+
+  @@map("users")
+}
+
+model SystemLogs {
+  id             String   @id @default(cuid())
+  user           Users    @relation(fields: [user_id], references: [id])
+  user_id        String
+  action_type    String   @db.VarChar(50)
+  table_name     String   @db.VarChar(50)
+  record_id      String
+  old_data       Json?
+  new_data       Json?
+  ip_address     String?  @db.VarChar(45)
+  user_agent     String?  @db.VarChar(512)
+  route_endpoint String?  @db.VarChar(255)
+  source         String?  @db.VarChar(50) // "HTTP", "SEEDER", "MIGRATION", "CLI", "CRON", "TEST"
+  message        String?  @db.Text
+  created_at     DateTime @default(now())
+
+  @@map("system_logs")
+}
