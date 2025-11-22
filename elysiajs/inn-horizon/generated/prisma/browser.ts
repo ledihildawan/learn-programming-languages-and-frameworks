@@ -37,3 +37,8 @@ export type Users = Prisma.UsersModel
  * 
  */
 export type SystemLogs = Prisma.SystemLogsModel
+/**
+ * Model Languages
+ * 
+ */
+export type Languages = Prisma.LanguagesModel

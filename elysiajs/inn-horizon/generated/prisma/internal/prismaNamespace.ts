@@ -387,7 +387,8 @@ export const ModelName = {
   Roles: 'Roles',
   Countries: 'Countries',
   Users: 'Users',
-  SystemLogs: 'SystemLogs'
+  SystemLogs: 'SystemLogs',
+  Languages: 'Languages'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -403,7 +404,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "roles" | "countries" | "users" | "systemLogs"
+    modelProps: "roles" | "countries" | "users" | "systemLogs" | "languages"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -703,6 +704,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Languages: {
+      payload: Prisma.$LanguagesPayload<ExtArgs>
+      fields: Prisma.LanguagesFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.LanguagesFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LanguagesPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.LanguagesFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LanguagesPayload>
+        }
+        findFirst: {
+          args: Prisma.LanguagesFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LanguagesPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.LanguagesFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LanguagesPayload>
+        }
+        findMany: {
+          args: Prisma.LanguagesFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LanguagesPayload>[]
+        }
+        create: {
+          args: Prisma.LanguagesCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LanguagesPayload>
+        }
+        createMany: {
+          args: Prisma.LanguagesCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.LanguagesCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LanguagesPayload>[]
+        }
+        delete: {
+          args: Prisma.LanguagesDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LanguagesPayload>
+        }
+        update: {
+          args: Prisma.LanguagesUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LanguagesPayload>
+        }
+        deleteMany: {
+          args: Prisma.LanguagesDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.LanguagesUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.LanguagesUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LanguagesPayload>[]
+        }
+        upsert: {
+          args: Prisma.LanguagesUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LanguagesPayload>
+        }
+        aggregate: {
+          args: Prisma.LanguagesAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateLanguages>
+        }
+        groupBy: {
+          args: Prisma.LanguagesGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LanguagesGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.LanguagesCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LanguagesCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -801,6 +876,18 @@ export const SystemLogsScalarFieldEnum = {
 } as const
 
 export type SystemLogsScalarFieldEnum = (typeof SystemLogsScalarFieldEnum)[keyof typeof SystemLogsScalarFieldEnum]
+
+
+export const LanguagesScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  name: 'name',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  deleted_at: 'deleted_at'
+} as const
+
+export type LanguagesScalarFieldEnum = (typeof LanguagesScalarFieldEnum)[keyof typeof LanguagesScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -988,6 +1075,7 @@ export type GlobalOmitConfig = {
   countries?: Prisma.CountriesOmit
   users?: Prisma.UsersOmit
   systemLogs?: Prisma.SystemLogsOmit
+  languages?: Prisma.LanguagesOmit
 }
 
 /* Types for Logging */

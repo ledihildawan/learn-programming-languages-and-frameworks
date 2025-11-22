@@ -1,11 +1,11 @@
 meta {
-  name: index
+  name: system-logs
   type: http
-  seq: 4
+  seq: 2
 }
 
 get {
-  url: {{host}}
+  url: {{host}}/api/system-logs
   body: none
   auth: inherit
 }

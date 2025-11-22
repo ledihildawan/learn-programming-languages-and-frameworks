@@ -78,3 +78,14 @@ model SystemLogs {
 
   @@map("system_logs")
 }
+
+model Languages {
+  id         String    @id @default(cuid())
+  code       String    @unique @db.VarChar(5)
+  name       String    @db.VarChar(50)
+  created_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt
+  deleted_at DateTime?
+
+  @@map("languages")
+}

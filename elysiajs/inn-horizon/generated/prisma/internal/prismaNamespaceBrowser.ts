@@ -54,7 +54,8 @@ export const ModelName = {
   Roles: 'Roles',
   Countries: 'Countries',
   Users: 'Users',
-  SystemLogs: 'SystemLogs'
+  SystemLogs: 'SystemLogs',
+  Languages: 'Languages'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -132,6 +133,18 @@ export const SystemLogsScalarFieldEnum = {
 } as const
 
 export type SystemLogsScalarFieldEnum = (typeof SystemLogsScalarFieldEnum)[keyof typeof SystemLogsScalarFieldEnum]
+
+
+export const LanguagesScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  name: 'name',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  deleted_at: 'deleted_at'
+} as const
+
+export type LanguagesScalarFieldEnum = (typeof LanguagesScalarFieldEnum)[keyof typeof LanguagesScalarFieldEnum]
 
 
 export const SortOrder = {
