@@ -1,0 +1,25 @@
+meta {
+  name: create user
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{host}}/api/users
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "username": "ledihildawan",
+    "email": "lhildawan@gmail.com",
+    "password": "ledihildawan",
+    "first_name": "Ledi",
+    "last_name": "Hildawan",
+    "phone_number": "+6285161618197",
+    "country_id": "cmi8rhp3a0000j06g3wajvggt",
+    "profile_image_url": "https://avatars.githubusercontent.com/u/46273177?s=400&u=f615bd79ab3b94c9edfb58a750bdacdd45551415&v=4",
+    "is_admin": true
+  }
+}
