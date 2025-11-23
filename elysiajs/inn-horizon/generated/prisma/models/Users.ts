@@ -206,8 +206,8 @@ export type UsersGroupByOutputType = {
   phone_number: string | null
   country_id: string
   profile_image_url: string | null
-  created_at: Date | null
-  updated_at: Date | null
+  created_at: Date
+  updated_at: Date
   deleted_at: Date | null
   _count: UsersCountAggregateOutputType | null
   _min: UsersMinAggregateOutputType | null
@@ -243,8 +243,8 @@ export type UsersWhereInput = {
   phone_number?: Prisma.StringNullableFilter<"Users"> | string | null
   country_id?: Prisma.StringFilter<"Users"> | string
   profile_image_url?: Prisma.StringNullableFilter<"Users"> | string | null
-  created_at?: Prisma.DateTimeNullableFilter<"Users"> | Date | string | null
-  updated_at?: Prisma.DateTimeNullableFilter<"Users"> | Date | string | null
+  created_at?: Prisma.DateTimeFilter<"Users"> | Date | string
+  updated_at?: Prisma.DateTimeFilter<"Users"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"Users"> | Date | string | null
   role?: Prisma.XOR<Prisma.RolesScalarRelationFilter, Prisma.RolesWhereInput>
   country?: Prisma.XOR<Prisma.CountriesScalarRelationFilter, Prisma.CountriesWhereInput>
@@ -262,8 +262,8 @@ export type UsersOrderByWithRelationInput = {
   phone_number?: Prisma.SortOrderInput | Prisma.SortOrder
   country_id?: Prisma.SortOrder
   profile_image_url?: Prisma.SortOrderInput | Prisma.SortOrder
-  created_at?: Prisma.SortOrderInput | Prisma.SortOrder
-  updated_at?: Prisma.SortOrderInput | Prisma.SortOrder
+  created_at?: Prisma.SortOrder
+  updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.RolesOrderByWithRelationInput
   country?: Prisma.CountriesOrderByWithRelationInput
@@ -284,8 +284,8 @@ export type UsersWhereUniqueInput = Prisma.AtLeast<{
   phone_number?: Prisma.StringNullableFilter<"Users"> | string | null
   country_id?: Prisma.StringFilter<"Users"> | string
   profile_image_url?: Prisma.StringNullableFilter<"Users"> | string | null
-  created_at?: Prisma.DateTimeNullableFilter<"Users"> | Date | string | null
-  updated_at?: Prisma.DateTimeNullableFilter<"Users"> | Date | string | null
+  created_at?: Prisma.DateTimeFilter<"Users"> | Date | string
+  updated_at?: Prisma.DateTimeFilter<"Users"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"Users"> | Date | string | null
   role?: Prisma.XOR<Prisma.RolesScalarRelationFilter, Prisma.RolesWhereInput>
   country?: Prisma.XOR<Prisma.CountriesScalarRelationFilter, Prisma.CountriesWhereInput>
@@ -303,8 +303,8 @@ export type UsersOrderByWithAggregationInput = {
   phone_number?: Prisma.SortOrderInput | Prisma.SortOrder
   country_id?: Prisma.SortOrder
   profile_image_url?: Prisma.SortOrderInput | Prisma.SortOrder
-  created_at?: Prisma.SortOrderInput | Prisma.SortOrder
-  updated_at?: Prisma.SortOrderInput | Prisma.SortOrder
+  created_at?: Prisma.SortOrder
+  updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.UsersCountOrderByAggregateInput
   _max?: Prisma.UsersMaxOrderByAggregateInput
@@ -325,8 +325,8 @@ export type UsersScalarWhereWithAggregatesInput = {
   phone_number?: Prisma.StringNullableWithAggregatesFilter<"Users"> | string | null
   country_id?: Prisma.StringWithAggregatesFilter<"Users"> | string
   profile_image_url?: Prisma.StringNullableWithAggregatesFilter<"Users"> | string | null
-  created_at?: Prisma.DateTimeNullableWithAggregatesFilter<"Users"> | Date | string | null
-  updated_at?: Prisma.DateTimeNullableWithAggregatesFilter<"Users"> | Date | string | null
+  created_at?: Prisma.DateTimeWithAggregatesFilter<"Users"> | Date | string
+  updated_at?: Prisma.DateTimeWithAggregatesFilter<"Users"> | Date | string
   deleted_at?: Prisma.DateTimeNullableWithAggregatesFilter<"Users"> | Date | string | null
 }
 
@@ -339,8 +339,8 @@ export type UsersCreateInput = {
   last_name?: string | null
   phone_number?: string | null
   profile_image_url?: string | null
-  created_at?: Date | string | null
-  updated_at?: Date | string | null
+  created_at?: Date | string
+  updated_at?: Date | string
   deleted_at?: Date | string | null
   role: Prisma.RolesCreateNestedOneWithoutUsersInput
   country: Prisma.CountriesCreateNestedOneWithoutUsersInput
@@ -358,8 +358,8 @@ export type UsersUncheckedCreateInput = {
   phone_number?: string | null
   country_id: string
   profile_image_url?: string | null
-  created_at?: Date | string | null
-  updated_at?: Date | string | null
+  created_at?: Date | string
+  updated_at?: Date | string
   deleted_at?: Date | string | null
   systemLogs?: Prisma.SystemLogsUncheckedCreateNestedManyWithoutUserInput
 }
@@ -373,8 +373,8 @@ export type UsersUpdateInput = {
   last_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profile_image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   role?: Prisma.RolesUpdateOneRequiredWithoutUsersNestedInput
   country?: Prisma.CountriesUpdateOneRequiredWithoutUsersNestedInput
@@ -392,8 +392,8 @@ export type UsersUncheckedUpdateInput = {
   phone_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country_id?: Prisma.StringFieldUpdateOperationsInput | string
   profile_image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   systemLogs?: Prisma.SystemLogsUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -409,8 +409,8 @@ export type UsersCreateManyInput = {
   phone_number?: string | null
   country_id: string
   profile_image_url?: string | null
-  created_at?: Date | string | null
-  updated_at?: Date | string | null
+  created_at?: Date | string
+  updated_at?: Date | string
   deleted_at?: Date | string | null
 }
 
@@ -423,8 +423,8 @@ export type UsersUpdateManyMutationInput = {
   last_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profile_image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
@@ -439,8 +439,8 @@ export type UsersUncheckedUpdateManyInput = {
   phone_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country_id?: Prisma.StringFieldUpdateOperationsInput | string
   profile_image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
@@ -618,8 +618,8 @@ export type UsersCreateWithoutRoleInput = {
   last_name?: string | null
   phone_number?: string | null
   profile_image_url?: string | null
-  created_at?: Date | string | null
-  updated_at?: Date | string | null
+  created_at?: Date | string
+  updated_at?: Date | string
   deleted_at?: Date | string | null
   country: Prisma.CountriesCreateNestedOneWithoutUsersInput
   systemLogs?: Prisma.SystemLogsCreateNestedManyWithoutUserInput
@@ -635,8 +635,8 @@ export type UsersUncheckedCreateWithoutRoleInput = {
   phone_number?: string | null
   country_id: string
   profile_image_url?: string | null
-  created_at?: Date | string | null
-  updated_at?: Date | string | null
+  created_at?: Date | string
+  updated_at?: Date | string
   deleted_at?: Date | string | null
   systemLogs?: Prisma.SystemLogsUncheckedCreateNestedManyWithoutUserInput
 }
@@ -681,8 +681,8 @@ export type UsersScalarWhereInput = {
   phone_number?: Prisma.StringNullableFilter<"Users"> | string | null
   country_id?: Prisma.StringFilter<"Users"> | string
   profile_image_url?: Prisma.StringNullableFilter<"Users"> | string | null
-  created_at?: Prisma.DateTimeNullableFilter<"Users"> | Date | string | null
-  updated_at?: Prisma.DateTimeNullableFilter<"Users"> | Date | string | null
+  created_at?: Prisma.DateTimeFilter<"Users"> | Date | string
+  updated_at?: Prisma.DateTimeFilter<"Users"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"Users"> | Date | string | null
 }
 
@@ -695,8 +695,8 @@ export type UsersCreateWithoutCountryInput = {
   last_name?: string | null
   phone_number?: string | null
   profile_image_url?: string | null
-  created_at?: Date | string | null
-  updated_at?: Date | string | null
+  created_at?: Date | string
+  updated_at?: Date | string
   deleted_at?: Date | string | null
   role: Prisma.RolesCreateNestedOneWithoutUsersInput
   systemLogs?: Prisma.SystemLogsCreateNestedManyWithoutUserInput
@@ -712,8 +712,8 @@ export type UsersUncheckedCreateWithoutCountryInput = {
   last_name?: string | null
   phone_number?: string | null
   profile_image_url?: string | null
-  created_at?: Date | string | null
-  updated_at?: Date | string | null
+  created_at?: Date | string
+  updated_at?: Date | string
   deleted_at?: Date | string | null
   systemLogs?: Prisma.SystemLogsUncheckedCreateNestedManyWithoutUserInput
 }
@@ -753,8 +753,8 @@ export type UsersCreateWithoutSystemLogsInput = {
   last_name?: string | null
   phone_number?: string | null
   profile_image_url?: string | null
-  created_at?: Date | string | null
-  updated_at?: Date | string | null
+  created_at?: Date | string
+  updated_at?: Date | string
   deleted_at?: Date | string | null
   role: Prisma.RolesCreateNestedOneWithoutUsersInput
   country: Prisma.CountriesCreateNestedOneWithoutUsersInput
@@ -771,8 +771,8 @@ export type UsersUncheckedCreateWithoutSystemLogsInput = {
   phone_number?: string | null
   country_id: string
   profile_image_url?: string | null
-  created_at?: Date | string | null
-  updated_at?: Date | string | null
+  created_at?: Date | string
+  updated_at?: Date | string
   deleted_at?: Date | string | null
 }
 
@@ -801,8 +801,8 @@ export type UsersUpdateWithoutSystemLogsInput = {
   last_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profile_image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   role?: Prisma.RolesUpdateOneRequiredWithoutUsersNestedInput
   country?: Prisma.CountriesUpdateOneRequiredWithoutUsersNestedInput
@@ -819,8 +819,8 @@ export type UsersUncheckedUpdateWithoutSystemLogsInput = {
   phone_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country_id?: Prisma.StringFieldUpdateOperationsInput | string
   profile_image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
@@ -834,8 +834,8 @@ export type UsersCreateManyRoleInput = {
   phone_number?: string | null
   country_id: string
   profile_image_url?: string | null
-  created_at?: Date | string | null
-  updated_at?: Date | string | null
+  created_at?: Date | string
+  updated_at?: Date | string
   deleted_at?: Date | string | null
 }
 
@@ -848,8 +848,8 @@ export type UsersUpdateWithoutRoleInput = {
   last_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profile_image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   country?: Prisma.CountriesUpdateOneRequiredWithoutUsersNestedInput
   systemLogs?: Prisma.SystemLogsUpdateManyWithoutUserNestedInput
@@ -865,8 +865,8 @@ export type UsersUncheckedUpdateWithoutRoleInput = {
   phone_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country_id?: Prisma.StringFieldUpdateOperationsInput | string
   profile_image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   systemLogs?: Prisma.SystemLogsUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -881,8 +881,8 @@ export type UsersUncheckedUpdateManyWithoutRoleInput = {
   phone_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country_id?: Prisma.StringFieldUpdateOperationsInput | string
   profile_image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
@@ -896,8 +896,8 @@ export type UsersCreateManyCountryInput = {
   last_name?: string | null
   phone_number?: string | null
   profile_image_url?: string | null
-  created_at?: Date | string | null
-  updated_at?: Date | string | null
+  created_at?: Date | string
+  updated_at?: Date | string
   deleted_at?: Date | string | null
 }
 
@@ -910,8 +910,8 @@ export type UsersUpdateWithoutCountryInput = {
   last_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profile_image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   role?: Prisma.RolesUpdateOneRequiredWithoutUsersNestedInput
   systemLogs?: Prisma.SystemLogsUpdateManyWithoutUserNestedInput
@@ -927,8 +927,8 @@ export type UsersUncheckedUpdateWithoutCountryInput = {
   last_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profile_image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   systemLogs?: Prisma.SystemLogsUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -943,8 +943,8 @@ export type UsersUncheckedUpdateManyWithoutCountryInput = {
   last_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profile_image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
@@ -1085,8 +1085,8 @@ export type $UsersPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     phone_number: string | null
     country_id: string
     profile_image_url: string | null
-    created_at: Date | null
-    updated_at: Date | null
+    created_at: Date
+    updated_at: Date
     deleted_at: Date | null
   }, ExtArgs["result"]["users"]>
   composites: {}

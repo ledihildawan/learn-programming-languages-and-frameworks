@@ -1,0 +1,18 @@
+meta {
+  name: create payment method
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{host}}/api/payment-methods
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "QRIS",
+    "is_active": true
+  }
+}

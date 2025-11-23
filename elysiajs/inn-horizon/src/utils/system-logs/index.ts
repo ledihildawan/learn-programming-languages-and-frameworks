@@ -1,4 +1,3 @@
-// src/utils/audit.ts → VERSI FINAL & BULLETPROOF (2025)
 import os from 'node:os';
 import { omit, title } from 'radash';
 import { db } from '../../db';
@@ -7,6 +6,9 @@ export type ActionType = 'CREATE' | 'UPDATE' | 'DELETE';
 export type LogSource = 'HTTP' | 'SEEDER' | 'MIGRATION' | 'CLI' | 'CRON' | 'TEST';
 export interface DataSnapshot extends Record<string, any> {}
 
+// ===============================================
+// CONFIGURATION
+// ===============================================
 const IGNORED_FIELDS = [
   'id',
   'Id',
@@ -27,8 +29,9 @@ const IGNORED_FIELDS = [
 
 const PRIORITY_FIELDS = ['status_id', 'role_id', 'is_active', 'total_cost', 'is_verified'] as const;
 
-const formatLabel = (str: string) => title(str.replace(/_/g, ' '));
-
+// ===============================================
+// UTILS
+// ===============================================
 const normalize = (val: any): string => {
   if (val === null || val === undefined) return '∅';
   if (typeof val === 'boolean') return val ? '✓' : '✗';
@@ -44,45 +47,56 @@ const normalize = (val: any): string => {
   return String(val);
 };
 
+export function getScriptUserAgent(name: string = 'Script') {
+  const runtime = typeof Bun !== 'undefined' ? `Bun/${Bun.version}` : `Node/${process.version}`;
+  return `InnHorizon/1.0-${name} (${os.platform()}/${os.release()}; ${os.arch()}) ${runtime}`;
+}
+
+// ===============================================
+// MESSAGE GENERATOR
+// ===============================================
 export function generateAuditMessage(
   actor: { id: string; role?: string },
   action: ActionType,
   table: string,
   recordId: string,
   oldData: DataSnapshot | null,
-  newData: DataSnapshot | null
+  newData: DataSnapshot | null,
+  isBulk: boolean = false
 ): string {
   const rolePrefix = actor.role ? `[${actor.role.toUpperCase()}] ` : '';
   const actorLabel = `${rolePrefix}User#${actor.id}`;
-  const tableLabel = formatLabel(table);
-  const rid = recordId === 'SEEDING' ? 'batch' : `#${recordId}`;
+  const rid = recordId.startsWith('BULK_') || recordId === 'SEEDING' ? 'batch' : `#${recordId}`;
 
-  // 1. BATCH SEEDING → Prioritas tertinggi
-  if (newData && 'batch_action' in newData && newData.batch_action === 'SEEDING') {
-    const count = (newData.total_records as number) ?? 0;
-    const names = (newData.names_list as string) ?? 'record(s)';
-    return `🟢 ${actorLabel} │ BATCH SEED → ${tableLabel} │ +${count} ${names}`;
+  // BULK / BATCH ACTION
+  if (isBulk || (newData && 'batch_action' in newData)) {
+    const batch = (newData as any) || {};
+    const count = batch.total_records ?? 0;
+    const meta = batch.metadata || batch.names_list || 'records';
+    const label =
+      batch.batch_action === 'SEEDING' ? 'BATCH SEED' : batch.batch_action?.replace(/_/g, ' ') || 'BULK ACTION';
+
+    const emoji = action === 'DELETE' ? '🔴' : action === 'UPDATE' ? '🟡' : '🟢';
+    return `${emoji} ${actorLabel} │ ${label} → ${table} │ ${count} ${meta}`;
   }
 
-  // 2. DELETE
+  // SINGLE ACTIONS
   if (action === 'DELETE') {
-    return `🔴 ${actorLabel} │ DELETE → ${tableLabel}${rid}`;
+    return `🔴 ${actorLabel} │ DELETE → ${table}${rid}`;
   }
 
-  // 3. CREATE (single)
   if (action === 'CREATE') {
     const safeNew = newData && typeof newData === 'object' ? newData : {};
     const fields = Object.keys(omit(safeNew, IGNORED_FIELDS)).length;
-    return `🟢 ${actorLabel} │ CREATE → ${tableLabel}${rid} │ ${fields} fields populated`;
+    return `🟢 ${actorLabel} │ CREATE → ${table}${rid} │ ${fields} fields populated`;
   }
 
-  // 4. UPDATE → Yang paling rawan error
+  // UPDATE (single)
   const oldObj = oldData && typeof oldData === 'object' ? oldData : {};
   const newObj = newData && typeof newData === 'object' ? newData : {};
 
   const cleanOld = omit(oldObj, IGNORED_FIELDS);
   const cleanNew = omit(newObj, IGNORED_FIELDS);
-
   const allKeys = new Set<string>([...Object.keys(cleanOld), ...Object.keys(cleanNew)]);
 
   const priority: string[] = [];
@@ -92,19 +106,15 @@ export function generateAuditMessage(
     const o = normalize(cleanOld[key]);
     const n = normalize(cleanNew[key]);
     if (o !== n) {
-      const label = formatLabel(key);
+      const label = title(key.replace(/_/g, ' '));
       const change = `${label}: ${o} → ${n}`;
-      if (PRIORITY_FIELDS.includes(key as any)) {
-        priority.push(change);
-      } else {
-        normal.push(change);
-      }
+      PRIORITY_FIELDS.includes(key as any) ? priority.push(change) : normal.push(change);
     }
   }
 
   const total = priority.length + normal.length;
   if (total === 0) {
-    return `🟡 ${actorLabel} │ UPDATE → ${tableLabel}${rid} │ No changes detected`;
+    return `🟡 ${actorLabel} │ UPDATE → ${table}${rid} │ No changes detected`;
   }
 
   let changes = priority.length > 0 ? priority.join(' │ ') : normal.join(' │ ');
@@ -112,11 +122,12 @@ export function generateAuditMessage(
     changes += ` │ +${normal.length} other`;
   }
 
-  return `🟡 ${actorLabel} │ UPDATE → ${tableLabel}${rid} │ ${changes}`;
+  return `🟡 ${actorLabel} │ UPDATE → ${table}${rid} │ ${changes}`;
 }
 
-// CREATE LOG — Satu pintu masuk saja
-
+// ===============================================
+// CREATE LOG — SATU PINTU MASUK
+// ===============================================
 export async function createAuditLog(
   action: ActionType,
   table: string,
@@ -126,13 +137,22 @@ export async function createAuditLog(
   userId: string | number,
   userRole = 'User',
   ip = '0.0.0.0',
-  ua = getScriptUserAgent('Script'),
+  ua = getScriptUserAgent(),
   options: {
-    route?: string; // hanya diisi kalau source = 'HTTP'
-    source: LogSource; // WAJIB!
+    route?: string;
+    source: LogSource;
   }
 ) {
   const { route, source } = options;
+
+  const isBulkAction = !!(
+    String(recordId).includes('BULK_') ||
+    recordId === 'SEEDING' ||
+    (newData && 'batch_action' in newData)
+  );
+
+  const finalOldData = isBulkAction ? undefined : (oldData ?? undefined);
+  const finalNewData = isBulkAction ? undefined : (newData ?? undefined);
 
   const message = generateAuditMessage(
     { id: String(userId), role: userRole },
@@ -140,7 +160,8 @@ export async function createAuditLog(
     table,
     String(recordId),
     oldData,
-    newData
+    newData,
+    isBulkAction
   );
 
   try {
@@ -149,8 +170,8 @@ export async function createAuditLog(
         action_type: action,
         table_name: table,
         record_id: String(recordId),
-        old_data: oldData ?? undefined,
-        new_data: newData ?? undefined,
+        old_data: finalOldData,
+        new_data: finalNewData,
         user_id: String(userId),
         ip_address: ip,
         user_agent: ua,
@@ -162,9 +183,4 @@ export async function createAuditLog(
   } catch (err) {
     console.error('Audit log gagal dicatat:', (err as any).message);
   }
-}
-
-export function getScriptUserAgent(name: string) {
-  const runtime = typeof Bun !== 'undefined' ? `Bun/${Bun.version}` : `Node/${process.version}`;
-  return `InnHorizon/1.0-${name} (${os.platform()}/${os.release()}; ${os.arch()}) ${runtime}`;
 }

@@ -157,8 +157,8 @@ export type CountriesGroupByOutputType = {
   id: string
   name: string
   code: string
-  created_at: Date | null
-  updated_at: Date | null
+  created_at: Date
+  updated_at: Date
   deleted_at: Date | null
   _count: CountriesCountAggregateOutputType | null
   _min: CountriesMinAggregateOutputType | null
@@ -187,8 +187,8 @@ export type CountriesWhereInput = {
   id?: Prisma.StringFilter<"Countries"> | string
   name?: Prisma.StringFilter<"Countries"> | string
   code?: Prisma.StringFilter<"Countries"> | string
-  created_at?: Prisma.DateTimeNullableFilter<"Countries"> | Date | string | null
-  updated_at?: Prisma.DateTimeNullableFilter<"Countries"> | Date | string | null
+  created_at?: Prisma.DateTimeFilter<"Countries"> | Date | string
+  updated_at?: Prisma.DateTimeFilter<"Countries"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"Countries"> | Date | string | null
   users?: Prisma.UsersListRelationFilter
 }
@@ -197,8 +197,8 @@ export type CountriesOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   code?: Prisma.SortOrder
-  created_at?: Prisma.SortOrderInput | Prisma.SortOrder
-  updated_at?: Prisma.SortOrderInput | Prisma.SortOrder
+  created_at?: Prisma.SortOrder
+  updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrderInput | Prisma.SortOrder
   users?: Prisma.UsersOrderByRelationAggregateInput
 }
@@ -210,8 +210,8 @@ export type CountriesWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.CountriesWhereInput[]
   NOT?: Prisma.CountriesWhereInput | Prisma.CountriesWhereInput[]
   name?: Prisma.StringFilter<"Countries"> | string
-  created_at?: Prisma.DateTimeNullableFilter<"Countries"> | Date | string | null
-  updated_at?: Prisma.DateTimeNullableFilter<"Countries"> | Date | string | null
+  created_at?: Prisma.DateTimeFilter<"Countries"> | Date | string
+  updated_at?: Prisma.DateTimeFilter<"Countries"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"Countries"> | Date | string | null
   users?: Prisma.UsersListRelationFilter
 }, "id" | "code">
@@ -220,8 +220,8 @@ export type CountriesOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   code?: Prisma.SortOrder
-  created_at?: Prisma.SortOrderInput | Prisma.SortOrder
-  updated_at?: Prisma.SortOrderInput | Prisma.SortOrder
+  created_at?: Prisma.SortOrder
+  updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.CountriesCountOrderByAggregateInput
   _max?: Prisma.CountriesMaxOrderByAggregateInput
@@ -235,8 +235,8 @@ export type CountriesScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Countries"> | string
   name?: Prisma.StringWithAggregatesFilter<"Countries"> | string
   code?: Prisma.StringWithAggregatesFilter<"Countries"> | string
-  created_at?: Prisma.DateTimeNullableWithAggregatesFilter<"Countries"> | Date | string | null
-  updated_at?: Prisma.DateTimeNullableWithAggregatesFilter<"Countries"> | Date | string | null
+  created_at?: Prisma.DateTimeWithAggregatesFilter<"Countries"> | Date | string
+  updated_at?: Prisma.DateTimeWithAggregatesFilter<"Countries"> | Date | string
   deleted_at?: Prisma.DateTimeNullableWithAggregatesFilter<"Countries"> | Date | string | null
 }
 
@@ -244,8 +244,8 @@ export type CountriesCreateInput = {
   id?: string
   name: string
   code: string
-  created_at?: Date | string | null
-  updated_at?: Date | string | null
+  created_at?: Date | string
+  updated_at?: Date | string
   deleted_at?: Date | string | null
   users?: Prisma.UsersCreateNestedManyWithoutCountryInput
 }
@@ -254,8 +254,8 @@ export type CountriesUncheckedCreateInput = {
   id?: string
   name: string
   code: string
-  created_at?: Date | string | null
-  updated_at?: Date | string | null
+  created_at?: Date | string
+  updated_at?: Date | string
   deleted_at?: Date | string | null
   users?: Prisma.UsersUncheckedCreateNestedManyWithoutCountryInput
 }
@@ -264,8 +264,8 @@ export type CountriesUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
-  created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   users?: Prisma.UsersUpdateManyWithoutCountryNestedInput
 }
@@ -274,8 +274,8 @@ export type CountriesUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
-  created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   users?: Prisma.UsersUncheckedUpdateManyWithoutCountryNestedInput
 }
@@ -284,8 +284,8 @@ export type CountriesCreateManyInput = {
   id?: string
   name: string
   code: string
-  created_at?: Date | string | null
-  updated_at?: Date | string | null
+  created_at?: Date | string
+  updated_at?: Date | string
   deleted_at?: Date | string | null
 }
 
@@ -293,8 +293,8 @@ export type CountriesUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
-  created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
@@ -302,8 +302,8 @@ export type CountriesUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
-  created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
@@ -357,8 +357,8 @@ export type CountriesCreateWithoutUsersInput = {
   id?: string
   name: string
   code: string
-  created_at?: Date | string | null
-  updated_at?: Date | string | null
+  created_at?: Date | string
+  updated_at?: Date | string
   deleted_at?: Date | string | null
 }
 
@@ -366,8 +366,8 @@ export type CountriesUncheckedCreateWithoutUsersInput = {
   id?: string
   name: string
   code: string
-  created_at?: Date | string | null
-  updated_at?: Date | string | null
+  created_at?: Date | string
+  updated_at?: Date | string
   deleted_at?: Date | string | null
 }
 
@@ -391,8 +391,8 @@ export type CountriesUpdateWithoutUsersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
-  created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
@@ -400,8 +400,8 @@ export type CountriesUncheckedUpdateWithoutUsersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
-  created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
@@ -491,8 +491,8 @@ export type $CountriesPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     id: string
     name: string
     code: string
-    created_at: Date | null
-    updated_at: Date | null
+    created_at: Date
+    updated_at: Date
     deleted_at: Date | null
   }, ExtArgs["result"]["countries"]>
   composites: {}

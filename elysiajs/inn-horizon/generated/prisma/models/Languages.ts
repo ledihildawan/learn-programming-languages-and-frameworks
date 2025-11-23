@@ -157,8 +157,8 @@ export type LanguagesGroupByOutputType = {
   id: string
   code: string
   name: string
-  created_at: Date | null
-  updated_at: Date | null
+  created_at: Date
+  updated_at: Date
   deleted_at: Date | null
   _count: LanguagesCountAggregateOutputType | null
   _min: LanguagesMinAggregateOutputType | null
@@ -187,8 +187,8 @@ export type LanguagesWhereInput = {
   id?: Prisma.StringFilter<"Languages"> | string
   code?: Prisma.StringFilter<"Languages"> | string
   name?: Prisma.StringFilter<"Languages"> | string
-  created_at?: Prisma.DateTimeNullableFilter<"Languages"> | Date | string | null
-  updated_at?: Prisma.DateTimeNullableFilter<"Languages"> | Date | string | null
+  created_at?: Prisma.DateTimeFilter<"Languages"> | Date | string
+  updated_at?: Prisma.DateTimeFilter<"Languages"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"Languages"> | Date | string | null
 }
 
@@ -196,8 +196,8 @@ export type LanguagesOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   code?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  created_at?: Prisma.SortOrderInput | Prisma.SortOrder
-  updated_at?: Prisma.SortOrderInput | Prisma.SortOrder
+  created_at?: Prisma.SortOrder
+  updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrderInput | Prisma.SortOrder
 }
 
@@ -208,8 +208,8 @@ export type LanguagesWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.LanguagesWhereInput[]
   NOT?: Prisma.LanguagesWhereInput | Prisma.LanguagesWhereInput[]
   name?: Prisma.StringFilter<"Languages"> | string
-  created_at?: Prisma.DateTimeNullableFilter<"Languages"> | Date | string | null
-  updated_at?: Prisma.DateTimeNullableFilter<"Languages"> | Date | string | null
+  created_at?: Prisma.DateTimeFilter<"Languages"> | Date | string
+  updated_at?: Prisma.DateTimeFilter<"Languages"> | Date | string
   deleted_at?: Prisma.DateTimeNullableFilter<"Languages"> | Date | string | null
 }, "id" | "code">
 
@@ -217,8 +217,8 @@ export type LanguagesOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   code?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  created_at?: Prisma.SortOrderInput | Prisma.SortOrder
-  updated_at?: Prisma.SortOrderInput | Prisma.SortOrder
+  created_at?: Prisma.SortOrder
+  updated_at?: Prisma.SortOrder
   deleted_at?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.LanguagesCountOrderByAggregateInput
   _max?: Prisma.LanguagesMaxOrderByAggregateInput
@@ -232,8 +232,8 @@ export type LanguagesScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Languages"> | string
   code?: Prisma.StringWithAggregatesFilter<"Languages"> | string
   name?: Prisma.StringWithAggregatesFilter<"Languages"> | string
-  created_at?: Prisma.DateTimeNullableWithAggregatesFilter<"Languages"> | Date | string | null
-  updated_at?: Prisma.DateTimeNullableWithAggregatesFilter<"Languages"> | Date | string | null
+  created_at?: Prisma.DateTimeWithAggregatesFilter<"Languages"> | Date | string
+  updated_at?: Prisma.DateTimeWithAggregatesFilter<"Languages"> | Date | string
   deleted_at?: Prisma.DateTimeNullableWithAggregatesFilter<"Languages"> | Date | string | null
 }
 
@@ -241,8 +241,8 @@ export type LanguagesCreateInput = {
   id?: string
   code: string
   name: string
-  created_at?: Date | string | null
-  updated_at?: Date | string | null
+  created_at?: Date | string
+  updated_at?: Date | string
   deleted_at?: Date | string | null
 }
 
@@ -250,8 +250,8 @@ export type LanguagesUncheckedCreateInput = {
   id?: string
   code: string
   name: string
-  created_at?: Date | string | null
-  updated_at?: Date | string | null
+  created_at?: Date | string
+  updated_at?: Date | string
   deleted_at?: Date | string | null
 }
 
@@ -259,8 +259,8 @@ export type LanguagesUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
@@ -268,8 +268,8 @@ export type LanguagesUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
@@ -277,8 +277,8 @@ export type LanguagesCreateManyInput = {
   id?: string
   code: string
   name: string
-  created_at?: Date | string | null
-  updated_at?: Date | string | null
+  created_at?: Date | string
+  updated_at?: Date | string
   deleted_at?: Date | string | null
 }
 
@@ -286,8 +286,8 @@ export type LanguagesUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
@@ -295,8 +295,8 @@ export type LanguagesUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
@@ -374,8 +374,8 @@ export type $LanguagesPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     id: string
     code: string
     name: string
-    created_at: Date | null
-    updated_at: Date | null
+    created_at: Date
+    updated_at: Date
     deleted_at: Date | null
   }, ExtArgs["result"]["languages"]>
   composites: {}

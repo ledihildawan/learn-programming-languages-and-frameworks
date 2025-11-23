@@ -523,10 +523,6 @@ export type SystemLogsUncheckedUpdateManyWithoutUserNestedInput = {
   deleteMany?: Prisma.SystemLogsScalarWhereInput | Prisma.SystemLogsScalarWhereInput[]
 }
 
-export type DateTimeFieldUpdateOperationsInput = {
-  set?: Date | string
-}
-
 export type SystemLogsCreateWithoutUserInput = {
   id?: string
   action_type: string

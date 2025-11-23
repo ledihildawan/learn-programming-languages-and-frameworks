@@ -26,13 +26,13 @@ async function logBatchSeed(systemUserId: string, table: string, items: any[]) {
 
   await createAuditLog(
     'CREATE',
-    'roles',
+    table,
     'SEEDING',
     null,
     {
       batch_action: 'SEEDING',
-      total_records: rolesData.length,
-      names_list: rolesData.map((r) => r.name).join(', '),
+      total_records: items.length,
+      names_list: names,
     },
     systemUserId,
     'System',

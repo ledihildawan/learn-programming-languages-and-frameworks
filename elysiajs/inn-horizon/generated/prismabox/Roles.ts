@@ -8,8 +8,8 @@ export const RolesPlain = t.Object(
   {
     id: t.String(),
     name: t.String(),
-    created_at: __nullable__(t.Date()),
-    updated_at: __nullable__(t.Date()),
+    created_at: t.Date(),
+    updated_at: t.Date(),
     deleted_at: __nullable__(t.Date()),
   },
   { additionalProperties: false },
@@ -30,8 +30,8 @@ export const RolesRelations = t.Object(
           phone_number: __nullable__(t.String()),
           country_id: t.String(),
           profile_image_url: __nullable__(t.String()),
-          created_at: __nullable__(t.Date()),
-          updated_at: __nullable__(t.Date()),
+          created_at: t.Date(),
+          updated_at: t.Date(),
           deleted_at: __nullable__(t.Date()),
         },
         { additionalProperties: false },
@@ -45,7 +45,7 @@ export const RolesRelations = t.Object(
 export const RolesPlainInputCreate = t.Object(
   {
     name: t.String(),
-    created_at: t.Optional(__nullable__(t.Date())),
+    created_at: t.Optional(t.Date()),
     deleted_at: t.Optional(__nullable__(t.Date())),
   },
   { additionalProperties: false },
@@ -54,7 +54,7 @@ export const RolesPlainInputCreate = t.Object(
 export const RolesPlainInputUpdate = t.Object(
   {
     name: t.Optional(t.String()),
-    created_at: t.Optional(__nullable__(t.Date())),
+    created_at: t.Optional(t.Date()),
     deleted_at: t.Optional(__nullable__(t.Date())),
   },
   { additionalProperties: false },

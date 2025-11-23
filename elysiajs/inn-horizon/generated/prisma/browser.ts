@@ -42,3 +42,8 @@ export type SystemLogs = Prisma.SystemLogsModel
  * 
  */
 export type Languages = Prisma.LanguagesModel
+/**
+ * Model PaymentMethods
+ * 
+ */
+export type PaymentMethods = Prisma.PaymentMethodsModel

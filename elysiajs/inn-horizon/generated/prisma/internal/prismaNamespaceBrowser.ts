@@ -55,7 +55,8 @@ export const ModelName = {
   Countries: 'Countries',
   Users: 'Users',
   SystemLogs: 'SystemLogs',
-  Languages: 'Languages'
+  Languages: 'Languages',
+  PaymentMethods: 'PaymentMethods'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -145,6 +146,18 @@ export const LanguagesScalarFieldEnum = {
 } as const
 
 export type LanguagesScalarFieldEnum = (typeof LanguagesScalarFieldEnum)[keyof typeof LanguagesScalarFieldEnum]
+
+
+export const PaymentMethodsScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  is_active: 'is_active',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  deleted_at: 'deleted_at'
+} as const
+
+export type PaymentMethodsScalarFieldEnum = (typeof PaymentMethodsScalarFieldEnum)[keyof typeof PaymentMethodsScalarFieldEnum]
 
 
 export const SortOrder = {

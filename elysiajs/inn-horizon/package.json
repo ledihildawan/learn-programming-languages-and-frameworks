@@ -6,11 +6,14 @@
     "dev": "bun run --watch src/index.ts"
   },
   "dependencies": {
+    "@grotto/logysia": "^0.1.6",
     "@prisma/adapter-pg": "^7.0.0",
     "@prisma/client": "^7.0.0",
     "@prisma/extension-accelerate": "^3.0.0",
     "bcryptjs": "^3.0.3",
     "elysia": "latest",
+    "elysia-helmet": "^3.0.0",
+    "elysia-rate-limit": "^4.4.2",
     "ipaddr.js": "^2.2.0",
     "prismabox": "^1.1.25",
     "radash": "^12.1.1"
