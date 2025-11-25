@@ -23,7 +23,7 @@ export const CountryRelations = t.Object(
         {
           id: t.String(),
           role_id: t.String(),
-          username: t.String(),
+          username: __nullable__(t.String()),
           email: t.String(),
           password_hash: t.String(),
           first_name: __nullable__(t.String()),
@@ -31,6 +31,9 @@ export const CountryRelations = t.Object(
           phone_number: __nullable__(t.String()),
           country_id: t.String(),
           profile_image_url: __nullable__(t.String()),
+          is_active: __nullable__(t.Boolean()),
+          is_verified: __nullable__(t.Boolean()),
+          email_verified_at: __nullable__(t.Date()),
           created_at: t.Date(),
           updated_at: t.Date(),
           deleted_at: __nullable__(t.Date()),

@@ -110,6 +110,9 @@ export const UserScalarFieldEnum = {
   phone_number: 'phone_number',
   country_id: 'country_id',
   profile_image_url: 'profile_image_url',
+  is_active: 'is_active',
+  is_verified: 'is_verified',
+  email_verified_at: 'email_verified_at',
   created_at: 'created_at',
   updated_at: 'updated_at',
   deleted_at: 'deleted_at'
@@ -121,19 +124,21 @@ export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof User
 export const SystemLogScalarFieldEnum = {
   id: 'id',
   user_id: 'user_id',
-  action_type: 'action_type',
-  status: 'status',
-  duration_ms: 'duration_ms',
+  actor_role: 'actor_role',
+  action: 'action',
   table_name: 'table_name',
   record_id: 'record_id',
+  changes: 'changes',
   old_data: 'old_data',
   new_data: 'new_data',
+  duration_ms: 'duration_ms',
+  created_at: 'created_at',
   ip_address: 'ip_address',
   user_agent: 'user_agent',
-  route_endpoint: 'route_endpoint',
-  source: 'source',
+  route: 'route',
+  status: 'status',
   message: 'message',
-  created_at: 'created_at'
+  metadata: 'metadata'
 } as const
 
 export type SystemLogScalarFieldEnum = (typeof SystemLogScalarFieldEnum)[keyof typeof SystemLogScalarFieldEnum]

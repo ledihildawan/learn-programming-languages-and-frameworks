@@ -40,7 +40,7 @@ CREATE TABLE "countries" (
 CREATE TABLE "users" (
     "id" TEXT NOT NULL,
     "role_id" TEXT NOT NULL,
-    "username" VARCHAR(50) NOT NULL,
+    "username" VARCHAR(50),
     "email" VARCHAR(255) NOT NULL,
     "password_hash" VARCHAR(255) NOT NULL,
     "first_name" VARCHAR(100),
@@ -48,6 +48,9 @@ CREATE TABLE "users" (
     "phone_number" VARCHAR(20),
     "country_id" TEXT NOT NULL,
     "profile_image_url" VARCHAR(512),
+    "is_active" BOOLEAN DEFAULT false,
+    "is_verified" BOOLEAN DEFAULT false,
+    "email_verified_at" TIMESTAMP(3),
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
     "deleted_at" TIMESTAMP(3),
@@ -58,20 +61,22 @@ CREATE TABLE "users" (
 -- CreateTable
 CREATE TABLE "system_logs" (
     "id" TEXT NOT NULL,
-    "user_id" TEXT NOT NULL,
-    "action_type" "SystemLogsActionType" NOT NULL,
-    "status" "SystemLogsStatus" NOT NULL,
-    "duration_ms" INTEGER NOT NULL,
-    "table_name" VARCHAR(50) NOT NULL,
+    "user_id" TEXT,
+    "actor_role" TEXT,
+    "action" TEXT NOT NULL,
+    "table_name" TEXT NOT NULL,
     "record_id" TEXT,
+    "changes" JSONB,
     "old_data" JSONB,
     "new_data" JSONB,
-    "ip_address" VARCHAR(45),
-    "user_agent" VARCHAR(512),
-    "route_endpoint" VARCHAR(255),
-    "source" "SystemLogsSource" NOT NULL,
-    "message" TEXT,
+    "duration_ms" INTEGER NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "ip_address" TEXT,
+    "user_agent" TEXT,
+    "route" TEXT,
+    "status" TEXT NOT NULL,
+    "message" TEXT,
+    "metadata" JSONB,
 
     CONSTRAINT "system_logs_pkey" PRIMARY KEY ("id")
 );
@@ -131,4 +136,4 @@ ALTER TABLE "users" ADD CONSTRAINT "users_role_id_fkey" FOREIGN KEY ("role_id") 
 ALTER TABLE "users" ADD CONSTRAINT "users_country_id_fkey" FOREIGN KEY ("country_id") REFERENCES "countries"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "system_logs" ADD CONSTRAINT "system_logs_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "system_logs" ADD CONSTRAINT "system_logs_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE CASCADE;

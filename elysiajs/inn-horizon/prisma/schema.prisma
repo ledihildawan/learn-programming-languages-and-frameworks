@@ -48,17 +48,20 @@ model Country {
 
 model User {
   id                String      @id @default(cuid())
-  role              Role        @relation(fields: [role_id], references: [id])
   role_id           String
-  username          String      @unique @db.VarChar(50)
+  role              Role        @relation(fields: [role_id], references: [id])
+  username          String?     @unique @db.VarChar(50)
   email             String      @unique @db.VarChar(255)
   password_hash     String      @db.VarChar(255)
   first_name        String?     @db.VarChar(100)
   last_name         String?     @db.VarChar(100)
   phone_number      String?     @db.VarChar(20)
-  country           Country     @relation(fields: [country_id], references: [id])
   country_id        String
+  country           Country     @relation(fields: [country_id], references: [id])
   profile_image_url String?     @db.VarChar(512)
+  is_active         Boolean?    @default(false)
+  is_verified       Boolean?    @default(false)
+  email_verified_at DateTime?
   created_at        DateTime    @default(now())
   updated_at        DateTime    @updatedAt
   deleted_at        DateTime?
@@ -89,23 +92,58 @@ enum SystemLogsSource {
 }
 
 model SystemLog {
-  id             String               @id @default(cuid())
-  user           User                 @relation(fields: [user_id], references: [id])
-  user_id        String
-  action_type    SystemLogsActionType
-  status         SystemLogsStatus
-  duration_ms    Int
-  table_name     String               @db.VarChar(50)
-  record_id      String?
-  old_data       Json?
-  new_data       Json?
-  ip_address     String?              @db.VarChar(45)
-  user_agent     String?              @db.VarChar(512)
-  route_endpoint String?              @db.VarChar(255)
-  source         SystemLogsSource
-  message        String?              @db.Text
-  created_at     DateTime             @default(now())
+  id String @id @default(cuid())
 
+  // WHO
+  user_id    String?
+  user       User?   @relation(fields: [user_id], references: [id])
+  actor_role String? // ADMIN | HOST | CUSTOMER | SYSTEM
+
+  // WHAT
+  action     String // UPDATE | CREATE | PRICING_RUN | FRAUD_BLOCK
+  table_name String
+  record_id  String?
+
+  // CHANGES (dari human-diff)
+  changes Json?
+
+  // DATA (opsional)
+  old_data Json?
+  new_data Json?
+
+  // WHEN & HOW LONG
+  duration_ms Int
+  created_at  DateTime @default(now())
+
+  // FROM WHERE — WAJIB untuk audit!
+  ip_address String?
+  user_agent String?
+  route      String? // /api/v1/hotels/1287 | /webhook/xendit | null
+
+  // STATUS & MESSAGE
+  status  String // SUCCESS | FAILURE | BLOCKED
+  message String?
+
+  // METADATA — Tempat untuk semua konteks kompleks
+  metadata Json? // Contoh isi:
+  // {
+  //   "source": "HTTP" | "CRON" | "WEBHOOK" | "SEEDER" | "MIGRATION" | "TEST",
+  //   "batch_id": "LEBARAN_2025",
+  //   "request_id": "req_abc123",
+  //   "webhook_provider": "xendit",
+  //   "cron_name": "daily_pricing_run",
+  //   "revenue_impact": 4285000000
+  // }
+
+  // INDEX — SUPER FAST
+  // @@index([user_id])
+  // @@index([actor_role])
+  // @@index([action])
+  // @@index([table_name])
+  // @@index([record_id])
+  // @@index([timestamp(sort: Desc)])
+  // @@index([status])
+  // @@index([duration_ms])
   @@map("system_logs")
 }
 

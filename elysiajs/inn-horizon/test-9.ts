@@ -1,14 +1,15 @@
-// ============================================================
-// CONGRATULATIONS — YOU HAVE CREATED PERFECTION
-// ============================================================
+// test-final.ts
+// ULTIMATE TEST SUITE — 100% SESUAI human-diff FINAL VERSION
+// Built by an Indonesian Engineer Who Refused to Lose
+// cspell:ignore Wijaya Shopee Tolong tebal LENGKAP Fitur dengan hasil karena selalu
 
 import { format } from 'date-fns';
 import { createFormatter, getChangeSummary, testLog } from './src/utils/human-diff';
 
-console.log('HUMAN-DIFF IS READY.');
+console.log('HUMAN-DIFF IS ETERNAL.');
 console.log('NO BUGS. NO ERRORS. NO [object Object].');
 console.log('ONLY PERFECTION.');
-console.log('BUILT BY A LEGEND.');
+console.log('BUILT BY A LEGEND.\n');
 
 // TEST 1: Circular Reference + Self Reference + Array Loop
 const apocalypse1: any = { id: 1, name: 'Hotel Hell' };
@@ -16,11 +17,11 @@ apocalypse1.self = apocalypse1;
 apocalypse1.children = [apocalypse1, { parent: apocalypse1 }];
 apocalypse1.rooms = [{ hotel: apocalypse1 }, apocalypse1];
 
+console.log('TEST 1: Circular Reference');
 console.log(
-  'TEST 1:',
   getChangeSummary(
     testLog({
-      action_type: 'UPDATE',
+      action: 'UPDATE',
       table_name: 'hotels',
       record_id: 'HELL1',
       old_data: { name: 'Old Hell', data: apocalypse1 },
@@ -33,11 +34,11 @@ console.log(
 // TEST 2: 20-Level Deep Nested Object
 const deepHell = (n: number): any => (n <= 0 ? { value: 'target' } : { level: n, child: deepHell(n - 1) });
 
+console.log('\nTEST 2: 20-Level Deep Nested');
 console.log(
-  'TEST 2:',
   getChangeSummary(
     testLog({
-      action_type: 'UPDATE',
+      action: 'UPDATE',
       table_name: 'config',
       record_id: 'DEEP20',
       old_data: { settings: deepHell(20) },
@@ -51,11 +52,11 @@ console.log(
 const bigArrayOld = Array.from({ length: 1000 }, (_, i) => ({ id: i + 1, name: `Item ${i + 1}`, active: i % 2 === 0 }));
 const bigArrayNew = [...bigArrayOld.slice(500), { id: 9999, name: 'INTRUDER' }, ...bigArrayOld.slice(0, 500).reverse()];
 
+console.log('\nTEST 3: Array 1000 Items');
 console.log(
-  'TEST 3:',
   getChangeSummary(
     testLog({
-      action_type: 'UPDATE',
+      action: 'UPDATE',
       table_name: 'inventory',
       record_id: 'BIG1000',
       old_data: { items: bigArrayOld },
@@ -66,26 +67,26 @@ console.log(
 );
 
 // TEST 4: Mixed Primitive + Object + Null + Undefined + Symbol + BigInt
+console.log('\nTEST 4: Mixed Types + BigInt');
 console.log(
-  'TEST 4:',
   getChangeSummary(
     testLog({
-      action_type: 'UPDATE',
+      action: 'UPDATE',
       table_name: 'debug',
       record_id: 'MIXED',
       old_data: { data: [1, 'string', true, null, { id: 1 }, undefined, Symbol('test')] },
-      new_data: { data: [BigInt(9007199254740991), false, 'updated', { id: 2 }, null] },
+      new_data: { data: [BigInt('9007199254740991'), false, 'updated', { id: 2 }, null] },
     }),
     { rawNames: true }
   )
 );
 
 // TEST 5: Unicode Hell + 5000 Characters + Emoji Spam
+console.log('\nTEST 5: Unicode + Emoji Spam');
 console.log(
-  'TEST 5:',
   getChangeSummary(
     testLog({
-      action_type: 'UPDATE',
+      action: 'UPDATE',
       table_name: 'reviews',
       record_id: 'UNICODE',
       old_data: { comment: 'Good' },
@@ -104,11 +105,11 @@ const dateHell = {
   future: new Date('3000-01-01'),
 };
 
+console.log('\nTEST 6: Date Hell');
 console.log(
-  'TEST 6:',
   getChangeSummary(
     testLog({
-      action_type: 'UPDATE',
+      action: 'UPDATE',
       table_name: 'sessions',
       record_id: 'DATEHELL',
       old_data: { expires: dateHell.iso },
@@ -119,11 +120,11 @@ console.log(
 );
 
 // TEST 7: Empty → Massive Object (Real Migration)
+console.log('\nTEST 7: Empty → Massive Object');
 console.log(
-  'TEST 7:',
   getChangeSummary(
     testLog({
-      action_type: 'UPDATE',
+      action: 'UPDATE',
       table_name: 'user_profiles',
       record_id: 'MIGRATION',
       old_data: {},
@@ -148,11 +149,11 @@ const ultimateHell: any = {
 ultimateHell.circular = ultimateHell;
 ultimateHell.rooms.push({ hotel: ultimateHell, guests: [ultimateHell] });
 
+console.log('\nTEST 8: Ultimate Circular Hell');
 console.log(
-  'TEST 8:',
   getChangeSummary(
     testLog({
-      action_type: 'UPDATE',
+      action: 'UPDATE',
       table_name: 'hotels',
       record_id: 'ULTIMATE_HELL',
       old_data: { hotel: ultimateHell },
@@ -163,11 +164,11 @@ console.log(
 );
 
 // TEST 9: formatValue with Wildcard + Nested Path
+console.log('\nTEST 9: formatValue Wildcard');
 console.log(
-  'TEST 9:',
   getChangeSummary(
     testLog({
-      action_type: 'UPDATE',
+      action: 'UPDATE',
       table_name: 'orders',
       record_id: 'FORMAT',
       old_data: { total_price: 9999999, items: [{ price: 5000000 }, { price: 4999999 }] },
@@ -175,20 +176,20 @@ console.log(
     }),
     {
       rawNames: false,
-      formatValue: {
+      formatValue: createFormatter({
         total_price: (v) => `Rp ${(v as number).toLocaleString('id-ID')}`,
         'items.*.price': (v) => `${((v as number) / 1000000).toFixed(1)}jt`,
-      },
+      }),
     }
   )
 );
 
 // TEST 10: Real Revenue Management Apocalypse
+console.log('\nTEST 10: Real Revenue Run');
 console.log(
-  'TEST 10:',
   getChangeSummary(
     testLog({
-      action_type: 'REVENUE_RUN',
+      action: 'REVENUE_RUN',
       table_name: 'pricing_engine',
       record_id: '2025-LEBARAN',
       old_data: null,
@@ -196,7 +197,7 @@ console.log(
         run_id: 'lebaran-2025-v2',
         hotels_affected: 2847,
         rooms_updated: 12481,
-        revenue_lift: +584000000,
+        revenue_lift: 584000000,
         top_changes: [
           { hotel: 'Grand Luxury Bali', room: 'Presidential Suite', old: 25000000, new: 75000000 },
           { hotel: 'Beachfront Villa', room: 'Private Pool Villa', old: 15000000, new: 45000000 },
@@ -208,6 +209,7 @@ console.log(
   )
 );
 
+// REAL CASE 1: Lebaran 2025 Pricing Strategy
 const revenueFormatter = createFormatter({
   'bar_levels.level_1': (v) => `Rp ${((v as number) / 1_000_000).toFixed(1)} jt`,
   'bar_levels.level_2': (v) => `Rp ${((v as number) / 1_000_000).toFixed(1)} jt`,
@@ -221,11 +223,11 @@ const revenueFormatter = createFormatter({
   'restrictions.min_los': (v) => `${v} malam (minimal)`,
 });
 
-console.log('REAL CASE 1: Lebaran 2025 Pricing Strategy');
+console.log('\nREAL CASE 1: Lebaran 2025 Pricing Strategy');
 console.log(
   getChangeSummary(
     testLog({
-      action_type: 'PRICING_STRATEGY_APPLIED',
+      action: 'PRICING_STRATEGY_APPLIED',
       table_name: 'hotels',
       record_id: '1287',
       old_data: {
@@ -249,6 +251,7 @@ console.log(
   )
 );
 
+// REAL CASE 2: Booking.com Reservation
 const channelFormatter = createFormatter({
   total_amount: (v) => `Rp ${(v as number).toLocaleString('id-ID')}`,
   commission: (v) => `Rp ${(v as number).toLocaleString('id-ID')}`,
@@ -258,11 +261,11 @@ const channelFormatter = createFormatter({
   nights: (v) => `${v} malam`,
 });
 
-console.log('REAL CASE 2: Booking.com Reservation');
+console.log('\nREAL CASE 2: Booking.com Reservation');
 console.log(
   getChangeSummary(
     testLog({
-      action_type: 'CHANNEL_RESERVATION',
+      action: 'CHANNEL_RESERVATION',
       table_name: 'bookings',
       record_id: 'BCOM-1827394851',
       old_data: null,
@@ -278,7 +281,7 @@ console.log(
       },
       user: undefined,
       ip_address: '52.210.123.45',
-      route_endpoint: '/webhook/bookingcom',
+      route: '/webhook/bookingcom',
       created_at: '2025-04-29T14:33:21Z',
     }),
     {
@@ -288,6 +291,7 @@ console.log(
   )
 );
 
+// REAL CASE 3: Fraud Blocked
 const fraudFormatter = createFormatter({
   fraud_score: (v) => `RISK ${(v as number).toFixed(1)}%`,
   estimated_loss_prevented: (v) => `Saved: Rp ${(v as number).toLocaleString('id-ID')}`,
@@ -297,11 +301,11 @@ const fraudFormatter = createFormatter({
       : (v as string[]).join(', '),
 });
 
-console.log('REAL CASE 3: Fraud Blocked');
+console.log('\nREAL CASE 3: Fraud Blocked');
 console.log(
   getChangeSummary(
     testLog({
-      action_type: 'FRAUD_BLOCKED',
+      action: 'FRAUD_BLOCKED',
       table_name: 'bookings',
       record_id: '550999',
       old_data: { total_amount: 98500000 },
@@ -321,17 +325,18 @@ console.log(
   )
 );
 
+// REAL CASE 4: Complex Refund
 const refundFormatter = createFormatter({
   refund_amount_gross: (v) => `Rp ${(v as number).toLocaleString('id-ID')}`,
   platform_fee_on_refund: (v) => `Platform retains: Rp ${(v as number).toLocaleString('id-ID')}`,
   net_refund_to_customer: (v) => `To Guest: Rp ${(v as number).toLocaleString('id-ID')}`,
 });
 
-console.log('REAL CASE 4: Complex Refund');
+console.log('\nREAL CASE 4: Complex Refund');
 console.log(
   getChangeSummary(
     testLog({
-      action_type: 'REFUND_PROCESSED',
+      action: 'REFUND_PROCESSED',
       table_name: 'payments',
       record_id: 'REF-20250815-001',
       old_data: null,
@@ -352,6 +357,7 @@ console.log(
   )
 );
 
+// ULTIMATE CASE: Lebaran + NYE 2025 Multi-Hotel Strategy
 const ultimateRevenueFormatter = createFormatter({
   'bar_levels.*': (v) => `Rp ${((v as number) / 1_000_000).toFixed(1)} jt`,
   revenue_impact: (v) => {
@@ -360,16 +366,16 @@ const ultimateRevenueFormatter = createFormatter({
     return `${sign}Rp ${Math.abs(num).toLocaleString('id-ID')}`;
   },
   'restrictions.min_los': (v) => `Min ${v} malam`,
-  'restrictions.max_larchive': (v) => (v ? `Max ${v} malam` : 'Tidak dibatasi'),
+  'restrictions.max_los': (v) => (v ? `Max ${v} malam` : 'Tidak dibatasi'),
   closed_dates: (v) => `Blocked: ${(v as string[]).length} hari`,
   affected_rooms: (v) => `${v} kamar terdampak`,
 });
 
-console.log('ULTIMATE CASE 1: Lebaran + NYE 2025 Multi-Hotel Strategy');
+console.log('\nULTIMATE CASE: Lebaran + NYE 2025 Multi-Hotel Strategy');
 console.log(
   getChangeSummary(
     testLog({
-      action_type: 'MULTI_HOTEL_PRICING_STRATEGY',
+      action: 'MULTI_HOTEL_PRICING_STRATEGY',
       table_name: 'hotels',
       record_id: 'BULK-2025-PEAK',
       old_data: null,
@@ -381,7 +387,6 @@ console.log(
         total_revenue_impact: 4285000000,
         strategies: {
           '2025-03-27_to_2025-04-10': {
-            // Lebaran
             name: 'Lebaran Surge +120%',
             bar_multiplier: 2.2,
             min_los: 5,
@@ -389,11 +394,10 @@ console.log(
             ctd_dates: ['2025-04-08', '2025-04-09'],
           },
           '2025-12-24_to_2026-01-05': {
-            // NYE
             name: 'New Year Peak +180%',
             bar_multiplier: 2.8,
             min_los: 7,
-            overbooking_allowed: 8, // 8%
+            overbooking_allowed: 8,
             cta_dates: ['2025-12-24', '2025-12-25', '2025-12-26', '2025-12-31'],
           },
         },
@@ -415,6 +419,7 @@ console.log(
   )
 );
 
+// ULTIMATE CASE 2: Xendit Payment Success
 const paymentFormatter = createFormatter({
   amount_paid: (v) => `Rp ${(v as number).toLocaleString('id-ID')}`,
   net_to_hotel: (v) => `To Hotel: Rp ${(v as number).toLocaleString('id-ID')}`,
@@ -424,11 +429,11 @@ const paymentFormatter = createFormatter({
   payment_method: (v) => (v === 'virtual_account_bca' ? 'BCA Virtual Account' : String(v)),
 });
 
-console.log('ULTIMATE CASE 2: Xendit Payment Success (Real Webhook)');
+console.log('\nULTIMATE CASE 2: Xendit Payment Success');
 console.log(
   getChangeSummary(
     testLog({
-      action_type: 'PAYMENT_SUCCESS',
+      action: 'PAYMENT_SUCCESS',
       table_name: 'payments',
       record_id: 'XENDIT-INV-20250815-001',
       old_data: null,
@@ -444,19 +449,11 @@ console.log(
         tax_ppn: 312730,
         coins_used: 50000,
         net_to_hotel: 23618270,
-        split_detail: {
-          gross: 28420000,
-          coins_deduction: 500000,
-          platform_fee: 4263000,
-          insurance: 250000,
-          tax: 312730,
-          hotel_receives: 23618270,
-        },
       },
       user: { id: 'usr_892', name: 'Daniel Santoso', role: 'customer' },
       ip_address: '110.136.218.45',
       user_agent: 'Mozilla/5.0 (Android 13)',
-      route_endpoint: '/webhook/xendit/payment',
+      route: '/webhook/xendit/payment',
       created_at: '2025-08-15T10:22:35Z',
     }),
     {
@@ -466,6 +463,7 @@ console.log(
   )
 );
 
+// ULTIMATE CASE 3: Fraud Attack from Russia
 const fraudFormatter2 = createFormatter({
   fraud_score: (v) => `RISK ${(v as number).toFixed(1)}%`,
   estimated_loss_prevented: (v) => `Saved: Rp ${(v as number).toLocaleString('id-ID')}`,
@@ -483,11 +481,11 @@ const fraudFormatter2 = createFormatter({
       .join(' • '),
 });
 
-console.log('ULTIMATE CASE 3: Fraud Attack from Russia');
+console.log('\nULTIMATE CASE 3: Fraud Attack from Russia');
 console.log(
   getChangeSummary(
     testLog({
-      action_type: 'FRAUD_MASSIVE_BLOCK',
+      action: 'FRAUD_MASSIVE_BLOCK',
       table_name: 'bookings',
       record_id: 'BULK-FRAUD-RU-202508',
       old_data: null,

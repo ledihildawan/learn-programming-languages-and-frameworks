@@ -1,250 +1,220 @@
-import os from 'os';
 import { db } from '.';
-import { Role } from '../../generated/prisma/browser';
-import { withDuration } from '../utils';
-import { createAuditLog } from '../utils/system-logs';
+import { createFormatter, getChangeSummary } from '../utils/human-diff';
 import { hashPassword } from '../utils/users';
 
-function getPrimaryLocalIPAddress(): string {
-  const interfaces = os.networkInterfaces();
+const SYSTEM_USER_ID = 'system';
 
-  // Pola IP yang sering digunakan oleh Jaringan Virtual Host-Only/NAT
-  const VIRTUAL_IP_PATTERNS = [
-    '192.168.56.', // Default VirtualBox Host-Only
-    '192.168.99.', // Lama digunakan oleh Docker Machine
-    '172.17.', // Default Docker Bridge Network
-    '172.18.', // Docker Bridge Network range
-    '172.19.', // Docker Bridge Network range
-    '172.20.', // Docker Bridge Network range
-    '172.21.', // Docker Bridge Network range
-    '172.22.', // Docker Bridge Network range
-    '172.23.', // Docker Bridge Network range
-    '172.24.', // Docker Bridge Network range
-    '192.168.128.', // VMware Workstation/Fusion
-    '192.168.177.', // VMware Workstation/Fusion
+const auditFormatter = createFormatter({
+  total_price: (v) => `Rp ${(v as number).toLocaleString('id-ID')}`,
+  revenue_impact: (v) => `+Rp ${(v as number).toLocaleString('id-ID')}`,
+});
+
+const createAuditLog = async (logData: {
+  action: string;
+  table: string;
+  recordId?: string | null;
+  oldData?: unknown;
+  newData?: unknown;
+  actor: { id: string; role: string; name?: string };
+  ip?: string;
+  userAgent?: string;
+  options?: { source: string; batch_id?: string; revenue_impact?: number };
+  durationMs?: number;
+  bulk?: { count: number; meta: string };
+}) => {
+  const isSystem = logData.actor.id === SYSTEM_USER_ID;
+  const actorName = isSystem ? 'SYSTEM' : logData.actor.name || 'User';
+
+  const actionDisplay = logData.bulk ? `SEED ${logData.table}` : logData.action;
+
+  const recordDisplay = logData.record_id ? `#${logData.record_id}` : logData.bulk ? 'SEEDING' : '';
+
+  const durationDisplay = `[${logData.durationMs ?? 0}ms]`;
+
+  let resultText = '';
+  if (logData.bulk) {
+    resultText = `→ ${logData.bulk.count} records added`;
+    if (logData.bulk.meta) resultText += ` (${logData.bulk.meta})`;
+  } else if (logData.new_data) {
+    const fieldCount = Object.keys(logData.new_data as object).length;
+    resultText = `→ ${fieldCount} fields`;
+  }
+
+  const summary =
+    `[${actorName}] ${actionDisplay} ${logData.table} ${recordDisplay} ${durationDisplay} ${resultText}`.trim();
+
+  console.log(summary);
+
+  const data = {
+    user: isSystem ? undefined : { connect: { id: logData.actor.id } },
+    actor_role: logData.actor.role,
+    action: logData.action,
+    table_name: logData.table,
+    record_id: logData.recordId ?? null,
+    changes: logData.changes && logData.changes.length > 0 ? logData.changes : null,
+    old_data: logData.oldData ? logData.oldData : null,
+    new_data: logData.newData ? logData.newData : null,
+    duration_ms: logData.durationMs ?? 0,
+    ip_address: logData.ip ?? '0.0.0.0',
+    user_agent: logData.userAgent ?? 'prisma-seeder',
+    route: null,
+    status: 'succeeded',
+    metadata: {
+      source: logData.options?.source ?? 'SEEDER',
+      batch_id: logData.bulk ? `SEED_${Date.now()}` : logData.options?.batch_id,
+      revenue_impact: logData.options?.revenue_impact,
+      ...(logData.bulk ? { imported_count: logData.bulk.count, note: logData.bulk.meta } : {}),
+    },
+  };
+
+  // Simpan ke DB (tetap sama)
+  await db.systemLog.create({
+    data: {
+      ...data,
+      message: getChangeSummary(data, { rawNames: true }),
+    },
+  });
+};
+
+async function main() {
+  console.log('Memulai seeding Inn Horizon...');
+
+  // =================================================================
+  // 1. SEED ROLES
+  // =================================================================
+  const rolesToSeed = [{ name: 'Admin' }, { name: 'Host' }, { name: 'Customer' }, { name: 'System' }];
+
+  const roleResult = await db.role.createMany({
+    data: rolesToSeed,
+    skipDuplicates: true,
+  });
+
+  if (roleResult.count > 0) {
+    await createAuditLog({
+      action: 'CREATE',
+      table: 'roles',
+      recordId: 'SEEDING',
+      oldData: null,
+      newData: rolesToSeed,
+      actor: { id: SYSTEM_USER_ID, role: 'System' },
+      options: { source: 'SEEDER' },
+      bulk: { count: roleResult.count, meta: 'initial master data' },
+    });
+    console.log(`Roles seeded: ${roleResult.count} records`);
+  }
+
+  // =================================================================
+  // 2. SEED COUNTRIES
+  // =================================================================
+  const countriesToSeed = [
+    { name: 'Indonesia', code: 'ID' },
+    { name: 'Singapore', code: 'SG' },
+    { name: 'Malaysia', code: 'MY' },
+    { name: 'Thailand', code: 'TH' },
+    { name: 'United States', code: 'US' },
   ];
 
-  for (const name in interfaces) {
-    const normalizedName = name.toLowerCase();
+  const countryResult = await db.country.createMany({
+    data: countriesToSeed,
+    skipDuplicates: true,
+  });
 
-    // 1. Heuristik: Abaikan Antarmuka Virtual berdasarkan Nama
-    if (
-      normalizedName.includes('virtualbox') ||
-      normalizedName.includes('vmware') ||
-      normalizedName.includes('docker') ||
-      normalizedName.includes('veth') ||
-      normalizedName.includes('taptun') || // Umum untuk VPN/Tunnel di Mac/Linux
-      normalizedName.includes('bridge') // Jaringan Bridge Linux
-    ) {
-      continue;
-    }
-
-    const interfaceList = interfaces[name];
-
-    if (interfaceList) {
-      for (const iface of interfaceList) {
-        // 2. Filter: Harus IPv4 dan bukan internal (loopback)
-        if (iface.family === 'IPv4' && !iface.internal) {
-          // 3. Heuristik Khusus: Abaikan berdasarkan Pola IP
-          const isVirtualIP = VIRTUAL_IP_PATTERNS.some((prefix) => iface.address.startsWith(prefix));
-
-          if (isVirtualIP) {
-            continue;
-          }
-
-          // IP yang lolos semua filter adalah IP Utama
-          return iface.address;
-        }
-      }
-    }
+  if (countryResult.count > 0) {
+    await createAuditLog({
+      action: 'CREATE',
+      table: 'countries',
+      recordId: 'SEEDING',
+      oldData: null,
+      newData: countriesToSeed,
+      actor: { id: SYSTEM_USER_ID, role: 'System' },
+      options: { source: 'SEEDER' },
+      bulk: { count: countryResult.count, meta: 'initial master data' },
+    });
+    console.log(`Countries seeded: ${countryResult.count} records`);
   }
 
-  // Fallback: Jika tidak ada IP lokal utama yang ditemukan
-  return '127.0.0.1';
-}
-
-const ipAddress = getPrimaryLocalIPAddress();
-
-// ===================================================================
-// DATA MASTER (bisa ditambah kapan saja)
-// ===================================================================
-const rolesData: Role[] = [{ name: 'Admin' }, { name: 'Host' }, { name: 'Customer' }, { name: 'System' }];
-
-const countriesData = [
-  { name: 'Indonesia', code: 'ID' },
-  { name: 'Singapore', code: 'SG' },
-  { name: 'Malaysia', code: 'MY' },
-  { name: 'Thailand', code: 'TH' },
-  { name: 'United States', code: 'US' },
-];
-
-const paymentMethodsData = [
-  { name: 'Credit/Debit Card' },
-  { name: 'Bank Transfer' },
-  { name: 'GoPay' },
-  { name: 'OVO' },
-  { name: 'ShopeePay' },
-  { name: 'QRIS' },
-];
-
-// ===================================================================
-// HELPER: Log Batch Seeding (super ringkas)
-// ===================================================================
-async function logBatchSeed(
-  systemUserId: string,
-  table: string,
-  items: any[],
-  durationMs: number,
-  newData?: Record<string, any> | null
-) {
-  console.log({ newData });
-  await createAuditLog({
-    action: 'CREATE',
-    actor: { id: systemUserId, role: 'System' },
-    options: { source: 'SEEDER' },
-    table,
-    durationMs,
-    bulk: {
-      count: items.length,
-    },
-    ip: ipAddress,
-    status: 'SUCCESS',
-    newData,
-  });
-}
-
-// ===================================================================
-// MAIN SEEDER
-// ===================================================================
-async function main() {
-  console.log('\n🚀 Memulai Database Seeding Inn Horizon...\n');
-
-  // 1. Insert master data (skipDuplicates agar idempotent)
-  const { result: resultRolesData, duration_ms: durationMsRolesData } = await withDuration(async () => {
-    const method = await db.role.createManyAndReturn({ data: rolesData, skipDuplicates: true });
-    return method;
-  });
-  const { result: resultCountriesData, duration_ms: durationMsCountriesData } = await withDuration(async () => {
-    const method = await db.country.createManyAndReturn({ data: countriesData, skipDuplicates: true });
-    return method;
-  });
-
-  // 2. Ambil referensi penting
+  // =================================================================
+  // 3. AMBIL REFERENCE
+  // =================================================================
   const systemRole = await db.role.findFirst({ where: { name: 'System' } });
   const adminRole = await db.role.findFirst({ where: { name: 'Admin' } });
-  const defaultCountry = await db.country.findFirst({ where: { code: 'ID' } });
+  const indonesia = await db.country.findFirst({ where: { code: 'ID' } });
 
-  if (!systemRole || !defaultCountry) {
-    throw new Error('❌ Fatal: Role "System" atau Country "ID" tidak ditemukan.');
+  if (!systemRole || !adminRole || !indonesia) {
+    throw new Error('Fatal: Master data tidak lengkap!');
   }
 
-  // 3. Buat / pastikan System User ada
-  const systemUserData = {
-    username: 'system',
-    email: 'system@inn_horizon.com',
-    password_hash: await hashPassword('system'), // ganti kalau mau password lain
-    role_id: systemRole.id,
-    country_id: defaultCountry.id,
-    first_name: 'System',
-    last_name: 'Automaton',
-  };
-  const { result: systemUser, duration_ms: durationMsSystemUser } = await withDuration(async () => {
-    const method = await db.user.upsert({
-      where: { username: 'system' },
-      update: {
-        country_id: defaultCountry.id,
-        role_id: systemRole.id,
-      },
-      create: systemUserData,
-    });
-    return method;
+  // =================================================================
+  // 4. CREATE SYSTEM USER
+  // =================================================================
+  const systemUser = await db.user.upsert({
+    where: { username: 'system' },
+    update: {},
+    create: {
+      username: 'system',
+      email: 'system@inn_horizon.local',
+      password_hash: await hashPassword('__SYSTEM__'),
+      role_id: systemRole.id,
+      country_id: indonesia.id,
+      first_name: 'System',
+      last_name: 'Automaton',
+      is_active: true,
+    },
   });
 
-  console.log(`✅ System User siap → ID: ${systemUser!.id}`);
-
-  // 4. Log semua seeding (batch + single)
-  await logBatchSeed(systemUser!.id, 'roles', rolesData, durationMsRolesData, resultRolesData);
-  await logBatchSeed(systemUser!.id, 'countries', countriesData, durationMsCountriesData, resultCountriesData);
-
-  // Log pembuatan System User (single create)
   await createAuditLog({
     action: 'CREATE',
     table: 'users',
-    options: { source: 'SEEDER' },
-    actor: { id: systemUser!.id, role: 'System' },
-    durationMs: durationMsSystemUser,
-    ip: ipAddress,
+    recordId: systemUser.id,
+    oldData: null,
     newData: systemUser,
-    recordId: systemUser!.id,
-    status: 'SUCCESS',
+    actor: { id: SYSTEM_USER_ID, role: 'System' },
+    options: { source: 'SEEDER' },
   });
 
-  // 5. Buat Admin User (opsional, tapi sangat direkomendasikan)
-  if (adminRole) {
-    const adminUserData = {
-      username: 'platform_admin',
+  console.log(`System user created → ${systemUser.id}`);
+
+  // =================================================================
+  // 5. CREATE ADMIN USER
+  // =================================================================
+  const adminUser = await db.user.upsert({
+    where: { email: 'admin@inn_horizon.com' },
+    update: { role_id: adminRole.id },
+    create: {
+      username: 'admin',
       email: 'admin@inn_horizon.com',
-      password_hash: await hashPassword('inn_horizon'), // password default: inn_horizon
+      password_hash: await hashPassword('inn_horizon_2025'),
       role_id: adminRole.id,
-      country_id: defaultCountry.id,
+      country_id: indonesia.id,
       first_name: 'Inn',
       last_name: 'Horizon',
-    };
-    const { result: adminUser, duration_ms: durationMsAdminUser } = await withDuration(async () => {
-      const method = await db.user.upsert({
-        where: { email: 'admin@inn_horizon.com' },
-        update: {
-          role_id: adminRole.id,
-        },
-        create: adminUserData,
-      });
-      return method;
-    });
+      is_active: true,
+      is_verified: true,
+    },
+  });
 
-    console.log(`🔑 Admin User siap → ${adminUser!.email} (password: inn_horizon)`);
+  await createAuditLog({
+    action: 'CREATE',
+    table: 'users',
+    recordId: adminUser.id,
+    oldData: null,
+    newData: adminUser,
+    actor: { id: SYSTEM_USER_ID, role: 'System' },
+    options: { source: 'SEEDER' },
+  });
 
-    await createAuditLog({
-      action: 'CREATE',
-      table: 'users',
-      actor: { id: systemUser!.id, role: 'System' },
-      options: {
-        source: 'SEEDER',
-      },
-      durationMs: durationMsAdminUser,
-      ip: ipAddress,
-      newData: systemUser,
-      recordId: adminUser!.id,
-      status: 'SUCCESS',
-    });
-  }
+  console.log(`Admin user created → ${adminUser.email}`);
+  console.log(`   Default password: inn_horizon_2025`);
 
-  const { result: resultPaymentMethodsData, duration_ms: durationMsPaymentMethodsData } = await withDuration(
-    async () => {
-      const method = await db.paymentMethod.createManyAndReturn({ data: paymentMethodsData, skipDuplicates: true });
-      return method;
-    }
-  );
-
-  await logBatchSeed(
-    systemUser!.id,
-    'payment_methods',
-    paymentMethodsData,
-    durationMsPaymentMethodsData,
-    resultPaymentMethodsData
-  );
-
-  console.log('\n🎉 Database Seeding Selesai! Semua audit log tercatat dengan format baru.\n');
+  console.log('\nSEEDING SELESAI! Sistem siap digunakan.');
+  console.log('   Login: admin@inn_horizon.com / inn_horizon_2025');
 }
 
-// ===================================================================
-// EKSEKUSI
-// ===================================================================
 main()
   .catch((e) => {
-    console.error('❌ SEEDING GAGAL:', e);
+    console.error('SEEDING GAGAL:', e);
     process.exit(1);
   })
   .finally(async () => {
     await db.$disconnect();
-    console.log('🔌 Prisma client disconnected.\n');
   });

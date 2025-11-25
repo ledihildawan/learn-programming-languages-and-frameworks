@@ -1001,6 +1001,9 @@ export const UserScalarFieldEnum = {
   phone_number: 'phone_number',
   country_id: 'country_id',
   profile_image_url: 'profile_image_url',
+  is_active: 'is_active',
+  is_verified: 'is_verified',
+  email_verified_at: 'email_verified_at',
   created_at: 'created_at',
   updated_at: 'updated_at',
   deleted_at: 'deleted_at'
@@ -1012,19 +1015,21 @@ export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof User
 export const SystemLogScalarFieldEnum = {
   id: 'id',
   user_id: 'user_id',
-  action_type: 'action_type',
-  status: 'status',
-  duration_ms: 'duration_ms',
+  actor_role: 'actor_role',
+  action: 'action',
   table_name: 'table_name',
   record_id: 'record_id',
+  changes: 'changes',
   old_data: 'old_data',
   new_data: 'new_data',
+  duration_ms: 'duration_ms',
+  created_at: 'created_at',
   ip_address: 'ip_address',
   user_agent: 'user_agent',
-  route_endpoint: 'route_endpoint',
-  source: 'source',
+  route: 'route',
+  status: 'status',
   message: 'message',
-  created_at: 'created_at'
+  metadata: 'metadata'
 } as const
 
 export type SystemLogScalarFieldEnum = (typeof SystemLogScalarFieldEnum)[keyof typeof SystemLogScalarFieldEnum]
@@ -1156,44 +1161,9 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
- * Reference to a field of type 'SystemLogsActionType'
+ * Reference to a field of type 'Boolean'
  */
-export type EnumSystemLogsActionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SystemLogsActionType'>
-    
-
-
-/**
- * Reference to a field of type 'SystemLogsActionType[]'
- */
-export type ListEnumSystemLogsActionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SystemLogsActionType[]'>
-    
-
-
-/**
- * Reference to a field of type 'SystemLogsStatus'
- */
-export type EnumSystemLogsStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SystemLogsStatus'>
-    
-
-
-/**
- * Reference to a field of type 'SystemLogsStatus[]'
- */
-export type ListEnumSystemLogsStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SystemLogsStatus[]'>
-    
-
-
-/**
- * Reference to a field of type 'Int'
- */
-export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-/**
- * Reference to a field of type 'Int[]'
- */
-export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -1212,16 +1182,16 @@ export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$Prisma
 
 
 /**
- * Reference to a field of type 'SystemLogsSource'
+ * Reference to a field of type 'Int'
  */
-export type EnumSystemLogsSourceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SystemLogsSource'>
+export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
     
 
 
 /**
- * Reference to a field of type 'SystemLogsSource[]'
+ * Reference to a field of type 'Int[]'
  */
-export type ListEnumSystemLogsSourceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SystemLogsSource[]'>
+export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
 
 
@@ -1236,13 +1206,6 @@ export type EnumStatusTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$Prism
  * Reference to a field of type 'StatusType[]'
  */
 export type ListEnumStatusTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StatusType[]'>
-    
-
-
-/**
- * Reference to a field of type 'Boolean'
- */
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 

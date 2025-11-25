@@ -37,51 +37,53 @@ export type SystemLogSumAggregateOutputType = {
 export type SystemLogMinAggregateOutputType = {
   id: string | null
   user_id: string | null
-  action_type: $Enums.SystemLogsActionType | null
-  status: $Enums.SystemLogsStatus | null
-  duration_ms: number | null
+  actor_role: string | null
+  action: string | null
   table_name: string | null
   record_id: string | null
+  duration_ms: number | null
+  created_at: Date | null
   ip_address: string | null
   user_agent: string | null
-  route_endpoint: string | null
-  source: $Enums.SystemLogsSource | null
+  route: string | null
+  status: string | null
   message: string | null
-  created_at: Date | null
 }
 
 export type SystemLogMaxAggregateOutputType = {
   id: string | null
   user_id: string | null
-  action_type: $Enums.SystemLogsActionType | null
-  status: $Enums.SystemLogsStatus | null
-  duration_ms: number | null
+  actor_role: string | null
+  action: string | null
   table_name: string | null
   record_id: string | null
+  duration_ms: number | null
+  created_at: Date | null
   ip_address: string | null
   user_agent: string | null
-  route_endpoint: string | null
-  source: $Enums.SystemLogsSource | null
+  route: string | null
+  status: string | null
   message: string | null
-  created_at: Date | null
 }
 
 export type SystemLogCountAggregateOutputType = {
   id: number
   user_id: number
-  action_type: number
-  status: number
-  duration_ms: number
+  actor_role: number
+  action: number
   table_name: number
   record_id: number
+  changes: number
   old_data: number
   new_data: number
+  duration_ms: number
+  created_at: number
   ip_address: number
   user_agent: number
-  route_endpoint: number
-  source: number
+  route: number
+  status: number
   message: number
-  created_at: number
+  metadata: number
   _all: number
 }
 
@@ -97,51 +99,53 @@ export type SystemLogSumAggregateInputType = {
 export type SystemLogMinAggregateInputType = {
   id?: true
   user_id?: true
-  action_type?: true
-  status?: true
-  duration_ms?: true
+  actor_role?: true
+  action?: true
   table_name?: true
   record_id?: true
+  duration_ms?: true
+  created_at?: true
   ip_address?: true
   user_agent?: true
-  route_endpoint?: true
-  source?: true
+  route?: true
+  status?: true
   message?: true
-  created_at?: true
 }
 
 export type SystemLogMaxAggregateInputType = {
   id?: true
   user_id?: true
-  action_type?: true
-  status?: true
-  duration_ms?: true
+  actor_role?: true
+  action?: true
   table_name?: true
   record_id?: true
+  duration_ms?: true
+  created_at?: true
   ip_address?: true
   user_agent?: true
-  route_endpoint?: true
-  source?: true
+  route?: true
+  status?: true
   message?: true
-  created_at?: true
 }
 
 export type SystemLogCountAggregateInputType = {
   id?: true
   user_id?: true
-  action_type?: true
-  status?: true
-  duration_ms?: true
+  actor_role?: true
+  action?: true
   table_name?: true
   record_id?: true
+  changes?: true
   old_data?: true
   new_data?: true
+  duration_ms?: true
+  created_at?: true
   ip_address?: true
   user_agent?: true
-  route_endpoint?: true
-  source?: true
+  route?: true
+  status?: true
   message?: true
-  created_at?: true
+  metadata?: true
   _all?: true
 }
 
@@ -233,20 +237,22 @@ export type SystemLogGroupByArgs<ExtArgs extends runtime.Types.Extensions.Intern
 
 export type SystemLogGroupByOutputType = {
   id: string
-  user_id: string
-  action_type: $Enums.SystemLogsActionType
-  status: $Enums.SystemLogsStatus
-  duration_ms: number
+  user_id: string | null
+  actor_role: string | null
+  action: string
   table_name: string
   record_id: string | null
+  changes: runtime.JsonValue | null
   old_data: runtime.JsonValue | null
   new_data: runtime.JsonValue | null
+  duration_ms: number
+  created_at: Date
   ip_address: string | null
   user_agent: string | null
-  route_endpoint: string | null
-  source: $Enums.SystemLogsSource
+  route: string | null
+  status: string
   message: string | null
-  created_at: Date
+  metadata: runtime.JsonValue | null
   _count: SystemLogCountAggregateOutputType | null
   _avg: SystemLogAvgAggregateOutputType | null
   _sum: SystemLogSumAggregateOutputType | null
@@ -274,39 +280,43 @@ export type SystemLogWhereInput = {
   OR?: Prisma.SystemLogWhereInput[]
   NOT?: Prisma.SystemLogWhereInput | Prisma.SystemLogWhereInput[]
   id?: Prisma.StringFilter<"SystemLog"> | string
-  user_id?: Prisma.StringFilter<"SystemLog"> | string
-  action_type?: Prisma.EnumSystemLogsActionTypeFilter<"SystemLog"> | $Enums.SystemLogsActionType
-  status?: Prisma.EnumSystemLogsStatusFilter<"SystemLog"> | $Enums.SystemLogsStatus
-  duration_ms?: Prisma.IntFilter<"SystemLog"> | number
+  user_id?: Prisma.StringNullableFilter<"SystemLog"> | string | null
+  actor_role?: Prisma.StringNullableFilter<"SystemLog"> | string | null
+  action?: Prisma.StringFilter<"SystemLog"> | string
   table_name?: Prisma.StringFilter<"SystemLog"> | string
   record_id?: Prisma.StringNullableFilter<"SystemLog"> | string | null
+  changes?: Prisma.JsonNullableFilter<"SystemLog">
   old_data?: Prisma.JsonNullableFilter<"SystemLog">
   new_data?: Prisma.JsonNullableFilter<"SystemLog">
+  duration_ms?: Prisma.IntFilter<"SystemLog"> | number
+  created_at?: Prisma.DateTimeFilter<"SystemLog"> | Date | string
   ip_address?: Prisma.StringNullableFilter<"SystemLog"> | string | null
   user_agent?: Prisma.StringNullableFilter<"SystemLog"> | string | null
-  route_endpoint?: Prisma.StringNullableFilter<"SystemLog"> | string | null
-  source?: Prisma.EnumSystemLogsSourceFilter<"SystemLog"> | $Enums.SystemLogsSource
+  route?: Prisma.StringNullableFilter<"SystemLog"> | string | null
+  status?: Prisma.StringFilter<"SystemLog"> | string
   message?: Prisma.StringNullableFilter<"SystemLog"> | string | null
-  created_at?: Prisma.DateTimeFilter<"SystemLog"> | Date | string
-  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  metadata?: Prisma.JsonNullableFilter<"SystemLog">
+  user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }
 
 export type SystemLogOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  user_id?: Prisma.SortOrder
-  action_type?: Prisma.SortOrder
-  status?: Prisma.SortOrder
-  duration_ms?: Prisma.SortOrder
+  user_id?: Prisma.SortOrderInput | Prisma.SortOrder
+  actor_role?: Prisma.SortOrderInput | Prisma.SortOrder
+  action?: Prisma.SortOrder
   table_name?: Prisma.SortOrder
   record_id?: Prisma.SortOrderInput | Prisma.SortOrder
+  changes?: Prisma.SortOrderInput | Prisma.SortOrder
   old_data?: Prisma.SortOrderInput | Prisma.SortOrder
   new_data?: Prisma.SortOrderInput | Prisma.SortOrder
+  duration_ms?: Prisma.SortOrder
+  created_at?: Prisma.SortOrder
   ip_address?: Prisma.SortOrderInput | Prisma.SortOrder
   user_agent?: Prisma.SortOrderInput | Prisma.SortOrder
-  route_endpoint?: Prisma.SortOrderInput | Prisma.SortOrder
-  source?: Prisma.SortOrder
+  route?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
   message?: Prisma.SortOrderInput | Prisma.SortOrder
-  created_at?: Prisma.SortOrder
+  metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
 }
 
@@ -315,39 +325,43 @@ export type SystemLogWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.SystemLogWhereInput | Prisma.SystemLogWhereInput[]
   OR?: Prisma.SystemLogWhereInput[]
   NOT?: Prisma.SystemLogWhereInput | Prisma.SystemLogWhereInput[]
-  user_id?: Prisma.StringFilter<"SystemLog"> | string
-  action_type?: Prisma.EnumSystemLogsActionTypeFilter<"SystemLog"> | $Enums.SystemLogsActionType
-  status?: Prisma.EnumSystemLogsStatusFilter<"SystemLog"> | $Enums.SystemLogsStatus
-  duration_ms?: Prisma.IntFilter<"SystemLog"> | number
+  user_id?: Prisma.StringNullableFilter<"SystemLog"> | string | null
+  actor_role?: Prisma.StringNullableFilter<"SystemLog"> | string | null
+  action?: Prisma.StringFilter<"SystemLog"> | string
   table_name?: Prisma.StringFilter<"SystemLog"> | string
   record_id?: Prisma.StringNullableFilter<"SystemLog"> | string | null
+  changes?: Prisma.JsonNullableFilter<"SystemLog">
   old_data?: Prisma.JsonNullableFilter<"SystemLog">
   new_data?: Prisma.JsonNullableFilter<"SystemLog">
+  duration_ms?: Prisma.IntFilter<"SystemLog"> | number
+  created_at?: Prisma.DateTimeFilter<"SystemLog"> | Date | string
   ip_address?: Prisma.StringNullableFilter<"SystemLog"> | string | null
   user_agent?: Prisma.StringNullableFilter<"SystemLog"> | string | null
-  route_endpoint?: Prisma.StringNullableFilter<"SystemLog"> | string | null
-  source?: Prisma.EnumSystemLogsSourceFilter<"SystemLog"> | $Enums.SystemLogsSource
+  route?: Prisma.StringNullableFilter<"SystemLog"> | string | null
+  status?: Prisma.StringFilter<"SystemLog"> | string
   message?: Prisma.StringNullableFilter<"SystemLog"> | string | null
-  created_at?: Prisma.DateTimeFilter<"SystemLog"> | Date | string
-  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  metadata?: Prisma.JsonNullableFilter<"SystemLog">
+  user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }, "id">
 
 export type SystemLogOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  user_id?: Prisma.SortOrder
-  action_type?: Prisma.SortOrder
-  status?: Prisma.SortOrder
-  duration_ms?: Prisma.SortOrder
+  user_id?: Prisma.SortOrderInput | Prisma.SortOrder
+  actor_role?: Prisma.SortOrderInput | Prisma.SortOrder
+  action?: Prisma.SortOrder
   table_name?: Prisma.SortOrder
   record_id?: Prisma.SortOrderInput | Prisma.SortOrder
+  changes?: Prisma.SortOrderInput | Prisma.SortOrder
   old_data?: Prisma.SortOrderInput | Prisma.SortOrder
   new_data?: Prisma.SortOrderInput | Prisma.SortOrder
+  duration_ms?: Prisma.SortOrder
+  created_at?: Prisma.SortOrder
   ip_address?: Prisma.SortOrderInput | Prisma.SortOrder
   user_agent?: Prisma.SortOrderInput | Prisma.SortOrder
-  route_endpoint?: Prisma.SortOrderInput | Prisma.SortOrder
-  source?: Prisma.SortOrder
+  route?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
   message?: Prisma.SortOrderInput | Prisma.SortOrder
-  created_at?: Prisma.SortOrder
+  metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.SystemLogCountOrderByAggregateInput
   _avg?: Prisma.SystemLogAvgOrderByAggregateInput
   _max?: Prisma.SystemLogMaxOrderByAggregateInput
@@ -360,145 +374,161 @@ export type SystemLogScalarWhereWithAggregatesInput = {
   OR?: Prisma.SystemLogScalarWhereWithAggregatesInput[]
   NOT?: Prisma.SystemLogScalarWhereWithAggregatesInput | Prisma.SystemLogScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"SystemLog"> | string
-  user_id?: Prisma.StringWithAggregatesFilter<"SystemLog"> | string
-  action_type?: Prisma.EnumSystemLogsActionTypeWithAggregatesFilter<"SystemLog"> | $Enums.SystemLogsActionType
-  status?: Prisma.EnumSystemLogsStatusWithAggregatesFilter<"SystemLog"> | $Enums.SystemLogsStatus
-  duration_ms?: Prisma.IntWithAggregatesFilter<"SystemLog"> | number
+  user_id?: Prisma.StringNullableWithAggregatesFilter<"SystemLog"> | string | null
+  actor_role?: Prisma.StringNullableWithAggregatesFilter<"SystemLog"> | string | null
+  action?: Prisma.StringWithAggregatesFilter<"SystemLog"> | string
   table_name?: Prisma.StringWithAggregatesFilter<"SystemLog"> | string
   record_id?: Prisma.StringNullableWithAggregatesFilter<"SystemLog"> | string | null
+  changes?: Prisma.JsonNullableWithAggregatesFilter<"SystemLog">
   old_data?: Prisma.JsonNullableWithAggregatesFilter<"SystemLog">
   new_data?: Prisma.JsonNullableWithAggregatesFilter<"SystemLog">
+  duration_ms?: Prisma.IntWithAggregatesFilter<"SystemLog"> | number
+  created_at?: Prisma.DateTimeWithAggregatesFilter<"SystemLog"> | Date | string
   ip_address?: Prisma.StringNullableWithAggregatesFilter<"SystemLog"> | string | null
   user_agent?: Prisma.StringNullableWithAggregatesFilter<"SystemLog"> | string | null
-  route_endpoint?: Prisma.StringNullableWithAggregatesFilter<"SystemLog"> | string | null
-  source?: Prisma.EnumSystemLogsSourceWithAggregatesFilter<"SystemLog"> | $Enums.SystemLogsSource
+  route?: Prisma.StringNullableWithAggregatesFilter<"SystemLog"> | string | null
+  status?: Prisma.StringWithAggregatesFilter<"SystemLog"> | string
   message?: Prisma.StringNullableWithAggregatesFilter<"SystemLog"> | string | null
-  created_at?: Prisma.DateTimeWithAggregatesFilter<"SystemLog"> | Date | string
+  metadata?: Prisma.JsonNullableWithAggregatesFilter<"SystemLog">
 }
 
 export type SystemLogCreateInput = {
   id?: string
-  action_type: $Enums.SystemLogsActionType
-  status: $Enums.SystemLogsStatus
-  duration_ms: number
+  actor_role?: string | null
+  action: string
   table_name: string
   record_id?: string | null
+  changes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   old_data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   new_data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  duration_ms: number
+  created_at?: Date | string
   ip_address?: string | null
   user_agent?: string | null
-  route_endpoint?: string | null
-  source: $Enums.SystemLogsSource
+  route?: string | null
+  status: string
   message?: string | null
-  created_at?: Date | string
-  user: Prisma.UserCreateNestedOneWithoutSystemLogsInput
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  user?: Prisma.UserCreateNestedOneWithoutSystemLogsInput
 }
 
 export type SystemLogUncheckedCreateInput = {
   id?: string
-  user_id: string
-  action_type: $Enums.SystemLogsActionType
-  status: $Enums.SystemLogsStatus
-  duration_ms: number
+  user_id?: string | null
+  actor_role?: string | null
+  action: string
   table_name: string
   record_id?: string | null
+  changes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   old_data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   new_data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  duration_ms: number
+  created_at?: Date | string
   ip_address?: string | null
   user_agent?: string | null
-  route_endpoint?: string | null
-  source: $Enums.SystemLogsSource
+  route?: string | null
+  status: string
   message?: string | null
-  created_at?: Date | string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type SystemLogUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  action_type?: Prisma.EnumSystemLogsActionTypeFieldUpdateOperationsInput | $Enums.SystemLogsActionType
-  status?: Prisma.EnumSystemLogsStatusFieldUpdateOperationsInput | $Enums.SystemLogsStatus
-  duration_ms?: Prisma.IntFieldUpdateOperationsInput | number
+  actor_role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  action?: Prisma.StringFieldUpdateOperationsInput | string
   table_name?: Prisma.StringFieldUpdateOperationsInput | string
   record_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  changes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   old_data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   new_data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  duration_ms?: Prisma.IntFieldUpdateOperationsInput | number
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ip_address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user_agent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  route_endpoint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  source?: Prisma.EnumSystemLogsSourceFieldUpdateOperationsInput | $Enums.SystemLogsSource
+  route?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
   message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  user?: Prisma.UserUpdateOneRequiredWithoutSystemLogsNestedInput
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  user?: Prisma.UserUpdateOneWithoutSystemLogsNestedInput
 }
 
 export type SystemLogUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  user_id?: Prisma.StringFieldUpdateOperationsInput | string
-  action_type?: Prisma.EnumSystemLogsActionTypeFieldUpdateOperationsInput | $Enums.SystemLogsActionType
-  status?: Prisma.EnumSystemLogsStatusFieldUpdateOperationsInput | $Enums.SystemLogsStatus
-  duration_ms?: Prisma.IntFieldUpdateOperationsInput | number
+  user_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  actor_role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  action?: Prisma.StringFieldUpdateOperationsInput | string
   table_name?: Prisma.StringFieldUpdateOperationsInput | string
   record_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  changes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   old_data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   new_data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  duration_ms?: Prisma.IntFieldUpdateOperationsInput | number
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ip_address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user_agent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  route_endpoint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  source?: Prisma.EnumSystemLogsSourceFieldUpdateOperationsInput | $Enums.SystemLogsSource
+  route?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
   message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type SystemLogCreateManyInput = {
   id?: string
-  user_id: string
-  action_type: $Enums.SystemLogsActionType
-  status: $Enums.SystemLogsStatus
-  duration_ms: number
+  user_id?: string | null
+  actor_role?: string | null
+  action: string
   table_name: string
   record_id?: string | null
+  changes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   old_data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   new_data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  duration_ms: number
+  created_at?: Date | string
   ip_address?: string | null
   user_agent?: string | null
-  route_endpoint?: string | null
-  source: $Enums.SystemLogsSource
+  route?: string | null
+  status: string
   message?: string | null
-  created_at?: Date | string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type SystemLogUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  action_type?: Prisma.EnumSystemLogsActionTypeFieldUpdateOperationsInput | $Enums.SystemLogsActionType
-  status?: Prisma.EnumSystemLogsStatusFieldUpdateOperationsInput | $Enums.SystemLogsStatus
-  duration_ms?: Prisma.IntFieldUpdateOperationsInput | number
+  actor_role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  action?: Prisma.StringFieldUpdateOperationsInput | string
   table_name?: Prisma.StringFieldUpdateOperationsInput | string
   record_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  changes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   old_data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   new_data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  duration_ms?: Prisma.IntFieldUpdateOperationsInput | number
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ip_address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user_agent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  route_endpoint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  source?: Prisma.EnumSystemLogsSourceFieldUpdateOperationsInput | $Enums.SystemLogsSource
+  route?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
   message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type SystemLogUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  user_id?: Prisma.StringFieldUpdateOperationsInput | string
-  action_type?: Prisma.EnumSystemLogsActionTypeFieldUpdateOperationsInput | $Enums.SystemLogsActionType
-  status?: Prisma.EnumSystemLogsStatusFieldUpdateOperationsInput | $Enums.SystemLogsStatus
-  duration_ms?: Prisma.IntFieldUpdateOperationsInput | number
+  user_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  actor_role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  action?: Prisma.StringFieldUpdateOperationsInput | string
   table_name?: Prisma.StringFieldUpdateOperationsInput | string
   record_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  changes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   old_data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   new_data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  duration_ms?: Prisma.IntFieldUpdateOperationsInput | number
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ip_address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user_agent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  route_endpoint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  source?: Prisma.EnumSystemLogsSourceFieldUpdateOperationsInput | $Enums.SystemLogsSource
+  route?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
   message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type SystemLogListRelationFilter = {
@@ -514,19 +544,21 @@ export type SystemLogOrderByRelationAggregateInput = {
 export type SystemLogCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
-  action_type?: Prisma.SortOrder
-  status?: Prisma.SortOrder
-  duration_ms?: Prisma.SortOrder
+  actor_role?: Prisma.SortOrder
+  action?: Prisma.SortOrder
   table_name?: Prisma.SortOrder
   record_id?: Prisma.SortOrder
+  changes?: Prisma.SortOrder
   old_data?: Prisma.SortOrder
   new_data?: Prisma.SortOrder
+  duration_ms?: Prisma.SortOrder
+  created_at?: Prisma.SortOrder
   ip_address?: Prisma.SortOrder
   user_agent?: Prisma.SortOrder
-  route_endpoint?: Prisma.SortOrder
-  source?: Prisma.SortOrder
+  route?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   message?: Prisma.SortOrder
-  created_at?: Prisma.SortOrder
+  metadata?: Prisma.SortOrder
 }
 
 export type SystemLogAvgOrderByAggregateInput = {
@@ -536,33 +568,33 @@ export type SystemLogAvgOrderByAggregateInput = {
 export type SystemLogMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
-  action_type?: Prisma.SortOrder
-  status?: Prisma.SortOrder
-  duration_ms?: Prisma.SortOrder
+  actor_role?: Prisma.SortOrder
+  action?: Prisma.SortOrder
   table_name?: Prisma.SortOrder
   record_id?: Prisma.SortOrder
+  duration_ms?: Prisma.SortOrder
+  created_at?: Prisma.SortOrder
   ip_address?: Prisma.SortOrder
   user_agent?: Prisma.SortOrder
-  route_endpoint?: Prisma.SortOrder
-  source?: Prisma.SortOrder
+  route?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   message?: Prisma.SortOrder
-  created_at?: Prisma.SortOrder
 }
 
 export type SystemLogMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
-  action_type?: Prisma.SortOrder
-  status?: Prisma.SortOrder
-  duration_ms?: Prisma.SortOrder
+  actor_role?: Prisma.SortOrder
+  action?: Prisma.SortOrder
   table_name?: Prisma.SortOrder
   record_id?: Prisma.SortOrder
+  duration_ms?: Prisma.SortOrder
+  created_at?: Prisma.SortOrder
   ip_address?: Prisma.SortOrder
   user_agent?: Prisma.SortOrder
-  route_endpoint?: Prisma.SortOrder
-  source?: Prisma.SortOrder
+  route?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   message?: Prisma.SortOrder
-  created_at?: Prisma.SortOrder
 }
 
 export type SystemLogSumOrderByAggregateInput = {
@@ -611,14 +643,6 @@ export type SystemLogUncheckedUpdateManyWithoutUserNestedInput = {
   deleteMany?: Prisma.SystemLogScalarWhereInput | Prisma.SystemLogScalarWhereInput[]
 }
 
-export type EnumSystemLogsActionTypeFieldUpdateOperationsInput = {
-  set?: $Enums.SystemLogsActionType
-}
-
-export type EnumSystemLogsStatusFieldUpdateOperationsInput = {
-  set?: $Enums.SystemLogsStatus
-}
-
 export type IntFieldUpdateOperationsInput = {
   set?: number
   increment?: number
@@ -627,42 +651,42 @@ export type IntFieldUpdateOperationsInput = {
   divide?: number
 }
 
-export type EnumSystemLogsSourceFieldUpdateOperationsInput = {
-  set?: $Enums.SystemLogsSource
-}
-
 export type SystemLogCreateWithoutUserInput = {
   id?: string
-  action_type: $Enums.SystemLogsActionType
-  status: $Enums.SystemLogsStatus
-  duration_ms: number
+  actor_role?: string | null
+  action: string
   table_name: string
   record_id?: string | null
+  changes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   old_data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   new_data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  duration_ms: number
+  created_at?: Date | string
   ip_address?: string | null
   user_agent?: string | null
-  route_endpoint?: string | null
-  source: $Enums.SystemLogsSource
+  route?: string | null
+  status: string
   message?: string | null
-  created_at?: Date | string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type SystemLogUncheckedCreateWithoutUserInput = {
   id?: string
-  action_type: $Enums.SystemLogsActionType
-  status: $Enums.SystemLogsStatus
-  duration_ms: number
+  actor_role?: string | null
+  action: string
   table_name: string
   record_id?: string | null
+  changes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   old_data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   new_data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  duration_ms: number
+  created_at?: Date | string
   ip_address?: string | null
   user_agent?: string | null
-  route_endpoint?: string | null
-  source: $Enums.SystemLogsSource
+  route?: string | null
+  status: string
   message?: string | null
-  created_at?: Date | string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type SystemLogCreateOrConnectWithoutUserInput = {
@@ -696,88 +720,98 @@ export type SystemLogScalarWhereInput = {
   OR?: Prisma.SystemLogScalarWhereInput[]
   NOT?: Prisma.SystemLogScalarWhereInput | Prisma.SystemLogScalarWhereInput[]
   id?: Prisma.StringFilter<"SystemLog"> | string
-  user_id?: Prisma.StringFilter<"SystemLog"> | string
-  action_type?: Prisma.EnumSystemLogsActionTypeFilter<"SystemLog"> | $Enums.SystemLogsActionType
-  status?: Prisma.EnumSystemLogsStatusFilter<"SystemLog"> | $Enums.SystemLogsStatus
-  duration_ms?: Prisma.IntFilter<"SystemLog"> | number
+  user_id?: Prisma.StringNullableFilter<"SystemLog"> | string | null
+  actor_role?: Prisma.StringNullableFilter<"SystemLog"> | string | null
+  action?: Prisma.StringFilter<"SystemLog"> | string
   table_name?: Prisma.StringFilter<"SystemLog"> | string
   record_id?: Prisma.StringNullableFilter<"SystemLog"> | string | null
+  changes?: Prisma.JsonNullableFilter<"SystemLog">
   old_data?: Prisma.JsonNullableFilter<"SystemLog">
   new_data?: Prisma.JsonNullableFilter<"SystemLog">
+  duration_ms?: Prisma.IntFilter<"SystemLog"> | number
+  created_at?: Prisma.DateTimeFilter<"SystemLog"> | Date | string
   ip_address?: Prisma.StringNullableFilter<"SystemLog"> | string | null
   user_agent?: Prisma.StringNullableFilter<"SystemLog"> | string | null
-  route_endpoint?: Prisma.StringNullableFilter<"SystemLog"> | string | null
-  source?: Prisma.EnumSystemLogsSourceFilter<"SystemLog"> | $Enums.SystemLogsSource
+  route?: Prisma.StringNullableFilter<"SystemLog"> | string | null
+  status?: Prisma.StringFilter<"SystemLog"> | string
   message?: Prisma.StringNullableFilter<"SystemLog"> | string | null
-  created_at?: Prisma.DateTimeFilter<"SystemLog"> | Date | string
+  metadata?: Prisma.JsonNullableFilter<"SystemLog">
 }
 
 export type SystemLogCreateManyUserInput = {
   id?: string
-  action_type: $Enums.SystemLogsActionType
-  status: $Enums.SystemLogsStatus
-  duration_ms: number
+  actor_role?: string | null
+  action: string
   table_name: string
   record_id?: string | null
+  changes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   old_data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   new_data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  duration_ms: number
+  created_at?: Date | string
   ip_address?: string | null
   user_agent?: string | null
-  route_endpoint?: string | null
-  source: $Enums.SystemLogsSource
+  route?: string | null
+  status: string
   message?: string | null
-  created_at?: Date | string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type SystemLogUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  action_type?: Prisma.EnumSystemLogsActionTypeFieldUpdateOperationsInput | $Enums.SystemLogsActionType
-  status?: Prisma.EnumSystemLogsStatusFieldUpdateOperationsInput | $Enums.SystemLogsStatus
-  duration_ms?: Prisma.IntFieldUpdateOperationsInput | number
+  actor_role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  action?: Prisma.StringFieldUpdateOperationsInput | string
   table_name?: Prisma.StringFieldUpdateOperationsInput | string
   record_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  changes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   old_data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   new_data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  duration_ms?: Prisma.IntFieldUpdateOperationsInput | number
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ip_address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user_agent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  route_endpoint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  source?: Prisma.EnumSystemLogsSourceFieldUpdateOperationsInput | $Enums.SystemLogsSource
+  route?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
   message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type SystemLogUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  action_type?: Prisma.EnumSystemLogsActionTypeFieldUpdateOperationsInput | $Enums.SystemLogsActionType
-  status?: Prisma.EnumSystemLogsStatusFieldUpdateOperationsInput | $Enums.SystemLogsStatus
-  duration_ms?: Prisma.IntFieldUpdateOperationsInput | number
+  actor_role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  action?: Prisma.StringFieldUpdateOperationsInput | string
   table_name?: Prisma.StringFieldUpdateOperationsInput | string
   record_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  changes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   old_data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   new_data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  duration_ms?: Prisma.IntFieldUpdateOperationsInput | number
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ip_address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user_agent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  route_endpoint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  source?: Prisma.EnumSystemLogsSourceFieldUpdateOperationsInput | $Enums.SystemLogsSource
+  route?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
   message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type SystemLogUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  action_type?: Prisma.EnumSystemLogsActionTypeFieldUpdateOperationsInput | $Enums.SystemLogsActionType
-  status?: Prisma.EnumSystemLogsStatusFieldUpdateOperationsInput | $Enums.SystemLogsStatus
-  duration_ms?: Prisma.IntFieldUpdateOperationsInput | number
+  actor_role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  action?: Prisma.StringFieldUpdateOperationsInput | string
   table_name?: Prisma.StringFieldUpdateOperationsInput | string
   record_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  changes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   old_data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   new_data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  duration_ms?: Prisma.IntFieldUpdateOperationsInput | number
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ip_address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user_agent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  route_endpoint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  source?: Prisma.EnumSystemLogsSourceFieldUpdateOperationsInput | $Enums.SystemLogsSource
+  route?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
   message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 
@@ -785,110 +819,120 @@ export type SystemLogUncheckedUpdateManyWithoutUserInput = {
 export type SystemLogSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   user_id?: boolean
-  action_type?: boolean
-  status?: boolean
-  duration_ms?: boolean
+  actor_role?: boolean
+  action?: boolean
   table_name?: boolean
   record_id?: boolean
+  changes?: boolean
   old_data?: boolean
   new_data?: boolean
+  duration_ms?: boolean
+  created_at?: boolean
   ip_address?: boolean
   user_agent?: boolean
-  route_endpoint?: boolean
-  source?: boolean
+  route?: boolean
+  status?: boolean
   message?: boolean
-  created_at?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  metadata?: boolean
+  user?: boolean | Prisma.SystemLog$userArgs<ExtArgs>
 }, ExtArgs["result"]["systemLog"]>
 
 export type SystemLogSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   user_id?: boolean
-  action_type?: boolean
-  status?: boolean
-  duration_ms?: boolean
+  actor_role?: boolean
+  action?: boolean
   table_name?: boolean
   record_id?: boolean
+  changes?: boolean
   old_data?: boolean
   new_data?: boolean
+  duration_ms?: boolean
+  created_at?: boolean
   ip_address?: boolean
   user_agent?: boolean
-  route_endpoint?: boolean
-  source?: boolean
+  route?: boolean
+  status?: boolean
   message?: boolean
-  created_at?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  metadata?: boolean
+  user?: boolean | Prisma.SystemLog$userArgs<ExtArgs>
 }, ExtArgs["result"]["systemLog"]>
 
 export type SystemLogSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   user_id?: boolean
-  action_type?: boolean
-  status?: boolean
-  duration_ms?: boolean
+  actor_role?: boolean
+  action?: boolean
   table_name?: boolean
   record_id?: boolean
+  changes?: boolean
   old_data?: boolean
   new_data?: boolean
+  duration_ms?: boolean
+  created_at?: boolean
   ip_address?: boolean
   user_agent?: boolean
-  route_endpoint?: boolean
-  source?: boolean
+  route?: boolean
+  status?: boolean
   message?: boolean
-  created_at?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  metadata?: boolean
+  user?: boolean | Prisma.SystemLog$userArgs<ExtArgs>
 }, ExtArgs["result"]["systemLog"]>
 
 export type SystemLogSelectScalar = {
   id?: boolean
   user_id?: boolean
-  action_type?: boolean
-  status?: boolean
-  duration_ms?: boolean
+  actor_role?: boolean
+  action?: boolean
   table_name?: boolean
   record_id?: boolean
+  changes?: boolean
   old_data?: boolean
   new_data?: boolean
+  duration_ms?: boolean
+  created_at?: boolean
   ip_address?: boolean
   user_agent?: boolean
-  route_endpoint?: boolean
-  source?: boolean
+  route?: boolean
+  status?: boolean
   message?: boolean
-  created_at?: boolean
+  metadata?: boolean
 }
 
-export type SystemLogOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "user_id" | "action_type" | "status" | "duration_ms" | "table_name" | "record_id" | "old_data" | "new_data" | "ip_address" | "user_agent" | "route_endpoint" | "source" | "message" | "created_at", ExtArgs["result"]["systemLog"]>
+export type SystemLogOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "user_id" | "actor_role" | "action" | "table_name" | "record_id" | "changes" | "old_data" | "new_data" | "duration_ms" | "created_at" | "ip_address" | "user_agent" | "route" | "status" | "message" | "metadata", ExtArgs["result"]["systemLog"]>
 export type SystemLogInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.SystemLog$userArgs<ExtArgs>
 }
 export type SystemLogIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.SystemLog$userArgs<ExtArgs>
 }
 export type SystemLogIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.SystemLog$userArgs<ExtArgs>
 }
 
 export type $SystemLogPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "SystemLog"
   objects: {
-    user: Prisma.$UserPayload<ExtArgs>
+    user: Prisma.$UserPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    user_id: string
-    action_type: $Enums.SystemLogsActionType
-    status: $Enums.SystemLogsStatus
-    duration_ms: number
+    user_id: string | null
+    actor_role: string | null
+    action: string
     table_name: string
     record_id: string | null
+    changes: runtime.JsonValue | null
     old_data: runtime.JsonValue | null
     new_data: runtime.JsonValue | null
+    duration_ms: number
+    created_at: Date
     ip_address: string | null
     user_agent: string | null
-    route_endpoint: string | null
-    source: $Enums.SystemLogsSource
+    route: string | null
+    status: string
     message: string | null
-    created_at: Date
+    metadata: runtime.JsonValue | null
   }, ExtArgs["result"]["systemLog"]>
   composites: {}
 }
@@ -1283,7 +1327,7 @@ readonly fields: SystemLogFieldRefs;
  */
 export interface Prisma__SystemLogClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  user<T extends Prisma.SystemLog$userArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SystemLog$userArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1315,19 +1359,21 @@ export interface Prisma__SystemLogClient<T, Null = never, ExtArgs extends runtim
 export interface SystemLogFieldRefs {
   readonly id: Prisma.FieldRef<"SystemLog", 'String'>
   readonly user_id: Prisma.FieldRef<"SystemLog", 'String'>
-  readonly action_type: Prisma.FieldRef<"SystemLog", 'SystemLogsActionType'>
-  readonly status: Prisma.FieldRef<"SystemLog", 'SystemLogsStatus'>
-  readonly duration_ms: Prisma.FieldRef<"SystemLog", 'Int'>
+  readonly actor_role: Prisma.FieldRef<"SystemLog", 'String'>
+  readonly action: Prisma.FieldRef<"SystemLog", 'String'>
   readonly table_name: Prisma.FieldRef<"SystemLog", 'String'>
   readonly record_id: Prisma.FieldRef<"SystemLog", 'String'>
+  readonly changes: Prisma.FieldRef<"SystemLog", 'Json'>
   readonly old_data: Prisma.FieldRef<"SystemLog", 'Json'>
   readonly new_data: Prisma.FieldRef<"SystemLog", 'Json'>
+  readonly duration_ms: Prisma.FieldRef<"SystemLog", 'Int'>
+  readonly created_at: Prisma.FieldRef<"SystemLog", 'DateTime'>
   readonly ip_address: Prisma.FieldRef<"SystemLog", 'String'>
   readonly user_agent: Prisma.FieldRef<"SystemLog", 'String'>
-  readonly route_endpoint: Prisma.FieldRef<"SystemLog", 'String'>
-  readonly source: Prisma.FieldRef<"SystemLog", 'SystemLogsSource'>
+  readonly route: Prisma.FieldRef<"SystemLog", 'String'>
+  readonly status: Prisma.FieldRef<"SystemLog", 'String'>
   readonly message: Prisma.FieldRef<"SystemLog", 'String'>
-  readonly created_at: Prisma.FieldRef<"SystemLog", 'DateTime'>
+  readonly metadata: Prisma.FieldRef<"SystemLog", 'Json'>
 }
     
 
@@ -1721,6 +1767,25 @@ export type SystemLogDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Limit how many SystemLogs to delete.
    */
   limit?: number
+}
+
+/**
+ * SystemLog.user
+ */
+export type SystemLog$userArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
 }
 
 /**
