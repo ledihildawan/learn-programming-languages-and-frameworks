@@ -1,7 +1,7 @@
 generator client {
-  provider   = "prisma-client" // or `prisma-client-js`
+  provider   = "prisma-client"
   output     = "./../generated/prisma"
-  engineType = "client" // enable Prisma ORM without Rust
+  engineType = "client"
 }
 
 datasource db {
@@ -16,70 +16,100 @@ generator prismabox {
   output                      = "./../generated/prismabox"
 }
 
-model Roles {
+enum RoleName {
+  Admin
+  Host
+  Customer
+  System
+}
+
+model Role {
   id         String    @id @default(cuid())
-  name       String    @db.VarChar(50)
+  name       RoleName
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
   deleted_at DateTime?
-  users      Users[]
+  users      User[]
 
   @@map("roles")
 }
 
-model Countries {
+model Country {
   id         String    @id @default(cuid())
   name       String    @db.VarChar(100)
   code       String    @unique @db.VarChar(2)
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
   deleted_at DateTime?
-  users      Users[]
+  users      User[]
 
   @@map("countries")
 }
 
-model Users {
-  id                String       @id @default(cuid())
-  role              Roles        @relation(fields: [role_id], references: [id])
+model User {
+  id                String      @id @default(cuid())
+  role              Role        @relation(fields: [role_id], references: [id])
   role_id           String
-  username          String       @unique @db.VarChar(50)
-  email             String       @unique @db.VarChar(255)
-  password_hash     String       @db.VarChar(255)
-  first_name        String?      @db.VarChar(100)
-  last_name         String?      @db.VarChar(100)
-  phone_number      String?      @db.VarChar(20)
-  country           Countries    @relation(fields: [country_id], references: [id])
+  username          String      @unique @db.VarChar(50)
+  email             String      @unique @db.VarChar(255)
+  password_hash     String      @db.VarChar(255)
+  first_name        String?     @db.VarChar(100)
+  last_name         String?     @db.VarChar(100)
+  phone_number      String?     @db.VarChar(20)
+  country           Country     @relation(fields: [country_id], references: [id])
   country_id        String
-  profile_image_url String?      @db.VarChar(512)
-  created_at        DateTime     @default(now())
-  updated_at        DateTime     @updatedAt
+  profile_image_url String?     @db.VarChar(512)
+  created_at        DateTime    @default(now())
+  updated_at        DateTime    @updatedAt
   deleted_at        DateTime?
-  systemLogs        SystemLogs[]
+  systemLogs        SystemLog[]
 
   @@map("users")
 }
 
-model SystemLogs {
-  id             String   @id @default(cuid())
-  user           Users    @relation(fields: [user_id], references: [id])
+enum SystemLogsActionType {
+  CREATE
+  UPDATE
+  EXECUTE
+  DELETE
+}
+
+enum SystemLogsStatus {
+  SUCCESS
+  FAILURE
+}
+
+enum SystemLogsSource {
+  HTTP
+  SEEDER
+  MIGRATION
+  CLI
+  CRON
+  TEST
+}
+
+model SystemLog {
+  id             String               @id @default(cuid())
+  user           User                 @relation(fields: [user_id], references: [id])
   user_id        String
-  action_type    String   @db.VarChar(50)
-  table_name     String   @db.VarChar(50)
-  record_id      String
+  action_type    SystemLogsActionType
+  status         SystemLogsStatus
+  duration_ms    Int
+  table_name     String               @db.VarChar(50)
+  record_id      String?
   old_data       Json?
   new_data       Json?
-  ip_address     String?  @db.VarChar(45)
-  user_agent     String?  @db.VarChar(512)
-  route_endpoint String?  @db.VarChar(255)
-  source         String?  @db.VarChar(50) // "HTTP", "SEEDER", "MIGRATION", "CLI", "CRON", "TEST"
-  message        String?  @db.Text
-  created_at     DateTime @default(now())
+  ip_address     String?              @db.VarChar(45)
+  user_agent     String?              @db.VarChar(512)
+  route_endpoint String?              @db.VarChar(255)
+  source         SystemLogsSource
+  message        String?              @db.Text
+  created_at     DateTime             @default(now())
 
   @@map("system_logs")
 }
 
-model Languages {
+model Language {
   id         String    @id @default(cuid())
   code       String    @unique @db.VarChar(5)
   name       String    @db.VarChar(50)
@@ -90,7 +120,25 @@ model Languages {
   @@map("languages")
 }
 
-model PaymentMethods {
+enum StatusType {
+  BOOKING
+  REVIEW
+  REFUND
+  PAYMENT
+}
+
+model Status {
+  id         String     @id @default(cuid())
+  name       String     @db.VarChar(50)
+  type       StatusType
+  created_at DateTime   @default(now())
+  updated_at DateTime   @updatedAt
+  deleted_at DateTime?
+
+  @@map("statuses")
+}
+
+model PaymentMethod {
   id         String    @id @default(cuid())
   name       String    @db.VarChar(50)
   is_active  Boolean   @default(false)

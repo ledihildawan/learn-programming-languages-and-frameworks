@@ -30,7 +30,7 @@ export * from "./enums.js"
  * ```
  * const prisma = new PrismaClient()
  * // Fetch zero or more Roles
- * const roles = await prisma.roles.findMany()
+ * const roles = await prisma.role.findMany()
  * ```
  * 
  * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
@@ -40,32 +40,37 @@ export type PrismaClient<LogOpts extends Prisma.LogLevel = never, OmitOpts exten
 export { Prisma }
 
 /**
- * Model Roles
+ * Model Role
  * 
  */
-export type Roles = Prisma.RolesModel
+export type Role = Prisma.RoleModel
 /**
- * Model Countries
+ * Model Country
  * 
  */
-export type Countries = Prisma.CountriesModel
+export type Country = Prisma.CountryModel
 /**
- * Model Users
+ * Model User
  * 
  */
-export type Users = Prisma.UsersModel
+export type User = Prisma.UserModel
 /**
- * Model SystemLogs
+ * Model SystemLog
  * 
  */
-export type SystemLogs = Prisma.SystemLogsModel
+export type SystemLog = Prisma.SystemLogModel
 /**
- * Model Languages
+ * Model Language
  * 
  */
-export type Languages = Prisma.LanguagesModel
+export type Language = Prisma.LanguageModel
 /**
- * Model PaymentMethods
+ * Model Status
  * 
  */
-export type PaymentMethods = Prisma.PaymentMethodsModel
+export type Status = Prisma.StatusModel
+/**
+ * Model PaymentMethod
+ * 
+ */
+export type PaymentMethod = Prisma.PaymentMethodModel

@@ -4,11 +4,19 @@ import { __transformDate__ } from "./__transformDate__";
 
 import { __nullable__ } from "./__nullable__";
 
-export const PaymentMethodsPlain = t.Object(
+export const StatusPlain = t.Object(
   {
     id: t.String(),
     name: t.String(),
-    is_active: t.Boolean(),
+    type: t.Union(
+      [
+        t.Literal("BOOKING"),
+        t.Literal("REVIEW"),
+        t.Literal("REFUND"),
+        t.Literal("PAYMENT"),
+      ],
+      { additionalProperties: false },
+    ),
     created_at: t.Date(),
     updated_at: t.Date(),
     deleted_at: __nullable__(t.Date()),
@@ -16,41 +24,56 @@ export const PaymentMethodsPlain = t.Object(
   { additionalProperties: false },
 );
 
-export const PaymentMethodsRelations = t.Object(
-  {},
-  { additionalProperties: false },
-);
+export const StatusRelations = t.Object({}, { additionalProperties: false });
 
-export const PaymentMethodsPlainInputCreate = t.Object(
+export const StatusPlainInputCreate = t.Object(
   {
     name: t.String(),
-    is_active: t.Optional(t.Boolean()),
+    type: t.Union(
+      [
+        t.Literal("BOOKING"),
+        t.Literal("REVIEW"),
+        t.Literal("REFUND"),
+        t.Literal("PAYMENT"),
+      ],
+      { additionalProperties: false },
+    ),
     created_at: t.Optional(t.Date()),
     deleted_at: t.Optional(__nullable__(t.Date())),
   },
   { additionalProperties: false },
 );
 
-export const PaymentMethodsPlainInputUpdate = t.Object(
+export const StatusPlainInputUpdate = t.Object(
   {
     name: t.Optional(t.String()),
-    is_active: t.Optional(t.Boolean()),
+    type: t.Optional(
+      t.Union(
+        [
+          t.Literal("BOOKING"),
+          t.Literal("REVIEW"),
+          t.Literal("REFUND"),
+          t.Literal("PAYMENT"),
+        ],
+        { additionalProperties: false },
+      ),
+    ),
     created_at: t.Optional(t.Date()),
     deleted_at: t.Optional(__nullable__(t.Date())),
   },
   { additionalProperties: false },
 );
 
-export const PaymentMethodsRelationsInputCreate = t.Object(
+export const StatusRelationsInputCreate = t.Object(
   {},
   { additionalProperties: false },
 );
 
-export const PaymentMethodsRelationsInputUpdate = t.Partial(
+export const StatusRelationsInputUpdate = t.Partial(
   t.Object({}, { additionalProperties: false }),
 );
 
-export const PaymentMethodsWhere = t.Partial(
+export const StatusWhere = t.Partial(
   t.Recursive(
     (Self) =>
       t.Object(
@@ -60,18 +83,26 @@ export const PaymentMethodsWhere = t.Partial(
           OR: t.Array(Self, { additionalProperties: false }),
           id: t.String(),
           name: t.String(),
-          is_active: t.Boolean(),
+          type: t.Union(
+            [
+              t.Literal("BOOKING"),
+              t.Literal("REVIEW"),
+              t.Literal("REFUND"),
+              t.Literal("PAYMENT"),
+            ],
+            { additionalProperties: false },
+          ),
           created_at: t.Date(),
           updated_at: t.Date(),
           deleted_at: t.Date(),
         },
         { additionalProperties: false },
       ),
-    { $id: "PaymentMethods" },
+    { $id: "Status" },
   ),
 );
 
-export const PaymentMethodsWhereUnique = t.Recursive(
+export const StatusWhereUnique = t.Recursive(
   (Self) =>
     t.Intersect(
       [
@@ -101,7 +132,15 @@ export const PaymentMethodsWhereUnique = t.Recursive(
             {
               id: t.String(),
               name: t.String(),
-              is_active: t.Boolean(),
+              type: t.Union(
+                [
+                  t.Literal("BOOKING"),
+                  t.Literal("REVIEW"),
+                  t.Literal("REFUND"),
+                  t.Literal("PAYMENT"),
+                ],
+                { additionalProperties: false },
+              ),
               created_at: t.Date(),
               updated_at: t.Date(),
               deleted_at: t.Date(),
@@ -112,15 +151,15 @@ export const PaymentMethodsWhereUnique = t.Recursive(
       ],
       { additionalProperties: false },
     ),
-  { $id: "PaymentMethods" },
+  { $id: "Status" },
 );
 
-export const PaymentMethodsSelect = t.Partial(
+export const StatusSelect = t.Partial(
   t.Object(
     {
       id: t.Boolean(),
       name: t.Boolean(),
-      is_active: t.Boolean(),
+      type: t.Boolean(),
       created_at: t.Boolean(),
       updated_at: t.Boolean(),
       deleted_at: t.Boolean(),
@@ -130,20 +169,20 @@ export const PaymentMethodsSelect = t.Partial(
   ),
 );
 
-export const PaymentMethodsInclude = t.Partial(
-  t.Object({ _count: t.Boolean() }, { additionalProperties: false }),
+export const StatusInclude = t.Partial(
+  t.Object(
+    { type: t.Boolean(), _count: t.Boolean() },
+    { additionalProperties: false },
+  ),
 );
 
-export const PaymentMethodsOrderBy = t.Partial(
+export const StatusOrderBy = t.Partial(
   t.Object(
     {
       id: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
       name: t.Union([t.Literal("asc"), t.Literal("desc")], {
-        additionalProperties: false,
-      }),
-      is_active: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
       created_at: t.Union([t.Literal("asc"), t.Literal("desc")], {
@@ -160,17 +199,16 @@ export const PaymentMethodsOrderBy = t.Partial(
   ),
 );
 
-export const PaymentMethods = t.Composite(
-  [PaymentMethodsPlain, PaymentMethodsRelations],
+export const Status = t.Composite([StatusPlain, StatusRelations], {
+  additionalProperties: false,
+});
+
+export const StatusInputCreate = t.Composite(
+  [StatusPlainInputCreate, StatusRelationsInputCreate],
   { additionalProperties: false },
 );
 
-export const PaymentMethodsInputCreate = t.Composite(
-  [PaymentMethodsPlainInputCreate, PaymentMethodsRelationsInputCreate],
-  { additionalProperties: false },
-);
-
-export const PaymentMethodsInputUpdate = t.Composite(
-  [PaymentMethodsPlainInputUpdate, PaymentMethodsRelationsInputUpdate],
+export const StatusInputUpdate = t.Composite(
+  [StatusPlainInputUpdate, StatusRelationsInputUpdate],
   { additionalProperties: false },
 );

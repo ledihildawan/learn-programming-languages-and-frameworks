@@ -33,7 +33,7 @@ const app = new Elysia()
       .use(languages)
       .use(paymentMethods)
       .get('/system-logs', async () => {
-        const results = await db.systemLogs.findMany();
+        const results = await db.systemLog.findMany();
         return results;
       })
   )

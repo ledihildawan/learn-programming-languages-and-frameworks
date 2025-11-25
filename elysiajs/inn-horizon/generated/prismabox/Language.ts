@@ -4,11 +4,11 @@ import { __transformDate__ } from "./__transformDate__";
 
 import { __nullable__ } from "./__nullable__";
 
-export const CountriesPlain = t.Object(
+export const LanguagePlain = t.Object(
   {
     id: t.String(),
-    name: t.String(),
     code: t.String(),
+    name: t.String(),
     created_at: t.Date(),
     updated_at: t.Date(),
     deleted_at: __nullable__(t.Date()),
@@ -16,109 +16,38 @@ export const CountriesPlain = t.Object(
   { additionalProperties: false },
 );
 
-export const CountriesRelations = t.Object(
-  {
-    users: t.Array(
-      t.Object(
-        {
-          id: t.String(),
-          role_id: t.String(),
-          username: t.String(),
-          email: t.String(),
-          password_hash: t.String(),
-          first_name: __nullable__(t.String()),
-          last_name: __nullable__(t.String()),
-          phone_number: __nullable__(t.String()),
-          country_id: t.String(),
-          profile_image_url: __nullable__(t.String()),
-          created_at: t.Date(),
-          updated_at: t.Date(),
-          deleted_at: __nullable__(t.Date()),
-        },
-        { additionalProperties: false },
-      ),
-      { additionalProperties: false },
-    ),
-  },
-  { additionalProperties: false },
-);
+export const LanguageRelations = t.Object({}, { additionalProperties: false });
 
-export const CountriesPlainInputCreate = t.Object(
+export const LanguagePlainInputCreate = t.Object(
   {
-    name: t.String(),
     code: t.String(),
+    name: t.String(),
     created_at: t.Optional(t.Date()),
     deleted_at: t.Optional(__nullable__(t.Date())),
   },
   { additionalProperties: false },
 );
 
-export const CountriesPlainInputUpdate = t.Object(
+export const LanguagePlainInputUpdate = t.Object(
   {
-    name: t.Optional(t.String()),
     code: t.Optional(t.String()),
+    name: t.Optional(t.String()),
     created_at: t.Optional(t.Date()),
     deleted_at: t.Optional(__nullable__(t.Date())),
   },
   { additionalProperties: false },
 );
 
-export const CountriesRelationsInputCreate = t.Object(
-  {
-    users: t.Optional(
-      t.Object(
-        {
-          connect: t.Array(
-            t.Object(
-              {
-                id: t.String({ additionalProperties: false }),
-              },
-              { additionalProperties: false },
-            ),
-            { additionalProperties: false },
-          ),
-        },
-        { additionalProperties: false },
-      ),
-    ),
-  },
+export const LanguageRelationsInputCreate = t.Object(
+  {},
   { additionalProperties: false },
 );
 
-export const CountriesRelationsInputUpdate = t.Partial(
-  t.Object(
-    {
-      users: t.Partial(
-        t.Object(
-          {
-            connect: t.Array(
-              t.Object(
-                {
-                  id: t.String({ additionalProperties: false }),
-                },
-                { additionalProperties: false },
-              ),
-              { additionalProperties: false },
-            ),
-            disconnect: t.Array(
-              t.Object(
-                {
-                  id: t.String({ additionalProperties: false }),
-                },
-                { additionalProperties: false },
-              ),
-              { additionalProperties: false },
-            ),
-          },
-          { additionalProperties: false },
-        ),
-      ),
-    },
-    { additionalProperties: false },
-  ),
+export const LanguageRelationsInputUpdate = t.Partial(
+  t.Object({}, { additionalProperties: false }),
 );
 
-export const CountriesWhere = t.Partial(
+export const LanguageWhere = t.Partial(
   t.Recursive(
     (Self) =>
       t.Object(
@@ -127,19 +56,19 @@ export const CountriesWhere = t.Partial(
           NOT: t.Union([Self, t.Array(Self, { additionalProperties: false })]),
           OR: t.Array(Self, { additionalProperties: false }),
           id: t.String(),
-          name: t.String(),
           code: t.String(),
+          name: t.String(),
           created_at: t.Date(),
           updated_at: t.Date(),
           deleted_at: t.Date(),
         },
         { additionalProperties: false },
       ),
-    { $id: "Countries" },
+    { $id: "Language" },
   ),
 );
 
-export const CountriesWhereUnique = t.Recursive(
+export const LanguageWhereUnique = t.Recursive(
   (Self) =>
     t.Intersect(
       [
@@ -172,8 +101,8 @@ export const CountriesWhereUnique = t.Recursive(
           t.Object(
             {
               id: t.String(),
-              name: t.String(),
               code: t.String(),
+              name: t.String(),
               created_at: t.Date(),
               updated_at: t.Date(),
               deleted_at: t.Date(),
@@ -184,42 +113,38 @@ export const CountriesWhereUnique = t.Recursive(
       ],
       { additionalProperties: false },
     ),
-  { $id: "Countries" },
+  { $id: "Language" },
 );
 
-export const CountriesSelect = t.Partial(
+export const LanguageSelect = t.Partial(
   t.Object(
     {
       id: t.Boolean(),
-      name: t.Boolean(),
       code: t.Boolean(),
+      name: t.Boolean(),
       created_at: t.Boolean(),
       updated_at: t.Boolean(),
       deleted_at: t.Boolean(),
-      users: t.Boolean(),
       _count: t.Boolean(),
     },
     { additionalProperties: false },
   ),
 );
 
-export const CountriesInclude = t.Partial(
-  t.Object(
-    { users: t.Boolean(), _count: t.Boolean() },
-    { additionalProperties: false },
-  ),
+export const LanguageInclude = t.Partial(
+  t.Object({ _count: t.Boolean() }, { additionalProperties: false }),
 );
 
-export const CountriesOrderBy = t.Partial(
+export const LanguageOrderBy = t.Partial(
   t.Object(
     {
       id: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
-      name: t.Union([t.Literal("asc"), t.Literal("desc")], {
+      code: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
-      code: t.Union([t.Literal("asc"), t.Literal("desc")], {
+      name: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
       created_at: t.Union([t.Literal("asc"), t.Literal("desc")], {
@@ -236,16 +161,16 @@ export const CountriesOrderBy = t.Partial(
   ),
 );
 
-export const Countries = t.Composite([CountriesPlain, CountriesRelations], {
+export const Language = t.Composite([LanguagePlain, LanguageRelations], {
   additionalProperties: false,
 });
 
-export const CountriesInputCreate = t.Composite(
-  [CountriesPlainInputCreate, CountriesRelationsInputCreate],
+export const LanguageInputCreate = t.Composite(
+  [LanguagePlainInputCreate, LanguageRelationsInputCreate],
   { additionalProperties: false },
 );
 
-export const CountriesInputUpdate = t.Composite(
-  [CountriesPlainInputUpdate, CountriesRelationsInputUpdate],
+export const LanguageInputUpdate = t.Composite(
+  [LanguagePlainInputUpdate, LanguageRelationsInputUpdate],
   { additionalProperties: false },
 );

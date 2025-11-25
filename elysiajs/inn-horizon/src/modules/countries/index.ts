@@ -9,7 +9,7 @@ export const countries = new Elysia({ prefix: '/countries' })
   .use(userAgent)
   .get('/', async () => {
     try {
-      const data = await db.countries.findMany();
+      const data = await db.country.findMany();
 
       return { success: true, message: 'Countries data fetched successfully', data };
     } catch (error) {
@@ -20,7 +20,7 @@ export const countries = new Elysia({ prefix: '/countries' })
     '/',
     async ({ body, ip, userAgent, request }) => {
       try {
-        const country = await db.countries.create({ data: { ...body } });
+        const country = await db.country.create({ data: { ...body } });
 
         await createAuditLog(
           'CREATE',
@@ -59,12 +59,12 @@ export const countries = new Elysia({ prefix: '/countries' })
     '/:id',
     async ({ params, body, ip, userAgent, request }) => {
       try {
-        const existing = await db.countries.findUnique({ where: { id: params.id } });
+        const existing = await db.country.findUnique({ where: { id: params.id } });
         if (!existing) {
           return { success: false, message: 'Country not found' };
         }
 
-        const updated = await db.countries.update({
+        const updated = await db.country.update({
           where: { id: params.id },
           data: { ...body },
         });
@@ -99,12 +99,12 @@ export const countries = new Elysia({ prefix: '/countries' })
   )
   .delete('/:id', async ({ params, ip, userAgent, request }) => {
     try {
-      const existing = await db.countries.findUnique({ where: { id: params.id } });
+      const existing = await db.country.findUnique({ where: { id: params.id } });
       if (!existing) {
         return { success: false, message: 'Country not found' };
       }
 
-      const deleted = await db.countries.delete({ where: { id: params.id } });
+      const deleted = await db.country.delete({ where: { id: params.id } });
 
       await createAuditLog(
         'DELETE',

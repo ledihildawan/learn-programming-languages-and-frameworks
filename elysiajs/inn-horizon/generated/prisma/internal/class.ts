@@ -20,7 +20,7 @@ const config: runtime.GetPrismaClientConfig = {
   "clientVersion": "7.0.0",
   "engineVersion": "0c19ccc313cf9911a90d99d2ac2eb0280c76c513",
   "activeProvider": "postgresql",
-  "inlineSchema": "generator client {\n  provider   = \"prisma-client\" // or `prisma-client-js`\n  output     = \"./../generated/prisma\"\n  engineType = \"client\" // enable Prisma ORM without Rust\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\ngenerator prismabox {\n  provider                    = \"prismabox\"\n  typeboxImportDependencyName = \"elysia\"\n  typeboxImportVariableName   = \"t\"\n  inputModel                  = true\n  output                      = \"./../generated/prismabox\"\n}\n\nmodel Roles {\n  id         String    @id @default(cuid())\n  name       String    @db.VarChar(50)\n  created_at DateTime  @default(now())\n  updated_at DateTime  @updatedAt\n  deleted_at DateTime?\n  users      Users[]\n\n  @@map(\"roles\")\n}\n\nmodel Countries {\n  id         String    @id @default(cuid())\n  name       String    @db.VarChar(100)\n  code       String    @unique @db.VarChar(2)\n  created_at DateTime  @default(now())\n  updated_at DateTime  @updatedAt\n  deleted_at DateTime?\n  users      Users[]\n\n  @@map(\"countries\")\n}\n\nmodel Users {\n  id                String       @id @default(cuid())\n  role              Roles        @relation(fields: [role_id], references: [id])\n  role_id           String\n  username          String       @unique @db.VarChar(50)\n  email             String       @unique @db.VarChar(255)\n  password_hash     String       @db.VarChar(255)\n  first_name        String?      @db.VarChar(100)\n  last_name         String?      @db.VarChar(100)\n  phone_number      String?      @db.VarChar(20)\n  country           Countries    @relation(fields: [country_id], references: [id])\n  country_id        String\n  profile_image_url String?      @db.VarChar(512)\n  created_at        DateTime     @default(now())\n  updated_at        DateTime     @updatedAt\n  deleted_at        DateTime?\n  systemLogs        SystemLogs[]\n\n  @@map(\"users\")\n}\n\nmodel SystemLogs {\n  id             String   @id @default(cuid())\n  user           Users    @relation(fields: [user_id], references: [id])\n  user_id        String\n  action_type    String   @db.VarChar(50)\n  table_name     String   @db.VarChar(50)\n  record_id      String\n  old_data       Json?\n  new_data       Json?\n  ip_address     String?  @db.VarChar(45)\n  user_agent     String?  @db.VarChar(512)\n  route_endpoint String?  @db.VarChar(255)\n  source         String?  @db.VarChar(50) // \"HTTP\", \"SEEDER\", \"MIGRATION\", \"CLI\", \"CRON\", \"TEST\"\n  message        String?  @db.Text\n  created_at     DateTime @default(now())\n\n  @@map(\"system_logs\")\n}\n\nmodel Languages {\n  id         String    @id @default(cuid())\n  code       String    @unique @db.VarChar(5)\n  name       String    @db.VarChar(50)\n  created_at DateTime  @default(now())\n  updated_at DateTime  @updatedAt\n  deleted_at DateTime?\n\n  @@map(\"languages\")\n}\n\nmodel PaymentMethods {\n  id         String    @id @default(cuid())\n  name       String    @db.VarChar(50)\n  is_active  Boolean   @default(false)\n  created_at DateTime  @default(now())\n  updated_at DateTime  @updatedAt\n  deleted_at DateTime?\n\n  @@map(\"payment_methods\")\n}\n",
+  "inlineSchema": "generator client {\n  provider   = \"prisma-client\"\n  output     = \"./../generated/prisma\"\n  engineType = \"client\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\ngenerator prismabox {\n  provider                    = \"prismabox\"\n  typeboxImportDependencyName = \"elysia\"\n  typeboxImportVariableName   = \"t\"\n  inputModel                  = true\n  output                      = \"./../generated/prismabox\"\n}\n\nenum RoleName {\n  Admin\n  Host\n  Customer\n  System\n}\n\nmodel Role {\n  id         String    @id @default(cuid())\n  name       RoleName\n  created_at DateTime  @default(now())\n  updated_at DateTime  @updatedAt\n  deleted_at DateTime?\n  users      User[]\n\n  @@map(\"roles\")\n}\n\nmodel Country {\n  id         String    @id @default(cuid())\n  name       String    @db.VarChar(100)\n  code       String    @unique @db.VarChar(2)\n  created_at DateTime  @default(now())\n  updated_at DateTime  @updatedAt\n  deleted_at DateTime?\n  users      User[]\n\n  @@map(\"countries\")\n}\n\nmodel User {\n  id                String      @id @default(cuid())\n  role              Role        @relation(fields: [role_id], references: [id])\n  role_id           String\n  username          String      @unique @db.VarChar(50)\n  email             String      @unique @db.VarChar(255)\n  password_hash     String      @db.VarChar(255)\n  first_name        String?     @db.VarChar(100)\n  last_name         String?     @db.VarChar(100)\n  phone_number      String?     @db.VarChar(20)\n  country           Country     @relation(fields: [country_id], references: [id])\n  country_id        String\n  profile_image_url String?     @db.VarChar(512)\n  created_at        DateTime    @default(now())\n  updated_at        DateTime    @updatedAt\n  deleted_at        DateTime?\n  systemLogs        SystemLog[]\n\n  @@map(\"users\")\n}\n\nenum SystemLogsActionType {\n  CREATE\n  UPDATE\n  EXECUTE\n  DELETE\n}\n\nenum SystemLogsStatus {\n  SUCCESS\n  FAILURE\n}\n\nenum SystemLogsSource {\n  HTTP\n  SEEDER\n  MIGRATION\n  CLI\n  CRON\n  TEST\n}\n\nmodel SystemLog {\n  id             String               @id @default(cuid())\n  user           User                 @relation(fields: [user_id], references: [id])\n  user_id        String\n  action_type    SystemLogsActionType\n  status         SystemLogsStatus\n  duration_ms    Int\n  table_name     String               @db.VarChar(50)\n  record_id      String?\n  old_data       Json?\n  new_data       Json?\n  ip_address     String?              @db.VarChar(45)\n  user_agent     String?              @db.VarChar(512)\n  route_endpoint String?              @db.VarChar(255)\n  source         SystemLogsSource\n  message        String?              @db.Text\n  created_at     DateTime             @default(now())\n\n  @@map(\"system_logs\")\n}\n\nmodel Language {\n  id         String    @id @default(cuid())\n  code       String    @unique @db.VarChar(5)\n  name       String    @db.VarChar(50)\n  created_at DateTime  @default(now())\n  updated_at DateTime  @updatedAt\n  deleted_at DateTime?\n\n  @@map(\"languages\")\n}\n\nenum StatusType {\n  BOOKING\n  REVIEW\n  REFUND\n  PAYMENT\n}\n\nmodel Status {\n  id         String     @id @default(cuid())\n  name       String     @db.VarChar(50)\n  type       StatusType\n  created_at DateTime   @default(now())\n  updated_at DateTime   @updatedAt\n  deleted_at DateTime?\n\n  @@map(\"statuses\")\n}\n\nmodel PaymentMethod {\n  id         String    @id @default(cuid())\n  name       String    @db.VarChar(50)\n  is_active  Boolean   @default(false)\n  created_at DateTime  @default(now())\n  updated_at DateTime  @updatedAt\n  deleted_at DateTime?\n\n  @@map(\"payment_methods\")\n}\n",
   "runtimeDataModel": {
     "models": {},
     "enums": {},
@@ -28,7 +28,7 @@ const config: runtime.GetPrismaClientConfig = {
   }
 }
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"Roles\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"deleted_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"users\",\"kind\":\"object\",\"type\":\"Users\",\"relationName\":\"RolesToUsers\"}],\"dbName\":\"roles\"},\"Countries\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"code\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"deleted_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"users\",\"kind\":\"object\",\"type\":\"Users\",\"relationName\":\"CountriesToUsers\"}],\"dbName\":\"countries\"},\"Users\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"role\",\"kind\":\"object\",\"type\":\"Roles\",\"relationName\":\"RolesToUsers\"},{\"name\":\"role_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"username\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password_hash\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"first_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"last_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone_number\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"country\",\"kind\":\"object\",\"type\":\"Countries\",\"relationName\":\"CountriesToUsers\"},{\"name\":\"country_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"profile_image_url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"deleted_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"systemLogs\",\"kind\":\"object\",\"type\":\"SystemLogs\",\"relationName\":\"SystemLogsToUsers\"}],\"dbName\":\"users\"},\"SystemLogs\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"Users\",\"relationName\":\"SystemLogsToUsers\"},{\"name\":\"user_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"action_type\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"table_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"record_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"old_data\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"new_data\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"ip_address\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user_agent\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"route_endpoint\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"source\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"message\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"system_logs\"},\"Languages\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"code\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"deleted_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"languages\"},\"PaymentMethods\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"is_active\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"deleted_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"payment_methods\"}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"Role\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"enum\",\"type\":\"RoleName\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"deleted_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"users\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"RoleToUser\"}],\"dbName\":\"roles\"},\"Country\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"code\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"deleted_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"users\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"CountryToUser\"}],\"dbName\":\"countries\"},\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"role\",\"kind\":\"object\",\"type\":\"Role\",\"relationName\":\"RoleToUser\"},{\"name\":\"role_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"username\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password_hash\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"first_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"last_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone_number\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"country\",\"kind\":\"object\",\"type\":\"Country\",\"relationName\":\"CountryToUser\"},{\"name\":\"country_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"profile_image_url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"deleted_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"systemLogs\",\"kind\":\"object\",\"type\":\"SystemLog\",\"relationName\":\"SystemLogToUser\"}],\"dbName\":\"users\"},\"SystemLog\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"SystemLogToUser\"},{\"name\":\"user_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"action_type\",\"kind\":\"enum\",\"type\":\"SystemLogsActionType\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"SystemLogsStatus\"},{\"name\":\"duration_ms\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"table_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"record_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"old_data\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"new_data\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"ip_address\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user_agent\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"route_endpoint\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"source\",\"kind\":\"enum\",\"type\":\"SystemLogsSource\"},{\"name\":\"message\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"system_logs\"},\"Language\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"code\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"deleted_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"languages\"},\"Status\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"type\",\"kind\":\"enum\",\"type\":\"StatusType\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"deleted_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"statuses\"},\"PaymentMethod\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"is_active\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"deleted_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"payment_methods\"}},\"enums\":{},\"types\":{}}")
 
 async function decodeBase64AsWasm(wasmBase64: string): Promise<WebAssembly.Module> {
   const { Buffer } = await import('node:buffer')
@@ -59,7 +59,7 @@ export interface PrismaClientConstructor {
    * ```
    * const prisma = new PrismaClient()
    * // Fetch zero or more Roles
-   * const roles = await prisma.roles.findMany()
+   * const roles = await prisma.role.findMany()
    * ```
    * 
    * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
@@ -81,7 +81,7 @@ export interface PrismaClientConstructor {
  * ```
  * const prisma = new PrismaClient()
  * // Fetch zero or more Roles
- * const roles = await prisma.roles.findMany()
+ * const roles = await prisma.role.findMany()
  * ```
  * 
  * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
@@ -175,64 +175,74 @@ export interface PrismaClient<
   }>>
 
       /**
-   * `prisma.roles`: Exposes CRUD operations for the **Roles** model.
+   * `prisma.role`: Exposes CRUD operations for the **Role** model.
     * Example usage:
     * ```ts
     * // Fetch zero or more Roles
-    * const roles = await prisma.roles.findMany()
+    * const roles = await prisma.role.findMany()
     * ```
     */
-  get roles(): Prisma.RolesDelegate<ExtArgs, { omit: OmitOpts }>;
+  get role(): Prisma.RoleDelegate<ExtArgs, { omit: OmitOpts }>;
 
   /**
-   * `prisma.countries`: Exposes CRUD operations for the **Countries** model.
+   * `prisma.country`: Exposes CRUD operations for the **Country** model.
     * Example usage:
     * ```ts
     * // Fetch zero or more Countries
-    * const countries = await prisma.countries.findMany()
+    * const countries = await prisma.country.findMany()
     * ```
     */
-  get countries(): Prisma.CountriesDelegate<ExtArgs, { omit: OmitOpts }>;
+  get country(): Prisma.CountryDelegate<ExtArgs, { omit: OmitOpts }>;
 
   /**
-   * `prisma.users`: Exposes CRUD operations for the **Users** model.
+   * `prisma.user`: Exposes CRUD operations for the **User** model.
     * Example usage:
     * ```ts
     * // Fetch zero or more Users
-    * const users = await prisma.users.findMany()
+    * const users = await prisma.user.findMany()
     * ```
     */
-  get users(): Prisma.UsersDelegate<ExtArgs, { omit: OmitOpts }>;
+  get user(): Prisma.UserDelegate<ExtArgs, { omit: OmitOpts }>;
 
   /**
-   * `prisma.systemLogs`: Exposes CRUD operations for the **SystemLogs** model.
+   * `prisma.systemLog`: Exposes CRUD operations for the **SystemLog** model.
     * Example usage:
     * ```ts
     * // Fetch zero or more SystemLogs
-    * const systemLogs = await prisma.systemLogs.findMany()
+    * const systemLogs = await prisma.systemLog.findMany()
     * ```
     */
-  get systemLogs(): Prisma.SystemLogsDelegate<ExtArgs, { omit: OmitOpts }>;
+  get systemLog(): Prisma.SystemLogDelegate<ExtArgs, { omit: OmitOpts }>;
 
   /**
-   * `prisma.languages`: Exposes CRUD operations for the **Languages** model.
+   * `prisma.language`: Exposes CRUD operations for the **Language** model.
     * Example usage:
     * ```ts
     * // Fetch zero or more Languages
-    * const languages = await prisma.languages.findMany()
+    * const languages = await prisma.language.findMany()
     * ```
     */
-  get languages(): Prisma.LanguagesDelegate<ExtArgs, { omit: OmitOpts }>;
+  get language(): Prisma.LanguageDelegate<ExtArgs, { omit: OmitOpts }>;
 
   /**
-   * `prisma.paymentMethods`: Exposes CRUD operations for the **PaymentMethods** model.
+   * `prisma.status`: Exposes CRUD operations for the **Status** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Statuses
+    * const statuses = await prisma.status.findMany()
+    * ```
+    */
+  get status(): Prisma.StatusDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.paymentMethod`: Exposes CRUD operations for the **PaymentMethod** model.
     * Example usage:
     * ```ts
     * // Fetch zero or more PaymentMethods
-    * const paymentMethods = await prisma.paymentMethods.findMany()
+    * const paymentMethods = await prisma.paymentMethod.findMany()
     * ```
     */
-  get paymentMethods(): Prisma.PaymentMethodsDelegate<ExtArgs, { omit: OmitOpts }>;
+  get paymentMethod(): Prisma.PaymentMethodDelegate<ExtArgs, { omit: OmitOpts }>;
 }
 
 export function getPrismaClientClass(): PrismaClientConstructor {

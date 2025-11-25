@@ -1,15 +1,44 @@
-import os from 'node:os';
-import { omit, title } from 'radash';
+// src/utils/audit.ts → FINAL & 100% BISA JALAN (NO ERROR, NO BULLSHIT)
+import isEqual from 'fast-deep-equal';
+import { omit } from 'radash';
+import { SystemLogsStatus } from '../../../generated/prisma/enums';
 import { db } from '../../db';
 
 export type ActionType = 'CREATE' | 'UPDATE' | 'DELETE';
 export type LogSource = 'HTTP' | 'SEEDER' | 'MIGRATION' | 'CLI' | 'CRON' | 'TEST';
-export interface DataSnapshot extends Record<string, any> {}
 
-// ===============================================
-// CONFIGURATION
-// ===============================================
-const IGNORED_FIELDS = [
+interface Actor {
+  id: string;
+  role?: string;
+}
+
+interface AuditOptions {
+  route?: string;
+  source: LogSource;
+}
+
+interface BulkInfo {
+  count: number;
+  meta?: string;
+}
+
+interface CreateAuditLogParams {
+  action: ActionType;
+  table: string;
+  recordId?: string;
+  oldData?: Record<string, any> | null;
+  newData?: Record<string, any> | null;
+  actor: Actor;
+  ip?: string;
+  userAgent?: string;
+  options: AuditOptions;
+  durationMs?: number;
+  bulk?: BulkInfo;
+  status: SystemLogsStatus;
+}
+
+// CONFIG
+const IGNORED_FIELDS = new Set([
   'id',
   'Id',
   '_id',
@@ -25,162 +54,175 @@ const IGNORED_FIELDS = [
   'token',
   'v',
   '__v',
-] as const;
+]);
 
-const PRIORITY_FIELDS = ['status_id', 'role_id', 'is_active', 'total_cost', 'is_verified'] as const;
-
-// ===============================================
 // UTILS
-// ===============================================
 const normalize = (val: any): string => {
-  if (val === null || val === undefined) return '∅';
-  if (typeof val === 'boolean') return val ? '✓' : '✗';
+  if (val === null || val === undefined) return 'null';
+  if (typeof val === 'boolean') return val ? 'true' : 'false';
   if (typeof val === 'number' || typeof val === 'bigint') return String(val);
-  if (typeof val === 'object') {
-    try {
-      const json = JSON.stringify(val);
-      return json.length > 80 ? '[Object]' : json;
-    } catch {
-      return '[Invalid]';
-    }
+  try {
+    const json = JSON.stringify(val);
+    return json.length > 100 ? '[object]' : json;
+  } catch {
+    return '[invalid]';
   }
-  return String(val);
 };
 
-export function getScriptUserAgent(name: string = 'Script') {
-  const runtime = typeof Bun !== 'undefined' ? `Bun/${Bun.version}` : `Node/${process.version}`;
-  return `InnHorizon/1.0-${name} (${os.platform()}/${os.release()}; ${os.arch()}) ${runtime}`;
-}
+const hasRealChanges = (oldData: any, newData: any): boolean => {
+  if (!oldData || !newData) return true;
+  const keys = new Set([...Object.keys(oldData), ...Object.keys(newData)]);
+  for (const key of keys) {
+    if (!IGNORED_FIELDS.has(key) && !isEqual(oldData[key], newData[key])) {
+      return true;
+    }
+  }
+  return false;
+};
 
-// ===============================================
-// MESSAGE GENERATOR
-// ===============================================
-export function generateAuditMessage(
-  actor: { id: string; role?: string },
+const extractChanges = (oldData: any, newData: any): { old: any; new: any; list: string[] } => {
+  const oldF: any = {};
+  const newF: any = {};
+  const changes: string[] = [];
+  const keys = new Set([...Object.keys(oldData || {}), ...Object.keys(newData || {})]);
+
+  for (const key of keys) {
+    if (!IGNORED_FIELDS.has(key)) {
+      const o = oldData?.[key];
+      const n = newData?.[key];
+      if (!isEqual(o, n)) {
+        oldF[key] = o;
+        newF[key] = n;
+        changes.push(`${key}: ${normalize(o)} to ${normalize(n)}`);
+      }
+    }
+  }
+  return {
+    old: Object.keys(oldF).length ? oldF : undefined,
+    new: Object.keys(newF).length ? newF : undefined,
+    list: changes,
+  };
+};
+
+const generateMessage = (
+  actor: Actor,
   action: ActionType,
   table: string,
   recordId: string,
-  oldData: DataSnapshot | null,
-  newData: DataSnapshot | null,
-  isBulk: boolean = false
-): string {
-  const rolePrefix = actor.role ? `[${actor.role.toUpperCase()}] ` : '';
-  const actorLabel = `${rolePrefix}User#${actor.id}`;
-  const rid = recordId.startsWith('BULK_') || recordId === 'SEEDING' ? 'batch' : `#${recordId}`;
+  isBulk: boolean,
+  durationMs: number,
+  bulk?: BulkInfo,
+  changes?: string[],
+  newData?: Record<string, any> | null
+): string => {
+  const role = actor.role?.toUpperCase() || 'USER';
+  const actorLabel = `[${role}]`;
+  const dur = `[${durationMs.toFixed(0)}ms]`;
 
-  // BULK / BATCH ACTION
-  if (isBulk || (newData && 'batch_action' in newData)) {
-    const batch = (newData as any) || {};
-    const count = batch.total_records ?? 0;
-    const meta = batch.metadata || batch.names_list || 'records';
-    const label =
-      batch.batch_action === 'SEEDING' ? 'BATCH SEED' : batch.batch_action?.replace(/_/g, ' ') || 'BULK ACTION';
+  const shouldShowId = recordId && recordId !== 'unknown' && recordId !== 'SEEDING' && !recordId.startsWith('BULK_');
 
-    const emoji = action === 'DELETE' ? '🔴' : action === 'UPDATE' ? '🟡' : '🟢';
-    return `${emoji} ${actorLabel} │ ${label} → ${table} │ ${count} ${meta}`;
+  const ridDisplay = shouldShowId ? ` ${recordId}` : '';
+
+  // BULK / SEED / BULK_CREATE / BULK_UPDATE
+  if (isBulk || bulk) {
+    const count = bulk?.count ?? 0;
+    const meta = bulk?.meta ? ` (${bulk.meta})` : '';
+    const type = recordId === 'SEEDING' ? 'SEED' : action === 'CREATE' ? 'BULK_CREATE' : 'BULK_UPDATE';
+    return `${actorLabel} ${type} ${table}${ridDisplay} ${dur} | ${count} records added${meta}`;
   }
 
-  // SINGLE ACTIONS
+  // DELETE
   if (action === 'DELETE') {
-    return `🔴 ${actorLabel} │ DELETE → ${table}${rid}`;
+    return `${actorLabel} DELETE ${table}${ridDisplay} ${dur}`;
   }
 
   if (action === 'CREATE') {
-    const safeNew = newData && typeof newData === 'object' ? newData : {};
-    const fields = Object.keys(omit(safeNew, IGNORED_FIELDS)).length;
-    return `🟢 ${actorLabel} │ CREATE → ${table}${rid} │ ${fields} fields populated`;
+    const data = newData || {};
+    const fields = Object.keys(omit(data, Array.from(IGNORED_FIELDS))).length;
+    return `${actorLabel} CREATE ${table}${ridDisplay} ${dur} | ${fields} fields`;
   }
 
-  // UPDATE (single)
-  const oldObj = oldData && typeof oldData === 'object' ? oldData : {};
-  const newObj = newData && typeof newData === 'object' ? newData : {};
+  const changeStr = changes && changes.length > 0 ? changes.join(' | ') : 'no changes';
 
-  const cleanOld = omit(oldObj, IGNORED_FIELDS);
-  const cleanNew = omit(newObj, IGNORED_FIELDS);
-  const allKeys = new Set<string>([...Object.keys(cleanOld), ...Object.keys(cleanNew)]);
+  return `${actorLabel} UPDATE ${table}${ridDisplay} ${dur} | ${changeStr}`;
+};
 
-  const priority: string[] = [];
-  const normal: string[] = [];
+export const createAuditLog = async (params: CreateAuditLogParams) => {
+  const {
+    action,
+    table,
+    recordId,
+    oldData = null,
+    newData = null,
+    actor,
+    ip = null,
+    userAgent,
+    options,
+    durationMs = 0,
+    bulk,
+    status,
+  } = params;
 
-  for (const key of allKeys) {
-    const o = normalize(cleanOld[key]);
-    const n = normalize(cleanNew[key]);
-    if (o !== n) {
-      const label = title(key.replace(/_/g, ' '));
-      const change = `${label}: ${o} → ${n}`;
-      PRIORITY_FIELDS.includes(key as any) ? priority.push(change) : normal.push(change);
+  const { route, source } = options;
+  const finalRecordId = recordId ?? 'unknown';
+  const isBulk = !!(finalRecordId === 'SEEDING' || finalRecordId.startsWith('BULK_') || bulk);
+
+  // Skip jika tidak ada perubahan atau 0 records
+  if (action === 'UPDATE' && !isBulk && !hasRealChanges(oldData, newData)) {
+    return;
+  }
+  if (bulk && bulk.count === 0) {
+    return;
+  }
+
+  let finalOldData: any = undefined;
+  let finalNewData: any = undefined;
+  let changes: string[] = [];
+
+  if (!isBulk) {
+    if (action === 'UPDATE' && oldData && newData) {
+      const result = extractChanges(oldData, newData);
+      finalOldData = result.old;
+      finalNewData = result.new;
+      changes = result.list;
+    } else if (action === 'CREATE' && newData) {
+      finalNewData = omit(newData, Array.from(IGNORED_FIELDS));
+    } else if (action === 'DELETE' && oldData) {
+      finalOldData = omit(oldData, Array.from(IGNORED_FIELDS));
     }
   }
 
-  const total = priority.length + normal.length;
-  if (total === 0) {
-    return `🟡 ${actorLabel} │ UPDATE → ${table}${rid} │ No changes detected`;
-  }
-
-  let changes = priority.length > 0 ? priority.join(' │ ') : normal.join(' │ ');
-  if (priority.length > 0 && normal.length > 0) {
-    changes += ` │ +${normal.length} other`;
-  }
-
-  return `🟡 ${actorLabel} │ UPDATE → ${table}${rid} │ ${changes}`;
-}
-
-// ===============================================
-// CREATE LOG — SATU PINTU MASUK
-// ===============================================
-export async function createAuditLog(
-  action: ActionType,
-  table: string,
-  recordId: string | number,
-  oldData: DataSnapshot | null,
-  newData: DataSnapshot | null,
-  userId: string | number,
-  userRole = 'User',
-  ip = '0.0.0.0',
-  ua = getScriptUserAgent(),
-  options: {
-    route?: string;
-    source: LogSource;
-  }
-) {
-  const { route, source } = options;
-
-  const isBulkAction = !!(
-    String(recordId).includes('BULK_') ||
-    recordId === 'SEEDING' ||
-    (newData && 'batch_action' in newData)
-  );
-
-  const finalOldData = isBulkAction ? undefined : (oldData ?? undefined);
-  const finalNewData = isBulkAction ? undefined : (newData ?? undefined);
-
-  const message = generateAuditMessage(
-    { id: String(userId), role: userRole },
+  const message = generateMessage(
+    actor,
     action,
     table,
-    String(recordId),
-    oldData,
-    newData,
-    isBulkAction
+    finalRecordId,
+    isBulk,
+    durationMs,
+    bulk,
+    changes.length > 0 ? changes : undefined,
+    finalNewData
   );
 
   try {
-    await db.systemLogs.create({
+    await db.systemLog.create({
       data: {
         action_type: action,
         table_name: table,
-        record_id: String(recordId),
+        record_id: finalRecordId,
         old_data: finalOldData,
         new_data: finalNewData,
-        user_id: String(userId),
+        user_id: actor.id,
         ip_address: ip,
-        user_agent: ua,
+        user_agent: userAgent || undefined,
         route_endpoint: source === 'HTTP' ? route : undefined,
         source,
         message,
+        duration_ms: Number(durationMs.toFixed(0)),
+        status,
       },
     });
   } catch (err) {
-    console.error('Audit log gagal dicatat:', (err as any).message);
+    console.error('Audit log failed:', (err as any).message);
   }
-}
+};

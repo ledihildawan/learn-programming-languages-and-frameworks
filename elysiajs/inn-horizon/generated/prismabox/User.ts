@@ -4,7 +4,7 @@ import { __transformDate__ } from "./__transformDate__";
 
 import { __nullable__ } from "./__nullable__";
 
-export const UsersPlain = t.Object(
+export const UserPlain = t.Object(
   {
     id: t.String(),
     role_id: t.String(),
@@ -23,12 +23,20 @@ export const UsersPlain = t.Object(
   { additionalProperties: false },
 );
 
-export const UsersRelations = t.Object(
+export const UserRelations = t.Object(
   {
     role: t.Object(
       {
         id: t.String(),
-        name: t.String(),
+        name: t.Union(
+          [
+            t.Literal("Admin"),
+            t.Literal("Host"),
+            t.Literal("Customer"),
+            t.Literal("System"),
+          ],
+          { additionalProperties: false },
+        ),
         created_at: t.Date(),
         updated_at: t.Date(),
         deleted_at: __nullable__(t.Date()),
@@ -51,15 +59,37 @@ export const UsersRelations = t.Object(
         {
           id: t.String(),
           user_id: t.String(),
-          action_type: t.String(),
+          action_type: t.Union(
+            [
+              t.Literal("CREATE"),
+              t.Literal("UPDATE"),
+              t.Literal("EXECUTE"),
+              t.Literal("DELETE"),
+            ],
+            { additionalProperties: false },
+          ),
+          status: t.Union([t.Literal("SUCCESS"), t.Literal("FAILURE")], {
+            additionalProperties: false,
+          }),
+          duration_ms: t.Integer(),
           table_name: t.String(),
-          record_id: t.String(),
+          record_id: __nullable__(t.String()),
           old_data: __nullable__(t.Any()),
           new_data: __nullable__(t.Any()),
           ip_address: __nullable__(t.String()),
           user_agent: __nullable__(t.String()),
           route_endpoint: __nullable__(t.String()),
-          source: __nullable__(t.String()),
+          source: t.Union(
+            [
+              t.Literal("HTTP"),
+              t.Literal("SEEDER"),
+              t.Literal("MIGRATION"),
+              t.Literal("CLI"),
+              t.Literal("CRON"),
+              t.Literal("TEST"),
+            ],
+            { additionalProperties: false },
+          ),
           message: __nullable__(t.String()),
           created_at: t.Date(),
         },
@@ -71,7 +101,7 @@ export const UsersRelations = t.Object(
   { additionalProperties: false },
 );
 
-export const UsersPlainInputCreate = t.Object(
+export const UserPlainInputCreate = t.Object(
   {
     username: t.String(),
     email: t.String(),
@@ -86,7 +116,7 @@ export const UsersPlainInputCreate = t.Object(
   { additionalProperties: false },
 );
 
-export const UsersPlainInputUpdate = t.Object(
+export const UserPlainInputUpdate = t.Object(
   {
     username: t.Optional(t.String()),
     email: t.Optional(t.String()),
@@ -101,7 +131,7 @@ export const UsersPlainInputUpdate = t.Object(
   { additionalProperties: false },
 );
 
-export const UsersRelationsInputCreate = t.Object(
+export const UserRelationsInputCreate = t.Object(
   {
     role: t.Object(
       {
@@ -145,7 +175,7 @@ export const UsersRelationsInputCreate = t.Object(
   { additionalProperties: false },
 );
 
-export const UsersRelationsInputUpdate = t.Partial(
+export const UserRelationsInputUpdate = t.Partial(
   t.Object(
     {
       role: t.Object(
@@ -200,7 +230,7 @@ export const UsersRelationsInputUpdate = t.Partial(
   ),
 );
 
-export const UsersWhere = t.Partial(
+export const UserWhere = t.Partial(
   t.Recursive(
     (Self) =>
       t.Object(
@@ -224,11 +254,11 @@ export const UsersWhere = t.Partial(
         },
         { additionalProperties: false },
       ),
-    { $id: "Users" },
+    { $id: "User" },
   ),
 );
 
-export const UsersWhereUnique = t.Recursive(
+export const UserWhereUnique = t.Recursive(
   (Self) =>
     t.Intersect(
       [
@@ -284,10 +314,10 @@ export const UsersWhereUnique = t.Recursive(
       ],
       { additionalProperties: false },
     ),
-  { $id: "Users" },
+  { $id: "User" },
 );
 
-export const UsersSelect = t.Partial(
+export const UserSelect = t.Partial(
   t.Object(
     {
       id: t.Boolean(),
@@ -312,7 +342,7 @@ export const UsersSelect = t.Partial(
   ),
 );
 
-export const UsersInclude = t.Partial(
+export const UserInclude = t.Partial(
   t.Object(
     {
       role: t.Boolean(),
@@ -324,7 +354,7 @@ export const UsersInclude = t.Partial(
   ),
 );
 
-export const UsersOrderBy = t.Partial(
+export const UserOrderBy = t.Partial(
   t.Object(
     {
       id: t.Union([t.Literal("asc"), t.Literal("desc")], {
@@ -371,16 +401,16 @@ export const UsersOrderBy = t.Partial(
   ),
 );
 
-export const Users = t.Composite([UsersPlain, UsersRelations], {
+export const User = t.Composite([UserPlain, UserRelations], {
   additionalProperties: false,
 });
 
-export const UsersInputCreate = t.Composite(
-  [UsersPlainInputCreate, UsersRelationsInputCreate],
+export const UserInputCreate = t.Composite(
+  [UserPlainInputCreate, UserRelationsInputCreate],
   { additionalProperties: false },
 );
 
-export const UsersInputUpdate = t.Composite(
-  [UsersPlainInputUpdate, UsersRelationsInputUpdate],
+export const UserInputUpdate = t.Composite(
+  [UserPlainInputUpdate, UserRelationsInputUpdate],
   { additionalProperties: false },
 );

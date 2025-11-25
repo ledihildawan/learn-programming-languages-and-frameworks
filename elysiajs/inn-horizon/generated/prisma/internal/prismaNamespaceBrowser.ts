@@ -51,12 +51,13 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  Roles: 'Roles',
-  Countries: 'Countries',
-  Users: 'Users',
-  SystemLogs: 'SystemLogs',
-  Languages: 'Languages',
-  PaymentMethods: 'PaymentMethods'
+  Role: 'Role',
+  Country: 'Country',
+  User: 'User',
+  SystemLog: 'SystemLog',
+  Language: 'Language',
+  Status: 'Status',
+  PaymentMethod: 'PaymentMethod'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -75,7 +76,7 @@ export const TransactionIsolationLevel = {
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
-export const RolesScalarFieldEnum = {
+export const RoleScalarFieldEnum = {
   id: 'id',
   name: 'name',
   created_at: 'created_at',
@@ -83,10 +84,10 @@ export const RolesScalarFieldEnum = {
   deleted_at: 'deleted_at'
 } as const
 
-export type RolesScalarFieldEnum = (typeof RolesScalarFieldEnum)[keyof typeof RolesScalarFieldEnum]
+export type RoleScalarFieldEnum = (typeof RoleScalarFieldEnum)[keyof typeof RoleScalarFieldEnum]
 
 
-export const CountriesScalarFieldEnum = {
+export const CountryScalarFieldEnum = {
   id: 'id',
   name: 'name',
   code: 'code',
@@ -95,10 +96,10 @@ export const CountriesScalarFieldEnum = {
   deleted_at: 'deleted_at'
 } as const
 
-export type CountriesScalarFieldEnum = (typeof CountriesScalarFieldEnum)[keyof typeof CountriesScalarFieldEnum]
+export type CountryScalarFieldEnum = (typeof CountryScalarFieldEnum)[keyof typeof CountryScalarFieldEnum]
 
 
-export const UsersScalarFieldEnum = {
+export const UserScalarFieldEnum = {
   id: 'id',
   role_id: 'role_id',
   username: 'username',
@@ -114,13 +115,15 @@ export const UsersScalarFieldEnum = {
   deleted_at: 'deleted_at'
 } as const
 
-export type UsersScalarFieldEnum = (typeof UsersScalarFieldEnum)[keyof typeof UsersScalarFieldEnum]
+export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
-export const SystemLogsScalarFieldEnum = {
+export const SystemLogScalarFieldEnum = {
   id: 'id',
   user_id: 'user_id',
   action_type: 'action_type',
+  status: 'status',
+  duration_ms: 'duration_ms',
   table_name: 'table_name',
   record_id: 'record_id',
   old_data: 'old_data',
@@ -133,10 +136,10 @@ export const SystemLogsScalarFieldEnum = {
   created_at: 'created_at'
 } as const
 
-export type SystemLogsScalarFieldEnum = (typeof SystemLogsScalarFieldEnum)[keyof typeof SystemLogsScalarFieldEnum]
+export type SystemLogScalarFieldEnum = (typeof SystemLogScalarFieldEnum)[keyof typeof SystemLogScalarFieldEnum]
 
 
-export const LanguagesScalarFieldEnum = {
+export const LanguageScalarFieldEnum = {
   id: 'id',
   code: 'code',
   name: 'name',
@@ -145,10 +148,22 @@ export const LanguagesScalarFieldEnum = {
   deleted_at: 'deleted_at'
 } as const
 
-export type LanguagesScalarFieldEnum = (typeof LanguagesScalarFieldEnum)[keyof typeof LanguagesScalarFieldEnum]
+export type LanguageScalarFieldEnum = (typeof LanguageScalarFieldEnum)[keyof typeof LanguageScalarFieldEnum]
 
 
-export const PaymentMethodsScalarFieldEnum = {
+export const StatusScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  type: 'type',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  deleted_at: 'deleted_at'
+} as const
+
+export type StatusScalarFieldEnum = (typeof StatusScalarFieldEnum)[keyof typeof StatusScalarFieldEnum]
+
+
+export const PaymentMethodScalarFieldEnum = {
   id: 'id',
   name: 'name',
   is_active: 'is_active',
@@ -157,7 +172,7 @@ export const PaymentMethodsScalarFieldEnum = {
   deleted_at: 'deleted_at'
 } as const
 
-export type PaymentMethodsScalarFieldEnum = (typeof PaymentMethodsScalarFieldEnum)[keyof typeof PaymentMethodsScalarFieldEnum]
+export type PaymentMethodScalarFieldEnum = (typeof PaymentMethodScalarFieldEnum)[keyof typeof PaymentMethodScalarFieldEnum]
 
 
 export const SortOrder = {

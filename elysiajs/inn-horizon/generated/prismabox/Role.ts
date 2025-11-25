@@ -4,10 +4,18 @@ import { __transformDate__ } from "./__transformDate__";
 
 import { __nullable__ } from "./__nullable__";
 
-export const RolesPlain = t.Object(
+export const RolePlain = t.Object(
   {
     id: t.String(),
-    name: t.String(),
+    name: t.Union(
+      [
+        t.Literal("Admin"),
+        t.Literal("Host"),
+        t.Literal("Customer"),
+        t.Literal("System"),
+      ],
+      { additionalProperties: false },
+    ),
     created_at: t.Date(),
     updated_at: t.Date(),
     deleted_at: __nullable__(t.Date()),
@@ -15,7 +23,7 @@ export const RolesPlain = t.Object(
   { additionalProperties: false },
 );
 
-export const RolesRelations = t.Object(
+export const RoleRelations = t.Object(
   {
     users: t.Array(
       t.Object(
@@ -42,25 +50,43 @@ export const RolesRelations = t.Object(
   { additionalProperties: false },
 );
 
-export const RolesPlainInputCreate = t.Object(
+export const RolePlainInputCreate = t.Object(
   {
-    name: t.String(),
+    name: t.Union(
+      [
+        t.Literal("Admin"),
+        t.Literal("Host"),
+        t.Literal("Customer"),
+        t.Literal("System"),
+      ],
+      { additionalProperties: false },
+    ),
     created_at: t.Optional(t.Date()),
     deleted_at: t.Optional(__nullable__(t.Date())),
   },
   { additionalProperties: false },
 );
 
-export const RolesPlainInputUpdate = t.Object(
+export const RolePlainInputUpdate = t.Object(
   {
-    name: t.Optional(t.String()),
+    name: t.Optional(
+      t.Union(
+        [
+          t.Literal("Admin"),
+          t.Literal("Host"),
+          t.Literal("Customer"),
+          t.Literal("System"),
+        ],
+        { additionalProperties: false },
+      ),
+    ),
     created_at: t.Optional(t.Date()),
     deleted_at: t.Optional(__nullable__(t.Date())),
   },
   { additionalProperties: false },
 );
 
-export const RolesRelationsInputCreate = t.Object(
+export const RoleRelationsInputCreate = t.Object(
   {
     users: t.Optional(
       t.Object(
@@ -82,7 +108,7 @@ export const RolesRelationsInputCreate = t.Object(
   { additionalProperties: false },
 );
 
-export const RolesRelationsInputUpdate = t.Partial(
+export const RoleRelationsInputUpdate = t.Partial(
   t.Object(
     {
       users: t.Partial(
@@ -115,7 +141,7 @@ export const RolesRelationsInputUpdate = t.Partial(
   ),
 );
 
-export const RolesWhere = t.Partial(
+export const RoleWhere = t.Partial(
   t.Recursive(
     (Self) =>
       t.Object(
@@ -124,18 +150,26 @@ export const RolesWhere = t.Partial(
           NOT: t.Union([Self, t.Array(Self, { additionalProperties: false })]),
           OR: t.Array(Self, { additionalProperties: false }),
           id: t.String(),
-          name: t.String(),
+          name: t.Union(
+            [
+              t.Literal("Admin"),
+              t.Literal("Host"),
+              t.Literal("Customer"),
+              t.Literal("System"),
+            ],
+            { additionalProperties: false },
+          ),
           created_at: t.Date(),
           updated_at: t.Date(),
           deleted_at: t.Date(),
         },
         { additionalProperties: false },
       ),
-    { $id: "Roles" },
+    { $id: "Role" },
   ),
 );
 
-export const RolesWhereUnique = t.Recursive(
+export const RoleWhereUnique = t.Recursive(
   (Self) =>
     t.Intersect(
       [
@@ -164,7 +198,15 @@ export const RolesWhereUnique = t.Recursive(
           t.Object(
             {
               id: t.String(),
-              name: t.String(),
+              name: t.Union(
+                [
+                  t.Literal("Admin"),
+                  t.Literal("Host"),
+                  t.Literal("Customer"),
+                  t.Literal("System"),
+                ],
+                { additionalProperties: false },
+              ),
               created_at: t.Date(),
               updated_at: t.Date(),
               deleted_at: t.Date(),
@@ -175,10 +217,10 @@ export const RolesWhereUnique = t.Recursive(
       ],
       { additionalProperties: false },
     ),
-  { $id: "Roles" },
+  { $id: "Role" },
 );
 
-export const RolesSelect = t.Partial(
+export const RoleSelect = t.Partial(
   t.Object(
     {
       id: t.Boolean(),
@@ -193,20 +235,17 @@ export const RolesSelect = t.Partial(
   ),
 );
 
-export const RolesInclude = t.Partial(
+export const RoleInclude = t.Partial(
   t.Object(
-    { users: t.Boolean(), _count: t.Boolean() },
+    { name: t.Boolean(), users: t.Boolean(), _count: t.Boolean() },
     { additionalProperties: false },
   ),
 );
 
-export const RolesOrderBy = t.Partial(
+export const RoleOrderBy = t.Partial(
   t.Object(
     {
       id: t.Union([t.Literal("asc"), t.Literal("desc")], {
-        additionalProperties: false,
-      }),
-      name: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
       created_at: t.Union([t.Literal("asc"), t.Literal("desc")], {
@@ -223,16 +262,16 @@ export const RolesOrderBy = t.Partial(
   ),
 );
 
-export const Roles = t.Composite([RolesPlain, RolesRelations], {
+export const Role = t.Composite([RolePlain, RoleRelations], {
   additionalProperties: false,
 });
 
-export const RolesInputCreate = t.Composite(
-  [RolesPlainInputCreate, RolesRelationsInputCreate],
+export const RoleInputCreate = t.Composite(
+  [RolePlainInputCreate, RoleRelationsInputCreate],
   { additionalProperties: false },
 );
 
-export const RolesInputUpdate = t.Composite(
-  [RolesPlainInputUpdate, RolesRelationsInputUpdate],
+export const RoleInputUpdate = t.Composite(
+  [RolePlainInputUpdate, RoleRelationsInputUpdate],
   { additionalProperties: false },
 );

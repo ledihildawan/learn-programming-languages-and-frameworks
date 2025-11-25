@@ -3,6 +3,7 @@ import { rateLimit } from 'elysia-rate-limit';
 import { db } from '../../db';
 import { ip } from '../../plugins/ip';
 import { userAgent } from '../../plugins/userAgent';
+import { withDuration } from '../../utils';
 import { createAuditLog } from '../../utils/system-logs';
 
 export const paymentMethods = new Elysia({ prefix: '/payment-methods' })
@@ -10,7 +11,7 @@ export const paymentMethods = new Elysia({ prefix: '/payment-methods' })
   .use(userAgent)
   .get('/', async () => {
     try {
-      const data = await db.paymentMethods.findMany();
+      const data = await db.paymentMethod.findMany();
 
       return { success: true, message: 'Payment methods data fetched successfully', data };
     } catch (error) {
@@ -30,32 +31,37 @@ export const paymentMethods = new Elysia({ prefix: '/payment-methods' })
       }),
     })
   )
-  .onError(({ error, code }) => {
-    console.log(code);
-
-    return new Response(error.toString());
-  })
   .post(
     '/',
     async ({ body, ip, userAgent, request }) => {
       try {
-        const paymentMethod = await db.paymentMethods.create({ data: { ...body } });
+        const {
+          result: paymentMethod,
+          duration_ms,
+          status,
+        } = await withDuration(async () => {
+          const method = await db.paymentMethod.create({ data: { ...body } });
+          return method;
+        });
 
-        await createAuditLog(
-          'CREATE',
-          'paymentMethods',
-          paymentMethod.id,
-          null,
-          paymentMethod,
-          process.env.USER_ID!,
-          process.env.USER_ROLE_NAME!,
-          ip.address,
+        await createAuditLog({
+          action: 'CREATE',
+          table: 'payment_methods',
+          actor: {
+            id: process.env.USER_ID!,
+            role: process.env.USER_ROLE_NAME!,
+          },
+          ip: ip.address,
           userAgent,
-          {
+          durationMs: duration_ms,
+          options: {
             route: request.url,
             source: 'HTTP',
-          }
-        );
+          },
+          newData: paymentMethod,
+          recordId: paymentMethod!.id,
+          status,
+        });
 
         return { success: true, message: 'Payment method created successfully', data: paymentMethod };
       } catch (error) {
@@ -78,31 +84,46 @@ export const paymentMethods = new Elysia({ prefix: '/payment-methods' })
     '/:id',
     async ({ params, body, ip, userAgent, request }) => {
       try {
-        const existing = await db.paymentMethods.findUnique({ where: { id: params.id } });
-        if (!existing) {
-          return { success: false, message: 'Payment method not found' };
-        }
+        let existing = null;
 
-        const updated = await db.paymentMethods.update({
-          where: { id: params.id },
-          data: { ...body },
+        const {
+          result: updated,
+          duration_ms,
+          status,
+        } = await withDuration(async () => {
+          existing = await db.paymentMethod.findUnique({
+            where: { id: params.id },
+          });
+
+          if (!existing) {
+            throw new Error('Payment method not found');
+          }
+
+          return await db.paymentMethod.update({
+            where: { id: params.id },
+            data: { ...body },
+          });
         });
 
-        await createAuditLog(
-          'UPDATE',
-          'paymentMethods',
-          updated.id,
-          existing,
-          updated,
-          process.env.USER_ID!,
-          process.env.USER_ROLE_NAME!,
-          ip.address,
+        await createAuditLog({
+          action: 'UPDATE',
+          table: 'payment_methods',
+          actor: {
+            id: process.env.USER_ID!,
+            role: process.env.USER_ROLE_NAME!,
+          },
+          ip: ip.address,
           userAgent,
-          {
+          durationMs: duration_ms,
+          options: {
             route: request.url,
             source: 'HTTP',
-          }
-        );
+          },
+          newData: updated,
+          oldData: existing,
+          recordId: existing!.id,
+          status,
+        });
 
         return { success: true, message: 'Payment method updated successfully', data: updated };
       } catch (error) {
@@ -118,12 +139,12 @@ export const paymentMethods = new Elysia({ prefix: '/payment-methods' })
   )
   .delete('/:id', async ({ params, ip, userAgent, request }) => {
     try {
-      const existing = await db.paymentMethods.findUnique({ where: { id: params.id } });
+      const existing = await db.paymentMethod.findUnique({ where: { id: params.id } });
       if (!existing) {
         return { success: false, message: 'Payment method not found' };
       }
 
-      const deleted = await db.paymentMethods.delete({ where: { id: params.id } });
+      const deleted = await db.paymentMethod.delete({ where: { id: params.id } });
 
       await createAuditLog(
         'DELETE',

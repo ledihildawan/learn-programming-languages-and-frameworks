@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full bg-gray-50 dark:bg-gray-900">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>System Logs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/advancedFormat.js"></script>
+    <script>
+      dayjs.extend(window.dayjs_plugin_advancedFormat);
+    </script>
+
+    <style>
+      [x-cloak] {
+        display: none !important;
+      }
+      .diff-added {
+        @apply bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300;
+      }
+      .diff-removed {
+        @apply bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300;
+      }
+    </style>
+  </head>
+  <body class="h-full font-sans" x-data="logsApp()" x-init="init()">
+    <div class="min-h-screen flex flex-col">
+      <!-- Header -->
+      <header class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-6 py-4">
+        <div class="flex items-center justify-between">
+          <h1 class="text-2xl font-bold text-gray-900 dark:text-white">System Activity Logs</h1>
+          <div class="text-sm text-gray-500 dark:text-gray-400">
+            Total: <span x-text="filteredLogs.length"></span> logs
+          </div>
+        </div>
+      </header>
+
+      <div class="flex-1 flex overflow-hidden">
+        <!-- Main Table -->
+        <div class="flex-1 overflow-auto">
+          <div class="p-6">
+            <!-- Filters -->
+            <div class="mb-6 flex flex-wrap gap-3">
+              <input
+                type="text"
+                x-model="search"
+                placeholder="Cari log..."
+                class="px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700"
+              />
+
+              <select x-model="filterRole" class="px-4 py-2 border rounded-lg dark:bg-gray-800">
+                <option value="">All Roles</option>
+                <option>ADMIN</option>
+                <option>CUSTOMER</option>
+                <option>SYSTEM</option>
+              </select>
+
+              <select x-model="filterAction" class="px-4 py-2 border rounded-lg dark:bg-gray-800">
+                <option value="">All Actions</option>
+                <option>CREATE</option>
+                <option>UPDATE</option>
+                <option>DELETE</option>
+              </select>
+
+              <select x-model="filterStatus" class="px-4 py-2 border rounded-lg dark:bg-gray-800">
+                <option value="">All Status</option>
+                <option>SUCCESS</option>
+                <option>FAILED</option>
+              </select>
+            </div>
+
+            <!-- Table -->
+            <div
+              class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden"
+            >
+              <table class="w-full text-sm">
+                <thead class="bg-gray-50 dark:bg-gray-700">
+                  <tr>
+                    <th class="px-4 py-3 text-left">Timestamp</th>
+                    <th class="px-4 py-3 text-left">Actor</th>
+                    <th class="px-4 py-3 text-left">Action</th>
+                    <th class="px-4 py-3 text-left">Table</th>
+                    <th class="px-4 py-3 text-left">Status</th>
+                    <th class="px-4 py-3 text-right">Duration</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                  <template x-for="log in filteredLogs" :key="log.id">
+                    <tr
+                      class="hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition"
+                      @click="openDetail(log)"
+                    >
+                      <td class="px-4 py-3 text-gray-600 dark:text-gray-400">
+                        <div x-text="formatDate(log.timestamp)"></div>
+                        <div class="text-xs text-gray-500" x-text="formatTime(log.timestamp)"></div>
+                      </td>
+                      <td class="px-4 py-3">
+                        <div class="flex items-center gap-2">
+                          <span
+                            class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium"
+                            :class="log.actor_role === 'ADMIN' ? 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300' : 
+                                    log.actor_role === 'SYSTEM' ? 'bg-gray-100 text-gray-800 dark:bg-gray-700' : 
+                                    'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300'"
+                          >
+                            <span x-text="log.actor_role"></span>
+                          </span>
+                          <span class="text-gray-900 dark:text-white">Admin</span>
+                        </div>
+                      </td>
+                      <td class="px-4 py-3">
+                        <span
+                          class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium"
+                          :class="log.action === 'CREATE' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' :
+                                  log.action === 'UPDATE' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300' :
+                                  'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300'"
+                        >
+                          <span x-text="log.action"></span>
+                        </span>
+                      </td>
+                      <td class="px-4 py-3">
+                        <span x-text="log.table_name"></span>
+                        <span class="text-gray-500 text-xs block" x-text="log.record_id"></span>
+                      </td>
+                      <td class="px-4 py-3">
+                        <span
+                          class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium"
+                          :class="log.status === 'SUCCESS' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' : 
+                                  'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300'"
+                        >
+                          <span x-text="log.status"></span>
+                        </span>
+                      </td>
+                      <td
+                        class="px-4 py-3 text-right text-gray-600 dark:text-gray-400"
+                        x-text="log.duration_ms + 'ms'"
+                      ></td>
+                    </tr>
+                  </template>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Detail Drawer -->
+        <div
+          x-show="detailOpen"
+          x-transition:enter="transition ease-out duration-300"
+          x-transition:enter-start="translate-x-full"
+          x-transition:enter-end="translate-x-0"
+          x-transition:leave="transition ease-in duration-300"
+          x-transition:leave-start="translate-x-0"
+          x-transition:leave-end="translate-x-full"
+          class="fixed inset-y-0 right-0 w-full max-w-2xl bg-white dark:bg-gray-800 shadow-2xl z-50 overflow-y-auto"
+          @click.away="detailOpen = false"
+        >
+          <div
+            class="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-6 flex items-center justify-between"
+          >
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Log Detail</h2>
+            <button @click="detailOpen = false" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          <div class="p-6 space-y-8" x-show="selectedLog" x-cloak>
+            <!-- Header Info -->
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-4">
+                <span
+                  class="inline-flex items-center px-4 py-2 rounded-full text-lg font-semibold"
+                  :class="selectedLog.action === 'CREATE' ? 'bg-green-100 text-green-800' :
+                          selectedLog.action === 'UPDATE' ? 'bg-blue-100 text-blue-800' :
+                          'bg-red-100 text-red-800'"
+                >
+                  <span x-text="selectedLog.action"></span>
+                </span>
+                <span
+                  class="text-xl font-medium"
+                  x-text="selectedLog.table_name + ' ' + selectedLog.action.toLowerCase()"
+                ></span>
+              </div>
+              <span
+                class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium"
+                :class="selectedLog.status === 'SUCCESS' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' : 'bg-red-100 text-red-800'"
+              >
+                <span x-text="selectedLog.status"></span>
+              </span>
+            </div>
+
+            <div class="text-sm text-gray-600 dark:text-gray-400">
+              <span x-text="dayjs(selectedLog.timestamp).format('dddd, D MMMM YYYY HH:mm:ss')"></span>
+              <span class="mx-2">•</span>
+              <span x-text="selectedLog.duration_ms + 'ms'"></span>
+            </div>
+
+            <!-- Actor & Context -->
+            <div class="grid grid-cols-2 gap-6">
+              <div>
+                <h3 class="font-semibold mb-3 text-gray-900 dark:text-white">Actor</h3>
+                <div class="space-y-2 text-sm">
+                  <div><strong>Role:</strong> <span x-text="selectedLog.actor_role"></span></div>
+                  <div>
+                    <strong>User ID:</strong> <span class="font-mono text-xs" x-text="selectedLog.user_id"></span>
+                  </div>
+                  <div><strong>IP:</strong> <span x-text="selectedLog.ip_address"></span></div>
+                  <div><strong>Source:</strong> <span x-text="selectedLog.source"></span></div>
+                </div>
+              </div>
+              <div>
+                <h3 class="font-semibold mb-3 text-gray-900 dark:text-white">Request</h3>
+                <div class="space-y-2 text-sm">
+                  <div>
+                    <strong>Route:</strong>
+                    <code
+                      class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded"
+                      x-text="selectedLog.route"
+                    ></code>
+                  </div>
+                  <div>
+                    <strong>Request ID:</strong> <span class="font-mono text-xs" x-text="selectedLog.request_id"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- CHANGES DIFF – Bagian Terpenting & Tercantik -->
+            <div class="bg-gray-50 dark:bg-gray-900/50 rounded-xl p-6">
+              <h3 class="font-bold text-lg mb-4 text-gray-900 dark:text-white">Changes</h3>
+              <div class="font-mono text-sm space-y-4">
+                <template x-for="[field, change] in Object.entries(selectedLog.changes || {})" :key="field">
+                  <div class="border-l-4 border-gray-300 pl-4">
+                    <div class="font-semibold text-gray-700 dark:text-gray-300 mb-2" x-text="field"></div>
+
+                    <!-- Simple scalar changes -->
+                    <template
+                      x-if="typeof change === 'object' && !Array.isArray(change) && change.old !== undefined && change.new !== undefined"
+                    >
+                      <div>
+                        <div class="diff-removed">- <span x-text="JSON.stringify(change.old, null, 2)"></span></div>
+                        <div class="diff-added">+ <span x-text="JSON.stringify(change.new, null, 2)"></span></div>
+                      </div>
+                    </template>
+
+                    <!-- Array changes (keywords, etc) -->
+                    <template x-if="Array.isArray(change.old) || Array.isArray(change.new)">
+                      <div>
+                        <template x-if="change.old">
+                          <div class="diff-removed" x-text="'− ' + change.old.join(', ')"></div>
+                        </template>
+                        <template x-if="change.new">
+                          <div class="diff-added" x-text="'+ ' + change.new.join(', ')"></div>
+                        </template>
+                      </div>
+                    </template>
+
+                    <!-- Complex nested (categories, tags, variants) -->
+                    <template
+                      x-if="typeof change === 'object' && (field === 'categories' || field === 'tags' || field === 'variants')"
+                    >
+                      <div class="space-y-2 ml-4">
+                        <template x-for="[key, val] in Object.entries(change)">
+                          <div :key="key">
+                            <template x-if="val.old && val.new">
+                              <div>
+                                <div class="diff-removed">
+                                  - <span x-text="key"></span>: <span x-text="formatNested(val.old)"></span>
+                                </div>
+                                <div class="diff-added">
+                                  + <span x-text="key"></span>: <span x-text="formatNested(val.new)"></span>
+                                </div>
+                              </div>
+                            </template>
+                            <template x-if="val.old && !val.new">
+                              <div class="diff-removed">- <span x-text="key"></span> removed</div>
+                            </template>
+                            <template x-if="val.new && !val.old">
+                              <div class="diff-added">
+                                + <span x-text="key"></span>: <span x-text="formatNested(val.new)"></span>
+                              </div>
+                            </template>
+                          </div>
+                        </template>
+                      </div>
+                    </template>
+                  </div>
+                </template>
+              </div>
+            </div>
+
+            <!-- Raw JSON (dev mode) -->
+            <details class="mt-8">
+              <summary class="cursor-pointer text-sm font-medium text-gray-600 dark:text-gray-400">
+                View Raw JSON
+              </summary>
+              <pre
+                class="mt-3 text-xs bg-gray-900 text-gray-300 p-4 rounded-lg overflow-x-auto"
+              ><code x-text="JSON.stringify(selectedLog, null, 2)"></code></pre>
+            </details>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function logsApp() {
+        return {
+          logs: [], // akan diisi data
+          search: '',
+          filterRole: '',
+          filterAction: '',
+          filterStatus: '',
+          detailOpen: false,
+          selectedLog: null,
+
+          init() {
+            // Data contoh (kamu ganti dengan fetch API nanti)
+            this.logs = [
+              {
+                id: 'clzy8x9ab0001x7v9p2k3m4n5',
+                user_id: 'usr_67f8e2a1b9c4d5e6f7a8b9c0',
+                actor_role: 'ADMIN',
+                action: 'UPDATE',
+                table_name: 'Product',
+                record_id: 'prod_1001',
+                changes: {
+                  name: {
+                    old: 'Sepatu Lari Premium',
+                    new: 'Sepatu Lari Ultra Boost 2025',
+                  },
+                  price: {
+                    old: 1499000,
+                    new: 1799000,
+                  },
+                  is_active: {
+                    old: true,
+                    new: false,
+                  },
+                  category_id: {
+                    old: 5,
+                    new: 12,
+                  },
+                  categories: {
+                    5: {
+                      pivot: {
+                        is_primary: {
+                          old: true,
+                          new: false,
+                        },
+                      },
+                    },
+                    12: {
+                      pivot: {
+                        is_primary: {
+                          old: false,
+                          new: true,
+                        },
+                      },
+                    },
+                    18: {
+                      new: {
+                        id: 18,
+                        name: 'New Arrival',
+                        pivot: {
+                          is_primary: false,
+                        },
+                      },
+                    },
+                  },
+                  tags: {
+                    15: {
+                      old: {
+                        id: 15,
+                        name: 'Lightweight',
+                      },
+                    },
+                    20: {
+                      new: {
+                        id: 20,
+                        name: 'Breathable',
+                      },
+                    },
+                  },
+                  variants: {
+                    201: {
+                      stock: {
+                        old: 15,
+                        new: 10,
+                      },
+                    },
+                    202: {
+                      stock: {
+                        old: 8,
+                        new: 0,
+                      },
+                    },
+                    203: {
+                      old: {
+                        id: 203,
+                        size: '42',
+                        stock: 0,
+                        color: 'White',
+                      },
+                    },
+                    204: {
+                      new: {
+                        id: 204,
+                        size: '43',
+                        stock: 5,
+                        color: 'White',
+                      },
+                    },
+                  },
+                  seo: {
+                    title: {
+                      old: 'Sepatu Lari Premium - Terbaik 2025',
+                      new: 'Sepatu Lari Ultra Boost 2025 - Edisi Terbatas',
+                    },
+                    keywords: {
+                      old: ['sepatu lari', 'running shoes', 'premium'],
+                      new: ['sepatu lari', 'ultra boost', 'limited edition'],
+                    },
+                  },
+                },
+                duration_ms: 89,
+                timestamp: '2025-04-05T10:23:45.678Z',
+                source: 'HTTP',
+                ip_address: '110.136.212.45',
+                user_agent:
+                  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/133.0.0.0 Safari/537.36',
+                route: '/api/admin/products/prod_1001',
+                batch_id: null,
+                request_id: 'req_8f9e2a1b-3c4d-5e6f-7a8b-9c0d1e2f3a4b',
+                session_id: 'sess_a1b2c3d4e5f67890',
+                metadata: {
+                  triggered_by: 'Admin Dashboard',
+                  ui_component: 'ProductEditForm',
+                  form_version: 'v2.4.1',
+                },
+                status: 'SUCCESS',
+              },
+            ];
+          },
+
+          get filteredLogs() {
+            return this.logs.filter((log) => {
+              const matchesSearch = JSON.stringify(log).toLowerCase().includes(this.search.toLowerCase());
+              const matchesRole = !this.filterRole || log.actor_role === this.filterRole;
+              const matchesAction = !this.filterAction || log.action === this.filterAction;
+              const matchesStatus = !this.filterStatus || log.status === this.filterStatus;
+              return matchesSearch && matchesRole && matchesAction && matchesStatus;
+            });
+          },
+
+          openDetail(log) {
+            this.selectedLog = log;
+            this.detailOpen = true;
+          },
+
+          formatDate(ts) {
+            return dayjs(ts).format('DD MMM YYYY');
+          },
+          formatTime(ts) {
+            return dayjs(ts).format('HH:mm:ss');
+          },
+
+          formatNested(obj) {
+            if (typeof obj === 'object' && obj !== null) {
+              return JSON.stringify(obj)
+                .replace(/{"id":\d+,"name":"|"}/g, '')
+                .replace(/,"pivot":\{[^}]*\}/g, '');
+            }
+            return obj;
+          },
+        };
+      }
+    </script>
+  </body>
+</html>

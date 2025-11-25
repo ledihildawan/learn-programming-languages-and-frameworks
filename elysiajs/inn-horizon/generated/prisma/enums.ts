@@ -9,7 +9,51 @@
 * 🟢 You can import this file directly.
 */
 
+export const RoleName = {
+  Admin: 'Admin',
+  Host: 'Host',
+  Customer: 'Customer',
+  System: 'System'
+} as const
+
+export type RoleName = (typeof RoleName)[keyof typeof RoleName]
 
 
-// This file is empty because there are no enums in the schema.
-export {}
+export const SystemLogsActionType = {
+  CREATE: 'CREATE',
+  UPDATE: 'UPDATE',
+  EXECUTE: 'EXECUTE',
+  DELETE: 'DELETE'
+} as const
+
+export type SystemLogsActionType = (typeof SystemLogsActionType)[keyof typeof SystemLogsActionType]
+
+
+export const SystemLogsStatus = {
+  SUCCESS: 'SUCCESS',
+  FAILURE: 'FAILURE'
+} as const
+
+export type SystemLogsStatus = (typeof SystemLogsStatus)[keyof typeof SystemLogsStatus]
+
+
+export const SystemLogsSource = {
+  HTTP: 'HTTP',
+  SEEDER: 'SEEDER',
+  MIGRATION: 'MIGRATION',
+  CLI: 'CLI',
+  CRON: 'CRON',
+  TEST: 'TEST'
+} as const
+
+export type SystemLogsSource = (typeof SystemLogsSource)[keyof typeof SystemLogsSource]
+
+
+export const StatusType = {
+  BOOKING: 'BOOKING',
+  REVIEW: 'REVIEW',
+  REFUND: 'REFUND',
+  PAYMENT: 'PAYMENT'
+} as const
+
+export type StatusType = (typeof StatusType)[keyof typeof StatusType]

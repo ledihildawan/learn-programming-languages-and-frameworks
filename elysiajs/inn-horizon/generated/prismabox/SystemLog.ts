@@ -4,26 +4,48 @@ import { __transformDate__ } from "./__transformDate__";
 
 import { __nullable__ } from "./__nullable__";
 
-export const SystemLogsPlain = t.Object(
+export const SystemLogPlain = t.Object(
   {
     id: t.String(),
     user_id: t.String(),
-    action_type: t.String(),
+    action_type: t.Union(
+      [
+        t.Literal("CREATE"),
+        t.Literal("UPDATE"),
+        t.Literal("EXECUTE"),
+        t.Literal("DELETE"),
+      ],
+      { additionalProperties: false },
+    ),
+    status: t.Union([t.Literal("SUCCESS"), t.Literal("FAILURE")], {
+      additionalProperties: false,
+    }),
+    duration_ms: t.Integer(),
     table_name: t.String(),
-    record_id: t.String(),
+    record_id: __nullable__(t.String()),
     old_data: __nullable__(t.Any()),
     new_data: __nullable__(t.Any()),
     ip_address: __nullable__(t.String()),
     user_agent: __nullable__(t.String()),
     route_endpoint: __nullable__(t.String()),
-    source: __nullable__(t.String()),
+    source: t.Union(
+      [
+        t.Literal("HTTP"),
+        t.Literal("SEEDER"),
+        t.Literal("MIGRATION"),
+        t.Literal("CLI"),
+        t.Literal("CRON"),
+        t.Literal("TEST"),
+      ],
+      { additionalProperties: false },
+    ),
     message: __nullable__(t.String()),
     created_at: t.Date(),
   },
   { additionalProperties: false },
 );
 
-export const SystemLogsRelations = t.Object(
+export const SystemLogRelations = t.Object(
   {
     user: t.Object(
       {
@@ -47,39 +69,89 @@ export const SystemLogsRelations = t.Object(
   { additionalProperties: false },
 );
 
-export const SystemLogsPlainInputCreate = t.Object(
+export const SystemLogPlainInputCreate = t.Object(
   {
-    action_type: t.String(),
+    action_type: t.Union(
+      [
+        t.Literal("CREATE"),
+        t.Literal("UPDATE"),
+        t.Literal("EXECUTE"),
+        t.Literal("DELETE"),
+      ],
+      { additionalProperties: false },
+    ),
+    status: t.Union([t.Literal("SUCCESS"), t.Literal("FAILURE")], {
+      additionalProperties: false,
+    }),
+    duration_ms: t.Integer(),
     table_name: t.String(),
     old_data: t.Optional(__nullable__(t.Any())),
     new_data: t.Optional(__nullable__(t.Any())),
     ip_address: t.Optional(__nullable__(t.String())),
     user_agent: t.Optional(__nullable__(t.String())),
     route_endpoint: t.Optional(__nullable__(t.String())),
-    source: t.Optional(__nullable__(t.String())),
+    source: t.Union(
+      [
+        t.Literal("HTTP"),
+        t.Literal("SEEDER"),
+        t.Literal("MIGRATION"),
+        t.Literal("CLI"),
+        t.Literal("CRON"),
+        t.Literal("TEST"),
+      ],
+      { additionalProperties: false },
+    ),
     message: t.Optional(__nullable__(t.String())),
     created_at: t.Optional(t.Date()),
   },
   { additionalProperties: false },
 );
 
-export const SystemLogsPlainInputUpdate = t.Object(
+export const SystemLogPlainInputUpdate = t.Object(
   {
-    action_type: t.Optional(t.String()),
+    action_type: t.Optional(
+      t.Union(
+        [
+          t.Literal("CREATE"),
+          t.Literal("UPDATE"),
+          t.Literal("EXECUTE"),
+          t.Literal("DELETE"),
+        ],
+        { additionalProperties: false },
+      ),
+    ),
+    status: t.Optional(
+      t.Union([t.Literal("SUCCESS"), t.Literal("FAILURE")], {
+        additionalProperties: false,
+      }),
+    ),
+    duration_ms: t.Optional(t.Integer()),
     table_name: t.Optional(t.String()),
     old_data: t.Optional(__nullable__(t.Any())),
     new_data: t.Optional(__nullable__(t.Any())),
     ip_address: t.Optional(__nullable__(t.String())),
     user_agent: t.Optional(__nullable__(t.String())),
     route_endpoint: t.Optional(__nullable__(t.String())),
-    source: t.Optional(__nullable__(t.String())),
+    source: t.Optional(
+      t.Union(
+        [
+          t.Literal("HTTP"),
+          t.Literal("SEEDER"),
+          t.Literal("MIGRATION"),
+          t.Literal("CLI"),
+          t.Literal("CRON"),
+          t.Literal("TEST"),
+        ],
+        { additionalProperties: false },
+      ),
+    ),
     message: t.Optional(__nullable__(t.String())),
     created_at: t.Optional(t.Date()),
   },
   { additionalProperties: false },
 );
 
-export const SystemLogsRelationsInputCreate = t.Object(
+export const SystemLogRelationsInputCreate = t.Object(
   {
     user: t.Object(
       {
@@ -96,7 +168,7 @@ export const SystemLogsRelationsInputCreate = t.Object(
   { additionalProperties: false },
 );
 
-export const SystemLogsRelationsInputUpdate = t.Partial(
+export const SystemLogRelationsInputUpdate = t.Partial(
   t.Object(
     {
       user: t.Object(
@@ -115,7 +187,7 @@ export const SystemLogsRelationsInputUpdate = t.Partial(
   ),
 );
 
-export const SystemLogsWhere = t.Partial(
+export const SystemLogWhere = t.Partial(
   t.Recursive(
     (Self) =>
       t.Object(
@@ -125,7 +197,19 @@ export const SystemLogsWhere = t.Partial(
           OR: t.Array(Self, { additionalProperties: false }),
           id: t.String(),
           user_id: t.String(),
-          action_type: t.String(),
+          action_type: t.Union(
+            [
+              t.Literal("CREATE"),
+              t.Literal("UPDATE"),
+              t.Literal("EXECUTE"),
+              t.Literal("DELETE"),
+            ],
+            { additionalProperties: false },
+          ),
+          status: t.Union([t.Literal("SUCCESS"), t.Literal("FAILURE")], {
+            additionalProperties: false,
+          }),
+          duration_ms: t.Integer(),
           table_name: t.String(),
           record_id: t.String(),
           old_data: t.Any(),
@@ -133,17 +217,27 @@ export const SystemLogsWhere = t.Partial(
           ip_address: t.String(),
           user_agent: t.String(),
           route_endpoint: t.String(),
-          source: t.String(),
+          source: t.Union(
+            [
+              t.Literal("HTTP"),
+              t.Literal("SEEDER"),
+              t.Literal("MIGRATION"),
+              t.Literal("CLI"),
+              t.Literal("CRON"),
+              t.Literal("TEST"),
+            ],
+            { additionalProperties: false },
+          ),
           message: t.String(),
           created_at: t.Date(),
         },
         { additionalProperties: false },
       ),
-    { $id: "SystemLogs" },
+    { $id: "SystemLog" },
   ),
 );
 
-export const SystemLogsWhereUnique = t.Recursive(
+export const SystemLogWhereUnique = t.Recursive(
   (Self) =>
     t.Intersect(
       [
@@ -173,7 +267,19 @@ export const SystemLogsWhereUnique = t.Recursive(
             {
               id: t.String(),
               user_id: t.String(),
-              action_type: t.String(),
+              action_type: t.Union(
+                [
+                  t.Literal("CREATE"),
+                  t.Literal("UPDATE"),
+                  t.Literal("EXECUTE"),
+                  t.Literal("DELETE"),
+                ],
+                { additionalProperties: false },
+              ),
+              status: t.Union([t.Literal("SUCCESS"), t.Literal("FAILURE")], {
+                additionalProperties: false,
+              }),
+              duration_ms: t.Integer(),
               table_name: t.String(),
               record_id: t.String(),
               old_data: t.Any(),
@@ -181,7 +287,17 @@ export const SystemLogsWhereUnique = t.Recursive(
               ip_address: t.String(),
               user_agent: t.String(),
               route_endpoint: t.String(),
-              source: t.String(),
+              source: t.Union(
+                [
+                  t.Literal("HTTP"),
+                  t.Literal("SEEDER"),
+                  t.Literal("MIGRATION"),
+                  t.Literal("CLI"),
+                  t.Literal("CRON"),
+                  t.Literal("TEST"),
+                ],
+                { additionalProperties: false },
+              ),
               message: t.String(),
               created_at: t.Date(),
             },
@@ -191,16 +307,18 @@ export const SystemLogsWhereUnique = t.Recursive(
       ],
       { additionalProperties: false },
     ),
-  { $id: "SystemLogs" },
+  { $id: "SystemLog" },
 );
 
-export const SystemLogsSelect = t.Partial(
+export const SystemLogSelect = t.Partial(
   t.Object(
     {
       id: t.Boolean(),
       user: t.Boolean(),
       user_id: t.Boolean(),
       action_type: t.Boolean(),
+      status: t.Boolean(),
+      duration_ms: t.Boolean(),
       table_name: t.Boolean(),
       record_id: t.Boolean(),
       old_data: t.Boolean(),
@@ -217,14 +335,20 @@ export const SystemLogsSelect = t.Partial(
   ),
 );
 
-export const SystemLogsInclude = t.Partial(
+export const SystemLogInclude = t.Partial(
   t.Object(
-    { user: t.Boolean(), _count: t.Boolean() },
+    {
+      user: t.Boolean(),
+      action_type: t.Boolean(),
+      status: t.Boolean(),
+      source: t.Boolean(),
+      _count: t.Boolean(),
+    },
     { additionalProperties: false },
   ),
 );
 
-export const SystemLogsOrderBy = t.Partial(
+export const SystemLogOrderBy = t.Partial(
   t.Object(
     {
       id: t.Union([t.Literal("asc"), t.Literal("desc")], {
@@ -233,7 +357,7 @@ export const SystemLogsOrderBy = t.Partial(
       user_id: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
-      action_type: t.Union([t.Literal("asc"), t.Literal("desc")], {
+      duration_ms: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
       table_name: t.Union([t.Literal("asc"), t.Literal("desc")], {
@@ -257,9 +381,6 @@ export const SystemLogsOrderBy = t.Partial(
       route_endpoint: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
-      source: t.Union([t.Literal("asc"), t.Literal("desc")], {
-        additionalProperties: false,
-      }),
       message: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
@@ -271,16 +392,16 @@ export const SystemLogsOrderBy = t.Partial(
   ),
 );
 
-export const SystemLogs = t.Composite([SystemLogsPlain, SystemLogsRelations], {
+export const SystemLog = t.Composite([SystemLogPlain, SystemLogRelations], {
   additionalProperties: false,
 });
 
-export const SystemLogsInputCreate = t.Composite(
-  [SystemLogsPlainInputCreate, SystemLogsRelationsInputCreate],
+export const SystemLogInputCreate = t.Composite(
+  [SystemLogPlainInputCreate, SystemLogRelationsInputCreate],
   { additionalProperties: false },
 );
 
-export const SystemLogsInputUpdate = t.Composite(
-  [SystemLogsPlainInputUpdate, SystemLogsRelationsInputUpdate],
+export const SystemLogInputUpdate = t.Composite(
+  [SystemLogPlainInputUpdate, SystemLogRelationsInputUpdate],
   { additionalProperties: false },
 );
