@@ -3,7 +3,6 @@ import { Elysia, t } from 'elysia';
 import { db } from '../../db';
 import { ip } from '../../plugins/ip';
 import { userAgent } from '../../plugins/userAgent';
-import { createAuditLog } from '../../utils/system-logs';
 import { hashPassword } from '../../utils/users';
 
 const userCreateBody = t.Object({
@@ -69,17 +68,17 @@ export const users = new Elysia({ prefix: '/users' })
           data: { ...rest, password_hash },
         });
 
-        await createAuditLog(
-          'CREATE',
-          'users',
-          created.id,
-          null,
-          created,
-          process.env.USER_ID!,
-          process.env.USER_ROLE_NAME!,
-          ip.address,
-          userAgent
-        );
+        // await createAuditLog(
+        //   'CREATE',
+        //   'users',
+        //   created.id,
+        //   null,
+        //   created,
+        //   process.env.USER_ID!,
+        //   process.env.USER_ROLE_NAME!,
+        //   ip.address,
+        //   userAgent
+        // );
 
         return {
           success: true,
@@ -117,17 +116,17 @@ export const users = new Elysia({ prefix: '/users' })
           data: updateData,
         });
 
-        await createAuditLog(
-          'UPDATE',
-          'users',
-          updated.id,
-          existing,
-          updated,
-          process.env.USER_ID!,
-          process.env.USER_ROLE_NAME!,
-          ip.address,
-          userAgent
-        );
+        // await createAuditLog(
+        //   'UPDATE',
+        //   'users',
+        //   updated.id,
+        //   existing,
+        //   updated,
+        //   process.env.USER_ID!,
+        //   process.env.USER_ROLE_NAME!,
+        //   ip.address,
+        //   userAgent
+        // );
 
         return {
           success: true,
@@ -150,17 +149,17 @@ export const users = new Elysia({ prefix: '/users' })
 
         const deleted = await db.users.delete({ where: { id } });
 
-        await createAuditLog(
-          'DELETE',
-          'users',
-          deleted.id,
-          existing,
-          null,
-          process.env.USER_ID!,
-          process.env.USER_ROLE_NAME!,
-          ip.address,
-          userAgent
-        );
+        // await createAuditLog(
+        //   'DELETE',
+        //   'users',
+        //   deleted.id,
+        //   existing,
+        //   null,
+        //   process.env.USER_ID!,
+        //   process.env.USER_ROLE_NAME!,
+        //   ip.address,
+        //   userAgent
+        // );
 
         return {
           success: true,

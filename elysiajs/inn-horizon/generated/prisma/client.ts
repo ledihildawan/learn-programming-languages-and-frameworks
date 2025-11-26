@@ -50,6 +50,11 @@ export type Role = Prisma.RoleModel
  */
 export type Country = Prisma.CountryModel
 /**
+ * Model UserSettings
+ * 
+ */
+export type UserSettings = Prisma.UserSettingsModel
+/**
  * Model User
  * 
  */

@@ -53,6 +53,7 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   Role: 'Role',
   Country: 'Country',
+  UserSettings: 'UserSettings',
   User: 'User',
   SystemLog: 'SystemLog',
   Language: 'Language',
@@ -97,6 +98,25 @@ export const CountryScalarFieldEnum = {
 } as const
 
 export type CountryScalarFieldEnum = (typeof CountryScalarFieldEnum)[keyof typeof CountryScalarFieldEnum]
+
+
+export const UserSettingsScalarFieldEnum = {
+  user_id: 'user_id',
+  timezone: 'timezone',
+  locale: 'locale',
+  currency: 'currency',
+  theme: 'theme',
+  date_format: 'date_format',
+  time_format: 'time_format',
+  email_notifications: 'email_notifications',
+  push_notifications: 'push_notifications',
+  marketing_emails: 'marketing_emails',
+  metadata: 'metadata',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+} as const
+
+export type UserSettingsScalarFieldEnum = (typeof UserSettingsScalarFieldEnum)[keyof typeof UserSettingsScalarFieldEnum]
 
 
 export const UserScalarFieldEnum = {

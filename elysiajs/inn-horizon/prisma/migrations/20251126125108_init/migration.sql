@@ -37,6 +37,25 @@ CREATE TABLE "countries" (
 );
 
 -- CreateTable
+CREATE TABLE "user_settings" (
+    "user_id" TEXT NOT NULL,
+    "timezone" TEXT NOT NULL DEFAULT 'Asia/Jakarta',
+    "locale" TEXT NOT NULL DEFAULT 'id-ID',
+    "currency" TEXT NOT NULL DEFAULT 'IDR',
+    "theme" TEXT NOT NULL DEFAULT 'light',
+    "date_format" TEXT NOT NULL DEFAULT 'dd MMM yyyy',
+    "time_format" TEXT NOT NULL DEFAULT 'HH:mm',
+    "email_notifications" BOOLEAN NOT NULL DEFAULT true,
+    "push_notifications" BOOLEAN NOT NULL DEFAULT true,
+    "marketing_emails" BOOLEAN NOT NULL DEFAULT false,
+    "metadata" JSONB,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "user_settings_pkey" PRIMARY KEY ("user_id")
+);
+
+-- CreateTable
 CREATE TABLE "users" (
     "id" TEXT NOT NULL,
     "role_id" TEXT NOT NULL,
@@ -128,6 +147,9 @@ CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "languages_code_key" ON "languages"("code");
+
+-- AddForeignKey
+ALTER TABLE "user_settings" ADD CONSTRAINT "user_settings_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "users" ADD CONSTRAINT "users_role_id_fkey" FOREIGN KEY ("role_id") REFERENCES "roles"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

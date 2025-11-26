@@ -272,6 +272,7 @@ export type UserWhereInput = {
   deleted_at?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   role?: Prisma.XOR<Prisma.RoleScalarRelationFilter, Prisma.RoleWhereInput>
   country?: Prisma.XOR<Prisma.CountryScalarRelationFilter, Prisma.CountryWhereInput>
+  userSettings?: Prisma.XOR<Prisma.UserSettingsNullableScalarRelationFilter, Prisma.UserSettingsWhereInput> | null
   systemLogs?: Prisma.SystemLogListRelationFilter
 }
 
@@ -294,6 +295,7 @@ export type UserOrderByWithRelationInput = {
   deleted_at?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.RoleOrderByWithRelationInput
   country?: Prisma.CountryOrderByWithRelationInput
+  userSettings?: Prisma.UserSettingsOrderByWithRelationInput
   systemLogs?: Prisma.SystemLogOrderByRelationAggregateInput
 }
 
@@ -319,6 +321,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   deleted_at?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   role?: Prisma.XOR<Prisma.RoleScalarRelationFilter, Prisma.RoleWhereInput>
   country?: Prisma.XOR<Prisma.CountryScalarRelationFilter, Prisma.CountryWhereInput>
+  userSettings?: Prisma.XOR<Prisma.UserSettingsNullableScalarRelationFilter, Prisma.UserSettingsWhereInput> | null
   systemLogs?: Prisma.SystemLogListRelationFilter
 }, "id" | "username" | "email">
 
@@ -383,6 +386,7 @@ export type UserCreateInput = {
   deleted_at?: Date | string | null
   role: Prisma.RoleCreateNestedOneWithoutUsersInput
   country: Prisma.CountryCreateNestedOneWithoutUsersInput
+  userSettings?: Prisma.UserSettingsCreateNestedOneWithoutUserInput
   systemLogs?: Prisma.SystemLogCreateNestedManyWithoutUserInput
 }
 
@@ -403,6 +407,7 @@ export type UserUncheckedCreateInput = {
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  userSettings?: Prisma.UserSettingsUncheckedCreateNestedOneWithoutUserInput
   systemLogs?: Prisma.SystemLogUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -423,6 +428,7 @@ export type UserUpdateInput = {
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   role?: Prisma.RoleUpdateOneRequiredWithoutUsersNestedInput
   country?: Prisma.CountryUpdateOneRequiredWithoutUsersNestedInput
+  userSettings?: Prisma.UserSettingsUpdateOneWithoutUserNestedInput
   systemLogs?: Prisma.SystemLogUpdateManyWithoutUserNestedInput
 }
 
@@ -443,6 +449,7 @@ export type UserUncheckedUpdateInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  userSettings?: Prisma.UserSettingsUncheckedUpdateOneWithoutUserNestedInput
   systemLogs?: Prisma.SystemLogUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -509,6 +516,11 @@ export type UserListRelationFilter = {
 
 export type UserOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type UserScalarRelationFilter = {
+  is?: Prisma.UserWhereInput
+  isNot?: Prisma.UserWhereInput
 }
 
 export type UserCountOrderByAggregateInput = {
@@ -657,6 +669,20 @@ export type UserUncheckedUpdateManyWithoutCountryNestedInput = {
   deleteMany?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
 }
 
+export type UserCreateNestedOneWithoutUserSettingsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUserSettingsInput, Prisma.UserUncheckedCreateWithoutUserSettingsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUserSettingsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutUserSettingsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUserSettingsInput, Prisma.UserUncheckedCreateWithoutUserSettingsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUserSettingsInput
+  upsert?: Prisma.UserUpsertWithoutUserSettingsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutUserSettingsInput, Prisma.UserUpdateWithoutUserSettingsInput>, Prisma.UserUncheckedUpdateWithoutUserSettingsInput>
+}
+
 export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
 }
@@ -697,6 +723,7 @@ export type UserCreateWithoutRoleInput = {
   updated_at?: Date | string
   deleted_at?: Date | string | null
   country: Prisma.CountryCreateNestedOneWithoutUsersInput
+  userSettings?: Prisma.UserSettingsCreateNestedOneWithoutUserInput
   systemLogs?: Prisma.SystemLogCreateNestedManyWithoutUserInput
 }
 
@@ -716,6 +743,7 @@ export type UserUncheckedCreateWithoutRoleInput = {
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  userSettings?: Prisma.UserSettingsUncheckedCreateNestedOneWithoutUserInput
   systemLogs?: Prisma.SystemLogUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -783,6 +811,7 @@ export type UserCreateWithoutCountryInput = {
   updated_at?: Date | string
   deleted_at?: Date | string | null
   role: Prisma.RoleCreateNestedOneWithoutUsersInput
+  userSettings?: Prisma.UserSettingsCreateNestedOneWithoutUserInput
   systemLogs?: Prisma.SystemLogCreateNestedManyWithoutUserInput
 }
 
@@ -802,6 +831,7 @@ export type UserUncheckedCreateWithoutCountryInput = {
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  userSettings?: Prisma.UserSettingsUncheckedCreateNestedOneWithoutUserInput
   systemLogs?: Prisma.SystemLogUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -831,6 +861,102 @@ export type UserUpdateManyWithWhereWithoutCountryInput = {
   data: Prisma.XOR<Prisma.UserUpdateManyMutationInput, Prisma.UserUncheckedUpdateManyWithoutCountryInput>
 }
 
+export type UserCreateWithoutUserSettingsInput = {
+  id?: string
+  username?: string | null
+  email: string
+  password_hash: string
+  first_name?: string | null
+  last_name?: string | null
+  phone_number?: string | null
+  profile_image_url?: string | null
+  is_active?: boolean | null
+  is_verified?: boolean | null
+  email_verified_at?: Date | string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  role: Prisma.RoleCreateNestedOneWithoutUsersInput
+  country: Prisma.CountryCreateNestedOneWithoutUsersInput
+  systemLogs?: Prisma.SystemLogCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutUserSettingsInput = {
+  id?: string
+  role_id: string
+  username?: string | null
+  email: string
+  password_hash: string
+  first_name?: string | null
+  last_name?: string | null
+  phone_number?: string | null
+  country_id: string
+  profile_image_url?: string | null
+  is_active?: boolean | null
+  is_verified?: boolean | null
+  email_verified_at?: Date | string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  deleted_at?: Date | string | null
+  systemLogs?: Prisma.SystemLogUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutUserSettingsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutUserSettingsInput, Prisma.UserUncheckedCreateWithoutUserSettingsInput>
+}
+
+export type UserUpsertWithoutUserSettingsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutUserSettingsInput, Prisma.UserUncheckedUpdateWithoutUserSettingsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutUserSettingsInput, Prisma.UserUncheckedCreateWithoutUserSettingsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutUserSettingsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutUserSettingsInput, Prisma.UserUncheckedUpdateWithoutUserSettingsInput>
+}
+
+export type UserUpdateWithoutUserSettingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password_hash?: Prisma.StringFieldUpdateOperationsInput | string
+  first_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  last_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profile_image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_active?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  is_verified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  email_verified_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  role?: Prisma.RoleUpdateOneRequiredWithoutUsersNestedInput
+  country?: Prisma.CountryUpdateOneRequiredWithoutUsersNestedInput
+  systemLogs?: Prisma.SystemLogUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutUserSettingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  role_id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password_hash?: Prisma.StringFieldUpdateOperationsInput | string
+  first_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  last_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country_id?: Prisma.StringFieldUpdateOperationsInput | string
+  profile_image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_active?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  is_verified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  email_verified_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  systemLogs?: Prisma.SystemLogUncheckedUpdateManyWithoutUserNestedInput
+}
+
 export type UserCreateWithoutSystemLogsInput = {
   id?: string
   username?: string | null
@@ -848,6 +974,7 @@ export type UserCreateWithoutSystemLogsInput = {
   deleted_at?: Date | string | null
   role: Prisma.RoleCreateNestedOneWithoutUsersInput
   country: Prisma.CountryCreateNestedOneWithoutUsersInput
+  userSettings?: Prisma.UserSettingsCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSystemLogsInput = {
@@ -867,6 +994,7 @@ export type UserUncheckedCreateWithoutSystemLogsInput = {
   created_at?: Date | string
   updated_at?: Date | string
   deleted_at?: Date | string | null
+  userSettings?: Prisma.UserSettingsUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSystemLogsInput = {
@@ -902,6 +1030,7 @@ export type UserUpdateWithoutSystemLogsInput = {
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   role?: Prisma.RoleUpdateOneRequiredWithoutUsersNestedInput
   country?: Prisma.CountryUpdateOneRequiredWithoutUsersNestedInput
+  userSettings?: Prisma.UserSettingsUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSystemLogsInput = {
@@ -921,6 +1050,7 @@ export type UserUncheckedUpdateWithoutSystemLogsInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  userSettings?: Prisma.UserSettingsUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateManyRoleInput = {
@@ -957,6 +1087,7 @@ export type UserUpdateWithoutRoleInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   country?: Prisma.CountryUpdateOneRequiredWithoutUsersNestedInput
+  userSettings?: Prisma.UserSettingsUpdateOneWithoutUserNestedInput
   systemLogs?: Prisma.SystemLogUpdateManyWithoutUserNestedInput
 }
 
@@ -976,6 +1107,7 @@ export type UserUncheckedUpdateWithoutRoleInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  userSettings?: Prisma.UserSettingsUncheckedUpdateOneWithoutUserNestedInput
   systemLogs?: Prisma.SystemLogUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -1031,6 +1163,7 @@ export type UserUpdateWithoutCountryInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   role?: Prisma.RoleUpdateOneRequiredWithoutUsersNestedInput
+  userSettings?: Prisma.UserSettingsUpdateOneWithoutUserNestedInput
   systemLogs?: Prisma.SystemLogUpdateManyWithoutUserNestedInput
 }
 
@@ -1050,6 +1183,7 @@ export type UserUncheckedUpdateWithoutCountryInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  userSettings?: Prisma.UserSettingsUncheckedUpdateOneWithoutUserNestedInput
   systemLogs?: Prisma.SystemLogUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -1121,6 +1255,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   deleted_at?: boolean
   role?: boolean | Prisma.RoleDefaultArgs<ExtArgs>
   country?: boolean | Prisma.CountryDefaultArgs<ExtArgs>
+  userSettings?: boolean | Prisma.User$userSettingsArgs<ExtArgs>
   systemLogs?: boolean | Prisma.User$systemLogsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
@@ -1190,6 +1325,7 @@ export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = run
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   role?: boolean | Prisma.RoleDefaultArgs<ExtArgs>
   country?: boolean | Prisma.CountryDefaultArgs<ExtArgs>
+  userSettings?: boolean | Prisma.User$userSettingsArgs<ExtArgs>
   systemLogs?: boolean | Prisma.User$systemLogsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -1207,6 +1343,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   objects: {
     role: Prisma.$RolePayload<ExtArgs>
     country: Prisma.$CountryPayload<ExtArgs>
+    userSettings: Prisma.$UserSettingsPayload<ExtArgs> | null
     systemLogs: Prisma.$SystemLogPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1622,6 +1759,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   readonly [Symbol.toStringTag]: "PrismaPromise"
   role<T extends Prisma.RoleDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.RoleDefaultArgs<ExtArgs>>): Prisma.Prisma__RoleClient<runtime.Types.Result.GetResult<Prisma.$RolePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   country<T extends Prisma.CountryDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CountryDefaultArgs<ExtArgs>>): Prisma.Prisma__CountryClient<runtime.Types.Result.GetResult<Prisma.$CountryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  userSettings<T extends Prisma.User$userSettingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$userSettingsArgs<ExtArgs>>): Prisma.Prisma__UserSettingsClient<runtime.Types.Result.GetResult<Prisma.$UserSettingsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   systemLogs<T extends Prisma.User$systemLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$systemLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SystemLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -2061,6 +2199,25 @@ export type UserDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Limit how many Users to delete.
    */
   limit?: number
+}
+
+/**
+ * User.userSettings
+ */
+export type User$userSettingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserSettings
+   */
+  select?: Prisma.UserSettingsSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserSettings
+   */
+  omit?: Prisma.UserSettingsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserSettingsInclude<ExtArgs> | null
+  where?: Prisma.UserSettingsWhereInput
 }
 
 /**

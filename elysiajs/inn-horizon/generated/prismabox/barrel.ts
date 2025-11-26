@@ -5,6 +5,7 @@ export * from "./SystemLogsSource";
 export * from "./StatusType";
 export * from "./Role";
 export * from "./Country";
+export * from "./UserSettings";
 export * from "./User";
 export * from "./SystemLog";
 export * from "./Language";

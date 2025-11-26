@@ -2,7 +2,7 @@ import { Elysia, t } from 'elysia';
 import { db } from '../../db';
 import { ip } from '../../plugins/ip';
 import { userAgent } from '../../plugins/userAgent';
-import { createAuditLog } from '../../utils/system-logs';
+// import { createAuditLog } from '../../utils/system-logs';
 
 export const countries = new Elysia({ prefix: '/countries' })
   .use(ip)
@@ -22,21 +22,21 @@ export const countries = new Elysia({ prefix: '/countries' })
       try {
         const country = await db.country.create({ data: { ...body } });
 
-        await createAuditLog(
-          'CREATE',
-          'countries',
-          country.id,
-          null,
-          country,
-          process.env.USER_ID!,
-          process.env.USER_ROLE_NAME!,
-          ip.address,
-          userAgent,
-          {
-            route: request.url,
-            source: 'HTTP',
-          }
-        );
+        // await createAuditLog(
+        //   'CREATE',
+        //   'countries',
+        //   country.id,
+        //   null,
+        //   country,
+        //   process.env.USER_ID!,
+        //   process.env.USER_ROLE_NAME!,
+        //   ip.address,
+        //   userAgent,
+        //   {
+        //     route: request.url,
+        //     source: 'HTTP',
+        //   }
+        // );
 
         return { success: true, message: 'Country created successfully', data: country };
       } catch (error) {
@@ -69,21 +69,21 @@ export const countries = new Elysia({ prefix: '/countries' })
           data: { ...body },
         });
 
-        await createAuditLog(
-          'UPDATE',
-          'countries',
-          updated.id,
-          existing,
-          updated,
-          process.env.USER_ID!,
-          process.env.USER_ROLE_NAME!,
-          ip.address,
-          userAgent,
-          {
-            route: request.url,
-            source: 'HTTP',
-          }
-        );
+        // await createAuditLog(
+        //   'UPDATE',
+        //   'countries',
+        //   updated.id,
+        //   existing,
+        //   updated,
+        //   process.env.USER_ID!,
+        //   process.env.USER_ROLE_NAME!,
+        //   ip.address,
+        //   userAgent,
+        //   {
+        //     route: request.url,
+        //     source: 'HTTP',
+        //   }
+        // );
 
         return { success: true, message: 'Country updated successfully', data: updated };
       } catch (error) {
@@ -106,21 +106,21 @@ export const countries = new Elysia({ prefix: '/countries' })
 
       const deleted = await db.country.delete({ where: { id: params.id } });
 
-      await createAuditLog(
-        'DELETE',
-        'countries',
-        deleted.id,
-        existing,
-        null,
-        process.env.USER_ID!,
-        process.env.USER_ROLE_NAME!,
-        ip.address,
-        userAgent,
-        {
-          route: request.url,
-          source: 'HTTP',
-        }
-      );
+      // await createAuditLog(
+      //   'DELETE',
+      //   'countries',
+      //   deleted.id,
+      //   existing,
+      //   null,
+      //   process.env.USER_ID!,
+      //   process.env.USER_ROLE_NAME!,
+      //   ip.address,
+      //   userAgent,
+      //   {
+      //     route: request.url,
+      //     source: 'HTTP',
+      //   }
+      // );
 
       return { success: true, message: 'Country deleted successfully', data: deleted };
     } catch (error) {

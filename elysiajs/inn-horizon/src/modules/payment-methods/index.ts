@@ -4,7 +4,7 @@ import { db } from '../../db';
 import { ip } from '../../plugins/ip';
 import { userAgent } from '../../plugins/userAgent';
 import { withDuration } from '../../utils';
-import { createAuditLog } from '../../utils/system-logs';
+import { flattenDiff, getChangeSummary, getNestedHumanDiff } from '../../utils/human-diff';
 
 export const paymentMethods = new Elysia({ prefix: '/payment-methods' })
   .use(ip)
@@ -20,7 +20,7 @@ export const paymentMethods = new Elysia({ prefix: '/payment-methods' })
   })
   .use(
     rateLimit({
-      max: 1,
+      max: 11,
       scoping: 'scoped',
       errorResponse: new Response('rate-limited', {
         status: 429,
@@ -44,23 +44,41 @@ export const paymentMethods = new Elysia({ prefix: '/payment-methods' })
           return method;
         });
 
-        await createAuditLog({
-          action: 'CREATE',
-          table: 'payment_methods',
-          actor: {
-            id: process.env.USER_ID!,
-            role: process.env.USER_ROLE_NAME!,
-          },
-          ip: ip.address,
-          userAgent,
-          durationMs: duration_ms,
-          options: {
+        await db.systemLog.create({
+          data: {
+            action: 'CREATE',
+            table_name: 'payment_methods',
+            user_id: process.env.USER_ID!,
+            actor_role: process.env.USER_ROLE_NAME!,
+            ip_address: ip.address,
+            user_agent: userAgent,
+            duration_ms: duration_ms,
             route: request.url,
-            source: 'HTTP',
+            metadata: {
+              source: 'HTTP',
+            },
+            new_data: paymentMethod,
+            status,
+            record_id: paymentMethod!.id,
+            message: getChangeSummary({
+              action: 'CREATE',
+              table_name: 'payment_methods',
+              user: {
+                id: process.env.USER_ID!,
+                role: process.env.USER_ROLE_NAME!,
+              },
+              ip_address: ip.address,
+              user_agent: userAgent,
+              duration_ms: duration_ms,
+              route_endpoint: request.url,
+              metadata: {
+                source: 'HTTP',
+              },
+              new_data: paymentMethod,
+              status,
+              record_id: paymentMethod!.id,
+            }),
           },
-          newData: paymentMethod,
-          recordId: paymentMethod!.id,
-          status,
         });
 
         return { success: true, message: 'Payment method created successfully', data: paymentMethod };
@@ -105,24 +123,44 @@ export const paymentMethods = new Elysia({ prefix: '/payment-methods' })
           });
         });
 
-        await createAuditLog({
-          action: 'UPDATE',
-          table: 'payment_methods',
-          actor: {
-            id: process.env.USER_ID!,
-            role: process.env.USER_ROLE_NAME!,
-          },
-          ip: ip.address,
-          userAgent,
-          durationMs: duration_ms,
-          options: {
+        console.log(flattenDiff(getNestedHumanDiff(existing, updated)));
+
+        await db.systemLog.create({
+          data: {
+            action: 'UPDATE',
+            table_name: 'payment_methods',
+            user_id: process.env.USER_ID!,
+            actor_role: process.env.USER_ROLE_NAME!,
+            ip_address: ip.address,
+            user_agent: userAgent,
+            duration_ms: duration_ms,
             route: request.url,
-            source: 'HTTP',
+            metadata: {
+              source: 'HTTP',
+            },
+            new_data: updated,
+            old_data: existing as any,
+            status,
+            changes: getNestedHumanDiff(existing, updated),
+            record_id: existing!.id,
+            message: getChangeSummary({
+              action: 'UPDATE',
+              table_name: 'payment_methods',
+              user_id: process.env.USER_ID!,
+              role: process.env.USER_ROLE_NAME!,
+              ip_address: ip.address,
+              user_agent: userAgent,
+              duration_ms: duration_ms,
+              route_endpoint: request.url,
+              metadata: {
+                source: 'HTTP',
+              },
+              new_data: updated,
+              old_data: existing,
+              status,
+              record_id: existing!.id,
+            }),
           },
-          newData: updated,
-          oldData: existing,
-          recordId: existing!.id,
-          status,
         });
 
         return { success: true, message: 'Payment method updated successfully', data: updated };

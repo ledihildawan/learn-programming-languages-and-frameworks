@@ -386,6 +386,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 export const ModelName = {
   Role: 'Role',
   Country: 'Country',
+  UserSettings: 'UserSettings',
   User: 'User',
   SystemLog: 'SystemLog',
   Language: 'Language',
@@ -406,7 +407,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "role" | "country" | "user" | "systemLog" | "language" | "status" | "paymentMethod"
+    modelProps: "role" | "country" | "userSettings" | "user" | "systemLog" | "language" | "status" | "paymentMethod"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -555,6 +556,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.CountryCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.CountryCountAggregateOutputType> | number
+        }
+      }
+    }
+    UserSettings: {
+      payload: Prisma.$UserSettingsPayload<ExtArgs>
+      fields: Prisma.UserSettingsFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.UserSettingsFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSettingsPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.UserSettingsFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSettingsPayload>
+        }
+        findFirst: {
+          args: Prisma.UserSettingsFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSettingsPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.UserSettingsFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSettingsPayload>
+        }
+        findMany: {
+          args: Prisma.UserSettingsFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSettingsPayload>[]
+        }
+        create: {
+          args: Prisma.UserSettingsCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSettingsPayload>
+        }
+        createMany: {
+          args: Prisma.UserSettingsCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.UserSettingsCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSettingsPayload>[]
+        }
+        delete: {
+          args: Prisma.UserSettingsDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSettingsPayload>
+        }
+        update: {
+          args: Prisma.UserSettingsUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSettingsPayload>
+        }
+        deleteMany: {
+          args: Prisma.UserSettingsDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.UserSettingsUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.UserSettingsUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSettingsPayload>[]
+        }
+        upsert: {
+          args: Prisma.UserSettingsUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserSettingsPayload>
+        }
+        aggregate: {
+          args: Prisma.UserSettingsAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateUserSettings>
+        }
+        groupBy: {
+          args: Prisma.UserSettingsGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserSettingsGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.UserSettingsCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserSettingsCountAggregateOutputType> | number
         }
       }
     }
@@ -990,6 +1065,25 @@ export const CountryScalarFieldEnum = {
 export type CountryScalarFieldEnum = (typeof CountryScalarFieldEnum)[keyof typeof CountryScalarFieldEnum]
 
 
+export const UserSettingsScalarFieldEnum = {
+  user_id: 'user_id',
+  timezone: 'timezone',
+  locale: 'locale',
+  currency: 'currency',
+  theme: 'theme',
+  date_format: 'date_format',
+  time_format: 'time_format',
+  email_notifications: 'email_notifications',
+  push_notifications: 'push_notifications',
+  marketing_emails: 'marketing_emails',
+  metadata: 'metadata',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+} as const
+
+export type UserSettingsScalarFieldEnum = (typeof UserSettingsScalarFieldEnum)[keyof typeof UserSettingsScalarFieldEnum]
+
+
 export const UserScalarFieldEnum = {
   id: 'id',
   role_id: 'role_id',
@@ -1303,6 +1397,7 @@ export type PrismaClientOptions = ({
 export type GlobalOmitConfig = {
   role?: Prisma.RoleOmit
   country?: Prisma.CountryOmit
+  userSettings?: Prisma.UserSettingsOmit
   user?: Prisma.UserOmit
   systemLog?: Prisma.SystemLogOmit
   language?: Prisma.LanguageOmit

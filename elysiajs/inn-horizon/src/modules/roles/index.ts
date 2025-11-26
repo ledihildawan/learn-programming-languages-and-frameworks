@@ -1,7 +1,7 @@
 import { Elysia, t } from 'elysia';
 import { db } from '../../db';
 import { ip } from '../../plugins/ip';
-import { createAuditLog } from '../../utils/system-logs';
+// import { createAuditLog } from '../../utils/system-logs';
 
 export const roles = new Elysia({ prefix: '/roles' })
   .use(ip)
@@ -21,17 +21,17 @@ export const roles = new Elysia({ prefix: '/roles' })
       try {
         const role = await db.roles.create({ data: { ...body } });
 
-        await createAuditLog(
-          'CREATE',
-          'roles',
-          role.id,
-          null,
-          role,
-          process.env.USER_ID!,
-          process.env.USER_ROLE_NAME!,
-          ip.address,
-          userAgent
-        );
+        // await createAuditLog(
+        //   'CREATE',
+        //   'roles',
+        //   role.id,
+        //   null,
+        //   role,
+        //   process.env.USER_ID!,
+        //   process.env.USER_ROLE_NAME!,
+        //   ip.address,
+        //   userAgent
+        // );
 
         return { success: true, message: 'Role created successfully', data: role };
       } catch (error) {
@@ -63,17 +63,17 @@ export const roles = new Elysia({ prefix: '/roles' })
           data: { ...body },
         });
 
-        await createAuditLog(
-          'UPDATE',
-          'roles',
-          updated.id,
-          existing,
-          updated,
-          process.env.USER_ID!,
-          process.env.USER_ROLE_NAME!,
-          ip.address,
-          userAgent
-        );
+        // await createAuditLog(
+        //   'UPDATE',
+        //   'roles',
+        //   updated.id,
+        //   existing,
+        //   updated,
+        //   process.env.USER_ID!,
+        //   process.env.USER_ROLE_NAME!,
+        //   ip.address,
+        //   userAgent
+        // );
 
         return { success: true, message: 'Role updated successfully', data: updated };
       } catch (error) {
@@ -96,17 +96,17 @@ export const roles = new Elysia({ prefix: '/roles' })
 
       const deleted = await db.roles.delete({ where: { id: params.id } });
 
-      await createAuditLog(
-        'DELETE',
-        'roles',
-        deleted.id,
-        existing,
-        null,
-        process.env.USER_ID!,
-        process.env.USER_ROLE_NAME!,
-        ip.address,
-        userAgent
-      );
+      // await createAuditLog(
+      //   'DELETE',
+      //   'roles',
+      //   deleted.id,
+      //   existing,
+      //   null,
+      //   process.env.USER_ID!,
+      //   process.env.USER_ROLE_NAME!,
+      //   ip.address,
+      //   userAgent
+      // );
 
       return { success: true, message: 'Role deleted successfully', data: deleted };
     } catch (error) {

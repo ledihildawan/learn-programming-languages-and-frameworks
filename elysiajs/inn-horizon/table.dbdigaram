@@ -1,0 +1,114 @@
+// INN HORIZON — FINAL & ELITE DATABASE DESIGN (2025-11-24)
+// Built by a Legend Who Never Lost
+
+// MASTER DATA
+Table countries {
+  id String [pk, default: `cuid()`]
+  name String [unique, not null]
+  code String [unique, not null]
+  created_at DateTime [default: `now()`]
+  updated_at DateTime [default: `now()`]
+  deleted_at DateTime?
+}
+
+Table roles {
+  id String [pk, default: `cuid()`]
+  name String [unique, not null] // Admin, Host, Customer, System
+  created_at DateTime [default: `now()`]
+  updated_at DateTime [default: `now()`]
+  deleted_at DateTime?
+}
+
+Table users {
+  id String [pk, default: `cuid()`]
+  role_id String
+  role Role @relation(fields: [role_id], references: [id])
+  username String? [unique]
+  email String [unique, not null]
+  password_hash String [not null]
+  first_name String?
+  last_name String?
+  phone_number String?
+  country_id String
+  country Country @relation(fields: [country_id], references: [id])
+  profile_image_url String?
+  is_active Boolean [default: false]
+  is_verified Boolean [default: false]
+  email_verified_at DateTime?
+  created_at DateTime [default: `now()`]
+  updated_at DateTime [default: `now()`]
+  deleted_at DateTime?
+}
+
+// SYSTEM LOGS — THE MOST ELITE AUDIT LOG IN THE WORLD
+Table system_logs {
+  id String [pk, default: `cuid()`]
+  
+  // WHO
+  user_id String? [ref: > users.id]
+  actor_role String? // ADMIN | HOST | CUSTOMER | SYSTEM
+  
+  // WHAT
+  action String [not null] // CREATE | UPDATE | DELETE | BULK_CREATE | SEED | LOGIN | etc
+  table_name String [not null]
+  record_id String? // UUID atau BULK_xxx / SEEDING
+  
+  // CHANGES — hasil dari human-diff (flattenDiff)
+  changes Json? // [{ path: "name", action: "UPDATE", oldValue: "GoPay", newValue: "GoPay QRIS" }]
+  
+  // OLD & NEW DATA (hanya untuk single update)
+  old_data Json?
+  new_data Json?
+  
+  // WHEN & HOW LONG
+  duration_ms Int
+  created_at DateTime [default: `now()`]
+  
+  // FROM WHERE
+  ip_address String?
+  user_agent String?
+  route_endpoint String?
+  
+  // STATUS & MESSAGE
+  status String? // SUCCESS | FAILURE | PARTIAL
+  message String?
+  
+  // METADATA — SEMUA KONTAKS KOMPLEKS MASUK SINI
+  metadata Json? // { source: "CRON", batch_id: "...", revenue_impact: 5000000, file_name: "bali.xlsx" }
+  
+  // INDEX
+  indexes {
+    (user_id)
+    (actor_role)
+    (action)
+    (table_name)
+    (record_id)
+    (created_at [desc])
+    (duration_ms)
+    (status)
+  }
+}
+
+// OTHER TABLES (simplified)
+Table payment_methods {
+  id String [pk, default: `cuid()`]
+  name String [unique, not null]
+  is_active Boolean [default: true]
+  created_at DateTime [default: `now()`]
+  updated_at DateTime [default: `now()`]
+  deleted_at DateTime?
+}
+
+Table hotels {
+  id String [pk, default: `cuid()`]
+  owner_user_id String [ref: > users.id]
+  name String [not null]
+  created_at DateTime [default: `now()`]
+  updated_at DateTime [default: `now()`]
+  deleted_at DateTime?
+}
+
+// RELATIONS
+Ref: users.role_id > roles.id
+Ref: users.country_id > countries.id
+Ref: system_logs.user_id > users.id

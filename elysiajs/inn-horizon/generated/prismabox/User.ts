@@ -57,6 +57,26 @@ export const UserRelations = t.Object(
       },
       { additionalProperties: false },
     ),
+    userSettings: __nullable__(
+      t.Object(
+        {
+          user_id: t.String(),
+          timezone: t.String(),
+          locale: t.String(),
+          currency: t.String(),
+          theme: t.String(),
+          date_format: t.String(),
+          time_format: t.String(),
+          email_notifications: t.Boolean(),
+          push_notifications: t.Boolean(),
+          marketing_emails: t.Boolean(),
+          metadata: __nullable__(t.Any()),
+          created_at: t.Date(),
+          updated_at: t.Date(),
+        },
+        { additionalProperties: false },
+      ),
+    ),
     systemLogs: t.Array(
       t.Object(
         {
@@ -146,6 +166,19 @@ export const UserRelationsInputCreate = t.Object(
       },
       { additionalProperties: false },
     ),
+    userSettings: t.Optional(
+      t.Object(
+        {
+          connect: t.Object(
+            {
+              id: t.String({ additionalProperties: false }),
+            },
+            { additionalProperties: false },
+          ),
+        },
+        { additionalProperties: false },
+      ),
+    ),
     systemLogs: t.Optional(
       t.Object(
         {
@@ -190,6 +223,20 @@ export const UserRelationsInputUpdate = t.Partial(
           ),
         },
         { additionalProperties: false },
+      ),
+      userSettings: t.Partial(
+        t.Object(
+          {
+            connect: t.Object(
+              {
+                id: t.String({ additionalProperties: false }),
+              },
+              { additionalProperties: false },
+            ),
+            disconnect: t.Boolean(),
+          },
+          { additionalProperties: false },
+        ),
       ),
       systemLogs: t.Partial(
         t.Object(
@@ -335,6 +382,7 @@ export const UserSelect = t.Partial(
       created_at: t.Boolean(),
       updated_at: t.Boolean(),
       deleted_at: t.Boolean(),
+      userSettings: t.Boolean(),
       systemLogs: t.Boolean(),
       _count: t.Boolean(),
     },
@@ -347,6 +395,7 @@ export const UserInclude = t.Partial(
     {
       role: t.Boolean(),
       country: t.Boolean(),
+      userSettings: t.Boolean(),
       systemLogs: t.Boolean(),
       _count: t.Boolean(),
     },

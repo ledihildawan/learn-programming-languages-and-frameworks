@@ -10,6 +10,7 @@
  */
 export type * from './models/Role.js'
 export type * from './models/Country.js'
+export type * from './models/UserSettings.js'
 export type * from './models/User.js'
 export type * from './models/SystemLog.js'
 export type * from './models/Language.js'
