@@ -1,7 +1,9 @@
 // src/utils/human-diff.ts → FINAL & 100% BISA JALAN (NO ERROR, NO CRASH, NO INVALID DATE)
 import { format, type Locale } from 'date-fns';
+import { enUS } from 'date-fns/locale';
 import { compare, Operation } from 'fast-json-patch';
 import { omit } from 'radash';
+import { db } from '../../db';
 
 // ============================================================
 // CONFIG & IGNORED_FIELDS
@@ -29,6 +31,19 @@ const IGNORED_FIELDS = new Set([
 // ============================================================
 const isObject = (val: unknown): val is Record<string, unknown> =>
   val !== null && typeof val === 'object' && !Array.isArray(val);
+
+const sanitizeData = (data: unknown): Record<string, any> | null => {
+  if (data === null || data === undefined) return null;
+  if (!isObject(data)) return null;
+
+  const sanitized: Record<string, any> = {};
+  for (const [key, value] of Object.entries(data)) {
+    if (value !== null && value !== undefined) {
+      sanitized[key] = value;
+    }
+  }
+  return Object.keys(sanitized).length > 0 ? sanitized : null;
+};
 
 const normalizeValue = (val: unknown, seen = new WeakSet<object>()): unknown => {
   if (val instanceof Date) return val.toISOString();
@@ -125,11 +140,19 @@ export interface SummaryOptions {
   fieldNameMap?: Record<string, string>;
   formatValue?: Record<string, (value: unknown) => string>;
   userTimezone?: string;
+  useEmoji?: boolean; // ← NEW OPTION
 }
 export interface BaseLog {
-  user?: { id?: string; name?: string; username?: string; email?: string; role?: string; timezone?: string };
+  user?: {
+    id?: string;
+    name?: string;
+    username?: string;
+    email?: string;
+    role?: string;
+    timezone?: string;
+  };
   user_id?: string;
-  actor_role?: string;
+  role?: string;
   action: string;
   table_name: string;
   record_id?: string;
@@ -137,13 +160,14 @@ export interface BaseLog {
   old_data?: unknown;
   new_data?: unknown;
   duration_ms: number;
-  created_at: Date | string | undefined;
+  created_at?: Date | string;
   ip_address?: string;
   user_agent?: string;
-  route_endpoint?: string;
+  endpoint?: string;
   status: string;
   message?: string;
   metadata?: Record<string, any>;
+  method?: string;
 }
 
 // ============================================================
@@ -293,8 +317,7 @@ const TIMEZONE_ABBREV: Record<string, string> = {
   'America/Los_Angeles': 'PST',
   'America/Sao_Paulo': 'BRT',
   'Australia/Sydney': 'AEDT',
-  'Pacific/Auckland': 'NZDT',
-  // Tambah sesuai kebutuhan
+  'Pacific/Auckland': 'NZDT', // Tambah sesuai kebutuhan
 };
 
 const getTimezoneAbbrev = (tz: string): string => {
@@ -305,91 +328,319 @@ const getTimezoneAbbrev = (tz: string): string => {
 // getChangeSummary — FORMAT ELITE KAMU:
 // [26 Nov 2025 18:25:13 SGT] Host Budi → created rooms #cmd123 [89ms] | 12 fields
 // ============================================================
-export const getChangeSummary = (
-  log: BaseLog,
-  options: {
-    locale?: Locale;
-    dateFormat?: string;
-    userTimezone?: string; // dari user_settings.timezone
-  } = {}
+// ========== ACTION PHRASE (Dengan Toggle Emoji) ==========
+const getActionPhrase = (log: BaseLog, useEmoji: boolean = true): string => {
+  const action = log.action.toUpperCase();
+  const isSeeding = log.record_id === 'SEEDING';
+  const isBulk = log.record_id?.startsWith('BULK_');
+
+  if (isSeeding) {
+    return useEmoji ? '🌱 seeded' : 'seeded';
+  }
+
+  if (isBulk) {
+    if (action === 'CREATE') return useEmoji ? '📦 bulk-imported' : 'bulk-imported';
+    if (action === 'UPDATE') return useEmoji ? '🔄 bulk-updated' : 'bulk-updated';
+    if (action === 'DELETE') return useEmoji ? '🗑️ bulk-deleted' : 'bulk-deleted';
+  }
+
+  const phrasesWithEmoji: Record<string, string> = {
+    CREATE: '✨ created',
+    READ: '👁 viewed',
+    UPDATE: '🔧 updated',
+    DELETE: '🗑️ deleted',
+    RESTORE: '↩️ restored',
+    ARCHIVE: '📦 archived',
+  };
+
+  const phrasesNoEmoji: Record<string, string> = {
+    CREATE: 'created',
+    READ: 'viewed',
+    UPDATE: 'updated',
+    DELETE: 'deleted',
+    RESTORE: 'restored',
+    ARCHIVE: 'archived',
+  };
+
+  const phrases = useEmoji ? phrasesWithEmoji : phrasesNoEmoji;
+  return phrases[action] || action.toLowerCase();
+};
+
+// ========== STATUS ICON (Dengan Toggle) ==========
+const getStatusIcon = (status: string, useEmoji: boolean = true): string => {
+  if (!useEmoji) {
+    if (status === 'success') return '[OK]';
+    if (status === 'error') return '[ERR]';
+    if (status === 'warning') return '[WRN]';
+    return '[~]';
+  }
+
+  if (status === 'success') return '✓';
+  if (status === 'error') return '✗';
+  if (status === 'warning') return '⚠';
+  return '◆';
+};
+
+// ========== FIELD CHANGES (Dengan Toggle) ==========
+const formatFieldChange = (
+  change: FlatChange,
+  fieldNameMap?: Record<string, string>,
+  formatValue?: Record<string, (v: unknown) => string>,
+  useEmoji: boolean = true
 ): string => {
-  const utcTime = new Date(log.created_at ?? Date.now());
+  const fieldName = fieldNameMap?.[change.path] || change.path.split('.').pop() || change.path;
+  const formatter = formatValue?.[change.path];
 
-  // Gunakan timezone user, fallback ke Asia/Jakarta
-  const targetTz = options.userTimezone || 'Asia/Jakarta';
-
-  let displayTime: Date;
-  let tzAbbrev: string;
-
-  try {
-    displayTime = new Date(utcTime.toLocaleString('en-US', { timeZone: targetTz }));
-    tzAbbrev = getTimezoneAbbrev(targetTz);
-  } catch {
-    // Fallback ke WIB kalau timezone invalid
-    displayTime = new Date(utcTime.getTime() + 7 * 60 * 60 * 1000);
-    tzAbbrev = 'WIB';
+  if (change.action === 'ADD') {
+    const val = formatter ? formatter(change.newValue) : toSafeString(change.newValue);
+    const prefix = useEmoji ? '+' : '[ADD]';
+    return `${prefix}${fieldName}=${val}`;
   }
 
-  const time = format(displayTime, 'dd MMM yyyy HH:mm:ss') + ` ${tzAbbrev}`;
-
-  // ACTOR — SYSTEM = "SYSTEM", LAINNYA = Nama (ID) [ROLE]
-  const isSystem =
-    log.user_id === 'system' ||
-    log.user?.username === 'system' ||
-    log.user?.email === 'system@inn_horizon.local' ||
-    log.actor_role === 'System';
-
-  const actorName = isSystem ? 'SYSTEM' : log.user?.name || log.user?.username || log.user?.email || 'User';
-
-  const actorId = isSystem ? '' : ` (ID: ${log.user_id || 'unknown'})`;
-  const actorRole = isSystem ? '' : ` [${(log.actor_role || log.user?.role || '').toUpperCase()}]`;
-
-  const actor = `${actorName}${actorId}${actorRole}`;
-
-  // DURATION
-  const duration = log.duration_ms ? `[${log.duration_ms.toFixed(0)}ms]` : '[0ms]';
-
-  // SEEDING
-  if (log.record_id === 'SEEDING') {
-    const count = log.metadata?.imported_count || log.metadata?.count || 0;
-    const meta = log.metadata?.note || log.metadata?.meta || 'initial master data';
-    return `[${time}] ${actor} → seeded ${log.table_name} SEEDING ${duration} | ${count} records added${meta ? ` (${meta})` : ''}`;
+  if (change.action === 'REMOVE') {
+    const prefix = useEmoji ? '-' : '[DEL]';
+    return `${prefix}${fieldName}`;
   }
 
-  // BULK
-  if (log.record_id?.startsWith('BULK_')) {
-    const count = log.metadata?.imported_count || log.metadata?.count || 0;
-    const meta = log.metadata?.note || log.metadata?.meta || '';
-    return `[${time}] ${actor} → bulk created ${log.table_name} ${log.record_id} ${duration} | ${count} records added${meta ? ` (${meta})` : ''}`;
+  if (change.action === 'UPDATE') {
+    const oldVal = formatter ? formatter(change.oldValue) : toSafeString(change.oldValue);
+    const newVal = formatter ? formatter(change.newValue) : toSafeString(change.newValue);
+    const maxLen = 20;
+    const oldDisplay = oldVal.length > maxLen ? oldVal.substring(0, maxLen) + '…' : oldVal;
+    const newDisplay = newVal.length > maxLen ? newVal.substring(0, maxLen) + '…' : newVal;
+    const arrow = useEmoji ? '→' : '=>';
+    return `${fieldName}:${oldDisplay}${arrow}${newDisplay}`;
   }
 
-  // SINGLE CREATE
-  if (log.action === 'CREATE' && !log.old_data && log.new_data) {
-    const fields = Object.keys(
-      omit(log.new_data as object, Array.from(IGNORED_FIELDS) as (keyof typeof log.new_data)[])
-    ).length;
-    return `[${time}] ${actor} → created ${log.table_name} #${log.record_id} ${duration} | ${fields} fields`;
-  }
+  return fieldName;
+};
 
-  // SINGLE UPDATE
-  if (log.action === 'UPDATE' && log.old_data && log.new_data) {
-    const diff = getNestedHumanDiff(log.old_data as object, log.new_data as object);
-    const changes = flattenDiff(diff);
-    if (changes.length === 0) {
-      return `[${time}] ${actor} → updated ${log.table_name} #${log.record_id} ${duration} | no changes`;
+// ========== ERROR LABEL (Dengan Toggle) ==========
+const getErrorPrefix = (useEmoji: boolean = true): string => {
+  return useEmoji ? '❌' : '[ERROR]';
+};
+
+// ========== MAIN FUNCTION (Dengan Toggle) ==========
+export const getChangeSummary = (log: BaseLog, options: SummaryOptions = {}): string => {
+  const useEmoji = options.useEmoji !== false; // Default: true
+  // ========== TIMESTAMP ==========
+
+  const time = format(new Date(log.created_at ?? Date.now()), 'dd MMM yyyy HH:mm:ss', {
+    locale: options.locale || enUS,
+  });
+  const tzAbbrev = log.user?.timezone ? getTimezoneAbbrev(log.user.timezone) : 'UTC';
+  const timeWithTz = `${time} ${tzAbbrev}`; // ========== STATUS ICON ==========
+
+  const statusIcon = getStatusIcon(log.status || 'pending', useEmoji); // ========== ACTOR (Improved Format) ==========
+
+  const isSystem = log.user_id === 'system' || log.role === 'System';
+
+  let actorDisplay = '';
+  if (isSystem) {
+    actorDisplay = useEmoji ? '🤖 System' : 'System';
+  } else {
+    const name = log.user?.name || log.user?.username || 'Unknown';
+    const role = (log.role || log.user?.role || 'user').toUpperCase();
+
+    actorDisplay = `${name} [${role}]`;
+  } // ========== ACTION PHRASE ==========
+
+  const actionPhrase = getActionPhrase(log, useEmoji);
+  const table = options.tableNameMap?.[log.table_name] || log.table_name; // ========== RECORD IDENTIFIER ==========
+
+  let recordId = '';
+  if (
+    log.record_id &&
+    log.record_id !== 'unknown' &&
+    log.record_id !== 'SEEDING' &&
+    !log.record_id?.startsWith('BULK_')
+  ) {
+    recordId = ` #${log.record_id}`;
+  } // ========== PERFORMANCE ==========
+
+  const duration = log.duration_ms ?? 0;
+  let perfDisplay = '';
+  if (duration > 1000) {
+    const perfIcon = useEmoji ? '⚡' : '[SLOW]';
+    perfDisplay = `[${(duration / 1000).toFixed(2)}s ${perfIcon}]`;
+  } else if (duration > 500) {
+    const perfIcon = useEmoji ? '⚠' : '[WARN]';
+    perfDisplay = `[${duration.toFixed(0)}ms ${perfIcon}]`;
+  } else {
+    perfDisplay = `[${duration.toFixed(0)}ms]`;
+  } // ========== CHANGES SUMMARY ==========
+
+  let changesSummary = '';
+
+  if (log.changes && log.changes.length > 0) {
+    const adds = log.changes.filter((c) => c.action === 'ADD').length;
+    const updates = log.changes.filter((c) => c.action === 'UPDATE').length;
+    const removes = log.changes.filter((c) => c.action === 'REMOVE').length;
+    const total = log.changes.length; // ← FIX: Untuk CREATE, selalu show detail (meski lebih dari 3)
+
+    if (log.action === 'CREATE' || total <= 3) {
+      const details = log.changes
+        .slice(0, 3) // Show top 3 fields
+        .map((c) => formatFieldChange(c, options.fieldNameMap, options.formatValue, useEmoji))
+        .join(' • ');
+
+      const remaining = total > 3 ? ` +${total - 3}` : '';
+      changesSummary = ` | ${details}${remaining}`;
+    } else {
+      // Untuk UPDATE/DELETE dengan banyak changes
+      const parts: string[] = [];
+      if (adds > 0) parts.push(`+${adds}`);
+      if (updates > 0) parts.push(`~${updates}`);
+      if (removes > 0) parts.push(`-${removes}`);
+      changesSummary = ` | ${parts.join(' ')} (${total} changes)`;
     }
-    const parts = changes.slice(0, 3).map((c) => {
-      const field = c.path.split('.').pop() || c.path;
-      const oldStr = c.oldValue !== undefined ? toSafeString(c.oldValue) : undefined;
-      const newStr = c.newValue !== undefined ? toSafeString(c.newValue) : undefined;
-      if (c.action === 'ADD') return `${field} → ${newStr}`;
-      if (c.action === 'REMOVE') return `${field} removed`;
-      return `${field}: ${oldStr} → ${newStr}`;
-    });
-    const more = changes.length > 3 ? ` and ${changes.length - 3} more` : '';
-    return `[${time}] ${actor} → updated ${log.table_name} #${log.record_id} ${duration} | ${parts.join(' | ')}${more}`;
+  } else if (log.record_id === 'SEEDING' && log.metadata?.imported_count) {
+    changesSummary = ` | +${log.metadata.imported_count} records`;
+  } else if (log.record_id?.startsWith('BULK_') && log.metadata?.imported_count) {
+    changesSummary = ` | +${log.metadata.imported_count} records`;
+  } else if (log.action === 'CREATE' && log.new_data) {
+    const fieldCount = Object.keys(omit(log.new_data as object, Array.from(IGNORED_FIELDS))).length;
+    changesSummary = ` | ${fieldCount} fields`;
+  } else if (log.action === 'DELETE') {
+    changesSummary = ` | 1 record`;
+  } // ========== ERROR INFO ==========
+
+  let errorInfo = '';
+  if (log.status === 'error' && log.message) {
+    const msg = log.message.length > 40 ? log.message.substring(0, 40) + '…' : log.message;
+    const errorPrefix = getErrorPrefix(useEmoji);
+    errorInfo = ` | ${errorPrefix} ${msg}`;
+  } // ========== ROUTE & IP ==========
+
+  const metaParts: string[] = [];
+
+  if (log.endpoint) {
+    metaParts.push(log.endpoint);
   }
 
-  // DEFAULT
-  return `[${time}] ${actor} → ${log.action.toLowerCase()} ${log.table_name}${log.record_id ? ` #${log.record_id}` : ''} ${duration}`;
+  if (log.ip_address) {
+    const ipParts = log.ip_address.split('.');
+    metaParts.push(`${ipParts[0]}.${ipParts[1]}.${ipParts[2]}.*`);
+  }
+
+  if (log.metadata?.request_id) {
+    metaParts.push(`#${log.metadata.request_id.slice(0, 8)}`);
+  }
+
+  const connector = useEmoji ? ' → ' : ' | ';
+  const metadata = metaParts.length ? ` | ${metaParts.join(connector)}` : ''; // ========== FINAL FORMAT ==========
+
+  return `${statusIcon} [${timeWithTz}] ${actorDisplay} ${actionPhrase} ${table}${recordId} ${perfDisplay}${changesSummary}${errorInfo}${metadata}`;
+};
+
+// ========== HELPER: Create Audit Log (UPDATED - SEEDER COMPATIBLE) ==========
+export const createAuditLog = async (logData: {
+  action: 'CREATE' | 'UPDATE' | 'DELETE';
+  table_name: string;
+  record_id?: string;
+  old_data?: unknown;
+  new_data?: unknown;
+  changes?: any;
+  ip_address?: string;
+  user_agent?: string;
+  endpoint?: string;
+  duration_ms: number;
+  status: 'SUCCESS' | 'FAILURE' | 'WARNING';
+  actor?: {
+    id: string;
+    role: string;
+    name?: string;
+    username?: string;
+  };
+  options?: {
+    source?: string;
+    batch_id?: string;
+  };
+  bulk?: {
+    count: number;
+    meta: string;
+  };
+  userTimezone?: string;
+  method?: string;
+}) => {
+  // ========== SANITIZE old_data & new_data ==========
+  const sanitizedOldData = sanitizeData(logData.old_data);
+  const sanitizedNewData = sanitizeData(logData.new_data); // ========== FLATTEN CHANGES ==========
+
+  let flattenedChanges = logData.changes;
+  if (logData.changes && !Array.isArray(logData.changes)) {
+    flattenedChanges = flattenDiff(logData.changes);
+  } // ========== GET ACTOR INFO ==========
+
+  const isSystem = logData.actor?.id === 'system';
+  const actorId = logData.actor?.id || process.env.USER_ID || 'unknown';
+  const role = logData.actor?.role || process.env.USER_ROLE_NAME || 'user';
+  const actorName = logData.actor?.name || process.env.USER_USERNAME || 'Unknown'; // same
+  const actorUsername = logData.actor?.username || process.env.USER_USERNAME || ''; // same
+  // ========== BUILD LOG FOR SUMMARY ==========
+
+  const summaryLog: BaseLog = {
+    action: logData.action,
+    table_name: logData.table_name,
+    record_id: logData.record_id,
+    user_id: actorId,
+    role: role,
+    user: {
+      id: actorId,
+      name: actorName,
+      username: actorUsername,
+      role: role,
+      timezone: logData.userTimezone,
+    },
+    changes: flattenedChanges,
+    old_data: sanitizedOldData,
+    new_data: sanitizedNewData,
+    duration_ms: logData.duration_ms,
+    ip_address: logData.ip_address,
+    user_agent: logData.user_agent,
+    endpoint: logData.endpoint,
+    status: (logData.status || 'SUCCESS').toLowerCase(),
+    created_at: new Date(),
+    metadata: {
+      source: logData.options?.source || 'SEEDER',
+      batch_id: logData.options?.batch_id || logData.bulk ? `SEED_${Date.now()}` : undefined,
+      ...(logData.bulk ? { imported_count: logData.bulk.count, note: logData.bulk.meta } : {}),
+    },
+  }; // ========== GENERATE SUMMARY ==========
+
+  const message = getChangeSummary(summaryLog, {
+    useEmoji: false,
+    rawNames: true,
+    userTimezone: logData.userTimezone,
+  }); // ========== SAVE TO DB ==========
+
+  await db.systemLog.create({
+    data: {
+      action: logData.action,
+      table_name: logData.table_name,
+      record_id: logData.record_id,
+      user: {
+        connect: isSystem || actorId === 'unknown' ? undefined : { id: actorId },
+      },
+      role: role,
+      changes: flattenedChanges && flattenedChanges.length > 0 ? flattenedChanges : undefined,
+      old_data: logData.old_data ?? undefined,
+      new_data: logData.new_data ?? undefined,
+      duration_ms: logData.duration_ms,
+      ip_address: logData.ip_address,
+      user_agent: logData.user_agent ?? 'prisma-seeder',
+      endpoint: logData.endpoint,
+      status: logData.status,
+      source: logData.options?.source || 'SEEDER',
+      method: logData?.method,
+      message: message,
+      metadata: {
+        source: logData.options?.source || 'SEEDER',
+        batch_id: logData.options?.batch_id || logData.bulk ? `SEED_${Date.now()}` : undefined,
+        ...(logData.bulk ? { imported_count: logData.bulk.count, note: logData.bulk.meta } : {}),
+      },
+    },
+  });
+
+  console.log(message);
 };

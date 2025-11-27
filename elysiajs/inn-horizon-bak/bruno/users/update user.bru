@@ -1,0 +1,21 @@
+meta {
+  name: update user
+  type: http
+  seq: 1
+}
+
+patch {
+  url: {{host}}/api/users/cmi9w6a4s0001j04owya5izyl
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "username": "xxxlxedihildawan",
+    "email": "lxhildawan@gmail.com",
+    "first_name": "xxx Ledi xxx",
+    "last_name": "xxxx Hildawan xxx",
+    "is_admin": true
+  }
+}

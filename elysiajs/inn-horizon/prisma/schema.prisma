@@ -1,11 +1,6 @@
 generator client {
-  provider   = "prisma-client"
-  output     = "./../generated/prisma"
-  engineType = "client"
-}
-
-datasource db {
-  provider = "postgresql"
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
 }
 
 generator prismabox {
@@ -13,205 +8,275 @@ generator prismabox {
   typeboxImportDependencyName = "elysia"
   typeboxImportVariableName   = "t"
   inputModel                  = true
-  output                      = "./../generated/prismabox"
+  output                      = "../generated/prismabox"
 }
 
-enum RoleName {
-  Admin
-  Host
-  Customer
-  System
+datasource db {
+  provider = "postgresql"
 }
 
-model Role {
-  id         String    @id @default(cuid())
-  name       RoleName
-  created_at DateTime  @default(now())
-  updated_at DateTime  @updatedAt
-  deleted_at DateTime?
-  users      User[]
-
-  @@map("roles")
+// ====================== ENUM ======================
+enum UserRole {
+  ADMIN
+  HOST
+  CUSTOMER
 }
 
-model Country {
-  id         String    @id @default(cuid())
-  name       String    @db.VarChar(100)
-  code       String    @unique @db.VarChar(2)
-  created_at DateTime  @default(now())
-  updated_at DateTime  @updatedAt
-  deleted_at DateTime?
-  users      User[]
-
-  @@map("countries")
+enum BookingStatus {
+  PENDING
+  PAID
+  CONFIRMED
+  CHECKED_IN
+  CHECKED_OUT
+  COMPLETED
+  CANCELLED
+  REFUNDED
 }
 
-model UserSettings {
-  user_id String @id
-  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
-
-  // WAJIB & PALING PENTING
-  timezone String @default("Asia/Jakarta") // IANA timezone
-  locale   String @default("id-ID") // bahasa & format
-  currency String @default("IDR") // IDR, USD, SGD, etc
-
-  // UI/UX
-  theme       String @default("light") // light | dark | system
-  date_format String @default("dd MMM yyyy") // untuk display
-  time_format String @default("HH:mm") // 24h atau 12h
-
-  // NOTIFIKASI
-  email_notifications Boolean @default(true)
-  push_notifications  Boolean @default(true)
-  marketing_emails    Boolean @default(false)
-
-  // CUSTOM (bisa ditambah nanti)
-  metadata Json? // untuk fitur eksperimental
-
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-
-  @@map("user_settings")
+enum PaymentProvider {
+  MIDTRANS
+  MANUAL
 }
 
+enum PaymentStatus {
+  PENDING
+  SETTLED
+  FAILED
+  EXPIRED
+  REFUNDED
+}
+
+enum PayoutStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  REJECTED
+}
+
+// ====================== MODELS ======================
 model User {
-  id                String        @id @default(cuid())
-  role_id           String
-  role              Role          @relation(fields: [role_id], references: [id])
-  username          String?       @unique @db.VarChar(50)
-  email             String        @unique @db.VarChar(255)
-  password_hash     String        @db.VarChar(255)
-  first_name        String?       @db.VarChar(100)
-  last_name         String?       @db.VarChar(100)
-  phone_number      String?       @db.VarChar(20)
-  country_id        String
-  country           Country       @relation(fields: [country_id], references: [id])
-  profile_image_url String?       @db.VarChar(512)
-  is_active         Boolean?      @default(false)
-  is_verified       Boolean?      @default(false)
-  email_verified_at DateTime?
-  created_at        DateTime      @default(now())
-  updated_at        DateTime      @updatedAt
-  deleted_at        DateTime?
-  userSettings      UserSettings?
-  systemLogs        SystemLog[]
+  id         String    @id @default(cuid())
+  role       UserRole  @default(CUSTOMER)
+  name       String?
+  email      String    @unique
+  password   String
+  phone      String?   @unique
+  avatar     String?
+  isVerified Boolean   @default(false)
+  deletedAt  DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  hotels   Hotel[]
+  bookings Booking[]
+  reviews  Review[]
+  payouts  Payout[]
+
+  walletBalance Decimal      @default(0) @db.Decimal(14, 2)
+  ledgerEntries HostLedger[]
 
   @@map("users")
 }
 
-enum SystemLogsActionType {
-  CREATE
-  UPDATE
-  EXECUTE
-  DELETE
+model Hotel {
+  id          String    @id @default(uuid())
+  ownerId     String
+  owner       User      @relation(fields: [ownerId], references: [id], onDelete: Restrict)
+  name        String
+  slug        String    @unique
+  address     String
+  city        String
+  province    String?
+  latitude    Float?
+  longitude   Float?
+  description String?
+  coverPhoto  String?
+  isActive    Boolean   @default(true)
+  deletedAt   DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  rooms     Room[]
+  photos    HotelPhoto[]
+  amenities HotelAmenity[]
+  reviews   Review[]
+
+  avgRating   Float @default(0) @db.DoublePrecision
+  totalReview Int   @default(0)
+
+  @@unique([ownerId, slug])
+  @@index([city, isActive, avgRating(sort: Desc), province, name, slug])
+  @@map("hotels")
 }
 
-enum SystemLogsStatus {
-  SUCCESS
-  FAILURE
+model HotelPhoto {
+  id      String  @id @default(cuid())
+  hotelId String
+  hotel   Hotel   @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  url     String
+  isCover Boolean @default(false)
+
+  @@index([hotelId])
+  @@map("hotel_photos")
 }
 
-enum SystemLogsSource {
-  HTTP
-  SEEDER
-  MIGRATION
-  CLI
-  CRON
-  TEST
+model HotelAmenity {
+  id      String @id @default(cuid())
+  hotelId String
+  hotel   Hotel  @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  name    String
+
+  @@unique([hotelId, name])
+  @@map("hotel_amenities")
 }
 
-model SystemLog {
-  id String @id @default(cuid())
+model Room {
+  id         String    @id @default(uuid())
+  hotelId    String
+  hotel      Hotel     @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  name       String
+  type       String
+  maxGuests  Int
+  totalRooms Int       @default(1)
+  size       Int?
+  bedType    String?
+  price      Decimal   @db.Decimal(12, 2)
+  deletedAt  DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 
-  // WHO
-  user_id    String?
-  user       User?   @relation(fields: [user_id], references: [id])
-  actor_role String? // ADMIN | HOST | CUSTOMER | SYSTEM
+  photos       RoomPhoto[]
+  bookings     Booking[]
+  availability RoomDate[]
 
-  // WHAT
-  action     String // UPDATE | CREATE | PRICING_RUN | FRAUD_BLOCK
-  table_name String
-  record_id  String?
-
-  // CHANGES (dari human-diff)
-  changes Json?
-
-  // DATA (opsional)
-  old_data Json?
-  new_data Json?
-
-  // WHEN & HOW LONG
-  duration_ms Int
-  created_at  DateTime @default(now())
-
-  // FROM WHERE — WAJIB untuk audit!
-  ip_address String?
-  user_agent String?
-  route      String? // /api/v1/hotels/1287 | /webhook/xendit | null
-
-  // STATUS & MESSAGE
-  status  String // SUCCESS | FAILURE | BLOCKED
-  message String?
-
-  // METADATA — Tempat untuk semua konteks kompleks
-  metadata Json? // Contoh isi:
-  // {
-  //   "source": "HTTP" | "CRON" | "WEBHOOK" | "SEEDER" | "MIGRATION" | "TEST",
-  //   "batch_id": "LEBARAN_2025",
-  //   "request_id": "req_abc123",
-  //   "webhook_provider": "xendit",
-  //   "cron_name": "daily_pricing_run",
-  //   "revenue_impact": 4285000000
-  // }
-
-  // INDEX — SUPER FAST
-  // @@index([user_id])
-  // @@index([actor_role])
-  // @@index([action])
-  // @@index([table_name])
-  // @@index([record_id])
-  // @@index([timestamp(sort: Desc)])
-  // @@index([status])
-  // @@index([duration_ms])
-  @@map("system_logs")
+  @@index([hotelId, price])
+  @@map("rooms")
 }
 
-model Language {
-  id         String    @id @default(cuid())
-  code       String    @unique @db.VarChar(5)
-  name       String    @db.VarChar(50)
-  created_at DateTime  @default(now())
-  updated_at DateTime  @updatedAt
-  deleted_at DateTime?
+model RoomPhoto {
+  id     String @id @default(cuid())
+  roomId String
+  room   Room   @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  url    String
 
-  @@map("languages")
+  @@map("room_photos")
 }
 
-enum StatusType {
-  BOOKING
-  REVIEW
-  REFUND
-  PAYMENT
+model RoomDate {
+  id     String   @id @default(uuid())
+  roomId String
+  room   Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  date   DateTime @db.Date
+  booked Int      @default(0)
+
+  @@unique([roomId, date])
+  @@index([date, roomId, booked])
+  @@map("room_dates")
 }
 
-model Status {
-  id         String     @id @default(cuid())
-  name       String     @db.VarChar(50)
-  type       StatusType
-  created_at DateTime   @default(now())
-  updated_at DateTime   @updatedAt
-  deleted_at DateTime?
+model Booking {
+  id         String        @id @default(uuid())
+  userId     String
+  user       User          @relation(fields: [userId], references: [id])
+  roomId     String
+  room       Room          @relation(fields: [roomId], references: [id])
+  checkIn    DateTime      @db.Date
+  checkOut   DateTime      @db.Date
+  nights     Int
+  guests     Int
+  totalPrice Decimal       @db.Decimal(14, 2)
+  status     BookingStatus @default(PENDING)
+  guestName  String
+  guestPhone String
+  guestEmail String?
 
-  @@map("statuses")
+  roomSnapshot Json
+
+  payment Payment?
+  review  Review?
+
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  ledgerEntries HostLedger[]
+
+  @@index([roomId, checkIn, checkOut, userId, status, createdAt])
+  @@map("bookings")
 }
 
-model PaymentMethod {
-  id         String    @id @default(cuid())
-  name       String    @db.VarChar(50)
-  is_active  Boolean   @default(false)
-  created_at DateTime  @default(now())
-  updated_at DateTime  @updatedAt
-  deleted_at DateTime?
+model Payment {
+  id          String          @id @default(uuid())
+  bookingId   String          @unique
+  booking     Booking         @relation(fields: [bookingId], references: [id], onDelete: Restrict)
+  amount      Decimal         @db.Decimal(14, 2)
+  provider    PaymentProvider
+  providerRef String?         @db.Text
+  status      PaymentStatus   @default(PENDING)
+  paidAt      DateTime?
+  expiredAt   DateTime?
+  deletedAt   DateTime?
+  createdAt   DateTime        @default(now())
 
-  @@map("payment_methods")
+  @@index([status, createdAt])
+  @@map("payments")
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  hotelId   String
+  hotel     Hotel    @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  bookingId String   @unique
+  booking   Booking? @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+
+  rating    Int       @db.SmallInt
+  comment   String?
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([hotelId, rating])
+  @@map("reviews")
+}
+
+model Payout {
+  id            String       @id @default(uuid())
+  hostId        String
+  host          User         @relation(fields: [hostId], references: [id])
+  amount        Decimal      @db.Decimal(14, 2)
+  bankName      String
+  accountNumber String
+  accountName   String
+  status        PayoutStatus @default(PENDING)
+  requestedAt   DateTime     @default(now())
+  processedAt   DateTime?
+  note          String?
+  deletedAt     DateTime?
+  ledgerEntries HostLedger[]
+
+  @@map("payouts")
+}
+
+model HostLedger {
+  id          String     @id @default(uuid())
+  hostId      String
+  host        User       @relation(fields: [hostId], references: [id])
+  bookingId   String?
+  booking     Booking?   @relation(fields: [bookingId], references: [id])
+  payoutId    String?
+  payout      Payout?    @relation(fields: [payoutId], references: [id])
+  amount      Decimal    @db.Decimal(14, 2)
+  type        LedgerType
+  description String
+  createdAt   DateTime   @default(now())
+
+  @@index([hostId, createdAt])
+  @@map("host_ledgers")
+}
+
+enum LedgerType {
+  INCOME_BOOKING
+  PAYOUT_WITHDRAWAL
+  REFUND_DEDUCTION
 }

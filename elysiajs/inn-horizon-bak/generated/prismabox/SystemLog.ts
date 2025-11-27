@@ -8,8 +8,18 @@ export const SystemLogPlain = t.Object(
   {
     id: t.String(),
     user_id: __nullable__(t.String()),
-    actor_role: __nullable__(t.String()),
-    action: t.String(),
+    role: __nullable__(t.String()),
+    action: t.Union(
+      [
+        t.Literal("CREATE"),
+        t.Literal("READ"),
+        t.Literal("UPDATE"),
+        t.Literal("EXECUTE"),
+        t.Literal("DELETE"),
+        t.Literal("RESTORE"),
+      ],
+      { additionalProperties: false },
+    ),
     table_name: t.String(),
     record_id: __nullable__(t.String()),
     changes: __nullable__(t.Any()),
@@ -19,9 +29,33 @@ export const SystemLogPlain = t.Object(
     created_at: t.Date(),
     ip_address: __nullable__(t.String()),
     user_agent: __nullable__(t.String()),
-    route: __nullable__(t.String()),
-    status: t.String(),
+    endpoint: __nullable__(t.String()),
+    method: __nullable__(t.String()),
+    status: t.Union(
+      [
+        t.Literal("SUCCESS"),
+        t.Literal("FAILURE"),
+        t.Literal("PENDING"),
+        t.Literal("WARNING"),
+      ],
+      { additionalProperties: false },
+    ),
     message: __nullable__(t.String()),
+    source: __nullable__(
+      t.Union(
+        [
+          t.Literal("HTTP"),
+          t.Literal("SEEDER"),
+          t.Literal("MIGRATION"),
+          t.Literal("CLI"),
+          t.Literal("CRON"),
+          t.Literal("TEST"),
+          t.Literal("WEBHOOK"),
+          t.Literal("BATCH"),
+        ],
+        { additionalProperties: false },
+      ),
+    ),
     metadata: __nullable__(t.Any()),
   },
   { additionalProperties: false },
@@ -58,19 +92,55 @@ export const SystemLogRelations = t.Object(
 
 export const SystemLogPlainInputCreate = t.Object(
   {
-    actor_role: t.Optional(__nullable__(t.String())),
-    action: t.String(),
+    role: t.Optional(__nullable__(t.String())),
+    action: t.Union(
+      [
+        t.Literal("CREATE"),
+        t.Literal("READ"),
+        t.Literal("UPDATE"),
+        t.Literal("EXECUTE"),
+        t.Literal("DELETE"),
+        t.Literal("RESTORE"),
+      ],
+      { additionalProperties: false },
+    ),
     table_name: t.String(),
     changes: t.Optional(__nullable__(t.Any())),
     old_data: t.Optional(__nullable__(t.Any())),
     new_data: t.Optional(__nullable__(t.Any())),
-    duration_ms: t.Integer(),
+    duration_ms: t.Optional(t.Integer()),
     created_at: t.Optional(t.Date()),
     ip_address: t.Optional(__nullable__(t.String())),
     user_agent: t.Optional(__nullable__(t.String())),
-    route: t.Optional(__nullable__(t.String())),
-    status: t.String(),
+    endpoint: t.Optional(__nullable__(t.String())),
+    method: t.Optional(__nullable__(t.String())),
+    status: t.Union(
+      [
+        t.Literal("SUCCESS"),
+        t.Literal("FAILURE"),
+        t.Literal("PENDING"),
+        t.Literal("WARNING"),
+      ],
+      { additionalProperties: false },
+    ),
     message: t.Optional(__nullable__(t.String())),
+    source: t.Optional(
+      __nullable__(
+        t.Union(
+          [
+            t.Literal("HTTP"),
+            t.Literal("SEEDER"),
+            t.Literal("MIGRATION"),
+            t.Literal("CLI"),
+            t.Literal("CRON"),
+            t.Literal("TEST"),
+            t.Literal("WEBHOOK"),
+            t.Literal("BATCH"),
+          ],
+          { additionalProperties: false },
+        ),
+      ),
+    ),
     metadata: t.Optional(__nullable__(t.Any())),
   },
   { additionalProperties: false },
@@ -78,8 +148,20 @@ export const SystemLogPlainInputCreate = t.Object(
 
 export const SystemLogPlainInputUpdate = t.Object(
   {
-    actor_role: t.Optional(__nullable__(t.String())),
-    action: t.Optional(t.String()),
+    role: t.Optional(__nullable__(t.String())),
+    action: t.Optional(
+      t.Union(
+        [
+          t.Literal("CREATE"),
+          t.Literal("READ"),
+          t.Literal("UPDATE"),
+          t.Literal("EXECUTE"),
+          t.Literal("DELETE"),
+          t.Literal("RESTORE"),
+        ],
+        { additionalProperties: false },
+      ),
+    ),
     table_name: t.Optional(t.String()),
     changes: t.Optional(__nullable__(t.Any())),
     old_data: t.Optional(__nullable__(t.Any())),
@@ -88,9 +170,37 @@ export const SystemLogPlainInputUpdate = t.Object(
     created_at: t.Optional(t.Date()),
     ip_address: t.Optional(__nullable__(t.String())),
     user_agent: t.Optional(__nullable__(t.String())),
-    route: t.Optional(__nullable__(t.String())),
-    status: t.Optional(t.String()),
+    endpoint: t.Optional(__nullable__(t.String())),
+    method: t.Optional(__nullable__(t.String())),
+    status: t.Optional(
+      t.Union(
+        [
+          t.Literal("SUCCESS"),
+          t.Literal("FAILURE"),
+          t.Literal("PENDING"),
+          t.Literal("WARNING"),
+        ],
+        { additionalProperties: false },
+      ),
+    ),
     message: t.Optional(__nullable__(t.String())),
+    source: t.Optional(
+      __nullable__(
+        t.Union(
+          [
+            t.Literal("HTTP"),
+            t.Literal("SEEDER"),
+            t.Literal("MIGRATION"),
+            t.Literal("CLI"),
+            t.Literal("CRON"),
+            t.Literal("TEST"),
+            t.Literal("WEBHOOK"),
+            t.Literal("BATCH"),
+          ],
+          { additionalProperties: false },
+        ),
+      ),
+    ),
     metadata: t.Optional(__nullable__(t.Any())),
   },
   { additionalProperties: false },
@@ -147,8 +257,18 @@ export const SystemLogWhere = t.Partial(
           OR: t.Array(Self, { additionalProperties: false }),
           id: t.String(),
           user_id: t.String(),
-          actor_role: t.String(),
-          action: t.String(),
+          role: t.String(),
+          action: t.Union(
+            [
+              t.Literal("CREATE"),
+              t.Literal("READ"),
+              t.Literal("UPDATE"),
+              t.Literal("EXECUTE"),
+              t.Literal("DELETE"),
+              t.Literal("RESTORE"),
+            ],
+            { additionalProperties: false },
+          ),
           table_name: t.String(),
           record_id: t.String(),
           changes: t.Any(),
@@ -158,9 +278,31 @@ export const SystemLogWhere = t.Partial(
           created_at: t.Date(),
           ip_address: t.String(),
           user_agent: t.String(),
-          route: t.String(),
-          status: t.String(),
+          endpoint: t.String(),
+          method: t.String(),
+          status: t.Union(
+            [
+              t.Literal("SUCCESS"),
+              t.Literal("FAILURE"),
+              t.Literal("PENDING"),
+              t.Literal("WARNING"),
+            ],
+            { additionalProperties: false },
+          ),
           message: t.String(),
+          source: t.Union(
+            [
+              t.Literal("HTTP"),
+              t.Literal("SEEDER"),
+              t.Literal("MIGRATION"),
+              t.Literal("CLI"),
+              t.Literal("CRON"),
+              t.Literal("TEST"),
+              t.Literal("WEBHOOK"),
+              t.Literal("BATCH"),
+            ],
+            { additionalProperties: false },
+          ),
           metadata: t.Any(),
         },
         { additionalProperties: false },
@@ -199,8 +341,18 @@ export const SystemLogWhereUnique = t.Recursive(
             {
               id: t.String(),
               user_id: t.String(),
-              actor_role: t.String(),
-              action: t.String(),
+              role: t.String(),
+              action: t.Union(
+                [
+                  t.Literal("CREATE"),
+                  t.Literal("READ"),
+                  t.Literal("UPDATE"),
+                  t.Literal("EXECUTE"),
+                  t.Literal("DELETE"),
+                  t.Literal("RESTORE"),
+                ],
+                { additionalProperties: false },
+              ),
               table_name: t.String(),
               record_id: t.String(),
               changes: t.Any(),
@@ -210,9 +362,31 @@ export const SystemLogWhereUnique = t.Recursive(
               created_at: t.Date(),
               ip_address: t.String(),
               user_agent: t.String(),
-              route: t.String(),
-              status: t.String(),
+              endpoint: t.String(),
+              method: t.String(),
+              status: t.Union(
+                [
+                  t.Literal("SUCCESS"),
+                  t.Literal("FAILURE"),
+                  t.Literal("PENDING"),
+                  t.Literal("WARNING"),
+                ],
+                { additionalProperties: false },
+              ),
               message: t.String(),
+              source: t.Union(
+                [
+                  t.Literal("HTTP"),
+                  t.Literal("SEEDER"),
+                  t.Literal("MIGRATION"),
+                  t.Literal("CLI"),
+                  t.Literal("CRON"),
+                  t.Literal("TEST"),
+                  t.Literal("WEBHOOK"),
+                  t.Literal("BATCH"),
+                ],
+                { additionalProperties: false },
+              ),
               metadata: t.Any(),
             },
             { additionalProperties: false },
@@ -230,7 +404,7 @@ export const SystemLogSelect = t.Partial(
       id: t.Boolean(),
       user_id: t.Boolean(),
       user: t.Boolean(),
-      actor_role: t.Boolean(),
+      role: t.Boolean(),
       action: t.Boolean(),
       table_name: t.Boolean(),
       record_id: t.Boolean(),
@@ -241,9 +415,11 @@ export const SystemLogSelect = t.Partial(
       created_at: t.Boolean(),
       ip_address: t.Boolean(),
       user_agent: t.Boolean(),
-      route: t.Boolean(),
+      endpoint: t.Boolean(),
+      method: t.Boolean(),
       status: t.Boolean(),
       message: t.Boolean(),
+      source: t.Boolean(),
       metadata: t.Boolean(),
       _count: t.Boolean(),
     },
@@ -253,7 +429,13 @@ export const SystemLogSelect = t.Partial(
 
 export const SystemLogInclude = t.Partial(
   t.Object(
-    { user: t.Boolean(), _count: t.Boolean() },
+    {
+      user: t.Boolean(),
+      action: t.Boolean(),
+      status: t.Boolean(),
+      source: t.Boolean(),
+      _count: t.Boolean(),
+    },
     { additionalProperties: false },
   ),
 );
@@ -267,10 +449,7 @@ export const SystemLogOrderBy = t.Partial(
       user_id: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
-      actor_role: t.Union([t.Literal("asc"), t.Literal("desc")], {
-        additionalProperties: false,
-      }),
-      action: t.Union([t.Literal("asc"), t.Literal("desc")], {
+      role: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
       table_name: t.Union([t.Literal("asc"), t.Literal("desc")], {
@@ -300,10 +479,10 @@ export const SystemLogOrderBy = t.Partial(
       user_agent: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
-      route: t.Union([t.Literal("asc"), t.Literal("desc")], {
+      endpoint: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
-      status: t.Union([t.Literal("asc"), t.Literal("desc")], {
+      method: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
       message: t.Union([t.Literal("asc"), t.Literal("desc")], {

@@ -1,0 +1,16 @@
+meta {
+  name: system-logs
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{host}}/api/system-logs
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

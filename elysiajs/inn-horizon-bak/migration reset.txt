@@ -1,0 +1,7 @@
+-- migration reset
+
+rm -rf generated && rm -rf prisma/migrations && bunx prisma migrate reset --force && bunx prisma migrate dev --name init && bunx prisma generate && bunx prisma db push && bun ./src/db/seed.ts
+
+-- migration
+
+bunx prisma migrate dev --name "add table payment_methods" && bunx prisma generate && bunx prisma db push

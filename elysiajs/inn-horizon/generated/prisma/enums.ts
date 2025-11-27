@@ -9,51 +9,31 @@
 * 🟢 You can import this file directly.
 */
 
-export const RoleName = {
-  Admin: 'Admin',
-  Host: 'Host',
-  Customer: 'Customer',
-  System: 'System'
+export const UserRole = {
+  ADMIN: 'ADMIN',
+  HOST: 'HOST',
+  CUSTOMER: 'CUSTOMER'
 } as const
 
-export type RoleName = (typeof RoleName)[keyof typeof RoleName]
+export type UserRole = (typeof UserRole)[keyof typeof UserRole]
 
 
-export const SystemLogsActionType = {
-  CREATE: 'CREATE',
-  UPDATE: 'UPDATE',
-  EXECUTE: 'EXECUTE',
-  DELETE: 'DELETE'
+export const BookingStatus = {
+  PENDING: 'PENDING',
+  PAID: 'PAID',
+  CONFIRMED: 'CONFIRMED',
+  CANCELLED: 'CANCELLED',
+  COMPLETED: 'COMPLETED',
+  REFUNDED: 'REFUNDED'
 } as const
 
-export type SystemLogsActionType = (typeof SystemLogsActionType)[keyof typeof SystemLogsActionType]
+export type BookingStatus = (typeof BookingStatus)[keyof typeof BookingStatus]
 
 
-export const SystemLogsStatus = {
-  SUCCESS: 'SUCCESS',
-  FAILURE: 'FAILURE'
+export const PaymentProvider = {
+  MIDTRANS: 'MIDTRANS',
+  XENDIT: 'XENDIT',
+  MANUAL: 'MANUAL'
 } as const
 
-export type SystemLogsStatus = (typeof SystemLogsStatus)[keyof typeof SystemLogsStatus]
-
-
-export const SystemLogsSource = {
-  HTTP: 'HTTP',
-  SEEDER: 'SEEDER',
-  MIGRATION: 'MIGRATION',
-  CLI: 'CLI',
-  CRON: 'CRON',
-  TEST: 'TEST'
-} as const
-
-export type SystemLogsSource = (typeof SystemLogsSource)[keyof typeof SystemLogsSource]
-
-
-export const StatusType = {
-  BOOKING: 'BOOKING',
-  REVIEW: 'REVIEW',
-  REFUND: 'REFUND',
-  PAYMENT: 'PAYMENT'
-} as const
-
-export type StatusType = (typeof StatusType)[keyof typeof StatusType]
+export type PaymentProvider = (typeof PaymentProvider)[keyof typeof PaymentProvider]

@@ -18,42 +18,52 @@ export { Prisma }
 export * as $Enums from './enums.js'
 export * from './enums.js';
 /**
- * Model Role
- * 
- */
-export type Role = Prisma.RoleModel
-/**
- * Model Country
- * 
- */
-export type Country = Prisma.CountryModel
-/**
- * Model UserSettings
- * 
- */
-export type UserSettings = Prisma.UserSettingsModel
-/**
  * Model User
  * 
  */
 export type User = Prisma.UserModel
 /**
- * Model SystemLog
+ * Model Hotel
  * 
  */
-export type SystemLog = Prisma.SystemLogModel
+export type Hotel = Prisma.HotelModel
 /**
- * Model Language
+ * Model HotelPhoto
  * 
  */
-export type Language = Prisma.LanguageModel
+export type HotelPhoto = Prisma.HotelPhotoModel
 /**
- * Model Status
+ * Model Room
  * 
  */
-export type Status = Prisma.StatusModel
+export type Room = Prisma.RoomModel
 /**
- * Model PaymentMethod
+ * Model RoomPhoto
  * 
  */
-export type PaymentMethod = Prisma.PaymentMethodModel
+export type RoomPhoto = Prisma.RoomPhotoModel
+/**
+ * Model Booking
+ * 
+ */
+export type Booking = Prisma.BookingModel
+/**
+ * Model Payment
+ * 
+ */
+export type Payment = Prisma.PaymentModel
+/**
+ * Model Review
+ * 
+ */
+export type Review = Prisma.ReviewModel
+/**
+ * Model Payout
+ * 
+ */
+export type Payout = Prisma.PayoutModel
+/**
+ * Model HotelAmenity
+ * 
+ */
+export type HotelAmenity = Prisma.HotelAmenityModel

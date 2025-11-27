@@ -4,7 +4,7 @@ import { db } from '../../db';
 import { ip } from '../../plugins/ip';
 import { userAgent } from '../../plugins/userAgent';
 import { withDuration } from '../../utils';
-import { flattenDiff, getChangeSummary, getNestedHumanDiff } from '../../utils/human-diff';
+import { createAuditLog, flattenDiff, getNestedHumanDiff } from '../../utils/human-diff';
 
 export const paymentMethods = new Elysia({ prefix: '/payment-methods' })
   .use(ip)
@@ -12,7 +12,6 @@ export const paymentMethods = new Elysia({ prefix: '/payment-methods' })
   .get('/', async () => {
     try {
       const data = await db.paymentMethod.findMany();
-
       return { success: true, message: 'Payment methods data fetched successfully', data };
     } catch (error) {
       return { success: false, message: 'Failed to fetch payment methods', error: (error as Error).message };
@@ -33,57 +32,44 @@ export const paymentMethods = new Elysia({ prefix: '/payment-methods' })
   )
   .post(
     '/',
-    async ({ body, ip, userAgent, request }) => {
+    async ({ body, ip: ipData, userAgent: userAgentStr, request, user }: any) => {
       try {
-        const {
-          result: paymentMethod,
-          duration_ms,
-          status,
-        } = await withDuration(async () => {
-          const method = await db.paymentMethod.create({ data: { ...body } });
-          return method;
+        const { result: paymentMethod, duration_ms } = await withDuration(async () => {
+          return await db.paymentMethod.create({ data: { ...body } });
         });
 
-        await db.systemLog.create({
-          data: {
-            action: 'CREATE',
-            table_name: 'payment_methods',
-            user_id: process.env.USER_ID!,
-            actor_role: process.env.USER_ROLE_NAME!,
-            ip_address: ip.address,
-            user_agent: userAgent,
-            duration_ms: duration_ms,
-            route: request.url,
-            metadata: {
-              source: 'HTTP',
-            },
-            new_data: paymentMethod,
-            status,
-            record_id: paymentMethod!.id,
-            message: getChangeSummary({
-              action: 'CREATE',
-              table_name: 'payment_methods',
-              user: {
-                id: process.env.USER_ID!,
-                role: process.env.USER_ROLE_NAME!,
-              },
-              ip_address: ip.address,
-              user_agent: userAgent,
-              duration_ms: duration_ms,
-              route_endpoint: request.url,
-              metadata: {
-                source: 'HTTP',
-              },
-              new_data: paymentMethod,
-              status,
-              record_id: paymentMethod!.id,
-            }),
+        // ========== EXTRACT METHOD & PATH ==========
+        const method = 'POST';
+        const pathname = request.url.pathname || '/api/payment-methods';
+        const endpoint = `${method} ${pathname}`;
+
+        // ========== CREATE AUDIT LOG ==========
+        await createAuditLog({
+          action: 'CREATE',
+          table_name: 'payment_methods',
+          record_id: paymentMethod.id,
+          new_data: paymentMethod,
+          ip_address: ipData?.address,
+          user_agent: userAgentStr,
+          endpoint: endpoint, // ← FIXED
+          duration_ms,
+          status: 'SUCCESS',
+          options: {
+            source: 'HTTP',
           },
         });
 
-        return { success: true, message: 'Payment method created successfully', data: paymentMethod };
+        return {
+          success: true,
+          message: 'Payment method created successfully',
+          data: paymentMethod,
+        };
       } catch (error) {
-        return { success: false, message: 'Failed to create payment method', error: (error as Error).message };
+        return {
+          success: false,
+          message: 'Failed to create payment method',
+          error: (error as Error).message,
+        };
       }
     },
     {
@@ -100,15 +86,11 @@ export const paymentMethods = new Elysia({ prefix: '/payment-methods' })
   })
   .patch(
     '/:id',
-    async ({ params, body, ip, userAgent, request }) => {
+    async ({ params, body, ip: ipData, userAgent: userAgentStr, request, user }: any) => {
       try {
         let existing = null;
 
-        const {
-          result: updated,
-          duration_ms,
-          status,
-        } = await withDuration(async () => {
+        const { result: updated, duration_ms } = await withDuration(async () => {
           existing = await db.paymentMethod.findUnique({
             where: { id: params.id },
           });
@@ -123,49 +105,44 @@ export const paymentMethods = new Elysia({ prefix: '/payment-methods' })
           });
         });
 
-        console.log(flattenDiff(getNestedHumanDiff(existing, updated)));
+        // ========== COMPUTE CHANGES ==========
+        const diff = getNestedHumanDiff(existing, updated);
+        const changes = flattenDiff(diff);
 
-        await db.systemLog.create({
-          data: {
-            action: 'UPDATE',
-            table_name: 'payment_methods',
-            user_id: process.env.USER_ID!,
-            actor_role: process.env.USER_ROLE_NAME!,
-            ip_address: ip.address,
-            user_agent: userAgent,
-            duration_ms: duration_ms,
-            route: request.url,
-            metadata: {
-              source: 'HTTP',
-            },
-            new_data: updated,
-            old_data: existing as any,
-            status,
-            changes: getNestedHumanDiff(existing, updated),
-            record_id: existing!.id,
-            message: getChangeSummary({
-              action: 'UPDATE',
-              table_name: 'payment_methods',
-              user_id: process.env.USER_ID!,
-              role: process.env.USER_ROLE_NAME!,
-              ip_address: ip.address,
-              user_agent: userAgent,
-              duration_ms: duration_ms,
-              route_endpoint: request.url,
-              metadata: {
-                source: 'HTTP',
-              },
-              new_data: updated,
-              old_data: existing,
-              status,
-              record_id: existing!.id,
-            }),
+        // ========== EXTRACT METHOD & PATH ==========
+        const method = 'PATCH';
+        const pathname = request.url.pathname || '/api/payment-methods/:id';
+        const endpoint = `${method} ${pathname}`;
+
+        // ========== CREATE AUDIT LOG ==========
+        await createAuditLog({
+          action: 'UPDATE',
+          table_name: 'payment_methods',
+          record_id: existing!.id,
+          old_data: existing,
+          new_data: updated,
+          changes: changes,
+          ip_address: ipData?.address,
+          user_agent: userAgentStr,
+          endpoint: endpoint, // ← FIXED
+          duration_ms,
+          status: 'SUCCESS',
+          options: {
+            source: 'HTTP',
           },
         });
 
-        return { success: true, message: 'Payment method updated successfully', data: updated };
+        return {
+          success: true,
+          message: 'Payment method updated successfully',
+          data: updated,
+        };
       } catch (error) {
-        return { success: false, message: 'Failed to update payment method', error: (error as Error).message };
+        return {
+          success: false,
+          message: 'Failed to update payment method',
+          error: (error as Error).message,
+        };
       }
     },
     {
@@ -175,33 +152,55 @@ export const paymentMethods = new Elysia({ prefix: '/payment-methods' })
       }),
     }
   )
-  .delete('/:id', async ({ params, ip, userAgent, request }) => {
+  .delete('/:id', async ({ params, ip: ipData, userAgent: userAgentStr, request, user }: any) => {
     try {
-      const existing = await db.paymentMethod.findUnique({ where: { id: params.id } });
-      if (!existing) {
-        return { success: false, message: 'Payment method not found' };
-      }
+      let existing = null;
 
-      const deleted = await db.paymentMethod.delete({ where: { id: params.id } });
+      const { duration_ms } = await withDuration(async () => {
+        existing = await db.paymentMethod.findUnique({
+          where: { id: params.id },
+        });
 
-      await createAuditLog(
-        'DELETE',
-        'paymentMethods',
-        deleted.id,
-        existing,
-        null,
-        process.env.USER_ID!,
-        process.env.USER_ROLE_NAME!,
-        ip.address,
-        userAgent,
-        {
-          route: request.url,
-          source: 'HTTP',
+        if (!existing) {
+          throw new Error('Payment method not found');
         }
-      );
 
-      return { success: true, message: 'Payment method deleted successfully', data: deleted };
+        return await db.paymentMethod.delete({
+          where: { id: params.id },
+        });
+      });
+
+      // ========== EXTRACT METHOD & PATH ==========
+      const method = 'DELETE';
+      const pathname = request.url.pathname || '/api/payment-methods/:id';
+      const endpoint = `${method} ${pathname}`;
+
+      // ========== CREATE AUDIT LOG ==========
+      await createAuditLog({
+        action: 'DELETE',
+        table_name: 'payment_methods',
+        record_id: existing!.id,
+        old_data: existing,
+        ip_address: ipData?.address,
+        user_agent: userAgentStr,
+        endpoint: endpoint, // ← FIXED
+        duration_ms,
+        status: 'SUCCESS',
+        user_id: user?.id || 'unknown',
+        user_role: user?.role || 'user',
+        user_name: user?.name || 'Unknown',
+      });
+
+      return {
+        success: true,
+        message: 'Payment method deleted successfully',
+        data: existing,
+      };
     } catch (error) {
-      return { success: false, message: 'Failed to delete payment method', error: (error as Error).message };
+      return {
+        success: false,
+        message: 'Failed to delete payment method',
+        error: (error as Error).message,
+      };
     }
   });

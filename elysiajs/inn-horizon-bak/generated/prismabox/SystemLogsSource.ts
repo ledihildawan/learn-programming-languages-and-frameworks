@@ -12,6 +12,8 @@ export const SystemLogsSource = t.Union(
     t.Literal("CLI"),
     t.Literal("CRON"),
     t.Literal("TEST"),
+    t.Literal("WEBHOOK"),
+    t.Literal("BATCH"),
   ],
   { additionalProperties: false },
 );

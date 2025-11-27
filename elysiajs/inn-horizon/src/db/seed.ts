@@ -1,268 +1,215 @@
+import { hash } from 'bcryptjs';
 import { db } from '.';
-import { withDuration } from '../utils';
-import { getChangeSummary } from '../utils/human-diff';
-import { hashPassword } from '../utils/users';
-
-const SYSTEM_USER_ID = 'system';
-
-const createAuditLog = async (logData: {
-  action: string;
-  table: string;
-  recordId?: string | undefined;
-  oldData?: unknown;
-  newData?: unknown;
-  actor: { id: string; role: string; name?: string };
-  ip?: string;
-  userAgent?: string;
-  options?: { source: string; batch_id?: string; revenue_impact?: number };
-  durationMs?: number;
-  bulk?: { count: number; meta: string };
-  timezone?: string;
-}) => {
-  const isSystem = logData.actor.id === SYSTEM_USER_ID;
-  const actorName = isSystem ? 'SYSTEM' : logData.actor.name || 'User';
-
-  const actionDisplay = logData.bulk ? `SEED ${logData.table}` : logData.action;
-
-  const recordDisplay = logData.record_id ? `#${logData.record_id}` : logData.bulk ? 'SEEDING' : '';
-
-  const durationDisplay = `[${logData.durationMs ?? 0}ms]`;
-
-  let resultText = '';
-  if (logData.bulk) {
-    resultText = `→ ${logData.bulk.count} records added`;
-    if (logData.bulk.meta) resultText += ` (${logData.bulk.meta})`;
-  } else if (logData.new_data) {
-    const fieldCount = Object.keys(logData.new_data as object).length;
-    resultText = `→ ${fieldCount} fields`;
-  }
-
-  const summary =
-    `[${actorName}] ${actionDisplay} ${logData.table} ${recordDisplay} ${durationDisplay} ${resultText}`.trim();
-
-  console.log(summary);
-
-  const data = {
-    user: isSystem ? undefined : { connect: { id: logData.actor.id } },
-    actor_role: logData.actor.role,
-    action: logData.action,
-    table_name: logData.table,
-    record_id: logData.recordId ?? undefined,
-    changes: logData.changes && logData.changes.length > 0 ? logData.changes : undefined,
-    old_data: logData.oldData ? logData.oldData : undefined,
-    new_data: logData.newData ? logData.newData : undefined,
-    duration_ms: logData.durationMs ?? 0,
-    ip_address: logData?.ip,
-    user_agent: logData.userAgent ?? 'prisma-seeder',
-    route: undefined,
-    status: 'succeeded',
-    metadata: {
-      source: logData.options?.source ?? 'SEEDER',
-      batch_id: logData.bulk ? `SEED_${Date.now()}` : logData.options?.batch_id,
-      revenue_impact: logData.options?.revenue_impact,
-      ...(logData.bulk ? { imported_count: logData.bulk.count, note: logData.bulk.meta } : {}),
-    },
-  };
-
-  console.log({ 'logData.timezone': logData.timezone });
-
-  // Simpan ke DB (tetap sama)
-  await db.systemLog.create({
-    data: {
-      ...data,
-      status: 'SUCCESS',
-      message: getChangeSummary({ ...data, status: 'SUCCESS' }, { rawNames: true, userTimezone: logData.timezone }),
-    },
-  });
-};
+import { BookingStatus, PaymentProvider, UserRole } from '../../generated/prisma/enums';
 
 async function main() {
-  console.log('Memulai seeding Inn Horizon...');
+  console.log('🌱 Mulai seeding...');
 
-  // =================================================================
-  // 1. SEED ROLES
-  // =================================================================
-  const rolesToSeed = [{ name: 'Admin' }, { name: 'Host' }, { name: 'Customer' }, { name: 'System' }];
+  // 1. Kosongkan dulu (hati-hati di production!)
+  await db.hotelAmenity.deleteMany({});
+  await db.hotelPhoto.deleteMany({});
+  await db.roomPhoto.deleteMany({});
+  await db.review.deleteMany({});
+  await db.payment.deleteMany({});
+  await db.booking.deleteMany({});
+  await db.room.deleteMany({});
+  await db.hotel.deleteMany({});
+  await db.payout.deleteMany({});
+  await db.user.deleteMany({});
 
-  const { result: roleResult, duration_ms: roleDurationMs } = await withDuration(async () => {
-    const result = await db.role.createMany({
-      data: rolesToSeed,
-      skipDuplicates: true,
-    });
+  // 2. Admin + Host + 2 Customer
+  const password = await hash('rahasia123', 10);
 
-    return result;
+  const admin = await db.user.create({
+    data: {
+      role: UserRole.ADMIN,
+      name: 'Admin Utama',
+      email: 'admin@stayhub.id',
+      password,
+      phone: '0811111111',
+      isVerified: true,
+    },
   });
 
-  if (roleResult!.count > 0) {
-    await createAuditLog({
-      action: 'CREATE',
-      table: 'roles',
-      recordId: undefined,
-      oldData: undefined,
-      newData: undefined,
-      actor: { id: SYSTEM_USER_ID, role: 'System' },
-      options: { source: 'SEEDER' },
-      bulk: { count: roleResult!.count, meta: 'initial master data' },
-      durationMs: roleDurationMs,
-    });
-    console.log(`Roles seeded: ${roleResult!.count} records`);
-  }
-
-  // =================================================================
-  // 2. SEED COUNTRIES
-  // =================================================================
-  const countriesToSeed = [
-    { name: 'Indonesia', code: 'ID' },
-    { name: 'Singapore', code: 'SG' },
-    { name: 'Malaysia', code: 'MY' },
-    { name: 'Thailand', code: 'TH' },
-    { name: 'United States', code: 'US' },
-  ];
-
-  const { result: countryResult, duration_ms: countryDurationMs } = await withDuration(async () => {
-    const result = await db.country.createMany({
-      data: countriesToSeed,
-      skipDuplicates: true,
-    });
-
-    return result;
+  const host = await db.user.create({
+    data: {
+      role: UserRole.HOST,
+      name: 'Budi Santoso',
+      email: 'budi@host.id',
+      password,
+      phone: '0822222222',
+      isVerified: true,
+    },
   });
 
-  if (countryResult!.count > 0) {
-    await createAuditLog({
-      action: 'CREATE',
-      table: 'countries',
-      recordId: undefined,
-      oldData: undefined,
-      newData: undefined,
-      actor: { id: SYSTEM_USER_ID, role: 'System' },
-      options: { source: 'SEEDER' },
-      bulk: { count: countryResult!.count, meta: 'initial master data' },
-      durationMs: countryDurationMs,
-    });
-    console.log(`Countries seeded: ${countryResult!.count} records`);
-  }
+  const customer1 = await db.user.create({
+    data: {
+      name: 'Alya Putri',
+      email: 'alya@gmail.com',
+      password,
+      phone: '0833333333',
+      isVerified: true,
+    },
+  });
 
-  // =================================================================
-  // 3. AMBIL REFERENCE
-  // =================================================================
-  const systemRole = await db.role.findFirst({ where: { name: 'System' } });
-  const adminRole = await db.role.findFirst({ where: { name: 'Admin' } });
-  const indonesia = await db.country.findFirst({ where: { code: 'ID' } });
+  const customer2 = await db.user.create({
+    data: {
+      name: 'Rian Pratama',
+      email: 'rian@gmail.com',
+      password,
+      phone: '0844444444',
+      isVerified: true,
+    },
+  });
 
-  if (!systemRole || !adminRole || !indonesia) {
-    throw new Error('Fatal: Master data tidak lengkap!');
-  }
-
-  // =================================================================
-  // 4. CREATE SYSTEM USER
-  // =================================================================
-  const { result: systemUser, duration_ms: systemUserDurationMs } = await withDuration(async () => {
-    const result = await db.user.upsert({
-      where: { username: 'system' },
-      include: {
-        userSettings: true,
+  // 3. Hotel milik Budi
+  const hotel = await db.hotel.create({
+    data: {
+      ownerId: host.id,
+      name: 'Santorini Villa Bali',
+      slug: 'santorini-villa-bali',
+      address: 'Jl. Pantai Berawa No.88, Canggu',
+      city: 'Badung',
+      latitude: -8.64779,
+      longitude: 115.13785,
+      description: 'Villa mewah dengan private pool & view sawah',
+      coverPhoto: 'https://images.unsplash.com/photo-1578683015171-9d5c2f8d0e04',
+      isActive: true,
+      photos: {
+        create: [
+          { url: 'https://images.unsplash.com/photo-1611892441792-ae6af465f0f8', isCover: true },
+          { url: 'https://images.unsplash.com/photo-1566073771259-6a8506099945' },
+          { url: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b' },
+        ],
       },
-      update: {},
-      create: {
-        username: 'system',
-        email: 'system@inn_horizon.local',
-        password_hash: await hashPassword('__SYSTEM__'),
-        role_id: systemRole.id,
-        country_id: indonesia.id,
-        first_name: 'System',
-        last_name: 'Automaton',
-        is_active: true,
-        userSettings: {
-          create: {
-            timezone: 'Asia/Singapore',
-            locale: 'en-SG',
-            currency: 'SGD',
-            theme: 'dark',
-            date_format: 'dd/MM/yyyy',
-            email_notifications: true,
-            push_notifications: false,
-          },
+    },
+  });
+
+  await db.hotelAmenity.createMany({
+    data: [
+      { name: 'WiFi', hotelId: hotel.id },
+      { name: 'Private Pool', hotelId: hotel.id },
+      { name: 'Parking', hotelId: hotel.id },
+      { name: 'AC', hotelId: hotel.id },
+      { name: 'Breakfast', hotelId: hotel.id },
+      { name: 'Airport Transfer', hotelId: hotel.id },
+    ],
+    skipDuplicates: true, // Guards against name clashes
+  });
+
+  // 4. Rooms
+  const deluxe = await db.room.create({
+    data: {
+      hotelId: hotel.id,
+      name: 'Deluxe Pool View',
+      type: 'Deluxe',
+      maxGuests: 3,
+      size: 45,
+      bedType: 'King + Single',
+      price: 1_750_000,
+      totalRooms: 5,
+      photos: {
+        create: [
+          { url: 'https://images.unsplash.com/photo-1590490360182-c33d57733427' },
+          { url: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304' },
+        ],
+      },
+    },
+  });
+
+  const suite = await db.room.create({
+    data: {
+      hotelId: hotel.id,
+      name: 'Presidential Suite',
+      type: 'Suite',
+      maxGuests: 4,
+      size: 120,
+      bedType: 'King + King',
+      price: 4_500_000,
+      totalRooms: 2,
+      photos: {
+        create: [
+          { url: 'https://images.unsplash.com/photo-1631049035182-249067d90532' },
+          { url: 'https://images.unsplash.com/photo-1618778616585-6e8d5f4f5e4e' },
+        ],
+      },
+    },
+  });
+
+  // 5. Booking contoh (sudah dibayar)
+  const booking = await db.booking.create({
+    data: {
+      userId: customer1.id,
+      roomId: deluxe.id,
+      checkIn: new Date('2025-12-20'),
+      checkOut: new Date('2025-12-24'),
+      nights: 4,
+      guests: 2,
+      totalPrice: 7_000_000, // 4 malam × 1.75jt
+      status: BookingStatus.PAID,
+      guestName: 'Alya Putri',
+      guestPhone: '0833333333',
+      guestEmail: 'alya@gmail.com',
+      payment: {
+        create: {
+          amount: 7_000_000,
+          provider: PaymentProvider.MIDTRANS,
+          providerId: 'midtrans-12345',
+          status: 'SETTLED',
+          paidAt: new Date(),
         },
       },
-    });
-
-    return result;
+    },
   });
 
-  await createAuditLog({
-    action: 'CREATE',
-    table: 'users',
-    recordId: systemUser!.id,
-    oldData: undefined,
-    newData: systemUser,
-    actor: { id: SYSTEM_USER_ID, role: 'System' },
-    options: { source: 'SEEDER' },
-    durationMs: systemUserDurationMs,
-    timezone: systemUser?.userSettings?.timezone,
+  // 6. Review dari booking di atas
+  await db.review.create({
+    data: {
+      hotelId: hotel.id,
+      userId: customer1.id,
+      bookingId: booking.id,
+      rating: 5,
+      comment: 'Pelayanan luar biasa! Pool-nya mantap, staff ramah, recommended banget!',
+    },
   });
 
-  console.log(`System user created → ${systemUser!.id}`);
-
-  // =================================================================
-  // 5. CREATE ADMIN USER
-  // =================================================================
-  const { result: adminUser, duration_ms: adminUserDurationMs } = await withDuration(async () => {
-    const result = await db.user.upsert({
-      where: { email: 'admin@inn_horizon.com' },
-      update: { role_id: adminRole.id },
-      include: {
-        userSettings: true,
-      },
-      create: {
-        username: 'admin',
-        email: 'admin@inn_horizon.com',
-        password_hash: await hashPassword('inn_horizon_2025'),
-        role_id: adminRole.id,
-        country_id: indonesia.id,
-        first_name: 'Inn',
-        last_name: 'Horizon',
-        is_active: true,
-        is_verified: true,
-        userSettings: {
-          create: {
-            timezone: 'Asia/Singapore',
-            locale: 'en-SG',
-            currency: 'SGD',
-            theme: 'dark',
-            date_format: 'dd/MM/yyyy',
-            email_notifications: true,
-            push_notifications: false,
-          },
-        },
-      },
-    });
-
-    return result;
+  // 7. Booking pending (belum bayar)
+  await db.booking.create({
+    data: {
+      userId: customer2.id,
+      roomId: suite.id,
+      checkIn: new Date('2025-12-28'),
+      checkOut: new Date('2026-01-02'),
+      nights: 5,
+      guests: 4,
+      totalPrice: 22_500_000,
+      status: BookingStatus.PENDING,
+      guestName: 'Rian Pratama',
+      guestPhone: '0844444444',
+    },
   });
 
-  await createAuditLog({
-    action: 'CREATE',
-    table: 'users',
-    recordId: adminUser!.id,
-    oldData: undefined,
-    newData: adminUser,
-    actor: { id: SYSTEM_USER_ID, role: 'System' },
-    options: { source: 'SEEDER' },
-    durationMs: adminUserDurationMs,
-    timezone: adminUser?.userSettings?.timezone,
+  // 8. Payout request dari host
+  await db.payout.create({
+    data: {
+      hostId: host.id,
+      amount: 6_500_000, // setelah potongan fee 7%
+      bankName: 'BCA',
+      accountNo: '1234567890',
+      accountName: 'Budi Santoso',
+      status: 'PENDING',
+    },
   });
 
-  console.log(`Admin user created → ${adminUser!.email}`);
-  console.log(`   Default password: inn_horizon_2025`);
-
-  console.log('\nSEEDING SELESAI! Sistem siap digunakan.');
-  console.log('   Login: admin@inn_horizon.com / inn_horizon_2025');
+  console.log('✅ Seeding selesai!');
+  console.log(`   Admin: ${admin.email}`);
+  console.log(`   Host: ${host.email}`);
+  console.log(`   Hotel: ${hotel.name} (${hotel.slug})`);
 }
 
 main()
   .catch((e) => {
-    console.error('SEEDING GAGAL:', e);
+    console.error('❌ Seeding gagal:', e);
     process.exit(1);
   })
   .finally(async () => {

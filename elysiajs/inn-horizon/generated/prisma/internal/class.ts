@@ -20,7 +20,7 @@ const config: runtime.GetPrismaClientConfig = {
   "clientVersion": "7.0.0",
   "engineVersion": "0c19ccc313cf9911a90d99d2ac2eb0280c76c513",
   "activeProvider": "postgresql",
-  "inlineSchema": "generator client {\n  provider   = \"prisma-client\"\n  output     = \"./../generated/prisma\"\n  engineType = \"client\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\ngenerator prismabox {\n  provider                    = \"prismabox\"\n  typeboxImportDependencyName = \"elysia\"\n  typeboxImportVariableName   = \"t\"\n  inputModel                  = true\n  output                      = \"./../generated/prismabox\"\n}\n\nenum RoleName {\n  Admin\n  Host\n  Customer\n  System\n}\n\nmodel Role {\n  id         String    @id @default(cuid())\n  name       RoleName\n  created_at DateTime  @default(now())\n  updated_at DateTime  @updatedAt\n  deleted_at DateTime?\n  users      User[]\n\n  @@map(\"roles\")\n}\n\nmodel Country {\n  id         String    @id @default(cuid())\n  name       String    @db.VarChar(100)\n  code       String    @unique @db.VarChar(2)\n  created_at DateTime  @default(now())\n  updated_at DateTime  @updatedAt\n  deleted_at DateTime?\n  users      User[]\n\n  @@map(\"countries\")\n}\n\nmodel UserSettings {\n  user_id String @id\n  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)\n\n  // WAJIB & PALING PENTING\n  timezone String @default(\"Asia/Jakarta\") // IANA timezone\n  locale   String @default(\"id-ID\") // bahasa & format\n  currency String @default(\"IDR\") // IDR, USD, SGD, etc\n\n  // UI/UX\n  theme       String @default(\"light\") // light | dark | system\n  date_format String @default(\"dd MMM yyyy\") // untuk display\n  time_format String @default(\"HH:mm\") // 24h atau 12h\n\n  // NOTIFIKASI\n  email_notifications Boolean @default(true)\n  push_notifications  Boolean @default(true)\n  marketing_emails    Boolean @default(false)\n\n  // CUSTOM (bisa ditambah nanti)\n  metadata Json? // untuk fitur eksperimental\n\n  created_at DateTime @default(now())\n  updated_at DateTime @updatedAt\n\n  @@map(\"user_settings\")\n}\n\nmodel User {\n  id                String        @id @default(cuid())\n  role_id           String\n  role              Role          @relation(fields: [role_id], references: [id])\n  username          String?       @unique @db.VarChar(50)\n  email             String        @unique @db.VarChar(255)\n  password_hash     String        @db.VarChar(255)\n  first_name        String?       @db.VarChar(100)\n  last_name         String?       @db.VarChar(100)\n  phone_number      String?       @db.VarChar(20)\n  country_id        String\n  country           Country       @relation(fields: [country_id], references: [id])\n  profile_image_url String?       @db.VarChar(512)\n  is_active         Boolean?      @default(false)\n  is_verified       Boolean?      @default(false)\n  email_verified_at DateTime?\n  created_at        DateTime      @default(now())\n  updated_at        DateTime      @updatedAt\n  deleted_at        DateTime?\n  userSettings      UserSettings?\n  systemLogs        SystemLog[]\n\n  @@map(\"users\")\n}\n\nenum SystemLogsActionType {\n  CREATE\n  UPDATE\n  EXECUTE\n  DELETE\n}\n\nenum SystemLogsStatus {\n  SUCCESS\n  FAILURE\n}\n\nenum SystemLogsSource {\n  HTTP\n  SEEDER\n  MIGRATION\n  CLI\n  CRON\n  TEST\n}\n\nmodel SystemLog {\n  id String @id @default(cuid())\n\n  // WHO\n  user_id    String?\n  user       User?   @relation(fields: [user_id], references: [id])\n  actor_role String? // ADMIN | HOST | CUSTOMER | SYSTEM\n\n  // WHAT\n  action     String // UPDATE | CREATE | PRICING_RUN | FRAUD_BLOCK\n  table_name String\n  record_id  String?\n\n  // CHANGES (dari human-diff)\n  changes Json?\n\n  // DATA (opsional)\n  old_data Json?\n  new_data Json?\n\n  // WHEN & HOW LONG\n  duration_ms Int\n  created_at  DateTime @default(now())\n\n  // FROM WHERE — WAJIB untuk audit!\n  ip_address String?\n  user_agent String?\n  route      String? // /api/v1/hotels/1287 | /webhook/xendit | null\n\n  // STATUS & MESSAGE\n  status  String // SUCCESS | FAILURE | BLOCKED\n  message String?\n\n  // METADATA — Tempat untuk semua konteks kompleks\n  metadata Json? // Contoh isi:\n  // {\n  //   \"source\": \"HTTP\" | \"CRON\" | \"WEBHOOK\" | \"SEEDER\" | \"MIGRATION\" | \"TEST\",\n  //   \"batch_id\": \"LEBARAN_2025\",\n  //   \"request_id\": \"req_abc123\",\n  //   \"webhook_provider\": \"xendit\",\n  //   \"cron_name\": \"daily_pricing_run\",\n  //   \"revenue_impact\": 4285000000\n  // }\n\n  // INDEX — SUPER FAST\n  // @@index([user_id])\n  // @@index([actor_role])\n  // @@index([action])\n  // @@index([table_name])\n  // @@index([record_id])\n  // @@index([timestamp(sort: Desc)])\n  // @@index([status])\n  // @@index([duration_ms])\n  @@map(\"system_logs\")\n}\n\nmodel Language {\n  id         String    @id @default(cuid())\n  code       String    @unique @db.VarChar(5)\n  name       String    @db.VarChar(50)\n  created_at DateTime  @default(now())\n  updated_at DateTime  @updatedAt\n  deleted_at DateTime?\n\n  @@map(\"languages\")\n}\n\nenum StatusType {\n  BOOKING\n  REVIEW\n  REFUND\n  PAYMENT\n}\n\nmodel Status {\n  id         String     @id @default(cuid())\n  name       String     @db.VarChar(50)\n  type       StatusType\n  created_at DateTime   @default(now())\n  updated_at DateTime   @updatedAt\n  deleted_at DateTime?\n\n  @@map(\"statuses\")\n}\n\nmodel PaymentMethod {\n  id         String    @id @default(cuid())\n  name       String    @db.VarChar(50)\n  is_active  Boolean   @default(false)\n  created_at DateTime  @default(now())\n  updated_at DateTime  @updatedAt\n  deleted_at DateTime?\n\n  @@map(\"payment_methods\")\n}\n",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client\"\n  output   = \"./../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\ngenerator prismabox {\n  provider                    = \"prismabox\"\n  typeboxImportDependencyName = \"elysia\"\n  typeboxImportVariableName   = \"t\"\n  inputModel                  = true\n  output                      = \"./../generated/prismabox\"\n}\n\n// ====================== ENUM ======================\nenum UserRole {\n  ADMIN\n  HOST\n  CUSTOMER\n}\n\nenum BookingStatus {\n  PENDING\n  PAID\n  CONFIRMED\n  CANCELLED\n  COMPLETED\n  REFUNDED\n}\n\nenum PaymentProvider {\n  MIDTRANS\n  XENDIT\n  MANUAL\n}\n\n// ====================== CORE TABLES ======================\nmodel User {\n  id         String   @id @default(cuid())\n  role       UserRole @default(CUSTOMER)\n  name       String?\n  email      String   @unique\n  password   String\n  phone      String?  @unique\n  avatar     String?\n  isVerified Boolean  @default(false)\n  createdAt  DateTime @default(now())\n  updatedAt  DateTime @updatedAt\n\n  hotels   Hotel[]\n  bookings Booking[]\n  reviews  Review[]\n  payouts  Payout[]\n\n  @@map(\"users\")\n}\n\nmodel Hotel {\n  id          String   @id @default(uuid())\n  ownerId     String\n  owner       User     @relation(fields: [ownerId], references: [id])\n  name        String\n  slug        String   @unique\n  address     String\n  city        String\n  latitude    Float? // koordinat, Float lebih dari cukup\n  longitude   Float?\n  description String?\n  coverPhoto  String?\n  isActive    Boolean  @default(true)\n  createdAt   DateTime @default(now())\n  updatedAt   DateTime @updatedAt\n\n  rooms     Room[]\n  reviews   Review[]\n  photos    HotelPhoto[]\n  amenities HotelAmenity[]\n\n  @@index([city])\n  @@index([slug])\n}\n\nmodel HotelPhoto {\n  id      String  @id @default(cuid())\n  hotelId String\n  hotel   Hotel   @relation(fields: [hotelId], references: [id], onDelete: Cascade)\n  url     String\n  isCover Boolean @default(false)\n}\n\nmodel Room {\n  id         String   @id @default(uuid())\n  hotelId    String\n  hotel      Hotel    @relation(fields: [hotelId], references: [id], onDelete: Cascade)\n  name       String\n  type       String\n  maxGuests  Int\n  size       Int? // m²\n  bedType    String?\n  price      Decimal  @db.Decimal(12, 2) // uang → tetap Decimal, presisi tepat\n  totalRooms Int      @default(1)\n  createdAt  DateTime @default(now())\n\n  photos   RoomPhoto[]\n  bookings Booking[]\n\n  @@index([hotelId, price])\n}\n\nmodel RoomPhoto {\n  id     String @id @default(cuid())\n  roomId String\n  room   Room   @relation(fields: [roomId], references: [id], onDelete: Cascade)\n  url    String\n}\n\nmodel Booking {\n  id         String        @id @default(uuid())\n  userId     String\n  user       User          @relation(fields: [userId], references: [id])\n  roomId     String\n  room       Room          @relation(fields: [roomId], references: [id])\n  checkIn    DateTime      @db.Date\n  checkOut   DateTime      @db.Date\n  nights     Int\n  guests     Int\n  totalPrice Decimal       @db.Decimal(14, 2) // lebih besar dari cukup\n  status     BookingStatus @default(PENDING)\n  guestName  String\n  guestPhone String\n  guestEmail String?\n\n  payment Payment?\n  review  Review?\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@unique([roomId, checkIn, checkOut])\n  @@index([status])\n  @@index([userId])\n}\n\nmodel Payment {\n  id         String          @id @default(uuid())\n  bookingId  String          @unique\n  booking    Booking         @relation(fields: [bookingId], references: [id])\n  amount     Decimal         @db.Decimal(14, 2)\n  provider   PaymentProvider\n  providerId String?\n  status     String          @default(\"PENDING\")\n  paidAt     DateTime?\n  createdAt  DateTime        @default(now())\n}\n\nmodel Review {\n  id        String   @id @default(cuid())\n  hotelId   String\n  hotel     Hotel    @relation(fields: [hotelId], references: [id])\n  userId    String\n  user      User     @relation(fields: [userId], references: [id])\n  bookingId String?  @unique\n  booking   Booking? @relation(fields: [bookingId], references: [id])\n  rating    Int // 1-5\n  comment   String?\n  createdAt DateTime @default(now())\n\n  @@index([hotelId])\n  @@index([rating])\n}\n\nmodel Payout {\n  id          String    @id @default(uuid())\n  hostId      String\n  host        User      @relation(fields: [hostId], references: [id])\n  amount      Decimal   @db.Decimal(14, 2)\n  bankName    String\n  accountNo   String\n  accountName String\n  status      String    @default(\"PENDING\")\n  requestedAt DateTime  @default(now())\n  processedAt DateTime?\n}\n\nmodel HotelAmenity {\n  id      String @id @default(cuid())\n  hotelId String\n  hotel   Hotel  @relation(fields: [hotelId], references: [id], onDelete: Cascade)\n  name    String\n\n  @@unique([hotelId, name])\n  @@index([hotelId])\n}\n",
   "runtimeDataModel": {
     "models": {},
     "enums": {},
@@ -28,7 +28,7 @@ const config: runtime.GetPrismaClientConfig = {
   }
 }
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"Role\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"enum\",\"type\":\"RoleName\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"deleted_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"users\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"RoleToUser\"}],\"dbName\":\"roles\"},\"Country\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"code\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"deleted_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"users\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"CountryToUser\"}],\"dbName\":\"countries\"},\"UserSettings\":{\"fields\":[{\"name\":\"user_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"UserToUserSettings\"},{\"name\":\"timezone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"locale\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"currency\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"theme\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"date_format\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"time_format\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email_notifications\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"push_notifications\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"marketing_emails\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"metadata\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"user_settings\"},\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"role_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"role\",\"kind\":\"object\",\"type\":\"Role\",\"relationName\":\"RoleToUser\"},{\"name\":\"username\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password_hash\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"first_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"last_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone_number\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"country_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"country\",\"kind\":\"object\",\"type\":\"Country\",\"relationName\":\"CountryToUser\"},{\"name\":\"profile_image_url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"is_active\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"is_verified\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"email_verified_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"deleted_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"userSettings\",\"kind\":\"object\",\"type\":\"UserSettings\",\"relationName\":\"UserToUserSettings\"},{\"name\":\"systemLogs\",\"kind\":\"object\",\"type\":\"SystemLog\",\"relationName\":\"SystemLogToUser\"}],\"dbName\":\"users\"},\"SystemLog\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"SystemLogToUser\"},{\"name\":\"actor_role\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"action\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"table_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"record_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"changes\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"old_data\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"new_data\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"duration_ms\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"ip_address\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user_agent\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"route\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"message\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"metadata\",\"kind\":\"scalar\",\"type\":\"Json\"}],\"dbName\":\"system_logs\"},\"Language\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"code\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"deleted_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"languages\"},\"Status\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"type\",\"kind\":\"enum\",\"type\":\"StatusType\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"deleted_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"statuses\"},\"PaymentMethod\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"is_active\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"deleted_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"payment_methods\"}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"role\",\"kind\":\"enum\",\"type\":\"UserRole\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"avatar\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isVerified\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"hotels\",\"kind\":\"object\",\"type\":\"Hotel\",\"relationName\":\"HotelToUser\"},{\"name\":\"bookings\",\"kind\":\"object\",\"type\":\"Booking\",\"relationName\":\"BookingToUser\"},{\"name\":\"reviews\",\"kind\":\"object\",\"type\":\"Review\",\"relationName\":\"ReviewToUser\"},{\"name\":\"payouts\",\"kind\":\"object\",\"type\":\"Payout\",\"relationName\":\"PayoutToUser\"}],\"dbName\":\"users\"},\"Hotel\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"ownerId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"owner\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"HotelToUser\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"slug\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"address\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"city\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"latitude\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"longitude\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"coverPhoto\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isActive\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"rooms\",\"kind\":\"object\",\"type\":\"Room\",\"relationName\":\"HotelToRoom\"},{\"name\":\"reviews\",\"kind\":\"object\",\"type\":\"Review\",\"relationName\":\"HotelToReview\"},{\"name\":\"photos\",\"kind\":\"object\",\"type\":\"HotelPhoto\",\"relationName\":\"HotelToHotelPhoto\"},{\"name\":\"amenities\",\"kind\":\"object\",\"type\":\"HotelAmenity\",\"relationName\":\"HotelToHotelAmenity\"}],\"dbName\":null},\"HotelPhoto\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"hotelId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"hotel\",\"kind\":\"object\",\"type\":\"Hotel\",\"relationName\":\"HotelToHotelPhoto\"},{\"name\":\"url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isCover\",\"kind\":\"scalar\",\"type\":\"Boolean\"}],\"dbName\":null},\"Room\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"hotelId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"hotel\",\"kind\":\"object\",\"type\":\"Hotel\",\"relationName\":\"HotelToRoom\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"type\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"maxGuests\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"size\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"bedType\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"price\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"totalRooms\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"photos\",\"kind\":\"object\",\"type\":\"RoomPhoto\",\"relationName\":\"RoomToRoomPhoto\"},{\"name\":\"bookings\",\"kind\":\"object\",\"type\":\"Booking\",\"relationName\":\"BookingToRoom\"}],\"dbName\":null},\"RoomPhoto\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"roomId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"room\",\"kind\":\"object\",\"type\":\"Room\",\"relationName\":\"RoomToRoomPhoto\"},{\"name\":\"url\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null},\"Booking\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"BookingToUser\"},{\"name\":\"roomId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"room\",\"kind\":\"object\",\"type\":\"Room\",\"relationName\":\"BookingToRoom\"},{\"name\":\"checkIn\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"checkOut\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"nights\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"guests\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"totalPrice\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"BookingStatus\"},{\"name\":\"guestName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"guestPhone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"guestEmail\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"payment\",\"kind\":\"object\",\"type\":\"Payment\",\"relationName\":\"BookingToPayment\"},{\"name\":\"review\",\"kind\":\"object\",\"type\":\"Review\",\"relationName\":\"BookingToReview\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"Payment\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"bookingId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"booking\",\"kind\":\"object\",\"type\":\"Booking\",\"relationName\":\"BookingToPayment\"},{\"name\":\"amount\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"provider\",\"kind\":\"enum\",\"type\":\"PaymentProvider\"},{\"name\":\"providerId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"paidAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"Review\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"hotelId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"hotel\",\"kind\":\"object\",\"type\":\"Hotel\",\"relationName\":\"HotelToReview\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"ReviewToUser\"},{\"name\":\"bookingId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"booking\",\"kind\":\"object\",\"type\":\"Booking\",\"relationName\":\"BookingToReview\"},{\"name\":\"rating\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"comment\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"Payout\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"hostId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"host\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"PayoutToUser\"},{\"name\":\"amount\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"bankName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"accountNo\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"accountName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"requestedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"processedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"HotelAmenity\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"hotelId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"hotel\",\"kind\":\"object\",\"type\":\"Hotel\",\"relationName\":\"HotelToHotelAmenity\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
 
 async function decodeBase64AsWasm(wasmBase64: string): Promise<WebAssembly.Module> {
   const { Buffer } = await import('node:buffer')
@@ -58,8 +58,8 @@ export interface PrismaClientConstructor {
    * @example
    * ```
    * const prisma = new PrismaClient()
-   * // Fetch zero or more Roles
-   * const roles = await prisma.role.findMany()
+   * // Fetch zero or more Users
+   * const users = await prisma.user.findMany()
    * ```
    * 
    * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
@@ -80,8 +80,8 @@ export interface PrismaClientConstructor {
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more Roles
- * const roles = await prisma.role.findMany()
+ * // Fetch zero or more Users
+ * const users = await prisma.user.findMany()
  * ```
  * 
  * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
@@ -175,36 +175,6 @@ export interface PrismaClient<
   }>>
 
       /**
-   * `prisma.role`: Exposes CRUD operations for the **Role** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Roles
-    * const roles = await prisma.role.findMany()
-    * ```
-    */
-  get role(): Prisma.RoleDelegate<ExtArgs, { omit: OmitOpts }>;
-
-  /**
-   * `prisma.country`: Exposes CRUD operations for the **Country** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Countries
-    * const countries = await prisma.country.findMany()
-    * ```
-    */
-  get country(): Prisma.CountryDelegate<ExtArgs, { omit: OmitOpts }>;
-
-  /**
-   * `prisma.userSettings`: Exposes CRUD operations for the **UserSettings** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more UserSettings
-    * const userSettings = await prisma.userSettings.findMany()
-    * ```
-    */
-  get userSettings(): Prisma.UserSettingsDelegate<ExtArgs, { omit: OmitOpts }>;
-
-  /**
    * `prisma.user`: Exposes CRUD operations for the **User** model.
     * Example usage:
     * ```ts
@@ -215,44 +185,94 @@ export interface PrismaClient<
   get user(): Prisma.UserDelegate<ExtArgs, { omit: OmitOpts }>;
 
   /**
-   * `prisma.systemLog`: Exposes CRUD operations for the **SystemLog** model.
+   * `prisma.hotel`: Exposes CRUD operations for the **Hotel** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more SystemLogs
-    * const systemLogs = await prisma.systemLog.findMany()
+    * // Fetch zero or more Hotels
+    * const hotels = await prisma.hotel.findMany()
     * ```
     */
-  get systemLog(): Prisma.SystemLogDelegate<ExtArgs, { omit: OmitOpts }>;
+  get hotel(): Prisma.HotelDelegate<ExtArgs, { omit: OmitOpts }>;
 
   /**
-   * `prisma.language`: Exposes CRUD operations for the **Language** model.
+   * `prisma.hotelPhoto`: Exposes CRUD operations for the **HotelPhoto** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more Languages
-    * const languages = await prisma.language.findMany()
+    * // Fetch zero or more HotelPhotos
+    * const hotelPhotos = await prisma.hotelPhoto.findMany()
     * ```
     */
-  get language(): Prisma.LanguageDelegate<ExtArgs, { omit: OmitOpts }>;
+  get hotelPhoto(): Prisma.HotelPhotoDelegate<ExtArgs, { omit: OmitOpts }>;
 
   /**
-   * `prisma.status`: Exposes CRUD operations for the **Status** model.
+   * `prisma.room`: Exposes CRUD operations for the **Room** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more Statuses
-    * const statuses = await prisma.status.findMany()
+    * // Fetch zero or more Rooms
+    * const rooms = await prisma.room.findMany()
     * ```
     */
-  get status(): Prisma.StatusDelegate<ExtArgs, { omit: OmitOpts }>;
+  get room(): Prisma.RoomDelegate<ExtArgs, { omit: OmitOpts }>;
 
   /**
-   * `prisma.paymentMethod`: Exposes CRUD operations for the **PaymentMethod** model.
+   * `prisma.roomPhoto`: Exposes CRUD operations for the **RoomPhoto** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more PaymentMethods
-    * const paymentMethods = await prisma.paymentMethod.findMany()
+    * // Fetch zero or more RoomPhotos
+    * const roomPhotos = await prisma.roomPhoto.findMany()
     * ```
     */
-  get paymentMethod(): Prisma.PaymentMethodDelegate<ExtArgs, { omit: OmitOpts }>;
+  get roomPhoto(): Prisma.RoomPhotoDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.booking`: Exposes CRUD operations for the **Booking** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Bookings
+    * const bookings = await prisma.booking.findMany()
+    * ```
+    */
+  get booking(): Prisma.BookingDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.payment`: Exposes CRUD operations for the **Payment** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Payments
+    * const payments = await prisma.payment.findMany()
+    * ```
+    */
+  get payment(): Prisma.PaymentDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.review`: Exposes CRUD operations for the **Review** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Reviews
+    * const reviews = await prisma.review.findMany()
+    * ```
+    */
+  get review(): Prisma.ReviewDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.payout`: Exposes CRUD operations for the **Payout** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Payouts
+    * const payouts = await prisma.payout.findMany()
+    * ```
+    */
+  get payout(): Prisma.PayoutDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.hotelAmenity`: Exposes CRUD operations for the **HotelAmenity** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more HotelAmenities
+    * const hotelAmenities = await prisma.hotelAmenity.findMany()
+    * ```
+    */
+  get hotelAmenity(): Prisma.HotelAmenityDelegate<ExtArgs, { omit: OmitOpts }>;
 }
 
 export function getPrismaClientClass(): PrismaClientConstructor {

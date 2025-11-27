@@ -1,0 +1,18 @@
+meta {
+  name: update role
+  type: http
+  seq: 1
+}
+
+patch {
+  url: {{host}}/api/roles/cmi8rhp3a0000j06g3wajvggt
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "Indonesia",
+    "code": "ID"
+  }
+}

@@ -2,7 +2,8 @@ import { Elysia, t } from 'elysia';
 import { db } from '../../db';
 import { ip } from '../../plugins/ip';
 import { userAgent } from '../../plugins/userAgent';
-// import { createAuditLog } from '../../utils/system-logs';
+import { withDuration } from '../../utils';
+import { createAuditLog, flattenDiff, getNestedHumanDiff } from '../../utils/human-diff';
 
 export const countries = new Elysia({ prefix: '/countries' })
   .use(ip)
@@ -10,7 +11,6 @@ export const countries = new Elysia({ prefix: '/countries' })
   .get('/', async () => {
     try {
       const data = await db.country.findMany();
-
       return { success: true, message: 'Countries data fetched successfully', data };
     } catch (error) {
       return { success: false, message: 'Failed to fetch countries', error: (error as Error).message };
@@ -18,35 +18,48 @@ export const countries = new Elysia({ prefix: '/countries' })
   })
   .post(
     '/',
-    async ({ body, ip, userAgent, request }) => {
+    async ({ body, ip: ipData, userAgent: userAgentStr, request, user }: any) => {
       try {
-        const country = await db.country.create({ data: { ...body } });
+        const { result: country, duration_ms } = await withDuration(async () => {
+          return await db.country.create({ data: { ...body } });
+        });
 
-        // await createAuditLog(
-        //   'CREATE',
-        //   'countries',
-        //   country.id,
-        //   null,
-        //   country,
-        //   process.env.USER_ID!,
-        //   process.env.USER_ROLE_NAME!,
-        //   ip.address,
-        //   userAgent,
-        //   {
-        //     route: request.url,
-        //     source: 'HTTP',
-        //   }
-        // );
+        const method = 'POST';
+        const pathname = request.url.pathname || '/api/countries';
+        const endpoint = `${method} ${pathname}`;
 
-        return { success: true, message: 'Country created successfully', data: country };
+        await createAuditLog({
+          action: 'CREATE',
+          table_name: 'countries',
+          record_id: country.id,
+          new_data: country,
+          ip_address: ipData?.address,
+          user_agent: userAgentStr,
+          endpoint: endpoint,
+          duration_ms,
+          status: 'SUCCESS',
+          options: {
+            source: 'HTTP',
+          },
+        });
+
+        return {
+          success: true,
+          message: 'Country created successfully',
+          data: country,
+        };
       } catch (error) {
-        return { success: false, message: 'Failed to create country', error: (error as Error).message };
+        return {
+          success: false,
+          message: 'Failed to create country',
+          error: (error as Error).message,
+        };
       }
     },
     {
       body: t.Object({
         name: t.String(),
-        code: t.String(),
+        code: t.String({ minLength: 2, maxLength: 2 }),
       }),
     }
   )
@@ -57,73 +70,116 @@ export const countries = new Elysia({ prefix: '/countries' })
   })
   .patch(
     '/:id',
-    async ({ params, body, ip, userAgent, request }) => {
+    async ({ params, body, ip: ipData, userAgent: userAgentStr, request, user }: any) => {
       try {
-        const existing = await db.country.findUnique({ where: { id: params.id } });
-        if (!existing) {
-          return { success: false, message: 'Country not found' };
-        }
+        let existing = null;
 
-        const updated = await db.country.update({
-          where: { id: params.id },
-          data: { ...body },
+        const { result: updated, duration_ms } = await withDuration(async () => {
+          existing = await db.country.findUnique({
+            where: { id: params.id },
+          });
+
+          if (!existing) {
+            throw new Error('Country not found');
+          }
+
+          return await db.country.update({
+            where: { id: params.id },
+            data: { ...body },
+          });
         });
 
-        // await createAuditLog(
-        //   'UPDATE',
-        //   'countries',
-        //   updated.id,
-        //   existing,
-        //   updated,
-        //   process.env.USER_ID!,
-        //   process.env.USER_ROLE_NAME!,
-        //   ip.address,
-        //   userAgent,
-        //   {
-        //     route: request.url,
-        //     source: 'HTTP',
-        //   }
-        // );
+        const diff = getNestedHumanDiff(existing, updated);
+        const changes = flattenDiff(diff);
 
-        return { success: true, message: 'Country updated successfully', data: updated };
+        const method = 'PATCH';
+        const pathname = request.url.pathname || '/api/countries/:id';
+        const endpoint = `${method} ${pathname}`;
+
+        await createAuditLog({
+          action: 'UPDATE',
+          table_name: 'countries',
+          record_id: existing!.id,
+          old_data: existing,
+          new_data: updated,
+          changes: changes,
+          ip_address: ipData?.address,
+          user_agent: userAgentStr,
+          endpoint: endpoint,
+          duration_ms,
+          status: 'SUCCESS',
+          options: {
+            source: 'HTTP',
+          },
+        });
+
+        return {
+          success: true,
+          message: 'Country updated successfully',
+          data: updated,
+        };
       } catch (error) {
-        return { success: false, message: 'Failed to update country', error: (error as Error).message };
+        return {
+          success: false,
+          message: 'Failed to update country',
+          error: (error as Error).message,
+        };
       }
     },
     {
       body: t.Object({
         name: t.Optional(t.String()),
-        code: t.Optional(t.String()),
+        code: t.Optional(t.String({ minLength: 2, maxLength: 2 })),
       }),
     }
   )
-  .delete('/:id', async ({ params, ip, userAgent, request }) => {
+  .delete('/:id', async ({ params, ip: ipData, userAgent: userAgentStr, request, user }: any) => {
     try {
-      const existing = await db.country.findUnique({ where: { id: params.id } });
-      if (!existing) {
-        return { success: false, message: 'Country not found' };
-      }
+      let existing = null;
 
-      const deleted = await db.country.delete({ where: { id: params.id } });
+      const { duration_ms } = await withDuration(async () => {
+        existing = await db.country.findUnique({
+          where: { id: params.id },
+        });
 
-      // await createAuditLog(
-      //   'DELETE',
-      //   'countries',
-      //   deleted.id,
-      //   existing,
-      //   null,
-      //   process.env.USER_ID!,
-      //   process.env.USER_ROLE_NAME!,
-      //   ip.address,
-      //   userAgent,
-      //   {
-      //     route: request.url,
-      //     source: 'HTTP',
-      //   }
-      // );
+        if (!existing) {
+          throw new Error('Country not found');
+        }
 
-      return { success: true, message: 'Country deleted successfully', data: deleted };
+        return await db.country.delete({
+          where: { id: params.id },
+        });
+      });
+
+      const method = 'DELETE';
+      const pathname = request.url.pathname || '/api/countries/:id';
+      const endpoint = `${method} ${pathname}`;
+
+      await createAuditLog({
+        action: 'DELETE',
+        table_name: 'countries',
+        record_id: existing!.id,
+        old_data: existing,
+        ip_address: ipData?.address,
+        user_agent: userAgentStr,
+        endpoint: endpoint,
+        duration_ms,
+        status: 'SUCCESS',
+        user_id: user?.id || 'unknown',
+        user_role: user?.role || 'user',
+        user_name: user?.name || 'Unknown',
+      });
+
+      return {
+        success: true,
+        message: 'Country deleted successfully',
+        data: existing,
+      };
     } catch (error) {
-      return { success: false, message: 'Failed to delete country', error: (error as Error).message };
+      return {
+        success: false,
+        message: 'Failed to delete country',
+        error: (error as Error).message,
+      };
     }
   });

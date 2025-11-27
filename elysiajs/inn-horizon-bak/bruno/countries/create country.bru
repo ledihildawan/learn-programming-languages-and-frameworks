@@ -1,0 +1,18 @@
+meta {
+  name: create country
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{host}}/api/countries
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "Japan",
+    "code": "JP"
+  }
+}

@@ -1,0 +1,29 @@
+meta {
+  name: payout
+  type: http
+  seq: 9
+}
+
+post {
+  url: https://api.sandbox.midtrans.com/v2/order_id/refund/online/direct
+  body: json
+  auth: inherit
+}
+
+headers {
+  accept: application/json
+  authorization: Basic U0ItTWlkLXNlcnZlci1pZ3ViT2xmMjZVdnBETEI0RHJ3bzVzc206
+  content-type: application/json
+}
+
+body:json {
+  {
+    "refund_key": "reference1",
+    "amount": "5000",
+    "reason": "for some reason"
+  }
+}
+
+settings {
+  encodeUrl: false
+}

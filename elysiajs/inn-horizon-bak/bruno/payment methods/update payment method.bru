@@ -1,0 +1,18 @@
+meta {
+  name: update payment method
+  type: http
+  seq: 1
+}
+
+patch {
+  url: {{host}}/api/payment-methods/cmicxjg570000t0j0x8qi2t7w
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "AxSU",
+    "is_activfe": false
+  }
+}
