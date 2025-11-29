@@ -1,0 +1,103 @@
+meta {
+  name: 07 Add Hotel Amenity
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{base_url}}/api/hotels/{{new_hotel_id}}/amenities
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "name": "Free WiFi",
+    "icon": "wifi"
+  }
+}
+
+tests {
+  test("should return 201 status", function() {
+    expect(res.status).to.equal(201);
+  });
+
+  test("should return success true", function() {
+    const data = res.body;
+    expect(data.success).to.equal(true);
+  });
+
+  test("should return created amenity", function() {
+    const data = res.body;
+    expect(data.data).to.have.property('id');
+    expect(data.data).to.have.property('hotelId');
+    expect(data.data).to.have.property('name');
+    expect(data.data).to.have.property('icon');
+  });
+
+  test("should save amenity ID to environment", function() {
+    const data = res.body;
+    if (data.success && data.data) {
+      bru.setEnvVar('hotel_amenity_id', data.data.id);
+    }
+  });
+}
+
+docs {
+  # Add Hotel Amenity
+
+  Add an amenity to hotel. Only hotel owner can add amenities.
+
+  ## Authentication
+  Requires Bearer token. User must be the hotel owner.
+
+  ## Path Parameters
+  - `id` (string, required): Hotel UUID
+
+  ## Request Body
+  - `name` (string, required): Amenity name (2-100 characters)
+  - `icon` (string, optional): Icon identifier (max 100 characters)
+
+  ## Response
+  Returns the created amenity object.
+
+  ## Common Amenities
+  - Free WiFi (wifi)
+  - Swimming Pool (pool)
+  - Fitness Center (dumbbell)
+  - Restaurant (utensils)
+  - Spa (spa)
+  - Parking (car)
+  - Room Service (bell)
+  - Air Conditioning (snowflake)
+  - Breakfast Included (coffee)
+  - Pet Friendly (paw)
+  - Airport Shuttle (bus)
+  - Business Center (briefcase)
+  - Bar/Lounge (wine-glass)
+  - Concierge (user-tie)
+  - Laundry Service (tshirt)
+
+  ## Features
+  - Unlimited amenities per hotel
+  - Custom icon identifiers
+  - Unique name per hotel enforced
+  - Sortable alphabetically
+
+  ## Validation
+  - Name must be unique per hotel
+  - Cannot add duplicate amenity names
+  - Case-insensitive uniqueness check
+
+  ## Notes
+  - Only hotel owner can add amenities
+  - Duplicate names return error
+  - Icon is optional but recommended
+  - Use standard icon libraries (FontAwesome, Material Icons)
+  - Returns 403 if not owner
+  - Returns 404 if hotel not found
+}

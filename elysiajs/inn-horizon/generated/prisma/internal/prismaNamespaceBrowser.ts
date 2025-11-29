@@ -54,13 +54,16 @@ export const ModelName = {
   User: 'User',
   Hotel: 'Hotel',
   HotelPhoto: 'HotelPhoto',
+  HotelAmenity: 'HotelAmenity',
   Room: 'Room',
   RoomPhoto: 'RoomPhoto',
+  BookingDate: 'BookingDate',
   Booking: 'Booking',
   Payment: 'Payment',
   Review: 'Review',
   Payout: 'Payout',
-  HotelAmenity: 'HotelAmenity'
+  HostLedger: 'HostLedger',
+  Setting: 'Setting'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -88,8 +91,14 @@ export const UserScalarFieldEnum = {
   phone: 'phone',
   avatar: 'avatar',
   isVerified: 'isVerified',
+  deletedAt: 'deletedAt',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  bankName: 'bankName',
+  bankCode: 'bankCode',
+  accountNumber: 'accountNumber',
+  accountName: 'accountName',
+  walletBalance: 'walletBalance'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -102,13 +111,20 @@ export const HotelScalarFieldEnum = {
   slug: 'slug',
   address: 'address',
   city: 'city',
+  province: 'province',
   latitude: 'latitude',
   longitude: 'longitude',
   description: 'description',
   coverPhoto: 'coverPhoto',
+  checkInTime: 'checkInTime',
+  checkOutTime: 'checkOutTime',
+  cancellationHours: 'cancellationHours',
   isActive: 'isActive',
+  deletedAt: 'deletedAt',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  avgRating: 'avgRating',
+  totalReview: 'totalReview'
 } as const
 
 export type HotelScalarFieldEnum = (typeof HotelScalarFieldEnum)[keyof typeof HotelScalarFieldEnum]
@@ -118,10 +134,21 @@ export const HotelPhotoScalarFieldEnum = {
   id: 'id',
   hotelId: 'hotelId',
   url: 'url',
-  isCover: 'isCover'
+  order: 'order',
+  createdAt: 'createdAt'
 } as const
 
 export type HotelPhotoScalarFieldEnum = (typeof HotelPhotoScalarFieldEnum)[keyof typeof HotelPhotoScalarFieldEnum]
+
+
+export const HotelAmenityScalarFieldEnum = {
+  id: 'id',
+  hotelId: 'hotelId',
+  name: 'name',
+  icon: 'icon'
+} as const
+
+export type HotelAmenityScalarFieldEnum = (typeof HotelAmenityScalarFieldEnum)[keyof typeof HotelAmenityScalarFieldEnum]
 
 
 export const RoomScalarFieldEnum = {
@@ -130,11 +157,17 @@ export const RoomScalarFieldEnum = {
   name: 'name',
   type: 'type',
   maxGuests: 'maxGuests',
+  totalRooms: 'totalRooms',
   size: 'size',
   bedType: 'bedType',
   price: 'price',
-  totalRooms: 'totalRooms',
-  createdAt: 'createdAt'
+  extraBedPrice: 'extraBedPrice',
+  extraBedAvailable: 'extraBedAvailable',
+  isActive: 'isActive',
+  deletedAt: 'deletedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  order: 'order'
 } as const
 
 export type RoomScalarFieldEnum = (typeof RoomScalarFieldEnum)[keyof typeof RoomScalarFieldEnum]
@@ -143,10 +176,22 @@ export type RoomScalarFieldEnum = (typeof RoomScalarFieldEnum)[keyof typeof Room
 export const RoomPhotoScalarFieldEnum = {
   id: 'id',
   roomId: 'roomId',
-  url: 'url'
+  url: 'url',
+  order: 'order',
+  createdAt: 'createdAt'
 } as const
 
 export type RoomPhotoScalarFieldEnum = (typeof RoomPhotoScalarFieldEnum)[keyof typeof RoomPhotoScalarFieldEnum]
+
+
+export const BookingDateScalarFieldEnum = {
+  id: 'id',
+  bookingId: 'bookingId',
+  roomId: 'roomId',
+  date: 'date'
+} as const
+
+export type BookingDateScalarFieldEnum = (typeof BookingDateScalarFieldEnum)[keyof typeof BookingDateScalarFieldEnum]
 
 
 export const BookingScalarFieldEnum = {
@@ -155,13 +200,27 @@ export const BookingScalarFieldEnum = {
   roomId: 'roomId',
   checkIn: 'checkIn',
   checkOut: 'checkOut',
+  bookingCode: 'bookingCode',
   nights: 'nights',
   guests: 'guests',
-  totalPrice: 'totalPrice',
-  status: 'status',
   guestName: 'guestName',
   guestPhone: 'guestPhone',
   guestEmail: 'guestEmail',
+  guestNotes: 'guestNotes',
+  totalPrice: 'totalPrice',
+  platformFee: 'platformFee',
+  hostPayout: 'hostPayout',
+  status: 'status',
+  expiredAt: 'expiredAt',
+  confirmedAt: 'confirmedAt',
+  checkedInAt: 'checkedInAt',
+  canceledAt: 'canceledAt',
+  cancelReason: 'cancelReason',
+  canceledById: 'canceledById',
+  roomSnapshot: 'roomSnapshot',
+  isTest: 'isTest',
+  paymentId: 'paymentId',
+  deletedAt: 'deletedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -174,9 +233,15 @@ export const PaymentScalarFieldEnum = {
   bookingId: 'bookingId',
   amount: 'amount',
   provider: 'provider',
-  providerId: 'providerId',
+  providerRef: 'providerRef',
   status: 'status',
+  snapToken: 'snapToken',
+  paymentUrl: 'paymentUrl',
   paidAt: 'paidAt',
+  expiredAt: 'expiredAt',
+  failureReason: 'failureReason',
+  isTest: 'isTest',
+  deletedAt: 'deletedAt',
   createdAt: 'createdAt'
 } as const
 
@@ -190,6 +255,7 @@ export const ReviewScalarFieldEnum = {
   bookingId: 'bookingId',
   rating: 'rating',
   comment: 'comment',
+  deletedAt: 'deletedAt',
   createdAt: 'createdAt'
 } as const
 
@@ -200,24 +266,41 @@ export const PayoutScalarFieldEnum = {
   id: 'id',
   hostId: 'hostId',
   amount: 'amount',
-  bankName: 'bankName',
-  accountNo: 'accountNo',
-  accountName: 'accountName',
   status: 'status',
+  payoutCode: 'payoutCode',
   requestedAt: 'requestedAt',
-  processedAt: 'processedAt'
+  processedAt: 'processedAt',
+  note: 'note',
+  proofOfTransfer: 'proofOfTransfer',
+  processorId: 'processorId',
+  deletedAt: 'deletedAt',
+  createdAt: 'createdAt'
 } as const
 
 export type PayoutScalarFieldEnum = (typeof PayoutScalarFieldEnum)[keyof typeof PayoutScalarFieldEnum]
 
 
-export const HotelAmenityScalarFieldEnum = {
+export const HostLedgerScalarFieldEnum = {
   id: 'id',
-  hotelId: 'hotelId',
-  name: 'name'
+  hostId: 'hostId',
+  bookingId: 'bookingId',
+  payoutId: 'payoutId',
+  amount: 'amount',
+  type: 'type',
+  description: 'description',
+  balanceAfter: 'balanceAfter',
+  createdAt: 'createdAt'
 } as const
 
-export type HotelAmenityScalarFieldEnum = (typeof HotelAmenityScalarFieldEnum)[keyof typeof HotelAmenityScalarFieldEnum]
+export type HostLedgerScalarFieldEnum = (typeof HostLedgerScalarFieldEnum)[keyof typeof HostLedgerScalarFieldEnum]
+
+
+export const SettingScalarFieldEnum = {
+  key: 'key',
+  value: 'value'
+} as const
+
+export type SettingScalarFieldEnum = (typeof SettingScalarFieldEnum)[keyof typeof SettingScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -226,6 +309,13 @@ export const SortOrder = {
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const JsonNullValueInput = {
+  JsonNull: 'JsonNull'
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {
@@ -242,4 +332,13 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: 'DbNull',
+  JsonNull: 'JsonNull',
+  AnyNull: 'AnyNull'
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 

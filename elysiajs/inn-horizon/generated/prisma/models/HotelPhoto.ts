@@ -20,52 +20,76 @@ export type HotelPhotoModel = runtime.Types.Result.DefaultSelection<Prisma.$Hote
 
 export type AggregateHotelPhoto = {
   _count: HotelPhotoCountAggregateOutputType | null
+  _avg: HotelPhotoAvgAggregateOutputType | null
+  _sum: HotelPhotoSumAggregateOutputType | null
   _min: HotelPhotoMinAggregateOutputType | null
   _max: HotelPhotoMaxAggregateOutputType | null
+}
+
+export type HotelPhotoAvgAggregateOutputType = {
+  order: number | null
+}
+
+export type HotelPhotoSumAggregateOutputType = {
+  order: number | null
 }
 
 export type HotelPhotoMinAggregateOutputType = {
   id: string | null
   hotelId: string | null
   url: string | null
-  isCover: boolean | null
+  order: number | null
+  createdAt: Date | null
 }
 
 export type HotelPhotoMaxAggregateOutputType = {
   id: string | null
   hotelId: string | null
   url: string | null
-  isCover: boolean | null
+  order: number | null
+  createdAt: Date | null
 }
 
 export type HotelPhotoCountAggregateOutputType = {
   id: number
   hotelId: number
   url: number
-  isCover: number
+  order: number
+  createdAt: number
   _all: number
 }
 
+
+export type HotelPhotoAvgAggregateInputType = {
+  order?: true
+}
+
+export type HotelPhotoSumAggregateInputType = {
+  order?: true
+}
 
 export type HotelPhotoMinAggregateInputType = {
   id?: true
   hotelId?: true
   url?: true
-  isCover?: true
+  order?: true
+  createdAt?: true
 }
 
 export type HotelPhotoMaxAggregateInputType = {
   id?: true
   hotelId?: true
   url?: true
-  isCover?: true
+  order?: true
+  createdAt?: true
 }
 
 export type HotelPhotoCountAggregateInputType = {
   id?: true
   hotelId?: true
   url?: true
-  isCover?: true
+  order?: true
+  createdAt?: true
   _all?: true
 }
 
@@ -107,6 +131,18 @@ export type HotelPhotoAggregateArgs<ExtArgs extends runtime.Types.Extensions.Int
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: HotelPhotoAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: HotelPhotoSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: HotelPhotoMinAggregateInputType
@@ -137,6 +173,8 @@ export type HotelPhotoGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   _count?: HotelPhotoCountAggregateInputType | true
+  _avg?: HotelPhotoAvgAggregateInputType
+  _sum?: HotelPhotoSumAggregateInputType
   _min?: HotelPhotoMinAggregateInputType
   _max?: HotelPhotoMaxAggregateInputType
 }
@@ -145,8 +183,11 @@ export type HotelPhotoGroupByOutputType = {
   id: string
   hotelId: string
   url: string
-  isCover: boolean
+  order: number
+  createdAt: Date
   _count: HotelPhotoCountAggregateOutputType | null
+  _avg: HotelPhotoAvgAggregateOutputType | null
+  _sum: HotelPhotoSumAggregateOutputType | null
   _min: HotelPhotoMinAggregateOutputType | null
   _max: HotelPhotoMaxAggregateOutputType | null
 }
@@ -170,10 +211,11 @@ export type HotelPhotoWhereInput = {
   AND?: Prisma.HotelPhotoWhereInput | Prisma.HotelPhotoWhereInput[]
   OR?: Prisma.HotelPhotoWhereInput[]
   NOT?: Prisma.HotelPhotoWhereInput | Prisma.HotelPhotoWhereInput[]
-  id?: Prisma.StringFilter<"HotelPhoto"> | string
-  hotelId?: Prisma.StringFilter<"HotelPhoto"> | string
+  id?: Prisma.UuidFilter<"HotelPhoto"> | string
+  hotelId?: Prisma.UuidFilter<"HotelPhoto"> | string
   url?: Prisma.StringFilter<"HotelPhoto"> | string
-  isCover?: Prisma.BoolFilter<"HotelPhoto"> | boolean
+  order?: Prisma.IntFilter<"HotelPhoto"> | number
+  createdAt?: Prisma.DateTimeFilter<"HotelPhoto"> | Date | string
   hotel?: Prisma.XOR<Prisma.HotelScalarRelationFilter, Prisma.HotelWhereInput>
 }
 
@@ -181,7 +223,8 @@ export type HotelPhotoOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   hotelId?: Prisma.SortOrder
   url?: Prisma.SortOrder
-  isCover?: Prisma.SortOrder
+  order?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
   hotel?: Prisma.HotelOrderByWithRelationInput
 }
 
@@ -190,9 +233,10 @@ export type HotelPhotoWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.HotelPhotoWhereInput | Prisma.HotelPhotoWhereInput[]
   OR?: Prisma.HotelPhotoWhereInput[]
   NOT?: Prisma.HotelPhotoWhereInput | Prisma.HotelPhotoWhereInput[]
-  hotelId?: Prisma.StringFilter<"HotelPhoto"> | string
+  hotelId?: Prisma.UuidFilter<"HotelPhoto"> | string
   url?: Prisma.StringFilter<"HotelPhoto"> | string
-  isCover?: Prisma.BoolFilter<"HotelPhoto"> | boolean
+  order?: Prisma.IntFilter<"HotelPhoto"> | number
+  createdAt?: Prisma.DateTimeFilter<"HotelPhoto"> | Date | string
   hotel?: Prisma.XOR<Prisma.HotelScalarRelationFilter, Prisma.HotelWhereInput>
 }, "id">
 
@@ -200,26 +244,31 @@ export type HotelPhotoOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   hotelId?: Prisma.SortOrder
   url?: Prisma.SortOrder
-  isCover?: Prisma.SortOrder
+  order?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
   _count?: Prisma.HotelPhotoCountOrderByAggregateInput
+  _avg?: Prisma.HotelPhotoAvgOrderByAggregateInput
   _max?: Prisma.HotelPhotoMaxOrderByAggregateInput
   _min?: Prisma.HotelPhotoMinOrderByAggregateInput
+  _sum?: Prisma.HotelPhotoSumOrderByAggregateInput
 }
 
 export type HotelPhotoScalarWhereWithAggregatesInput = {
   AND?: Prisma.HotelPhotoScalarWhereWithAggregatesInput | Prisma.HotelPhotoScalarWhereWithAggregatesInput[]
   OR?: Prisma.HotelPhotoScalarWhereWithAggregatesInput[]
   NOT?: Prisma.HotelPhotoScalarWhereWithAggregatesInput | Prisma.HotelPhotoScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"HotelPhoto"> | string
-  hotelId?: Prisma.StringWithAggregatesFilter<"HotelPhoto"> | string
+  id?: Prisma.UuidWithAggregatesFilter<"HotelPhoto"> | string
+  hotelId?: Prisma.UuidWithAggregatesFilter<"HotelPhoto"> | string
   url?: Prisma.StringWithAggregatesFilter<"HotelPhoto"> | string
-  isCover?: Prisma.BoolWithAggregatesFilter<"HotelPhoto"> | boolean
+  order?: Prisma.IntWithAggregatesFilter<"HotelPhoto"> | number
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"HotelPhoto"> | Date | string
 }
 
 export type HotelPhotoCreateInput = {
   id?: string
   url: string
-  isCover?: boolean
+  order?: number
+  createdAt?: Date | string
   hotel: Prisma.HotelCreateNestedOneWithoutPhotosInput
 }
 
@@ -227,13 +276,15 @@ export type HotelPhotoUncheckedCreateInput = {
   id?: string
   hotelId: string
   url: string
-  isCover?: boolean
+  order?: number
+  createdAt?: Date | string
 }
 
 export type HotelPhotoUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
-  isCover?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   hotel?: Prisma.HotelUpdateOneRequiredWithoutPhotosNestedInput
 }
 
@@ -241,27 +292,31 @@ export type HotelPhotoUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   hotelId?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
-  isCover?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type HotelPhotoCreateManyInput = {
   id?: string
   hotelId: string
   url: string
-  isCover?: boolean
+  order?: number
+  createdAt?: Date | string
 }
 
 export type HotelPhotoUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
-  isCover?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type HotelPhotoUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   hotelId?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
-  isCover?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type HotelPhotoListRelationFilter = {
@@ -278,21 +333,32 @@ export type HotelPhotoCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   hotelId?: Prisma.SortOrder
   url?: Prisma.SortOrder
-  isCover?: Prisma.SortOrder
+  order?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+}
+
+export type HotelPhotoAvgOrderByAggregateInput = {
+  order?: Prisma.SortOrder
 }
 
 export type HotelPhotoMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   hotelId?: Prisma.SortOrder
   url?: Prisma.SortOrder
-  isCover?: Prisma.SortOrder
+  order?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
 }
 
 export type HotelPhotoMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   hotelId?: Prisma.SortOrder
   url?: Prisma.SortOrder
-  isCover?: Prisma.SortOrder
+  order?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+}
+
+export type HotelPhotoSumOrderByAggregateInput = {
+  order?: Prisma.SortOrder
 }
 
 export type HotelPhotoCreateNestedManyWithoutHotelInput = {
@@ -340,13 +406,15 @@ export type HotelPhotoUncheckedUpdateManyWithoutHotelNestedInput = {
 export type HotelPhotoCreateWithoutHotelInput = {
   id?: string
   url: string
-  isCover?: boolean
+  order?: number
+  createdAt?: Date | string
 }
 
 export type HotelPhotoUncheckedCreateWithoutHotelInput = {
   id?: string
   url: string
-  isCover?: boolean
+  order?: number
+  createdAt?: Date | string
 }
 
 export type HotelPhotoCreateOrConnectWithoutHotelInput = {
@@ -379,34 +447,39 @@ export type HotelPhotoScalarWhereInput = {
   AND?: Prisma.HotelPhotoScalarWhereInput | Prisma.HotelPhotoScalarWhereInput[]
   OR?: Prisma.HotelPhotoScalarWhereInput[]
   NOT?: Prisma.HotelPhotoScalarWhereInput | Prisma.HotelPhotoScalarWhereInput[]
-  id?: Prisma.StringFilter<"HotelPhoto"> | string
-  hotelId?: Prisma.StringFilter<"HotelPhoto"> | string
+  id?: Prisma.UuidFilter<"HotelPhoto"> | string
+  hotelId?: Prisma.UuidFilter<"HotelPhoto"> | string
   url?: Prisma.StringFilter<"HotelPhoto"> | string
-  isCover?: Prisma.BoolFilter<"HotelPhoto"> | boolean
+  order?: Prisma.IntFilter<"HotelPhoto"> | number
+  createdAt?: Prisma.DateTimeFilter<"HotelPhoto"> | Date | string
 }
 
 export type HotelPhotoCreateManyHotelInput = {
   id?: string
   url: string
-  isCover?: boolean
+  order?: number
+  createdAt?: Date | string
 }
 
 export type HotelPhotoUpdateWithoutHotelInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
-  isCover?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type HotelPhotoUncheckedUpdateWithoutHotelInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
-  isCover?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type HotelPhotoUncheckedUpdateManyWithoutHotelInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
-  isCover?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -415,7 +488,8 @@ export type HotelPhotoSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   id?: boolean
   hotelId?: boolean
   url?: boolean
-  isCover?: boolean
+  order?: boolean
+  createdAt?: boolean
   hotel?: boolean | Prisma.HotelDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["hotelPhoto"]>
 
@@ -423,7 +497,8 @@ export type HotelPhotoSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   id?: boolean
   hotelId?: boolean
   url?: boolean
-  isCover?: boolean
+  order?: boolean
+  createdAt?: boolean
   hotel?: boolean | Prisma.HotelDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["hotelPhoto"]>
 
@@ -431,7 +506,8 @@ export type HotelPhotoSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   id?: boolean
   hotelId?: boolean
   url?: boolean
-  isCover?: boolean
+  order?: boolean
+  createdAt?: boolean
   hotel?: boolean | Prisma.HotelDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["hotelPhoto"]>
 
@@ -439,10 +515,11 @@ export type HotelPhotoSelectScalar = {
   id?: boolean
   hotelId?: boolean
   url?: boolean
-  isCover?: boolean
+  order?: boolean
+  createdAt?: boolean
 }
 
-export type HotelPhotoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "hotelId" | "url" | "isCover", ExtArgs["result"]["hotelPhoto"]>
+export type HotelPhotoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "hotelId" | "url" | "order" | "createdAt", ExtArgs["result"]["hotelPhoto"]>
 export type HotelPhotoInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   hotel?: boolean | Prisma.HotelDefaultArgs<ExtArgs>
 }
@@ -462,7 +539,8 @@ export type $HotelPhotoPayload<ExtArgs extends runtime.Types.Extensions.Internal
     id: string
     hotelId: string
     url: string
-    isCover: boolean
+    order: number
+    createdAt: Date
   }, ExtArgs["result"]["hotelPhoto"]>
   composites: {}
 }
@@ -890,7 +968,8 @@ export interface HotelPhotoFieldRefs {
   readonly id: Prisma.FieldRef<"HotelPhoto", 'String'>
   readonly hotelId: Prisma.FieldRef<"HotelPhoto", 'String'>
   readonly url: Prisma.FieldRef<"HotelPhoto", 'String'>
-  readonly isCover: Prisma.FieldRef<"HotelPhoto", 'Boolean'>
+  readonly order: Prisma.FieldRef<"HotelPhoto", 'Int'>
+  readonly createdAt: Prisma.FieldRef<"HotelPhoto", 'DateTime'>
 }
     
 

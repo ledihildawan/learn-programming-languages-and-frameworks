@@ -9,13 +9,27 @@ export const PaymentPlain = t.Object(
     id: t.String(),
     bookingId: t.String(),
     amount: t.Number(),
-    provider: t.Union(
-      [t.Literal("MIDTRANS"), t.Literal("XENDIT"), t.Literal("MANUAL")],
+    provider: t.Union([t.Literal("MIDTRANS"), t.Literal("MANUAL")], {
+      additionalProperties: false,
+    }),
+    providerRef: __nullable__(t.String()),
+    status: t.Union(
+      [
+        t.Literal("PENDING"),
+        t.Literal("SETTLED"),
+        t.Literal("FAILED"),
+        t.Literal("EXPIRED"),
+        t.Literal("REFUNDED"),
+      ],
       { additionalProperties: false },
     ),
-    providerId: __nullable__(t.String()),
-    status: t.String(),
+    snapToken: __nullable__(t.String()),
+    paymentUrl: __nullable__(t.String()),
     paidAt: __nullable__(t.Date()),
+    expiredAt: __nullable__(t.Date()),
+    failureReason: __nullable__(t.String()),
+    isTest: t.Boolean(),
+    deletedAt: __nullable__(t.Date()),
     createdAt: t.Date(),
   },
   { additionalProperties: false },
@@ -30,23 +44,40 @@ export const PaymentRelations = t.Object(
         roomId: t.String(),
         checkIn: t.Date(),
         checkOut: t.Date(),
+        bookingCode: t.String(),
         nights: t.Integer(),
         guests: t.Integer(),
+        guestName: t.String(),
+        guestPhone: t.String(),
+        guestEmail: __nullable__(t.String()),
+        guestNotes: __nullable__(t.String()),
         totalPrice: t.Number(),
+        platformFee: t.Number(),
+        hostPayout: t.Number(),
         status: t.Union(
           [
             t.Literal("PENDING"),
             t.Literal("PAID"),
             t.Literal("CONFIRMED"),
-            t.Literal("CANCELLED"),
+            t.Literal("CHECKED_IN"),
+            t.Literal("CHECKED_OUT"),
             t.Literal("COMPLETED"),
+            t.Literal("CANCELLED"),
             t.Literal("REFUNDED"),
+            t.Literal("EXPIRED"),
           ],
           { additionalProperties: false },
         ),
-        guestName: t.String(),
-        guestPhone: t.String(),
-        guestEmail: __nullable__(t.String()),
+        expiredAt: __nullable__(t.Date()),
+        confirmedAt: __nullable__(t.Date()),
+        checkedInAt: __nullable__(t.Date()),
+        canceledAt: __nullable__(t.Date()),
+        cancelReason: __nullable__(t.String()),
+        canceledById: __nullable__(t.String()),
+        roomSnapshot: t.Any(),
+        isTest: t.Boolean(),
+        paymentId: __nullable__(t.String()),
+        deletedAt: __nullable__(t.Date()),
         createdAt: t.Date(),
         updatedAt: t.Date(),
       },
@@ -59,12 +90,29 @@ export const PaymentRelations = t.Object(
 export const PaymentPlainInputCreate = t.Object(
   {
     amount: t.Number(),
-    provider: t.Union(
-      [t.Literal("MIDTRANS"), t.Literal("XENDIT"), t.Literal("MANUAL")],
-      { additionalProperties: false },
+    provider: t.Union([t.Literal("MIDTRANS"), t.Literal("MANUAL")], {
+      additionalProperties: false,
+    }),
+    providerRef: t.Optional(__nullable__(t.String())),
+    status: t.Optional(
+      t.Union(
+        [
+          t.Literal("PENDING"),
+          t.Literal("SETTLED"),
+          t.Literal("FAILED"),
+          t.Literal("EXPIRED"),
+          t.Literal("REFUNDED"),
+        ],
+        { additionalProperties: false },
+      ),
     ),
-    status: t.Optional(t.String()),
+    snapToken: t.Optional(__nullable__(t.String())),
+    paymentUrl: t.Optional(__nullable__(t.String())),
     paidAt: t.Optional(__nullable__(t.Date())),
+    expiredAt: t.Optional(__nullable__(t.Date())),
+    failureReason: t.Optional(__nullable__(t.String())),
+    isTest: t.Optional(t.Boolean()),
+    deletedAt: t.Optional(__nullable__(t.Date())),
   },
   { additionalProperties: false },
 );
@@ -73,13 +121,30 @@ export const PaymentPlainInputUpdate = t.Object(
   {
     amount: t.Optional(t.Number()),
     provider: t.Optional(
+      t.Union([t.Literal("MIDTRANS"), t.Literal("MANUAL")], {
+        additionalProperties: false,
+      }),
+    ),
+    providerRef: t.Optional(__nullable__(t.String())),
+    status: t.Optional(
       t.Union(
-        [t.Literal("MIDTRANS"), t.Literal("XENDIT"), t.Literal("MANUAL")],
+        [
+          t.Literal("PENDING"),
+          t.Literal("SETTLED"),
+          t.Literal("FAILED"),
+          t.Literal("EXPIRED"),
+          t.Literal("REFUNDED"),
+        ],
         { additionalProperties: false },
       ),
     ),
-    status: t.Optional(t.String()),
+    snapToken: t.Optional(__nullable__(t.String())),
+    paymentUrl: t.Optional(__nullable__(t.String())),
     paidAt: t.Optional(__nullable__(t.Date())),
+    expiredAt: t.Optional(__nullable__(t.Date())),
+    failureReason: t.Optional(__nullable__(t.String())),
+    isTest: t.Optional(t.Boolean()),
+    deletedAt: t.Optional(__nullable__(t.Date())),
   },
   { additionalProperties: false },
 );
@@ -131,13 +196,27 @@ export const PaymentWhere = t.Partial(
           id: t.String(),
           bookingId: t.String(),
           amount: t.Number(),
-          provider: t.Union(
-            [t.Literal("MIDTRANS"), t.Literal("XENDIT"), t.Literal("MANUAL")],
+          provider: t.Union([t.Literal("MIDTRANS"), t.Literal("MANUAL")], {
+            additionalProperties: false,
+          }),
+          providerRef: t.String(),
+          status: t.Union(
+            [
+              t.Literal("PENDING"),
+              t.Literal("SETTLED"),
+              t.Literal("FAILED"),
+              t.Literal("EXPIRED"),
+              t.Literal("REFUNDED"),
+            ],
             { additionalProperties: false },
           ),
-          providerId: t.String(),
-          status: t.String(),
+          snapToken: t.String(),
+          paymentUrl: t.String(),
           paidAt: t.Date(),
+          expiredAt: t.Date(),
+          failureReason: t.String(),
+          isTest: t.Boolean(),
+          deletedAt: t.Date(),
           createdAt: t.Date(),
         },
         { additionalProperties: false },
@@ -152,13 +231,43 @@ export const PaymentWhereUnique = t.Recursive(
       [
         t.Partial(
           t.Object(
-            { id: t.String(), bookingId: t.String() },
+            {
+              id: t.String(),
+              bookingId: t.String(),
+              provider_providerRef_isTest: t.Object(
+                {
+                  provider: t.Union(
+                    [t.Literal("MIDTRANS"), t.Literal("MANUAL")],
+                    { additionalProperties: false },
+                  ),
+                  providerRef: t.String(),
+                  isTest: t.Boolean(),
+                },
+                { additionalProperties: false },
+              ),
+            },
             { additionalProperties: false },
           ),
           { additionalProperties: false },
         ),
         t.Union(
-          [t.Object({ id: t.String() }), t.Object({ bookingId: t.String() })],
+          [
+            t.Object({ id: t.String() }),
+            t.Object({ bookingId: t.String() }),
+            t.Object({
+              provider_providerRef_isTest: t.Object(
+                {
+                  provider: t.Union(
+                    [t.Literal("MIDTRANS"), t.Literal("MANUAL")],
+                    { additionalProperties: false },
+                  ),
+                  providerRef: t.String(),
+                  isTest: t.Boolean(),
+                },
+                { additionalProperties: false },
+              ),
+            }),
+          ],
           { additionalProperties: false },
         ),
         t.Partial(
@@ -181,17 +290,27 @@ export const PaymentWhereUnique = t.Recursive(
               id: t.String(),
               bookingId: t.String(),
               amount: t.Number(),
-              provider: t.Union(
+              provider: t.Union([t.Literal("MIDTRANS"), t.Literal("MANUAL")], {
+                additionalProperties: false,
+              }),
+              providerRef: t.String(),
+              status: t.Union(
                 [
-                  t.Literal("MIDTRANS"),
-                  t.Literal("XENDIT"),
-                  t.Literal("MANUAL"),
+                  t.Literal("PENDING"),
+                  t.Literal("SETTLED"),
+                  t.Literal("FAILED"),
+                  t.Literal("EXPIRED"),
+                  t.Literal("REFUNDED"),
                 ],
                 { additionalProperties: false },
               ),
-              providerId: t.String(),
-              status: t.String(),
+              snapToken: t.String(),
+              paymentUrl: t.String(),
               paidAt: t.Date(),
+              expiredAt: t.Date(),
+              failureReason: t.String(),
+              isTest: t.Boolean(),
+              deletedAt: t.Date(),
               createdAt: t.Date(),
             },
             { additionalProperties: false },
@@ -207,13 +326,19 @@ export const PaymentSelect = t.Partial(
   t.Object(
     {
       id: t.Boolean(),
-      bookingId: t.Boolean(),
       booking: t.Boolean(),
+      bookingId: t.Boolean(),
       amount: t.Boolean(),
       provider: t.Boolean(),
-      providerId: t.Boolean(),
+      providerRef: t.Boolean(),
       status: t.Boolean(),
+      snapToken: t.Boolean(),
+      paymentUrl: t.Boolean(),
       paidAt: t.Boolean(),
+      expiredAt: t.Boolean(),
+      failureReason: t.Boolean(),
+      isTest: t.Boolean(),
+      deletedAt: t.Boolean(),
       createdAt: t.Boolean(),
       _count: t.Boolean(),
     },
@@ -223,7 +348,12 @@ export const PaymentSelect = t.Partial(
 
 export const PaymentInclude = t.Partial(
   t.Object(
-    { booking: t.Boolean(), provider: t.Boolean(), _count: t.Boolean() },
+    {
+      booking: t.Boolean(),
+      provider: t.Boolean(),
+      status: t.Boolean(),
+      _count: t.Boolean(),
+    },
     { additionalProperties: false },
   ),
 );
@@ -240,13 +370,28 @@ export const PaymentOrderBy = t.Partial(
       amount: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
-      providerId: t.Union([t.Literal("asc"), t.Literal("desc")], {
+      providerRef: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
-      status: t.Union([t.Literal("asc"), t.Literal("desc")], {
+      snapToken: t.Union([t.Literal("asc"), t.Literal("desc")], {
+        additionalProperties: false,
+      }),
+      paymentUrl: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
       paidAt: t.Union([t.Literal("asc"), t.Literal("desc")], {
+        additionalProperties: false,
+      }),
+      expiredAt: t.Union([t.Literal("asc"), t.Literal("desc")], {
+        additionalProperties: false,
+      }),
+      failureReason: t.Union([t.Literal("asc"), t.Literal("desc")], {
+        additionalProperties: false,
+      }),
+      isTest: t.Union([t.Literal("asc"), t.Literal("desc")], {
+        additionalProperties: false,
+      }),
+      deletedAt: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
       createdAt: t.Union([t.Literal("asc"), t.Literal("desc")], {

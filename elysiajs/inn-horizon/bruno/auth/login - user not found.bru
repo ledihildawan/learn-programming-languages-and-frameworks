@@ -1,0 +1,29 @@
+meta {
+  name: login - user not found
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{host}}/api/auth/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "nonexistent@example.com",
+    "password": "rahasia123"
+  }
+}
+
+tests {
+  test("should return 401 status", function() {
+    expect(res.status).to.equal(401);
+  });
+
+  test("should return error message", function() {
+    expect(res.body.error).to.exist;
+    expect(res.body.error).to.equal('Invalid email or password');
+  });
+}

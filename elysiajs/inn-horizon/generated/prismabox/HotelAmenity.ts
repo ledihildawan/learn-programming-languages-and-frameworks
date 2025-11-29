@@ -5,7 +5,12 @@ import { __transformDate__ } from "./__transformDate__";
 import { __nullable__ } from "./__nullable__";
 
 export const HotelAmenityPlain = t.Object(
-  { id: t.String(), hotelId: t.String(), name: t.String() },
+  {
+    id: t.String(),
+    hotelId: t.String(),
+    name: t.String(),
+    icon: __nullable__(t.String()),
+  },
   { additionalProperties: false },
 );
 
@@ -19,13 +24,20 @@ export const HotelAmenityRelations = t.Object(
         slug: t.String(),
         address: t.String(),
         city: t.String(),
+        province: __nullable__(t.String()),
         latitude: __nullable__(t.Number()),
         longitude: __nullable__(t.Number()),
         description: __nullable__(t.String()),
         coverPhoto: __nullable__(t.String()),
+        checkInTime: t.String(),
+        checkOutTime: t.String(),
+        cancellationHours: __nullable__(t.Integer()),
         isActive: t.Boolean(),
+        deletedAt: __nullable__(t.Date()),
         createdAt: t.Date(),
         updatedAt: t.Date(),
+        avgRating: t.Number(),
+        totalReview: t.Integer(),
       },
       { additionalProperties: false },
     ),
@@ -34,12 +46,12 @@ export const HotelAmenityRelations = t.Object(
 );
 
 export const HotelAmenityPlainInputCreate = t.Object(
-  { name: t.String() },
+  { name: t.String(), icon: t.Optional(__nullable__(t.String())) },
   { additionalProperties: false },
 );
 
 export const HotelAmenityPlainInputUpdate = t.Object(
-  { name: t.Optional(t.String()) },
+  { name: t.Optional(t.String()), icon: t.Optional(__nullable__(t.String())) },
   { additionalProperties: false },
 );
 
@@ -90,6 +102,7 @@ export const HotelAmenityWhere = t.Partial(
           id: t.String(),
           hotelId: t.String(),
           name: t.String(),
+          icon: t.String(),
         },
         { additionalProperties: false },
       ),
@@ -142,7 +155,12 @@ export const HotelAmenityWhereUnique = t.Recursive(
         ),
         t.Partial(
           t.Object(
-            { id: t.String(), hotelId: t.String(), name: t.String() },
+            {
+              id: t.String(),
+              hotelId: t.String(),
+              name: t.String(),
+              icon: t.String(),
+            },
             { additionalProperties: false },
           ),
         ),
@@ -156,9 +174,10 @@ export const HotelAmenitySelect = t.Partial(
   t.Object(
     {
       id: t.Boolean(),
-      hotelId: t.Boolean(),
       hotel: t.Boolean(),
+      hotelId: t.Boolean(),
       name: t.Boolean(),
+      icon: t.Boolean(),
       _count: t.Boolean(),
     },
     { additionalProperties: false },
@@ -182,6 +201,9 @@ export const HotelAmenityOrderBy = t.Partial(
         additionalProperties: false,
       }),
       name: t.Union([t.Literal("asc"), t.Literal("desc")], {
+        additionalProperties: false,
+      }),
+      icon: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
     },

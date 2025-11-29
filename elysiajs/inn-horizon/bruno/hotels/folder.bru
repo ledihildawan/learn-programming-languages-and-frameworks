@@ -1,0 +1,26 @@
+meta {
+  name: Hotels
+  type: folder
+}
+
+docs {
+  # Hotel Management API
+
+  This folder contains all hotel-related endpoints for Phase 2.
+
+  ## Features
+  - Hotel CRUD operations
+  - Photo gallery management
+  - Amenity management
+  - Search and filtering
+  - Owner statistics
+
+  ## Authentication
+  Most endpoints require Bearer token authentication.
+  Use the token from login response.
+
+  ## Endpoints
+  - Public: View hotels, search, get details
+  - Protected: Create, update, delete hotels (HOST/ADMIN only)
+  - Owner: Modify own hotels only
+}

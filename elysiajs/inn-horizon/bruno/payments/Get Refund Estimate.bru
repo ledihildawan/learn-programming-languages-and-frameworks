@@ -1,0 +1,188 @@
+meta {
+  name: Get Refund Estimate
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{base_url}}/api/bookings/:id/refund-estimate
+  body: none
+  auth: none
+}
+
+params:path {
+  id: clx1234567890
+}
+
+headers {
+  Content-Type: application/json
+}
+
+docs {
+  # Get Refund Estimate
+
+  Calculates the estimated refund amount before actually cancelling a booking.
+
+  ## Prerequisites
+  - Booking must exist
+  - Booking must be in PAID or CONFIRMED status
+
+  ## Use Case
+  Use this endpoint to show users how much they will get back if they cancel their booking.
+  This helps users make informed decisions before cancelling.
+
+  ## Cancellation Policy
+
+  | Days Before Check-in | Refund % | Cancellation Fee |
+  |---------------------|----------|------------------|
+  | 7+ days             | 90%      | 10% (admin fee)  |
+  | 3-6 days            | 75%      | 25%              |
+  | 1-2 days            | 50%      | 50%              |
+  | Same day or past    | 0%       | 100% (no refund) |
+
+  ## Response Fields
+  - `booking_id`: ID of the booking
+  - `booking_status`: Current status (PAID, CONFIRMED)
+  - `check_in_date`: Check-in date
+  - `days_until_checkin`: Number of days until check-in
+  - `original_amount`: Total booking price
+  - `refund_amount`: Amount that will be refunded
+  - `cancellation_fee`: Fee that will be charged
+  - `refund_percentage`: Percentage of refund (0-100)
+  - `policy_description`: Human-readable policy description
+  - `can_refund`: Boolean indicating if refund is possible
+
+  ## Example Scenarios
+
+  ### Scenario 1: Early Cancellation (10 days before)
+  ```json
+  {
+    "days_until_checkin": 10,
+    "original_amount": 500000,
+    "refund_amount": 450000,
+    "cancellation_fee": 50000,
+    "refund_percentage": 90,
+    "policy_description": "7+ days before check-in: 90% refund (10% admin fee)"
+  }
+  ```
+
+  ### Scenario 2: Late Cancellation (5 days before)
+  ```json
+  {
+    "days_until_checkin": 5,
+    "original_amount": 500000,
+    "refund_amount": 375000,
+    "cancellation_fee": 125000,
+    "refund_percentage": 75,
+    "policy_description": "Less than 7 days: 75% refund"
+  }
+  ```
+
+  ### Scenario 3: Very Late Cancellation (1 day before)
+  ```json
+  {
+    "days_until_checkin": 1,
+    "original_amount": 500000,
+    "refund_amount": 250000,
+    "cancellation_fee": 250000,
+    "refund_percentage": 50,
+    "policy_description": "Less than 3 days: 50% refund"
+  }
+  ```
+
+  ### Scenario 4: Same Day Cancellation
+  ```json
+  {
+    "days_until_checkin": 0,
+    "original_amount": 500000,
+    "refund_amount": 0,
+    "cancellation_fee": 500000,
+    "refund_percentage": 0,
+    "policy_description": "Same day or past check-in: No refund available",
+    "can_refund": false
+  }
+  ```
+
+  ## Frontend Integration Example
+  ```javascript
+  // Show refund estimate before cancellation
+  async function showRefundEstimate(bookingId) {
+    const response = await fetch(`/api/bookings/${bookingId}/refund-estimate`);
+    const data = await response.json();
+
+    if (data.success) {
+      const estimate = data.data;
+
+      // Show to user
+      alert(`
+        Original Amount: Rp ${estimate.original_amount.toLocaleString()}
+        Refund Amount: Rp ${estimate.refund_amount.toLocaleString()}
+        Cancellation Fee: Rp ${estimate.cancellation_fee.toLocaleString()}
+
+        ${estimate.policy_description}
+
+        Are you sure you want to cancel?
+      `);
+
+      if (confirm('Proceed with cancellation?')) {
+        // Call cancel endpoint
+        await cancelBooking(bookingId);
+      }
+    }
+  }
+  ```
+
+  ## Notes
+  - This is a read-only endpoint (no changes made)
+  - Use before calling the cancel endpoint
+  - Helps improve user experience
+  - Reduces cancellation disputes
+}
+
+tests {
+  test("Status code is 200 or 400", function() {
+    const status = res.getStatus();
+    expect([200, 400, 404]).to.include(status);
+  });
+
+  test("Response has success field", function() {
+    expect(res.getBody()).to.have.property('success');
+  });
+
+  test("If successful, has required fields", function() {
+    const body = res.getBody();
+    if (body.success) {
+      expect(body.data).to.have.property('booking_id');
+      expect(body.data).to.have.property('original_amount');
+      expect(body.data).to.have.property('refund_amount');
+      expect(body.data).to.have.property('cancellation_fee');
+      expect(body.data).to.have.property('refund_percentage');
+      expect(body.data).to.have.property('days_until_checkin');
+      expect(body.data).to.have.property('can_refund');
+    }
+  });
+
+  test("Refund amount + cancellation fee = original amount", function() {
+    const body = res.getBody();
+    if (body.success) {
+      const data = body.data;
+      const sum = data.refund_amount + data.cancellation_fee;
+      expect(sum).to.equal(data.original_amount);
+    }
+  });
+
+  test("Refund percentage is between 0 and 100", function() {
+    const body = res.getBody();
+    if (body.success) {
+      expect(body.data.refund_percentage).to.be.at.least(0);
+      expect(body.data.refund_percentage).to.be.at.most(100);
+    }
+  });
+
+  test("If refund_amount is 0, can_refund should be false", function() {
+    const body = res.getBody();
+    if (body.success && body.data.refund_amount === 0) {
+      expect(body.data.can_refund).to.equal(false);
+    }
+  });
+}

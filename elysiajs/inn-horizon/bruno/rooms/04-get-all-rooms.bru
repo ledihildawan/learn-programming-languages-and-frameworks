@@ -1,0 +1,121 @@
+meta {
+  name: 04 Get All Rooms
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{base_url}}/api/rooms?page=1&limit=10
+  body: none
+  auth: none
+}
+
+params:query {
+  page: 1
+  limit: 10
+  ~hotelId:
+  ~type:
+  ~minPrice:
+  ~maxPrice:
+  ~minGuests:
+  ~isActive:
+  ~sortBy: price
+  ~sortOrder: asc
+}
+
+tests {
+  test("should return 200 status", function() {
+    expect(res.status).to.equal(200);
+  });
+
+  test("should return success true", function() {
+    const data = res.body;
+    expect(data.success).to.equal(true);
+  });
+
+  test("should return rooms array", function() {
+    const data = res.body;
+    expect(data.data).to.have.property('rooms');
+    expect(data.data.rooms).to.be.an('array');
+  });
+
+  test("should have pagination info", function() {
+    const data = res.body;
+    expect(data.data).to.have.property('pagination');
+    expect(data.data.pagination).to.have.property('page');
+    expect(data.data.pagination).to.have.property('limit');
+    expect(data.data.pagination).to.have.property('total');
+    expect(data.data.pagination).to.have.property('totalPages');
+  });
+
+  test("each room should have hotel info", function() {
+    const data = res.body;
+    if (data.data.rooms.length > 0) {
+      const room = data.data.rooms[0];
+      expect(room).to.have.property('id');
+      expect(room).to.have.property('name');
+      expect(room).to.have.property('hotel');
+      expect(room.hotel).to.have.property('name');
+    }
+  });
+}
+
+docs {
+  # Get All Rooms
+
+  Retrieve a paginated list of rooms with optional filters.
+
+  ## Query Parameters
+  - `page` (number, optional): Page number (default: 1)
+  - `limit` (number, optional): Items per page (default: 10, max: 100)
+  - `hotelId` (string, optional): Filter by hotel UUID
+  - `type` (string, optional): Filter by room type (e.g., "Deluxe", "Suite")
+  - `minPrice` (number, optional): Minimum price filter
+  - `maxPrice` (number, optional): Maximum price filter
+  - `minGuests` (number, optional): Minimum guest capacity
+  - `isActive` (boolean, optional): Filter active/inactive rooms
+  - `sortBy` (string, optional): Sort field (name, price, maxGuests, order, createdAt)
+  - `sortOrder` (string, optional): Sort order (asc, desc)
+
+  ## Response
+  Returns array of rooms with pagination info.
+
+  Each room includes:
+  - Basic room details (id, name, type, price, etc.)
+  - Hotel information (id, name, slug, city, check-in/out times)
+  - Room photos (ordered)
+
+  ## Use Cases
+  - Browse all rooms across hotels
+  - Filter rooms by hotel
+  - Search by room type
+  - Price range filtering
+  - Guest capacity filtering
+  - Admin room management
+
+  ## Filter Examples
+  - By hotel: `?hotelId=uuid`
+  - By type: `?type=Deluxe`
+  - Price range: `?minPrice=500000&maxPrice=2000000`
+  - By capacity: `?minGuests=4`
+  - Active only: `?isActive=true`
+
+  ## Sorting Examples
+  - Cheapest first: `?sortBy=price&sortOrder=asc`
+  - Most expensive: `?sortBy=price&sortOrder=desc`
+  - By display order: `?sortBy=order&sortOrder=asc`
+  - Newest first: `?sortBy=createdAt&sortOrder=desc`
+
+  ## Combined Filters
+  ```
+  ?hotelId=uuid&minGuests=2&sortBy=price&sortOrder=asc&page=1&limit=20
+  ```
+
+  ## Notes
+  - This is a public endpoint (no authentication required)
+  - Only returns active, non-deleted rooms by default
+  - Hotel info included for context
+  - Photos are ordered by display order
+  - Deleted hotels' rooms are excluded
+  - Efficient for browsing and admin management
+}

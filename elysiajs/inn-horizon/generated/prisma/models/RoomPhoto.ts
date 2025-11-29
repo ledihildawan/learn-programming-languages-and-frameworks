@@ -20,46 +20,76 @@ export type RoomPhotoModel = runtime.Types.Result.DefaultSelection<Prisma.$RoomP
 
 export type AggregateRoomPhoto = {
   _count: RoomPhotoCountAggregateOutputType | null
+  _avg: RoomPhotoAvgAggregateOutputType | null
+  _sum: RoomPhotoSumAggregateOutputType | null
   _min: RoomPhotoMinAggregateOutputType | null
   _max: RoomPhotoMaxAggregateOutputType | null
+}
+
+export type RoomPhotoAvgAggregateOutputType = {
+  order: number | null
+}
+
+export type RoomPhotoSumAggregateOutputType = {
+  order: number | null
 }
 
 export type RoomPhotoMinAggregateOutputType = {
   id: string | null
   roomId: string | null
   url: string | null
+  order: number | null
+  createdAt: Date | null
 }
 
 export type RoomPhotoMaxAggregateOutputType = {
   id: string | null
   roomId: string | null
   url: string | null
+  order: number | null
+  createdAt: Date | null
 }
 
 export type RoomPhotoCountAggregateOutputType = {
   id: number
   roomId: number
   url: number
+  order: number
+  createdAt: number
   _all: number
 }
 
+
+export type RoomPhotoAvgAggregateInputType = {
+  order?: true
+}
+
+export type RoomPhotoSumAggregateInputType = {
+  order?: true
+}
 
 export type RoomPhotoMinAggregateInputType = {
   id?: true
   roomId?: true
   url?: true
+  order?: true
+  createdAt?: true
 }
 
 export type RoomPhotoMaxAggregateInputType = {
   id?: true
   roomId?: true
   url?: true
+  order?: true
+  createdAt?: true
 }
 
 export type RoomPhotoCountAggregateInputType = {
   id?: true
   roomId?: true
   url?: true
+  order?: true
+  createdAt?: true
   _all?: true
 }
 
@@ -101,6 +131,18 @@ export type RoomPhotoAggregateArgs<ExtArgs extends runtime.Types.Extensions.Inte
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: RoomPhotoAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: RoomPhotoSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: RoomPhotoMinAggregateInputType
@@ -131,6 +173,8 @@ export type RoomPhotoGroupByArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   _count?: RoomPhotoCountAggregateInputType | true
+  _avg?: RoomPhotoAvgAggregateInputType
+  _sum?: RoomPhotoSumAggregateInputType
   _min?: RoomPhotoMinAggregateInputType
   _max?: RoomPhotoMaxAggregateInputType
 }
@@ -139,7 +183,11 @@ export type RoomPhotoGroupByOutputType = {
   id: string
   roomId: string
   url: string
+  order: number
+  createdAt: Date
   _count: RoomPhotoCountAggregateOutputType | null
+  _avg: RoomPhotoAvgAggregateOutputType | null
+  _sum: RoomPhotoSumAggregateOutputType | null
   _min: RoomPhotoMinAggregateOutputType | null
   _max: RoomPhotoMaxAggregateOutputType | null
 }
@@ -163,9 +211,11 @@ export type RoomPhotoWhereInput = {
   AND?: Prisma.RoomPhotoWhereInput | Prisma.RoomPhotoWhereInput[]
   OR?: Prisma.RoomPhotoWhereInput[]
   NOT?: Prisma.RoomPhotoWhereInput | Prisma.RoomPhotoWhereInput[]
-  id?: Prisma.StringFilter<"RoomPhoto"> | string
-  roomId?: Prisma.StringFilter<"RoomPhoto"> | string
+  id?: Prisma.UuidFilter<"RoomPhoto"> | string
+  roomId?: Prisma.UuidFilter<"RoomPhoto"> | string
   url?: Prisma.StringFilter<"RoomPhoto"> | string
+  order?: Prisma.IntFilter<"RoomPhoto"> | number
+  createdAt?: Prisma.DateTimeFilter<"RoomPhoto"> | Date | string
   room?: Prisma.XOR<Prisma.RoomScalarRelationFilter, Prisma.RoomWhereInput>
 }
 
@@ -173,6 +223,8 @@ export type RoomPhotoOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   roomId?: Prisma.SortOrder
   url?: Prisma.SortOrder
+  order?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
   room?: Prisma.RoomOrderByWithRelationInput
 }
 
@@ -181,8 +233,10 @@ export type RoomPhotoWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.RoomPhotoWhereInput | Prisma.RoomPhotoWhereInput[]
   OR?: Prisma.RoomPhotoWhereInput[]
   NOT?: Prisma.RoomPhotoWhereInput | Prisma.RoomPhotoWhereInput[]
-  roomId?: Prisma.StringFilter<"RoomPhoto"> | string
+  roomId?: Prisma.UuidFilter<"RoomPhoto"> | string
   url?: Prisma.StringFilter<"RoomPhoto"> | string
+  order?: Prisma.IntFilter<"RoomPhoto"> | number
+  createdAt?: Prisma.DateTimeFilter<"RoomPhoto"> | Date | string
   room?: Prisma.XOR<Prisma.RoomScalarRelationFilter, Prisma.RoomWhereInput>
 }, "id">
 
@@ -190,23 +244,31 @@ export type RoomPhotoOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   roomId?: Prisma.SortOrder
   url?: Prisma.SortOrder
+  order?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
   _count?: Prisma.RoomPhotoCountOrderByAggregateInput
+  _avg?: Prisma.RoomPhotoAvgOrderByAggregateInput
   _max?: Prisma.RoomPhotoMaxOrderByAggregateInput
   _min?: Prisma.RoomPhotoMinOrderByAggregateInput
+  _sum?: Prisma.RoomPhotoSumOrderByAggregateInput
 }
 
 export type RoomPhotoScalarWhereWithAggregatesInput = {
   AND?: Prisma.RoomPhotoScalarWhereWithAggregatesInput | Prisma.RoomPhotoScalarWhereWithAggregatesInput[]
   OR?: Prisma.RoomPhotoScalarWhereWithAggregatesInput[]
   NOT?: Prisma.RoomPhotoScalarWhereWithAggregatesInput | Prisma.RoomPhotoScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"RoomPhoto"> | string
-  roomId?: Prisma.StringWithAggregatesFilter<"RoomPhoto"> | string
+  id?: Prisma.UuidWithAggregatesFilter<"RoomPhoto"> | string
+  roomId?: Prisma.UuidWithAggregatesFilter<"RoomPhoto"> | string
   url?: Prisma.StringWithAggregatesFilter<"RoomPhoto"> | string
+  order?: Prisma.IntWithAggregatesFilter<"RoomPhoto"> | number
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"RoomPhoto"> | Date | string
 }
 
 export type RoomPhotoCreateInput = {
   id?: string
   url: string
+  order?: number
+  createdAt?: Date | string
   room: Prisma.RoomCreateNestedOneWithoutPhotosInput
 }
 
@@ -214,11 +276,15 @@ export type RoomPhotoUncheckedCreateInput = {
   id?: string
   roomId: string
   url: string
+  order?: number
+  createdAt?: Date | string
 }
 
 export type RoomPhotoUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   room?: Prisma.RoomUpdateOneRequiredWithoutPhotosNestedInput
 }
 
@@ -226,23 +292,31 @@ export type RoomPhotoUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   roomId?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type RoomPhotoCreateManyInput = {
   id?: string
   roomId: string
   url: string
+  order?: number
+  createdAt?: Date | string
 }
 
 export type RoomPhotoUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type RoomPhotoUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   roomId?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type RoomPhotoListRelationFilter = {
@@ -259,18 +333,32 @@ export type RoomPhotoCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   roomId?: Prisma.SortOrder
   url?: Prisma.SortOrder
+  order?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+}
+
+export type RoomPhotoAvgOrderByAggregateInput = {
+  order?: Prisma.SortOrder
 }
 
 export type RoomPhotoMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   roomId?: Prisma.SortOrder
   url?: Prisma.SortOrder
+  order?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
 }
 
 export type RoomPhotoMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   roomId?: Prisma.SortOrder
   url?: Prisma.SortOrder
+  order?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+}
+
+export type RoomPhotoSumOrderByAggregateInput = {
+  order?: Prisma.SortOrder
 }
 
 export type RoomPhotoCreateNestedManyWithoutRoomInput = {
@@ -318,11 +406,15 @@ export type RoomPhotoUncheckedUpdateManyWithoutRoomNestedInput = {
 export type RoomPhotoCreateWithoutRoomInput = {
   id?: string
   url: string
+  order?: number
+  createdAt?: Date | string
 }
 
 export type RoomPhotoUncheckedCreateWithoutRoomInput = {
   id?: string
   url: string
+  order?: number
+  createdAt?: Date | string
 }
 
 export type RoomPhotoCreateOrConnectWithoutRoomInput = {
@@ -355,29 +447,39 @@ export type RoomPhotoScalarWhereInput = {
   AND?: Prisma.RoomPhotoScalarWhereInput | Prisma.RoomPhotoScalarWhereInput[]
   OR?: Prisma.RoomPhotoScalarWhereInput[]
   NOT?: Prisma.RoomPhotoScalarWhereInput | Prisma.RoomPhotoScalarWhereInput[]
-  id?: Prisma.StringFilter<"RoomPhoto"> | string
-  roomId?: Prisma.StringFilter<"RoomPhoto"> | string
+  id?: Prisma.UuidFilter<"RoomPhoto"> | string
+  roomId?: Prisma.UuidFilter<"RoomPhoto"> | string
   url?: Prisma.StringFilter<"RoomPhoto"> | string
+  order?: Prisma.IntFilter<"RoomPhoto"> | number
+  createdAt?: Prisma.DateTimeFilter<"RoomPhoto"> | Date | string
 }
 
 export type RoomPhotoCreateManyRoomInput = {
   id?: string
   url: string
+  order?: number
+  createdAt?: Date | string
 }
 
 export type RoomPhotoUpdateWithoutRoomInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type RoomPhotoUncheckedUpdateWithoutRoomInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type RoomPhotoUncheckedUpdateManyWithoutRoomInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -386,6 +488,8 @@ export type RoomPhotoSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   id?: boolean
   roomId?: boolean
   url?: boolean
+  order?: boolean
+  createdAt?: boolean
   room?: boolean | Prisma.RoomDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["roomPhoto"]>
 
@@ -393,6 +497,8 @@ export type RoomPhotoSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   id?: boolean
   roomId?: boolean
   url?: boolean
+  order?: boolean
+  createdAt?: boolean
   room?: boolean | Prisma.RoomDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["roomPhoto"]>
 
@@ -400,6 +506,8 @@ export type RoomPhotoSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   id?: boolean
   roomId?: boolean
   url?: boolean
+  order?: boolean
+  createdAt?: boolean
   room?: boolean | Prisma.RoomDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["roomPhoto"]>
 
@@ -407,9 +515,11 @@ export type RoomPhotoSelectScalar = {
   id?: boolean
   roomId?: boolean
   url?: boolean
+  order?: boolean
+  createdAt?: boolean
 }
 
-export type RoomPhotoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "roomId" | "url", ExtArgs["result"]["roomPhoto"]>
+export type RoomPhotoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "roomId" | "url" | "order" | "createdAt", ExtArgs["result"]["roomPhoto"]>
 export type RoomPhotoInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   room?: boolean | Prisma.RoomDefaultArgs<ExtArgs>
 }
@@ -429,6 +539,8 @@ export type $RoomPhotoPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     id: string
     roomId: string
     url: string
+    order: number
+    createdAt: Date
   }, ExtArgs["result"]["roomPhoto"]>
   composites: {}
 }
@@ -856,6 +968,8 @@ export interface RoomPhotoFieldRefs {
   readonly id: Prisma.FieldRef<"RoomPhoto", 'String'>
   readonly roomId: Prisma.FieldRef<"RoomPhoto", 'String'>
   readonly url: Prisma.FieldRef<"RoomPhoto", 'String'>
+  readonly order: Prisma.FieldRef<"RoomPhoto", 'Int'>
+  readonly createdAt: Prisma.FieldRef<"RoomPhoto", 'DateTime'>
 }
     
 

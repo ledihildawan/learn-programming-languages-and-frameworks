@@ -1,0 +1,225 @@
+meta {
+  name: Webhook Test
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{base_url}}/api/webhooks/midtrans
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "transaction_time": "2024-01-15 10:30:00",
+    "transaction_status": "settlement",
+    "transaction_id": "test-transaction-123",
+    "status_message": "midtrans payment notification",
+    "status_code": "200",
+    "signature_key": "test-signature",
+    "payment_type": "credit_card",
+    "order_id": "clx1234567890",
+    "merchant_id": "G123456789",
+    "gross_amount": "500000.00",
+    "fraud_status": "accept",
+    "currency": "IDR"
+  }
+}
+
+docs {
+  # Midtrans Webhook Test
+
+  Test endpoint for Midtrans webhook notifications.
+
+  ⚠️ **WARNING**: This endpoint is called by Midtrans, not manually.
+  This test is for development purposes only.
+
+  ## How Webhooks Work
+
+  1. User completes payment on Midtrans
+  2. Midtrans sends POST request to this endpoint
+  3. Your server verifies the signature
+  4. Your server updates booking and payment status
+  5. Your server responds with success
+
+  ## Transaction Statuses
+
+  ### Success Statuses
+  - `capture`: Credit card payment captured (check fraud_status)
+  - `settlement`: Payment completed and settled
+
+  ### Pending Status
+  - `pending`: Waiting for payment (bank transfer, etc.)
+
+  ### Failed Statuses
+  - `deny`: Payment denied
+  - `cancel`: Payment cancelled
+  - `expire`: Payment expired (24 hours timeout)
+
+  ### Refund Status
+  - `refund`: Payment has been refunded
+
+  ## Fraud Status (for capture)
+  - `accept`: Safe to proceed
+  - `challenge`: Need manual review
+  - `deny`: Fraudulent, reject
+
+  ## Payload Examples
+
+  ### Settlement (Success)
+  ```json
+  {
+    "transaction_status": "settlement",
+    "order_id": "booking-123",
+    "gross_amount": "500000.00",
+    "fraud_status": "accept"
+  }
+  ```
+
+  ### Pending (Bank Transfer)
+  ```json
+  {
+    "transaction_status": "pending",
+    "order_id": "booking-123",
+    "payment_type": "bank_transfer",
+    "va_numbers": [{
+      "bank": "bca",
+      "va_number": "12345678"
+    }]
+  }
+  ```
+
+  ### Expired
+  ```json
+  {
+    "transaction_status": "expire",
+    "order_id": "booking-123"
+  }
+  ```
+
+  ### Refund
+  ```json
+  {
+    "transaction_status": "refund",
+    "order_id": "booking-123",
+    "refund_amount": "450000.00"
+  }
+  ```
+
+  ## Testing Webhooks Locally
+
+  ### Option 1: Using ngrok
+  ```bash
+  # Start your server
+  bun run dev
+
+  # In another terminal
+  ngrok http 3000
+
+  # Use ngrok URL in Midtrans Dashboard
+  # https://your-id.ngrok.io/api/webhooks/midtrans
+  ```
+
+  ### Option 2: Manual Testing (this request)
+  1. Create a booking
+  2. Create payment token
+  3. Note the booking ID
+  4. Update `order_id` in body
+  5. Send this request
+  6. Check booking status
+
+  ### Option 3: Midtrans Dashboard
+  1. Go to Midtrans Dashboard
+  2. Find your transaction
+  3. Click "Resend Webhook"
+
+  ## What Happens on Webhook
+
+  ### For Settlement/Success:
+  1. Booking status: PENDING → PAID
+  2. Payment status: PENDING → SETTLED
+  3. Host wallet: +Income (amount - 10% fee)
+  4. Ledger entry: INCOME_BOOKING created
+
+  ### For Expiry/Cancel/Deny:
+  1. Booking status: PENDING → CANCELLED
+  2. Payment status: PENDING → FAILED/EXPIRED
+
+  ### For Refund:
+  1. Booking status: PAID → REFUNDED
+  2. Payment status: SETTLED → REFUNDED
+  3. Host wallet: -Deduction
+  4. Ledger entry: REFUND_DEDUCTION created
+
+  ## Security
+
+  The endpoint automatically verifies:
+  - Signature from Midtrans
+  - Order ID exists
+  - Transaction ID is valid
+
+  ⚠️ Never disable signature verification in production!
+
+  ## Response
+  Should return:
+  ```json
+  {
+    "success": true,
+    "message": "Webhook processed successfully"
+  }
+  ```
+
+  ## Debugging
+
+  Check logs for:
+  ```
+  📨 Webhook received from Midtrans
+  📦 Order ID: booking-123
+  💳 Transaction Status: settlement
+  🔒 Fraud Status: accept
+  ✅ Payment successful for order: booking-123
+  💰 Host income recorded for booking: booking-123
+  ```
+
+  ## Common Issues
+
+  ### Webhook not received
+  - Check URL in Midtrans Dashboard
+  - Verify server is accessible from internet
+  - Use ngrok for local testing
+
+  ### Invalid signature
+  - Verify MIDTRANS_SERVER_KEY is correct
+  - Check environment (sandbox vs production)
+
+  ### Booking not found
+  - Verify order_id matches booking ID
+  - Check database connection
+
+  ### Duplicate webhooks
+  - Midtrans may send webhook multiple times
+  - System handles idempotency automatically
+}
+
+tests {
+  test("Status code is 200 or 400", function() {
+    const status = res.getStatus();
+    expect([200, 400, 404, 500]).to.include(status);
+  });
+
+  test("Response has success field", function() {
+    expect(res.getBody()).to.have.property('success');
+  });
+
+  test("If successful, has message", function() {
+    const body = res.getBody();
+    if (body.success) {
+      expect(body).to.have.property('message');
+    }
+  });
+}

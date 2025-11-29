@@ -1,0 +1,74 @@
+meta {
+  name: 04 Get Hotel by Slug
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{base_url}}/api/hotels/slug/{{hotel_slug}}
+  body: none
+  auth: none
+}
+
+tests {
+  test("should return 200 status", function() {
+    expect(res.status).to.equal(200);
+  });
+
+  test("should return success true", function() {
+    const data = res.body;
+    expect(data.success).to.equal(true);
+  });
+
+  test("should return hotel details", function() {
+    const data = res.body;
+    expect(data.data).to.have.property('id');
+    expect(data.data).to.have.property('name');
+    expect(data.data).to.have.property('slug');
+    expect(data.data).to.have.property('address');
+  });
+
+  test("slug should match requested slug", function() {
+    const data = res.body;
+    expect(data.data.slug).to.be.a('string');
+  });
+
+  test("should include complete hotel data", function() {
+    const data = res.body;
+    expect(data.data).to.have.property('rooms');
+    expect(data.data).to.have.property('photos');
+    expect(data.data).to.have.property('amenities');
+    expect(data.data).to.have.property('reviews');
+    expect(data.data).to.have.property('owner');
+  });
+}
+
+docs {
+  # Get Hotel by Slug
+
+  Retrieve hotel details using SEO-friendly slug instead of UUID.
+
+  ## Path Parameters
+  - `slug` (string, required): Hotel slug (e.g., "grand-paradise-hotel")
+
+  ## Response
+  Returns complete hotel details, identical to Get Hotel by ID endpoint.
+
+  ## Use Cases
+  - SEO-friendly URLs
+  - User-friendly links
+  - Shareable hotel pages
+  - Better for public-facing websites
+
+  ## Example Slugs
+  - "grand-paradise-hotel"
+  - "sunset-beach-resort"
+  - "mountain-view-inn"
+
+  ## Notes
+  - This is a public endpoint
+  - Slugs are auto-generated from hotel names
+  - Slugs are unique across all hotels
+  - Returns 404 if slug not found
+  - Same response structure as Get by ID
+}

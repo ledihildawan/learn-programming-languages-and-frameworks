@@ -1,6 +1,7 @@
 generator client {
-  provider = "prisma-client-js"
-  output   = "../generated/prisma"
+  provider   = "prisma-client"
+  engineType = "client"
+  output     = "../generated/prisma"
 }
 
 generator prismabox {
@@ -15,7 +16,7 @@ datasource db {
   provider = "postgresql"
 }
 
-// ====================== ENUM ======================
+// ====================== ENUMS ======================
 enum UserRole {
   ADMIN
   HOST
@@ -31,6 +32,7 @@ enum BookingStatus {
   COMPLETED
   CANCELLED
   REFUNDED
+  EXPIRED
 }
 
 enum PaymentProvider {
@@ -53,6 +55,13 @@ enum PayoutStatus {
   REJECTED
 }
 
+enum LedgerType {
+  INCOME_BOOKING
+  PAYOUT_WITHDRAWAL
+  REFUND_DEDUCTION
+  PLATFORM_FEE_DEDUCTION
+}
+
 // ====================== MODELS ======================
 model User {
   id         String    @id @default(cuid())
@@ -60,223 +69,289 @@ model User {
   name       String?
   email      String    @unique
   password   String
-  phone      String?   @unique
+  phone      String    @unique
   avatar     String?
   isVerified Boolean   @default(false)
   deletedAt  DateTime?
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
 
-  hotels   Hotel[]
-  bookings Booking[]
-  reviews  Review[]
-  payouts  Payout[]
+  // Bank info (untuk host payout)
+  bankName      String?
+  bankCode      String?
+  accountNumber String?
+  accountName   String?
 
-  walletBalance Decimal      @default(0) @db.Decimal(14, 2)
-  ledgerEntries HostLedger[]
+  // Relations
+  hotels           Hotel[]
+  reviews          Review[]
+  bookings         Booking[]
+  canceledBookings Booking[] @relation("BookingCanceledBy")
+
+  // Payout
+  payouts          Payout[]     @relation("HostPayouts")
+  processedPayouts Payout[]     @relation("AdminProcessedPayouts")
+  ledgerEntries    HostLedger[]
+
+  walletBalance Decimal @default(0) @db.Decimal(16, 2)
 
   @@map("users")
 }
 
 model Hotel {
-  id          String    @id @default(uuid())
-  ownerId     String
-  owner       User      @relation(fields: [ownerId], references: [id], onDelete: Restrict)
-  name        String
-  slug        String    @unique
-  address     String
-  city        String
-  province    String?
-  latitude    Float?
-  longitude   Float?
-  description String?
-  coverPhoto  String?
-  isActive    Boolean   @default(true)
-  deletedAt   DateTime?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id                String    @id @default(uuid()) @db.Uuid
+  owner             User      @relation(fields: [ownerId], references: [id], onDelete: Restrict)
+  ownerId           String
+  name              String
+  slug              String    @unique
+  address           String
+  city              String
+  province          String?
+  latitude          Float?
+  longitude         Float?
+  description       String?
+  coverPhoto        String?
+  checkInTime       String    @default("14:00")
+  checkOutTime      String    @default("12:00")
+  cancellationHours Int? // NEW: untuk cancellation policy per hotel
+  isActive          Boolean   @default(true)
+  deletedAt         DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
 
   rooms     Room[]
   photos    HotelPhoto[]
   amenities HotelAmenity[]
   reviews   Review[]
 
-  avgRating   Float @default(0) @db.DoublePrecision
-  totalReview Int   @default(0)
+  avgRating    Float                    @default(0) @db.DoublePrecision
+  totalReview  Int                      @default(0)
+  searchVector Unsupported("tsvector")?
 
-  @@unique([ownerId, slug])
-  @@index([city, isActive, avgRating(sort: Desc), province, name, slug])
+  @@index([city, isActive, avgRating(sort: Desc)])
+  @@index([slug])
+  @@index([ownerId])
+  @@index([searchVector], type: Gin)
   @@map("hotels")
 }
 
 model HotelPhoto {
-  id      String  @id @default(cuid())
-  hotelId String
-  hotel   Hotel   @relation(fields: [hotelId], references: [id], onDelete: Cascade)
-  url     String
-  isCover Boolean @default(false)
+  id        String   @id @default(uuid()) @db.Uuid
+  hotel     Hotel    @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  hotelId   String   @db.Uuid
+  url       String
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
 
   @@index([hotelId])
   @@map("hotel_photos")
 }
 
 model HotelAmenity {
-  id      String @id @default(cuid())
-  hotelId String
-  hotel   Hotel  @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  id      String  @id @default(uuid()) @db.Uuid
+  hotel   Hotel   @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  hotelId String  @db.Uuid
   name    String
+  icon    String?
 
   @@unique([hotelId, name])
   @@map("hotel_amenities")
 }
 
 model Room {
-  id         String    @id @default(uuid())
-  hotelId    String
-  hotel      Hotel     @relation(fields: [hotelId], references: [id], onDelete: Cascade)
-  name       String
-  type       String
-  maxGuests  Int
-  totalRooms Int       @default(1)
-  size       Int?
-  bedType    String?
-  price      Decimal   @db.Decimal(12, 2)
-  deletedAt  DateTime?
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
+  id                String    @id @default(uuid()) @db.Uuid
+  hotel             Hotel     @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  hotelId           String    @db.Uuid
+  name              String
+  type              String
+  maxGuests         Int
+  totalRooms        Int       @default(1)
+  size              Int?
+  bedType           String?
+  price             Decimal   @db.Decimal(12, 2)
+  extraBedPrice     Decimal?  @db.Decimal(12, 2)
+  extraBedAvailable Boolean   @default(false)
+  isActive          Boolean   @default(true)
+  deletedAt         DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  order             Int       @default(0)
 
   photos       RoomPhoto[]
+  bookingDates BookingDate[]
   bookings     Booking[]
-  availability RoomDate[]
 
+  @@index([hotelId])
   @@index([hotelId, price])
+  @@index([hotelId, isActive])
   @@map("rooms")
 }
 
 model RoomPhoto {
-  id     String @id @default(cuid())
-  roomId String
-  room   Room   @relation(fields: [roomId], references: [id], onDelete: Cascade)
-  url    String
+  id        String   @id @default(uuid()) @db.Uuid
+  room      Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  roomId    String   @db.Uuid
+  url       String
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
 
+  @@index([roomId])
   @@map("room_photos")
 }
 
-model RoomDate {
-  id     String   @id @default(uuid())
-  roomId String
-  room   Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
-  date   DateTime @db.Date
-  booked Int      @default(0)
+model BookingDate {
+  id        String   @id @default(uuid()) @db.Uuid
+  booking   Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  bookingId String   @db.Uuid
+  room      Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  roomId    String   @db.Uuid
+  date      DateTime @db.Date
 
   @@unique([roomId, date])
-  @@index([date, roomId, booked])
-  @@map("room_dates")
+  @@index([roomId])
+  @@index([date])
+  @@index([bookingId])
+  @@index([roomId, date])
+  @@index([date, roomId])
+  @@map("booking_dates")
 }
 
 model Booking {
-  id         String        @id @default(uuid())
-  userId     String
-  user       User          @relation(fields: [userId], references: [id])
-  roomId     String
-  room       Room          @relation(fields: [roomId], references: [id])
-  checkIn    DateTime      @db.Date
-  checkOut   DateTime      @db.Date
-  nights     Int
-  guests     Int
-  totalPrice Decimal       @db.Decimal(14, 2)
-  status     BookingStatus @default(PENDING)
-  guestName  String
-  guestPhone String
-  guestEmail String?
-
+  id           String        @id @default(uuid()) @db.Uuid
+  user         User          @relation(fields: [userId], references: [id])
+  userId       String
+  room         Room          @relation(fields: [roomId], references: [id])
+  roomId       String        @db.Uuid
+  checkIn      DateTime      @db.Date
+  checkOut     DateTime      @db.Date
+  bookingCode  String        @unique
+  nights       Int
+  guests       Int
+  guestName    String
+  guestPhone   String
+  guestEmail   String?
+  guestNotes   String?
+  totalPrice   Decimal       @db.Decimal(14, 2)
+  platformFee  Decimal       @db.Decimal(14, 2)
+  hostPayout   Decimal       @db.Decimal(14, 2)
+  status       BookingStatus @default(PENDING)
+  expiredAt    DateTime?
+  confirmedAt  DateTime?
+  checkedInAt  DateTime?
+  canceledAt   DateTime?
+  cancelReason String?
+  canceledBy   User?         @relation("BookingCanceledBy", fields: [canceledById], references: [id])
+  canceledById String?
   roomSnapshot Json
+  isTest       Boolean       @default(false)
 
-  payment Payment?
-  review  Review?
+  // One-to-one dengan Payment
+  payment   Payment? @relation("BookingToPayment")
+  paymentId String?  @db.Uuid
 
-  deletedAt DateTime?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-
+  dates         BookingDate[]
+  review        Review?
   ledgerEntries HostLedger[]
+  deletedAt     DateTime?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
 
-  @@index([roomId, checkIn, checkOut, userId, status, createdAt])
+  // Index optimal (sudah dibersihkan duplikat)
+  @@index([userId, status, createdAt(sort: Desc)])
+  @@index([roomId, checkIn])
+  @@index([status, expiredAt])
+  @@index([status, createdAt(sort: Desc)])
+  @@index([checkIn])
+  @@index([bookingCode])
   @@map("bookings")
 }
 
 model Payment {
-  id          String          @id @default(uuid())
-  bookingId   String          @unique
-  booking     Booking         @relation(fields: [bookingId], references: [id], onDelete: Restrict)
-  amount      Decimal         @db.Decimal(14, 2)
-  provider    PaymentProvider
-  providerRef String?         @db.Text
-  status      PaymentStatus   @default(PENDING)
-  paidAt      DateTime?
-  expiredAt   DateTime?
-  deletedAt   DateTime?
-  createdAt   DateTime        @default(now())
+  id            String          @id @default(uuid()) @db.Uuid
+  booking       Booking         @relation("BookingToPayment", fields: [bookingId], references: [id], onDelete: Restrict)
+  bookingId     String          @unique @db.Uuid
+  amount        Decimal         @db.Decimal(14, 2)
+  provider      PaymentProvider
+  providerRef   String?
+  status        PaymentStatus   @default(PENDING)
+  snapToken     String?
+  paymentUrl    String?
+  paidAt        DateTime?
+  expiredAt     DateTime?
+  failureReason String?
+  isTest        Boolean         @default(false)
+  deletedAt     DateTime?
+  createdAt     DateTime        @default(now())
 
-  @@index([status, createdAt])
+  @@unique([provider, providerRef, isTest])
+  @@index([bookingId])
+  @@index([provider, providerRef])
+  @@index([status])
   @@map("payments")
 }
 
 model Review {
-  id        String   @id @default(cuid())
-  hotelId   String
-  hotel     Hotel    @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  id        String    @id @default(cuid())
+  hotel     Hotel     @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  hotelId   String    @db.Uuid
+  user      User      @relation(fields: [userId], references: [id])
   userId    String
-  user      User     @relation(fields: [userId], references: [id])
-  bookingId String   @unique
-  booking   Booking? @relation(fields: [bookingId], references: [id], onDelete: Cascade)
-
+  booking   Booking?  @relation(fields: [bookingId], references: [id], onDelete: SetNull)
+  bookingId String?   @unique @db.Uuid
   rating    Int       @db.SmallInt
   comment   String?
   deletedAt DateTime?
   createdAt DateTime  @default(now())
 
+  @@index([hotelId])
   @@index([hotelId, rating])
   @@map("reviews")
 }
 
 model Payout {
-  id            String       @id @default(uuid())
-  hostId        String
-  host          User         @relation(fields: [hostId], references: [id])
-  amount        Decimal      @db.Decimal(14, 2)
-  bankName      String
-  accountNumber String
-  accountName   String
-  status        PayoutStatus @default(PENDING)
-  requestedAt   DateTime     @default(now())
-  processedAt   DateTime?
-  note          String?
-  deletedAt     DateTime?
-  ledgerEntries HostLedger[]
+  id              String       @id @default(uuid()) @db.Uuid
+  host            User         @relation("HostPayouts", fields: [hostId], references: [id], onDelete: Restrict)
+  hostId          String
+  amount          Decimal      @db.Decimal(14, 2)
+  status          PayoutStatus @default(PENDING)
+  payoutCode      String       @unique
+  requestedAt     DateTime     @default(now())
+  processedAt     DateTime?
+  note            String?
+  proofOfTransfer String?
+  processor       User?        @relation("AdminProcessedPayouts", fields: [processorId], references: [id])
+  processorId     String?
 
+  ledgerEntries HostLedger[]
+  deletedAt     DateTime?
+  createdAt     DateTime     @default(now())
+
+  @@index([hostId, createdAt(sort: Desc)])
+  @@index([hostId, status])
   @@map("payouts")
 }
 
 model HostLedger {
-  id          String     @id @default(uuid())
-  hostId      String
-  host        User       @relation(fields: [hostId], references: [id])
-  bookingId   String?
-  booking     Booking?   @relation(fields: [bookingId], references: [id])
-  payoutId    String?
-  payout      Payout?    @relation(fields: [payoutId], references: [id])
-  amount      Decimal    @db.Decimal(14, 2)
-  type        LedgerType
-  description String
-  createdAt   DateTime   @default(now())
+  id           String     @id @default(uuid()) @db.Uuid
+  host         User       @relation(fields: [hostId], references: [id])
+  hostId       String
+  booking      Booking?   @relation(fields: [bookingId], references: [id])
+  bookingId    String?    @db.Uuid
+  payout       Payout?    @relation(fields: [payoutId], references: [id])
+  payoutId     String?    @db.Uuid
+  amount       Decimal    @db.Decimal(14, 2)
+  type         LedgerType
+  description  String
+  balanceAfter Decimal    @db.Decimal(16, 2)
+  createdAt    DateTime   @default(now())
 
-  @@index([hostId, createdAt])
+  @@index([hostId, createdAt(sort: Desc)])
   @@map("host_ledgers")
 }
 
-enum LedgerType {
-  INCOME_BOOKING
-  PAYOUT_WITHDRAWAL
-  REFUND_DEDUCTION
+model Setting {
+  key   String @id
+  value Json
+
+  @@map("settings")
 }

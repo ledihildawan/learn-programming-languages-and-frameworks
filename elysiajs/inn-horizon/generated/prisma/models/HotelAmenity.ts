@@ -28,18 +28,21 @@ export type HotelAmenityMinAggregateOutputType = {
   id: string | null
   hotelId: string | null
   name: string | null
+  icon: string | null
 }
 
 export type HotelAmenityMaxAggregateOutputType = {
   id: string | null
   hotelId: string | null
   name: string | null
+  icon: string | null
 }
 
 export type HotelAmenityCountAggregateOutputType = {
   id: number
   hotelId: number
   name: number
+  icon: number
   _all: number
 }
 
@@ -48,18 +51,21 @@ export type HotelAmenityMinAggregateInputType = {
   id?: true
   hotelId?: true
   name?: true
+  icon?: true
 }
 
 export type HotelAmenityMaxAggregateInputType = {
   id?: true
   hotelId?: true
   name?: true
+  icon?: true
 }
 
 export type HotelAmenityCountAggregateInputType = {
   id?: true
   hotelId?: true
   name?: true
+  icon?: true
   _all?: true
 }
 
@@ -139,6 +145,7 @@ export type HotelAmenityGroupByOutputType = {
   id: string
   hotelId: string
   name: string
+  icon: string | null
   _count: HotelAmenityCountAggregateOutputType | null
   _min: HotelAmenityMinAggregateOutputType | null
   _max: HotelAmenityMaxAggregateOutputType | null
@@ -163,9 +170,10 @@ export type HotelAmenityWhereInput = {
   AND?: Prisma.HotelAmenityWhereInput | Prisma.HotelAmenityWhereInput[]
   OR?: Prisma.HotelAmenityWhereInput[]
   NOT?: Prisma.HotelAmenityWhereInput | Prisma.HotelAmenityWhereInput[]
-  id?: Prisma.StringFilter<"HotelAmenity"> | string
-  hotelId?: Prisma.StringFilter<"HotelAmenity"> | string
+  id?: Prisma.UuidFilter<"HotelAmenity"> | string
+  hotelId?: Prisma.UuidFilter<"HotelAmenity"> | string
   name?: Prisma.StringFilter<"HotelAmenity"> | string
+  icon?: Prisma.StringNullableFilter<"HotelAmenity"> | string | null
   hotel?: Prisma.XOR<Prisma.HotelScalarRelationFilter, Prisma.HotelWhereInput>
 }
 
@@ -173,6 +181,7 @@ export type HotelAmenityOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   hotelId?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  icon?: Prisma.SortOrderInput | Prisma.SortOrder
   hotel?: Prisma.HotelOrderByWithRelationInput
 }
 
@@ -182,8 +191,9 @@ export type HotelAmenityWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.HotelAmenityWhereInput | Prisma.HotelAmenityWhereInput[]
   OR?: Prisma.HotelAmenityWhereInput[]
   NOT?: Prisma.HotelAmenityWhereInput | Prisma.HotelAmenityWhereInput[]
-  hotelId?: Prisma.StringFilter<"HotelAmenity"> | string
+  hotelId?: Prisma.UuidFilter<"HotelAmenity"> | string
   name?: Prisma.StringFilter<"HotelAmenity"> | string
+  icon?: Prisma.StringNullableFilter<"HotelAmenity"> | string | null
   hotel?: Prisma.XOR<Prisma.HotelScalarRelationFilter, Prisma.HotelWhereInput>
 }, "id" | "hotelId_name">
 
@@ -191,6 +201,7 @@ export type HotelAmenityOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   hotelId?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  icon?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.HotelAmenityCountOrderByAggregateInput
   _max?: Prisma.HotelAmenityMaxOrderByAggregateInput
   _min?: Prisma.HotelAmenityMinOrderByAggregateInput
@@ -200,14 +211,16 @@ export type HotelAmenityScalarWhereWithAggregatesInput = {
   AND?: Prisma.HotelAmenityScalarWhereWithAggregatesInput | Prisma.HotelAmenityScalarWhereWithAggregatesInput[]
   OR?: Prisma.HotelAmenityScalarWhereWithAggregatesInput[]
   NOT?: Prisma.HotelAmenityScalarWhereWithAggregatesInput | Prisma.HotelAmenityScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"HotelAmenity"> | string
-  hotelId?: Prisma.StringWithAggregatesFilter<"HotelAmenity"> | string
+  id?: Prisma.UuidWithAggregatesFilter<"HotelAmenity"> | string
+  hotelId?: Prisma.UuidWithAggregatesFilter<"HotelAmenity"> | string
   name?: Prisma.StringWithAggregatesFilter<"HotelAmenity"> | string
+  icon?: Prisma.StringNullableWithAggregatesFilter<"HotelAmenity"> | string | null
 }
 
 export type HotelAmenityCreateInput = {
   id?: string
   name: string
+  icon?: string | null
   hotel: Prisma.HotelCreateNestedOneWithoutAmenitiesInput
 }
 
@@ -215,11 +228,13 @@ export type HotelAmenityUncheckedCreateInput = {
   id?: string
   hotelId: string
   name: string
+  icon?: string | null
 }
 
 export type HotelAmenityUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   hotel?: Prisma.HotelUpdateOneRequiredWithoutAmenitiesNestedInput
 }
 
@@ -227,23 +242,27 @@ export type HotelAmenityUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   hotelId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type HotelAmenityCreateManyInput = {
   id?: string
   hotelId: string
   name: string
+  icon?: string | null
 }
 
 export type HotelAmenityUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type HotelAmenityUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   hotelId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type HotelAmenityListRelationFilter = {
@@ -265,18 +284,21 @@ export type HotelAmenityCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   hotelId?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  icon?: Prisma.SortOrder
 }
 
 export type HotelAmenityMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   hotelId?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  icon?: Prisma.SortOrder
 }
 
 export type HotelAmenityMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   hotelId?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  icon?: Prisma.SortOrder
 }
 
 export type HotelAmenityCreateNestedManyWithoutHotelInput = {
@@ -324,11 +346,13 @@ export type HotelAmenityUncheckedUpdateManyWithoutHotelNestedInput = {
 export type HotelAmenityCreateWithoutHotelInput = {
   id?: string
   name: string
+  icon?: string | null
 }
 
 export type HotelAmenityUncheckedCreateWithoutHotelInput = {
   id?: string
   name: string
+  icon?: string | null
 }
 
 export type HotelAmenityCreateOrConnectWithoutHotelInput = {
@@ -361,29 +385,34 @@ export type HotelAmenityScalarWhereInput = {
   AND?: Prisma.HotelAmenityScalarWhereInput | Prisma.HotelAmenityScalarWhereInput[]
   OR?: Prisma.HotelAmenityScalarWhereInput[]
   NOT?: Prisma.HotelAmenityScalarWhereInput | Prisma.HotelAmenityScalarWhereInput[]
-  id?: Prisma.StringFilter<"HotelAmenity"> | string
-  hotelId?: Prisma.StringFilter<"HotelAmenity"> | string
+  id?: Prisma.UuidFilter<"HotelAmenity"> | string
+  hotelId?: Prisma.UuidFilter<"HotelAmenity"> | string
   name?: Prisma.StringFilter<"HotelAmenity"> | string
+  icon?: Prisma.StringNullableFilter<"HotelAmenity"> | string | null
 }
 
 export type HotelAmenityCreateManyHotelInput = {
   id?: string
   name: string
+  icon?: string | null
 }
 
 export type HotelAmenityUpdateWithoutHotelInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type HotelAmenityUncheckedUpdateWithoutHotelInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type HotelAmenityUncheckedUpdateManyWithoutHotelInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -392,6 +421,7 @@ export type HotelAmenitySelect<ExtArgs extends runtime.Types.Extensions.Internal
   id?: boolean
   hotelId?: boolean
   name?: boolean
+  icon?: boolean
   hotel?: boolean | Prisma.HotelDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["hotelAmenity"]>
 
@@ -399,6 +429,7 @@ export type HotelAmenitySelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   id?: boolean
   hotelId?: boolean
   name?: boolean
+  icon?: boolean
   hotel?: boolean | Prisma.HotelDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["hotelAmenity"]>
 
@@ -406,6 +437,7 @@ export type HotelAmenitySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   id?: boolean
   hotelId?: boolean
   name?: boolean
+  icon?: boolean
   hotel?: boolean | Prisma.HotelDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["hotelAmenity"]>
 
@@ -413,9 +445,10 @@ export type HotelAmenitySelectScalar = {
   id?: boolean
   hotelId?: boolean
   name?: boolean
+  icon?: boolean
 }
 
-export type HotelAmenityOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "hotelId" | "name", ExtArgs["result"]["hotelAmenity"]>
+export type HotelAmenityOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "hotelId" | "name" | "icon", ExtArgs["result"]["hotelAmenity"]>
 export type HotelAmenityInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   hotel?: boolean | Prisma.HotelDefaultArgs<ExtArgs>
 }
@@ -435,6 +468,7 @@ export type $HotelAmenityPayload<ExtArgs extends runtime.Types.Extensions.Intern
     id: string
     hotelId: string
     name: string
+    icon: string | null
   }, ExtArgs["result"]["hotelAmenity"]>
   composites: {}
 }
@@ -862,6 +896,7 @@ export interface HotelAmenityFieldRefs {
   readonly id: Prisma.FieldRef<"HotelAmenity", 'String'>
   readonly hotelId: Prisma.FieldRef<"HotelAmenity", 'String'>
   readonly name: Prisma.FieldRef<"HotelAmenity", 'String'>
+  readonly icon: Prisma.FieldRef<"HotelAmenity", 'String'>
 }
     
 

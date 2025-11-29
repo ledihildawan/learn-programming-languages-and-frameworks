@@ -1,0 +1,79 @@
+meta {
+  name: 01 Update Profile
+  type: http
+  seq: 1
+}
+
+put {
+  url: {{base_url}}/api/users/profile
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "name": "John Customer Updated",
+    "phone": "081234567890",
+    "bankName": "Bank BCA",
+    "bankCode": "014",
+    "accountNumber": "9876543210",
+    "accountName": "John Customer Updated"
+  }
+}
+
+tests {
+  test("should return 200 status", function() {
+    expect(res.status).to.equal(200);
+  });
+
+  test("should return success true", function() {
+    const data = res.body;
+    expect(data.success).to.equal(true);
+  });
+
+  test("should return updated profile", function() {
+    const data = res.body;
+    expect(data.data).to.have.property('id');
+    expect(data.data).to.have.property('name');
+    expect(data.message).to.include('successfully');
+  });
+
+  test("should have updated information", function() {
+    const data = res.body;
+    expect(data.data.name).to.equal('John Customer Updated');
+  });
+}
+
+docs {
+  # Update User Profile
+
+  Update authenticated user's profile information.
+
+  ## Authentication
+  Requires Bearer token in Authorization header.
+
+  ## Request Body (all optional)
+  - `name` (string): User's full name (2-100 characters)
+  - `phone` (string): Phone number (10-15 digits)
+  - `bankName` (string): Bank name for payout (for hosts)
+  - `bankCode` (string): Bank code
+  - `accountNumber` (string): Bank account number
+  - `accountName` (string): Account holder name
+
+  ## Validation
+  - Phone number must be unique
+  - If account number is provided, bank name is required
+  - Bank information is mainly for HOST role users
+
+  ## Response
+  Returns updated user profile.
+
+  ## Error Responses
+  - 400: Validation error or phone number already in use
+  - 401: Missing or invalid token
+  - 404: User not found
+}

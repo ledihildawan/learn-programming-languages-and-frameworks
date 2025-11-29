@@ -6,6 +6,8 @@
     "dev": "bun run --watch src/index.ts"
   },
   "dependencies": {
+    "@elysiajs/cookie": "^0.8.0",
+    "@elysiajs/jwt": "^1.4.0",
     "@grotto/logysia": "^0.1.6",
     "@prisma/adapter-pg": "^7.0.0",
     "@prisma/client": "^7.0.0",
@@ -23,6 +25,7 @@
     "json-diff-ts": "^4.8.2",
     "jsondiffpatch": "^0.7.3",
     "midtrans-client": "^1.4.3",
+    "pg": "^8.16.3",
     "prismabox": "^1.1.25",
     "radash": "^12.1.1",
     "systeminformation": "^5.27.11",
@@ -30,6 +33,7 @@
   },
   "devDependencies": {
     "@types/midtrans-client": "^1.4.0",
+    "@types/pg": "^8.15.6",
     "bun-types": "latest",
     "prisma": "^7.0.0"
   },

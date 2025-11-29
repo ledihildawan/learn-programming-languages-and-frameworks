@@ -30,12 +30,16 @@ export type BookingAvgAggregateOutputType = {
   nights: number | null
   guests: number | null
   totalPrice: runtime.Decimal | null
+  platformFee: runtime.Decimal | null
+  hostPayout: runtime.Decimal | null
 }
 
 export type BookingSumAggregateOutputType = {
   nights: number | null
   guests: number | null
   totalPrice: runtime.Decimal | null
+  platformFee: runtime.Decimal | null
+  hostPayout: runtime.Decimal | null
 }
 
 export type BookingMinAggregateOutputType = {
@@ -44,13 +48,26 @@ export type BookingMinAggregateOutputType = {
   roomId: string | null
   checkIn: Date | null
   checkOut: Date | null
+  bookingCode: string | null
   nights: number | null
   guests: number | null
-  totalPrice: runtime.Decimal | null
-  status: $Enums.BookingStatus | null
   guestName: string | null
   guestPhone: string | null
   guestEmail: string | null
+  guestNotes: string | null
+  totalPrice: runtime.Decimal | null
+  platformFee: runtime.Decimal | null
+  hostPayout: runtime.Decimal | null
+  status: $Enums.BookingStatus | null
+  expiredAt: Date | null
+  confirmedAt: Date | null
+  checkedInAt: Date | null
+  canceledAt: Date | null
+  cancelReason: string | null
+  canceledById: string | null
+  isTest: boolean | null
+  paymentId: string | null
+  deletedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -61,13 +78,26 @@ export type BookingMaxAggregateOutputType = {
   roomId: string | null
   checkIn: Date | null
   checkOut: Date | null
+  bookingCode: string | null
   nights: number | null
   guests: number | null
-  totalPrice: runtime.Decimal | null
-  status: $Enums.BookingStatus | null
   guestName: string | null
   guestPhone: string | null
   guestEmail: string | null
+  guestNotes: string | null
+  totalPrice: runtime.Decimal | null
+  platformFee: runtime.Decimal | null
+  hostPayout: runtime.Decimal | null
+  status: $Enums.BookingStatus | null
+  expiredAt: Date | null
+  confirmedAt: Date | null
+  checkedInAt: Date | null
+  canceledAt: Date | null
+  cancelReason: string | null
+  canceledById: string | null
+  isTest: boolean | null
+  paymentId: string | null
+  deletedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -78,13 +108,27 @@ export type BookingCountAggregateOutputType = {
   roomId: number
   checkIn: number
   checkOut: number
+  bookingCode: number
   nights: number
   guests: number
-  totalPrice: number
-  status: number
   guestName: number
   guestPhone: number
   guestEmail: number
+  guestNotes: number
+  totalPrice: number
+  platformFee: number
+  hostPayout: number
+  status: number
+  expiredAt: number
+  confirmedAt: number
+  checkedInAt: number
+  canceledAt: number
+  cancelReason: number
+  canceledById: number
+  roomSnapshot: number
+  isTest: number
+  paymentId: number
+  deletedAt: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -95,12 +139,16 @@ export type BookingAvgAggregateInputType = {
   nights?: true
   guests?: true
   totalPrice?: true
+  platformFee?: true
+  hostPayout?: true
 }
 
 export type BookingSumAggregateInputType = {
   nights?: true
   guests?: true
   totalPrice?: true
+  platformFee?: true
+  hostPayout?: true
 }
 
 export type BookingMinAggregateInputType = {
@@ -109,13 +157,26 @@ export type BookingMinAggregateInputType = {
   roomId?: true
   checkIn?: true
   checkOut?: true
+  bookingCode?: true
   nights?: true
   guests?: true
-  totalPrice?: true
-  status?: true
   guestName?: true
   guestPhone?: true
   guestEmail?: true
+  guestNotes?: true
+  totalPrice?: true
+  platformFee?: true
+  hostPayout?: true
+  status?: true
+  expiredAt?: true
+  confirmedAt?: true
+  checkedInAt?: true
+  canceledAt?: true
+  cancelReason?: true
+  canceledById?: true
+  isTest?: true
+  paymentId?: true
+  deletedAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -126,13 +187,26 @@ export type BookingMaxAggregateInputType = {
   roomId?: true
   checkIn?: true
   checkOut?: true
+  bookingCode?: true
   nights?: true
   guests?: true
-  totalPrice?: true
-  status?: true
   guestName?: true
   guestPhone?: true
   guestEmail?: true
+  guestNotes?: true
+  totalPrice?: true
+  platformFee?: true
+  hostPayout?: true
+  status?: true
+  expiredAt?: true
+  confirmedAt?: true
+  checkedInAt?: true
+  canceledAt?: true
+  cancelReason?: true
+  canceledById?: true
+  isTest?: true
+  paymentId?: true
+  deletedAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -143,13 +217,27 @@ export type BookingCountAggregateInputType = {
   roomId?: true
   checkIn?: true
   checkOut?: true
+  bookingCode?: true
   nights?: true
   guests?: true
-  totalPrice?: true
-  status?: true
   guestName?: true
   guestPhone?: true
   guestEmail?: true
+  guestNotes?: true
+  totalPrice?: true
+  platformFee?: true
+  hostPayout?: true
+  status?: true
+  expiredAt?: true
+  confirmedAt?: true
+  checkedInAt?: true
+  canceledAt?: true
+  cancelReason?: true
+  canceledById?: true
+  roomSnapshot?: true
+  isTest?: true
+  paymentId?: true
+  deletedAt?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -247,13 +335,27 @@ export type BookingGroupByOutputType = {
   roomId: string
   checkIn: Date
   checkOut: Date
+  bookingCode: string
   nights: number
   guests: number
-  totalPrice: runtime.Decimal
-  status: $Enums.BookingStatus
   guestName: string
   guestPhone: string
   guestEmail: string | null
+  guestNotes: string | null
+  totalPrice: runtime.Decimal
+  platformFee: runtime.Decimal
+  hostPayout: runtime.Decimal
+  status: $Enums.BookingStatus
+  expiredAt: Date | null
+  confirmedAt: Date | null
+  checkedInAt: Date | null
+  canceledAt: Date | null
+  cancelReason: string | null
+  canceledById: string | null
+  roomSnapshot: runtime.JsonValue
+  isTest: boolean
+  paymentId: string | null
+  deletedAt: Date | null
   createdAt: Date
   updatedAt: Date
   _count: BookingCountAggregateOutputType | null
@@ -282,24 +384,41 @@ export type BookingWhereInput = {
   AND?: Prisma.BookingWhereInput | Prisma.BookingWhereInput[]
   OR?: Prisma.BookingWhereInput[]
   NOT?: Prisma.BookingWhereInput | Prisma.BookingWhereInput[]
-  id?: Prisma.StringFilter<"Booking"> | string
+  id?: Prisma.UuidFilter<"Booking"> | string
   userId?: Prisma.StringFilter<"Booking"> | string
-  roomId?: Prisma.StringFilter<"Booking"> | string
+  roomId?: Prisma.UuidFilter<"Booking"> | string
   checkIn?: Prisma.DateTimeFilter<"Booking"> | Date | string
   checkOut?: Prisma.DateTimeFilter<"Booking"> | Date | string
+  bookingCode?: Prisma.StringFilter<"Booking"> | string
   nights?: Prisma.IntFilter<"Booking"> | number
   guests?: Prisma.IntFilter<"Booking"> | number
-  totalPrice?: Prisma.DecimalFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: Prisma.EnumBookingStatusFilter<"Booking"> | $Enums.BookingStatus
   guestName?: Prisma.StringFilter<"Booking"> | string
   guestPhone?: Prisma.StringFilter<"Booking"> | string
   guestEmail?: Prisma.StringNullableFilter<"Booking"> | string | null
+  guestNotes?: Prisma.StringNullableFilter<"Booking"> | string | null
+  totalPrice?: Prisma.DecimalFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee?: Prisma.DecimalFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout?: Prisma.DecimalFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumBookingStatusFilter<"Booking"> | $Enums.BookingStatus
+  expiredAt?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
+  confirmedAt?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
+  checkedInAt?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
+  canceledAt?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
+  cancelReason?: Prisma.StringNullableFilter<"Booking"> | string | null
+  canceledById?: Prisma.StringNullableFilter<"Booking"> | string | null
+  roomSnapshot?: Prisma.JsonFilter<"Booking">
+  isTest?: Prisma.BoolFilter<"Booking"> | boolean
+  paymentId?: Prisma.UuidNullableFilter<"Booking"> | string | null
+  deletedAt?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Booking"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Booking"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   room?: Prisma.XOR<Prisma.RoomScalarRelationFilter, Prisma.RoomWhereInput>
+  canceledBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   payment?: Prisma.XOR<Prisma.PaymentNullableScalarRelationFilter, Prisma.PaymentWhereInput> | null
+  dates?: Prisma.BookingDateListRelationFilter
   review?: Prisma.XOR<Prisma.ReviewNullableScalarRelationFilter, Prisma.ReviewWhereInput> | null
+  ledgerEntries?: Prisma.HostLedgerListRelationFilter
 }
 
 export type BookingOrderByWithRelationInput = {
@@ -308,45 +427,78 @@ export type BookingOrderByWithRelationInput = {
   roomId?: Prisma.SortOrder
   checkIn?: Prisma.SortOrder
   checkOut?: Prisma.SortOrder
+  bookingCode?: Prisma.SortOrder
   nights?: Prisma.SortOrder
   guests?: Prisma.SortOrder
-  totalPrice?: Prisma.SortOrder
-  status?: Prisma.SortOrder
   guestName?: Prisma.SortOrder
   guestPhone?: Prisma.SortOrder
   guestEmail?: Prisma.SortOrderInput | Prisma.SortOrder
+  guestNotes?: Prisma.SortOrderInput | Prisma.SortOrder
+  totalPrice?: Prisma.SortOrder
+  platformFee?: Prisma.SortOrder
+  hostPayout?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  expiredAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  confirmedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  checkedInAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  canceledAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  cancelReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  canceledById?: Prisma.SortOrderInput | Prisma.SortOrder
+  roomSnapshot?: Prisma.SortOrder
+  isTest?: Prisma.SortOrder
+  paymentId?: Prisma.SortOrderInput | Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   room?: Prisma.RoomOrderByWithRelationInput
+  canceledBy?: Prisma.UserOrderByWithRelationInput
   payment?: Prisma.PaymentOrderByWithRelationInput
+  dates?: Prisma.BookingDateOrderByRelationAggregateInput
   review?: Prisma.ReviewOrderByWithRelationInput
+  ledgerEntries?: Prisma.HostLedgerOrderByRelationAggregateInput
 }
 
 export type BookingWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  roomId_checkIn_checkOut?: Prisma.BookingRoomIdCheckInCheckOutCompoundUniqueInput
+  bookingCode?: string
   AND?: Prisma.BookingWhereInput | Prisma.BookingWhereInput[]
   OR?: Prisma.BookingWhereInput[]
   NOT?: Prisma.BookingWhereInput | Prisma.BookingWhereInput[]
   userId?: Prisma.StringFilter<"Booking"> | string
-  roomId?: Prisma.StringFilter<"Booking"> | string
+  roomId?: Prisma.UuidFilter<"Booking"> | string
   checkIn?: Prisma.DateTimeFilter<"Booking"> | Date | string
   checkOut?: Prisma.DateTimeFilter<"Booking"> | Date | string
   nights?: Prisma.IntFilter<"Booking"> | number
   guests?: Prisma.IntFilter<"Booking"> | number
-  totalPrice?: Prisma.DecimalFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: Prisma.EnumBookingStatusFilter<"Booking"> | $Enums.BookingStatus
   guestName?: Prisma.StringFilter<"Booking"> | string
   guestPhone?: Prisma.StringFilter<"Booking"> | string
   guestEmail?: Prisma.StringNullableFilter<"Booking"> | string | null
+  guestNotes?: Prisma.StringNullableFilter<"Booking"> | string | null
+  totalPrice?: Prisma.DecimalFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee?: Prisma.DecimalFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout?: Prisma.DecimalFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumBookingStatusFilter<"Booking"> | $Enums.BookingStatus
+  expiredAt?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
+  confirmedAt?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
+  checkedInAt?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
+  canceledAt?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
+  cancelReason?: Prisma.StringNullableFilter<"Booking"> | string | null
+  canceledById?: Prisma.StringNullableFilter<"Booking"> | string | null
+  roomSnapshot?: Prisma.JsonFilter<"Booking">
+  isTest?: Prisma.BoolFilter<"Booking"> | boolean
+  paymentId?: Prisma.UuidNullableFilter<"Booking"> | string | null
+  deletedAt?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Booking"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Booking"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   room?: Prisma.XOR<Prisma.RoomScalarRelationFilter, Prisma.RoomWhereInput>
+  canceledBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   payment?: Prisma.XOR<Prisma.PaymentNullableScalarRelationFilter, Prisma.PaymentWhereInput> | null
+  dates?: Prisma.BookingDateListRelationFilter
   review?: Prisma.XOR<Prisma.ReviewNullableScalarRelationFilter, Prisma.ReviewWhereInput> | null
-}, "id" | "roomId_checkIn_checkOut">
+  ledgerEntries?: Prisma.HostLedgerListRelationFilter
+}, "id" | "bookingCode">
 
 export type BookingOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -354,13 +506,27 @@ export type BookingOrderByWithAggregationInput = {
   roomId?: Prisma.SortOrder
   checkIn?: Prisma.SortOrder
   checkOut?: Prisma.SortOrder
+  bookingCode?: Prisma.SortOrder
   nights?: Prisma.SortOrder
   guests?: Prisma.SortOrder
-  totalPrice?: Prisma.SortOrder
-  status?: Prisma.SortOrder
   guestName?: Prisma.SortOrder
   guestPhone?: Prisma.SortOrder
   guestEmail?: Prisma.SortOrderInput | Prisma.SortOrder
+  guestNotes?: Prisma.SortOrderInput | Prisma.SortOrder
+  totalPrice?: Prisma.SortOrder
+  platformFee?: Prisma.SortOrder
+  hostPayout?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  expiredAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  confirmedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  checkedInAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  canceledAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  cancelReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  canceledById?: Prisma.SortOrderInput | Prisma.SortOrder
+  roomSnapshot?: Prisma.SortOrder
+  isTest?: Prisma.SortOrder
+  paymentId?: Prisma.SortOrderInput | Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.BookingCountOrderByAggregateInput
@@ -374,18 +540,32 @@ export type BookingScalarWhereWithAggregatesInput = {
   AND?: Prisma.BookingScalarWhereWithAggregatesInput | Prisma.BookingScalarWhereWithAggregatesInput[]
   OR?: Prisma.BookingScalarWhereWithAggregatesInput[]
   NOT?: Prisma.BookingScalarWhereWithAggregatesInput | Prisma.BookingScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"Booking"> | string
+  id?: Prisma.UuidWithAggregatesFilter<"Booking"> | string
   userId?: Prisma.StringWithAggregatesFilter<"Booking"> | string
-  roomId?: Prisma.StringWithAggregatesFilter<"Booking"> | string
+  roomId?: Prisma.UuidWithAggregatesFilter<"Booking"> | string
   checkIn?: Prisma.DateTimeWithAggregatesFilter<"Booking"> | Date | string
   checkOut?: Prisma.DateTimeWithAggregatesFilter<"Booking"> | Date | string
+  bookingCode?: Prisma.StringWithAggregatesFilter<"Booking"> | string
   nights?: Prisma.IntWithAggregatesFilter<"Booking"> | number
   guests?: Prisma.IntWithAggregatesFilter<"Booking"> | number
-  totalPrice?: Prisma.DecimalWithAggregatesFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: Prisma.EnumBookingStatusWithAggregatesFilter<"Booking"> | $Enums.BookingStatus
   guestName?: Prisma.StringWithAggregatesFilter<"Booking"> | string
   guestPhone?: Prisma.StringWithAggregatesFilter<"Booking"> | string
   guestEmail?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
+  guestNotes?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
+  totalPrice?: Prisma.DecimalWithAggregatesFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee?: Prisma.DecimalWithAggregatesFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout?: Prisma.DecimalWithAggregatesFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumBookingStatusWithAggregatesFilter<"Booking"> | $Enums.BookingStatus
+  expiredAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Booking"> | Date | string | null
+  confirmedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Booking"> | Date | string | null
+  checkedInAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Booking"> | Date | string | null
+  canceledAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Booking"> | Date | string | null
+  cancelReason?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
+  canceledById?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
+  roomSnapshot?: Prisma.JsonWithAggregatesFilter<"Booking">
+  isTest?: Prisma.BoolWithAggregatesFilter<"Booking"> | boolean
+  paymentId?: Prisma.UuidNullableWithAggregatesFilter<"Booking"> | string | null
+  deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Booking"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Booking"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Booking"> | Date | string
 }
@@ -394,19 +574,35 @@ export type BookingCreateInput = {
   id?: string
   checkIn: Date | string
   checkOut: Date | string
+  bookingCode: string
   nights: number
   guests: number
-  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: $Enums.BookingStatus
   guestName: string
   guestPhone: string
   guestEmail?: string | null
+  guestNotes?: string | null
+  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee: runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout: runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: $Enums.BookingStatus
+  expiredAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  checkedInAt?: Date | string | null
+  canceledAt?: Date | string | null
+  cancelReason?: string | null
+  roomSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isTest?: boolean
+  paymentId?: string | null
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutBookingsInput
   room: Prisma.RoomCreateNestedOneWithoutBookingsInput
+  canceledBy?: Prisma.UserCreateNestedOneWithoutCanceledBookingsInput
   payment?: Prisma.PaymentCreateNestedOneWithoutBookingInput
+  dates?: Prisma.BookingDateCreateNestedManyWithoutBookingInput
   review?: Prisma.ReviewCreateNestedOneWithoutBookingInput
+  ledgerEntries?: Prisma.HostLedgerCreateNestedManyWithoutBookingInput
 }
 
 export type BookingUncheckedCreateInput = {
@@ -415,36 +611,68 @@ export type BookingUncheckedCreateInput = {
   roomId: string
   checkIn: Date | string
   checkOut: Date | string
+  bookingCode: string
   nights: number
   guests: number
-  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: $Enums.BookingStatus
   guestName: string
   guestPhone: string
   guestEmail?: string | null
+  guestNotes?: string | null
+  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee: runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout: runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: $Enums.BookingStatus
+  expiredAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  checkedInAt?: Date | string | null
+  canceledAt?: Date | string | null
+  cancelReason?: string | null
+  canceledById?: string | null
+  roomSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isTest?: boolean
+  paymentId?: string | null
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   payment?: Prisma.PaymentUncheckedCreateNestedOneWithoutBookingInput
+  dates?: Prisma.BookingDateUncheckedCreateNestedManyWithoutBookingInput
   review?: Prisma.ReviewUncheckedCreateNestedOneWithoutBookingInput
+  ledgerEntries?: Prisma.HostLedgerUncheckedCreateNestedManyWithoutBookingInput
 }
 
 export type BookingUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   checkIn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   checkOut?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bookingCode?: Prisma.StringFieldUpdateOperationsInput | string
   nights?: Prisma.IntFieldUpdateOperationsInput | number
   guests?: Prisma.IntFieldUpdateOperationsInput | number
-  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   guestName?: Prisma.StringFieldUpdateOperationsInput | string
   guestPhone?: Prisma.StringFieldUpdateOperationsInput | string
   guestEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  canceledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roomSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isTest?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  paymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutBookingsNestedInput
   room?: Prisma.RoomUpdateOneRequiredWithoutBookingsNestedInput
+  canceledBy?: Prisma.UserUpdateOneWithoutCanceledBookingsNestedInput
   payment?: Prisma.PaymentUpdateOneWithoutBookingNestedInput
+  dates?: Prisma.BookingDateUpdateManyWithoutBookingNestedInput
   review?: Prisma.ReviewUpdateOneWithoutBookingNestedInput
+  ledgerEntries?: Prisma.HostLedgerUpdateManyWithoutBookingNestedInput
 }
 
 export type BookingUncheckedUpdateInput = {
@@ -453,17 +681,33 @@ export type BookingUncheckedUpdateInput = {
   roomId?: Prisma.StringFieldUpdateOperationsInput | string
   checkIn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   checkOut?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bookingCode?: Prisma.StringFieldUpdateOperationsInput | string
   nights?: Prisma.IntFieldUpdateOperationsInput | number
   guests?: Prisma.IntFieldUpdateOperationsInput | number
-  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   guestName?: Prisma.StringFieldUpdateOperationsInput | string
   guestPhone?: Prisma.StringFieldUpdateOperationsInput | string
   guestEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  canceledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  canceledById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roomSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isTest?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  paymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   payment?: Prisma.PaymentUncheckedUpdateOneWithoutBookingNestedInput
+  dates?: Prisma.BookingDateUncheckedUpdateManyWithoutBookingNestedInput
   review?: Prisma.ReviewUncheckedUpdateOneWithoutBookingNestedInput
+  ledgerEntries?: Prisma.HostLedgerUncheckedUpdateManyWithoutBookingNestedInput
 }
 
 export type BookingCreateManyInput = {
@@ -472,13 +716,27 @@ export type BookingCreateManyInput = {
   roomId: string
   checkIn: Date | string
   checkOut: Date | string
+  bookingCode: string
   nights: number
   guests: number
-  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: $Enums.BookingStatus
   guestName: string
   guestPhone: string
   guestEmail?: string | null
+  guestNotes?: string | null
+  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee: runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout: runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: $Enums.BookingStatus
+  expiredAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  checkedInAt?: Date | string | null
+  canceledAt?: Date | string | null
+  cancelReason?: string | null
+  canceledById?: string | null
+  roomSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isTest?: boolean
+  paymentId?: string | null
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -487,13 +745,26 @@ export type BookingUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   checkIn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   checkOut?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bookingCode?: Prisma.StringFieldUpdateOperationsInput | string
   nights?: Prisma.IntFieldUpdateOperationsInput | number
   guests?: Prisma.IntFieldUpdateOperationsInput | number
-  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   guestName?: Prisma.StringFieldUpdateOperationsInput | string
   guestPhone?: Prisma.StringFieldUpdateOperationsInput | string
   guestEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  canceledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roomSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isTest?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  paymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -504,13 +775,27 @@ export type BookingUncheckedUpdateManyInput = {
   roomId?: Prisma.StringFieldUpdateOperationsInput | string
   checkIn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   checkOut?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bookingCode?: Prisma.StringFieldUpdateOperationsInput | string
   nights?: Prisma.IntFieldUpdateOperationsInput | number
   guests?: Prisma.IntFieldUpdateOperationsInput | number
-  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   guestName?: Prisma.StringFieldUpdateOperationsInput | string
   guestPhone?: Prisma.StringFieldUpdateOperationsInput | string
   guestEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  canceledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  canceledById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roomSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isTest?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  paymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -525,10 +810,9 @@ export type BookingOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type BookingRoomIdCheckInCheckOutCompoundUniqueInput = {
-  roomId: string
-  checkIn: Date | string
-  checkOut: Date | string
+export type BookingScalarRelationFilter = {
+  is?: Prisma.BookingWhereInput
+  isNot?: Prisma.BookingWhereInput
 }
 
 export type BookingCountOrderByAggregateInput = {
@@ -537,13 +821,27 @@ export type BookingCountOrderByAggregateInput = {
   roomId?: Prisma.SortOrder
   checkIn?: Prisma.SortOrder
   checkOut?: Prisma.SortOrder
+  bookingCode?: Prisma.SortOrder
   nights?: Prisma.SortOrder
   guests?: Prisma.SortOrder
-  totalPrice?: Prisma.SortOrder
-  status?: Prisma.SortOrder
   guestName?: Prisma.SortOrder
   guestPhone?: Prisma.SortOrder
   guestEmail?: Prisma.SortOrder
+  guestNotes?: Prisma.SortOrder
+  totalPrice?: Prisma.SortOrder
+  platformFee?: Prisma.SortOrder
+  hostPayout?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  expiredAt?: Prisma.SortOrder
+  confirmedAt?: Prisma.SortOrder
+  checkedInAt?: Prisma.SortOrder
+  canceledAt?: Prisma.SortOrder
+  cancelReason?: Prisma.SortOrder
+  canceledById?: Prisma.SortOrder
+  roomSnapshot?: Prisma.SortOrder
+  isTest?: Prisma.SortOrder
+  paymentId?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -552,6 +850,8 @@ export type BookingAvgOrderByAggregateInput = {
   nights?: Prisma.SortOrder
   guests?: Prisma.SortOrder
   totalPrice?: Prisma.SortOrder
+  platformFee?: Prisma.SortOrder
+  hostPayout?: Prisma.SortOrder
 }
 
 export type BookingMaxOrderByAggregateInput = {
@@ -560,13 +860,26 @@ export type BookingMaxOrderByAggregateInput = {
   roomId?: Prisma.SortOrder
   checkIn?: Prisma.SortOrder
   checkOut?: Prisma.SortOrder
+  bookingCode?: Prisma.SortOrder
   nights?: Prisma.SortOrder
   guests?: Prisma.SortOrder
-  totalPrice?: Prisma.SortOrder
-  status?: Prisma.SortOrder
   guestName?: Prisma.SortOrder
   guestPhone?: Prisma.SortOrder
   guestEmail?: Prisma.SortOrder
+  guestNotes?: Prisma.SortOrder
+  totalPrice?: Prisma.SortOrder
+  platformFee?: Prisma.SortOrder
+  hostPayout?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  expiredAt?: Prisma.SortOrder
+  confirmedAt?: Prisma.SortOrder
+  checkedInAt?: Prisma.SortOrder
+  canceledAt?: Prisma.SortOrder
+  cancelReason?: Prisma.SortOrder
+  canceledById?: Prisma.SortOrder
+  isTest?: Prisma.SortOrder
+  paymentId?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -577,13 +890,26 @@ export type BookingMinOrderByAggregateInput = {
   roomId?: Prisma.SortOrder
   checkIn?: Prisma.SortOrder
   checkOut?: Prisma.SortOrder
+  bookingCode?: Prisma.SortOrder
   nights?: Prisma.SortOrder
   guests?: Prisma.SortOrder
-  totalPrice?: Prisma.SortOrder
-  status?: Prisma.SortOrder
   guestName?: Prisma.SortOrder
   guestPhone?: Prisma.SortOrder
   guestEmail?: Prisma.SortOrder
+  guestNotes?: Prisma.SortOrder
+  totalPrice?: Prisma.SortOrder
+  platformFee?: Prisma.SortOrder
+  hostPayout?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  expiredAt?: Prisma.SortOrder
+  confirmedAt?: Prisma.SortOrder
+  checkedInAt?: Prisma.SortOrder
+  canceledAt?: Prisma.SortOrder
+  cancelReason?: Prisma.SortOrder
+  canceledById?: Prisma.SortOrder
+  isTest?: Prisma.SortOrder
+  paymentId?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -592,11 +918,8 @@ export type BookingSumOrderByAggregateInput = {
   nights?: Prisma.SortOrder
   guests?: Prisma.SortOrder
   totalPrice?: Prisma.SortOrder
-}
-
-export type BookingScalarRelationFilter = {
-  is?: Prisma.BookingWhereInput
-  isNot?: Prisma.BookingWhereInput
+  platformFee?: Prisma.SortOrder
+  hostPayout?: Prisma.SortOrder
 }
 
 export type BookingNullableScalarRelationFilter = {
@@ -611,10 +934,24 @@ export type BookingCreateNestedManyWithoutUserInput = {
   connect?: Prisma.BookingWhereUniqueInput | Prisma.BookingWhereUniqueInput[]
 }
 
+export type BookingCreateNestedManyWithoutCanceledByInput = {
+  create?: Prisma.XOR<Prisma.BookingCreateWithoutCanceledByInput, Prisma.BookingUncheckedCreateWithoutCanceledByInput> | Prisma.BookingCreateWithoutCanceledByInput[] | Prisma.BookingUncheckedCreateWithoutCanceledByInput[]
+  connectOrCreate?: Prisma.BookingCreateOrConnectWithoutCanceledByInput | Prisma.BookingCreateOrConnectWithoutCanceledByInput[]
+  createMany?: Prisma.BookingCreateManyCanceledByInputEnvelope
+  connect?: Prisma.BookingWhereUniqueInput | Prisma.BookingWhereUniqueInput[]
+}
+
 export type BookingUncheckedCreateNestedManyWithoutUserInput = {
   create?: Prisma.XOR<Prisma.BookingCreateWithoutUserInput, Prisma.BookingUncheckedCreateWithoutUserInput> | Prisma.BookingCreateWithoutUserInput[] | Prisma.BookingUncheckedCreateWithoutUserInput[]
   connectOrCreate?: Prisma.BookingCreateOrConnectWithoutUserInput | Prisma.BookingCreateOrConnectWithoutUserInput[]
   createMany?: Prisma.BookingCreateManyUserInputEnvelope
+  connect?: Prisma.BookingWhereUniqueInput | Prisma.BookingWhereUniqueInput[]
+}
+
+export type BookingUncheckedCreateNestedManyWithoutCanceledByInput = {
+  create?: Prisma.XOR<Prisma.BookingCreateWithoutCanceledByInput, Prisma.BookingUncheckedCreateWithoutCanceledByInput> | Prisma.BookingCreateWithoutCanceledByInput[] | Prisma.BookingUncheckedCreateWithoutCanceledByInput[]
+  connectOrCreate?: Prisma.BookingCreateOrConnectWithoutCanceledByInput | Prisma.BookingCreateOrConnectWithoutCanceledByInput[]
+  createMany?: Prisma.BookingCreateManyCanceledByInputEnvelope
   connect?: Prisma.BookingWhereUniqueInput | Prisma.BookingWhereUniqueInput[]
 }
 
@@ -632,6 +969,20 @@ export type BookingUpdateManyWithoutUserNestedInput = {
   deleteMany?: Prisma.BookingScalarWhereInput | Prisma.BookingScalarWhereInput[]
 }
 
+export type BookingUpdateManyWithoutCanceledByNestedInput = {
+  create?: Prisma.XOR<Prisma.BookingCreateWithoutCanceledByInput, Prisma.BookingUncheckedCreateWithoutCanceledByInput> | Prisma.BookingCreateWithoutCanceledByInput[] | Prisma.BookingUncheckedCreateWithoutCanceledByInput[]
+  connectOrCreate?: Prisma.BookingCreateOrConnectWithoutCanceledByInput | Prisma.BookingCreateOrConnectWithoutCanceledByInput[]
+  upsert?: Prisma.BookingUpsertWithWhereUniqueWithoutCanceledByInput | Prisma.BookingUpsertWithWhereUniqueWithoutCanceledByInput[]
+  createMany?: Prisma.BookingCreateManyCanceledByInputEnvelope
+  set?: Prisma.BookingWhereUniqueInput | Prisma.BookingWhereUniqueInput[]
+  disconnect?: Prisma.BookingWhereUniqueInput | Prisma.BookingWhereUniqueInput[]
+  delete?: Prisma.BookingWhereUniqueInput | Prisma.BookingWhereUniqueInput[]
+  connect?: Prisma.BookingWhereUniqueInput | Prisma.BookingWhereUniqueInput[]
+  update?: Prisma.BookingUpdateWithWhereUniqueWithoutCanceledByInput | Prisma.BookingUpdateWithWhereUniqueWithoutCanceledByInput[]
+  updateMany?: Prisma.BookingUpdateManyWithWhereWithoutCanceledByInput | Prisma.BookingUpdateManyWithWhereWithoutCanceledByInput[]
+  deleteMany?: Prisma.BookingScalarWhereInput | Prisma.BookingScalarWhereInput[]
+}
+
 export type BookingUncheckedUpdateManyWithoutUserNestedInput = {
   create?: Prisma.XOR<Prisma.BookingCreateWithoutUserInput, Prisma.BookingUncheckedCreateWithoutUserInput> | Prisma.BookingCreateWithoutUserInput[] | Prisma.BookingUncheckedCreateWithoutUserInput[]
   connectOrCreate?: Prisma.BookingCreateOrConnectWithoutUserInput | Prisma.BookingCreateOrConnectWithoutUserInput[]
@@ -643,6 +994,20 @@ export type BookingUncheckedUpdateManyWithoutUserNestedInput = {
   connect?: Prisma.BookingWhereUniqueInput | Prisma.BookingWhereUniqueInput[]
   update?: Prisma.BookingUpdateWithWhereUniqueWithoutUserInput | Prisma.BookingUpdateWithWhereUniqueWithoutUserInput[]
   updateMany?: Prisma.BookingUpdateManyWithWhereWithoutUserInput | Prisma.BookingUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.BookingScalarWhereInput | Prisma.BookingScalarWhereInput[]
+}
+
+export type BookingUncheckedUpdateManyWithoutCanceledByNestedInput = {
+  create?: Prisma.XOR<Prisma.BookingCreateWithoutCanceledByInput, Prisma.BookingUncheckedCreateWithoutCanceledByInput> | Prisma.BookingCreateWithoutCanceledByInput[] | Prisma.BookingUncheckedCreateWithoutCanceledByInput[]
+  connectOrCreate?: Prisma.BookingCreateOrConnectWithoutCanceledByInput | Prisma.BookingCreateOrConnectWithoutCanceledByInput[]
+  upsert?: Prisma.BookingUpsertWithWhereUniqueWithoutCanceledByInput | Prisma.BookingUpsertWithWhereUniqueWithoutCanceledByInput[]
+  createMany?: Prisma.BookingCreateManyCanceledByInputEnvelope
+  set?: Prisma.BookingWhereUniqueInput | Prisma.BookingWhereUniqueInput[]
+  disconnect?: Prisma.BookingWhereUniqueInput | Prisma.BookingWhereUniqueInput[]
+  delete?: Prisma.BookingWhereUniqueInput | Prisma.BookingWhereUniqueInput[]
+  connect?: Prisma.BookingWhereUniqueInput | Prisma.BookingWhereUniqueInput[]
+  update?: Prisma.BookingUpdateWithWhereUniqueWithoutCanceledByInput | Prisma.BookingUpdateWithWhereUniqueWithoutCanceledByInput[]
+  updateMany?: Prisma.BookingUpdateManyWithWhereWithoutCanceledByInput | Prisma.BookingUpdateManyWithWhereWithoutCanceledByInput[]
   deleteMany?: Prisma.BookingScalarWhereInput | Prisma.BookingScalarWhereInput[]
 }
 
@@ -688,6 +1053,20 @@ export type BookingUncheckedUpdateManyWithoutRoomNestedInput = {
   deleteMany?: Prisma.BookingScalarWhereInput | Prisma.BookingScalarWhereInput[]
 }
 
+export type BookingCreateNestedOneWithoutDatesInput = {
+  create?: Prisma.XOR<Prisma.BookingCreateWithoutDatesInput, Prisma.BookingUncheckedCreateWithoutDatesInput>
+  connectOrCreate?: Prisma.BookingCreateOrConnectWithoutDatesInput
+  connect?: Prisma.BookingWhereUniqueInput
+}
+
+export type BookingUpdateOneRequiredWithoutDatesNestedInput = {
+  create?: Prisma.XOR<Prisma.BookingCreateWithoutDatesInput, Prisma.BookingUncheckedCreateWithoutDatesInput>
+  connectOrCreate?: Prisma.BookingCreateOrConnectWithoutDatesInput
+  upsert?: Prisma.BookingUpsertWithoutDatesInput
+  connect?: Prisma.BookingWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.BookingUpdateToOneWithWhereWithoutDatesInput, Prisma.BookingUpdateWithoutDatesInput>, Prisma.BookingUncheckedUpdateWithoutDatesInput>
+}
+
 export type EnumBookingStatusFieldUpdateOperationsInput = {
   set?: $Enums.BookingStatus
 }
@@ -722,22 +1101,54 @@ export type BookingUpdateOneWithoutReviewNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.BookingUpdateToOneWithWhereWithoutReviewInput, Prisma.BookingUpdateWithoutReviewInput>, Prisma.BookingUncheckedUpdateWithoutReviewInput>
 }
 
+export type BookingCreateNestedOneWithoutLedgerEntriesInput = {
+  create?: Prisma.XOR<Prisma.BookingCreateWithoutLedgerEntriesInput, Prisma.BookingUncheckedCreateWithoutLedgerEntriesInput>
+  connectOrCreate?: Prisma.BookingCreateOrConnectWithoutLedgerEntriesInput
+  connect?: Prisma.BookingWhereUniqueInput
+}
+
+export type BookingUpdateOneWithoutLedgerEntriesNestedInput = {
+  create?: Prisma.XOR<Prisma.BookingCreateWithoutLedgerEntriesInput, Prisma.BookingUncheckedCreateWithoutLedgerEntriesInput>
+  connectOrCreate?: Prisma.BookingCreateOrConnectWithoutLedgerEntriesInput
+  upsert?: Prisma.BookingUpsertWithoutLedgerEntriesInput
+  disconnect?: Prisma.BookingWhereInput | boolean
+  delete?: Prisma.BookingWhereInput | boolean
+  connect?: Prisma.BookingWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.BookingUpdateToOneWithWhereWithoutLedgerEntriesInput, Prisma.BookingUpdateWithoutLedgerEntriesInput>, Prisma.BookingUncheckedUpdateWithoutLedgerEntriesInput>
+}
+
 export type BookingCreateWithoutUserInput = {
   id?: string
   checkIn: Date | string
   checkOut: Date | string
+  bookingCode: string
   nights: number
   guests: number
-  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: $Enums.BookingStatus
   guestName: string
   guestPhone: string
   guestEmail?: string | null
+  guestNotes?: string | null
+  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee: runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout: runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: $Enums.BookingStatus
+  expiredAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  checkedInAt?: Date | string | null
+  canceledAt?: Date | string | null
+  cancelReason?: string | null
+  roomSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isTest?: boolean
+  paymentId?: string | null
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   room: Prisma.RoomCreateNestedOneWithoutBookingsInput
+  canceledBy?: Prisma.UserCreateNestedOneWithoutCanceledBookingsInput
   payment?: Prisma.PaymentCreateNestedOneWithoutBookingInput
+  dates?: Prisma.BookingDateCreateNestedManyWithoutBookingInput
   review?: Prisma.ReviewCreateNestedOneWithoutBookingInput
+  ledgerEntries?: Prisma.HostLedgerCreateNestedManyWithoutBookingInput
 }
 
 export type BookingUncheckedCreateWithoutUserInput = {
@@ -745,17 +1156,33 @@ export type BookingUncheckedCreateWithoutUserInput = {
   roomId: string
   checkIn: Date | string
   checkOut: Date | string
+  bookingCode: string
   nights: number
   guests: number
-  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: $Enums.BookingStatus
   guestName: string
   guestPhone: string
   guestEmail?: string | null
+  guestNotes?: string | null
+  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee: runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout: runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: $Enums.BookingStatus
+  expiredAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  checkedInAt?: Date | string | null
+  canceledAt?: Date | string | null
+  cancelReason?: string | null
+  canceledById?: string | null
+  roomSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isTest?: boolean
+  paymentId?: string | null
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   payment?: Prisma.PaymentUncheckedCreateNestedOneWithoutBookingInput
+  dates?: Prisma.BookingDateUncheckedCreateNestedManyWithoutBookingInput
   review?: Prisma.ReviewUncheckedCreateNestedOneWithoutBookingInput
+  ledgerEntries?: Prisma.HostLedgerUncheckedCreateNestedManyWithoutBookingInput
 }
 
 export type BookingCreateOrConnectWithoutUserInput = {
@@ -765,6 +1192,84 @@ export type BookingCreateOrConnectWithoutUserInput = {
 
 export type BookingCreateManyUserInputEnvelope = {
   data: Prisma.BookingCreateManyUserInput | Prisma.BookingCreateManyUserInput[]
+  skipDuplicates?: boolean
+}
+
+export type BookingCreateWithoutCanceledByInput = {
+  id?: string
+  checkIn: Date | string
+  checkOut: Date | string
+  bookingCode: string
+  nights: number
+  guests: number
+  guestName: string
+  guestPhone: string
+  guestEmail?: string | null
+  guestNotes?: string | null
+  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee: runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout: runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: $Enums.BookingStatus
+  expiredAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  checkedInAt?: Date | string | null
+  canceledAt?: Date | string | null
+  cancelReason?: string | null
+  roomSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isTest?: boolean
+  paymentId?: string | null
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutBookingsInput
+  room: Prisma.RoomCreateNestedOneWithoutBookingsInput
+  payment?: Prisma.PaymentCreateNestedOneWithoutBookingInput
+  dates?: Prisma.BookingDateCreateNestedManyWithoutBookingInput
+  review?: Prisma.ReviewCreateNestedOneWithoutBookingInput
+  ledgerEntries?: Prisma.HostLedgerCreateNestedManyWithoutBookingInput
+}
+
+export type BookingUncheckedCreateWithoutCanceledByInput = {
+  id?: string
+  userId: string
+  roomId: string
+  checkIn: Date | string
+  checkOut: Date | string
+  bookingCode: string
+  nights: number
+  guests: number
+  guestName: string
+  guestPhone: string
+  guestEmail?: string | null
+  guestNotes?: string | null
+  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee: runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout: runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: $Enums.BookingStatus
+  expiredAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  checkedInAt?: Date | string | null
+  canceledAt?: Date | string | null
+  cancelReason?: string | null
+  roomSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isTest?: boolean
+  paymentId?: string | null
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  payment?: Prisma.PaymentUncheckedCreateNestedOneWithoutBookingInput
+  dates?: Prisma.BookingDateUncheckedCreateNestedManyWithoutBookingInput
+  review?: Prisma.ReviewUncheckedCreateNestedOneWithoutBookingInput
+  ledgerEntries?: Prisma.HostLedgerUncheckedCreateNestedManyWithoutBookingInput
+}
+
+export type BookingCreateOrConnectWithoutCanceledByInput = {
+  where: Prisma.BookingWhereUniqueInput
+  create: Prisma.XOR<Prisma.BookingCreateWithoutCanceledByInput, Prisma.BookingUncheckedCreateWithoutCanceledByInput>
+}
+
+export type BookingCreateManyCanceledByInputEnvelope = {
+  data: Prisma.BookingCreateManyCanceledByInput | Prisma.BookingCreateManyCanceledByInput[]
   skipDuplicates?: boolean
 }
 
@@ -788,38 +1293,84 @@ export type BookingScalarWhereInput = {
   AND?: Prisma.BookingScalarWhereInput | Prisma.BookingScalarWhereInput[]
   OR?: Prisma.BookingScalarWhereInput[]
   NOT?: Prisma.BookingScalarWhereInput | Prisma.BookingScalarWhereInput[]
-  id?: Prisma.StringFilter<"Booking"> | string
+  id?: Prisma.UuidFilter<"Booking"> | string
   userId?: Prisma.StringFilter<"Booking"> | string
-  roomId?: Prisma.StringFilter<"Booking"> | string
+  roomId?: Prisma.UuidFilter<"Booking"> | string
   checkIn?: Prisma.DateTimeFilter<"Booking"> | Date | string
   checkOut?: Prisma.DateTimeFilter<"Booking"> | Date | string
+  bookingCode?: Prisma.StringFilter<"Booking"> | string
   nights?: Prisma.IntFilter<"Booking"> | number
   guests?: Prisma.IntFilter<"Booking"> | number
-  totalPrice?: Prisma.DecimalFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: Prisma.EnumBookingStatusFilter<"Booking"> | $Enums.BookingStatus
   guestName?: Prisma.StringFilter<"Booking"> | string
   guestPhone?: Prisma.StringFilter<"Booking"> | string
   guestEmail?: Prisma.StringNullableFilter<"Booking"> | string | null
+  guestNotes?: Prisma.StringNullableFilter<"Booking"> | string | null
+  totalPrice?: Prisma.DecimalFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee?: Prisma.DecimalFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout?: Prisma.DecimalFilter<"Booking"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumBookingStatusFilter<"Booking"> | $Enums.BookingStatus
+  expiredAt?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
+  confirmedAt?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
+  checkedInAt?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
+  canceledAt?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
+  cancelReason?: Prisma.StringNullableFilter<"Booking"> | string | null
+  canceledById?: Prisma.StringNullableFilter<"Booking"> | string | null
+  roomSnapshot?: Prisma.JsonFilter<"Booking">
+  isTest?: Prisma.BoolFilter<"Booking"> | boolean
+  paymentId?: Prisma.UuidNullableFilter<"Booking"> | string | null
+  deletedAt?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Booking"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Booking"> | Date | string
+}
+
+export type BookingUpsertWithWhereUniqueWithoutCanceledByInput = {
+  where: Prisma.BookingWhereUniqueInput
+  update: Prisma.XOR<Prisma.BookingUpdateWithoutCanceledByInput, Prisma.BookingUncheckedUpdateWithoutCanceledByInput>
+  create: Prisma.XOR<Prisma.BookingCreateWithoutCanceledByInput, Prisma.BookingUncheckedCreateWithoutCanceledByInput>
+}
+
+export type BookingUpdateWithWhereUniqueWithoutCanceledByInput = {
+  where: Prisma.BookingWhereUniqueInput
+  data: Prisma.XOR<Prisma.BookingUpdateWithoutCanceledByInput, Prisma.BookingUncheckedUpdateWithoutCanceledByInput>
+}
+
+export type BookingUpdateManyWithWhereWithoutCanceledByInput = {
+  where: Prisma.BookingScalarWhereInput
+  data: Prisma.XOR<Prisma.BookingUpdateManyMutationInput, Prisma.BookingUncheckedUpdateManyWithoutCanceledByInput>
 }
 
 export type BookingCreateWithoutRoomInput = {
   id?: string
   checkIn: Date | string
   checkOut: Date | string
+  bookingCode: string
   nights: number
   guests: number
-  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: $Enums.BookingStatus
   guestName: string
   guestPhone: string
   guestEmail?: string | null
+  guestNotes?: string | null
+  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee: runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout: runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: $Enums.BookingStatus
+  expiredAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  checkedInAt?: Date | string | null
+  canceledAt?: Date | string | null
+  cancelReason?: string | null
+  roomSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isTest?: boolean
+  paymentId?: string | null
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutBookingsInput
+  canceledBy?: Prisma.UserCreateNestedOneWithoutCanceledBookingsInput
   payment?: Prisma.PaymentCreateNestedOneWithoutBookingInput
+  dates?: Prisma.BookingDateCreateNestedManyWithoutBookingInput
   review?: Prisma.ReviewCreateNestedOneWithoutBookingInput
+  ledgerEntries?: Prisma.HostLedgerCreateNestedManyWithoutBookingInput
 }
 
 export type BookingUncheckedCreateWithoutRoomInput = {
@@ -827,17 +1378,33 @@ export type BookingUncheckedCreateWithoutRoomInput = {
   userId: string
   checkIn: Date | string
   checkOut: Date | string
+  bookingCode: string
   nights: number
   guests: number
-  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: $Enums.BookingStatus
   guestName: string
   guestPhone: string
   guestEmail?: string | null
+  guestNotes?: string | null
+  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee: runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout: runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: $Enums.BookingStatus
+  expiredAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  checkedInAt?: Date | string | null
+  canceledAt?: Date | string | null
+  cancelReason?: string | null
+  canceledById?: string | null
+  roomSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isTest?: boolean
+  paymentId?: string | null
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   payment?: Prisma.PaymentUncheckedCreateNestedOneWithoutBookingInput
+  dates?: Prisma.BookingDateUncheckedCreateNestedManyWithoutBookingInput
   review?: Prisma.ReviewUncheckedCreateNestedOneWithoutBookingInput
+  ledgerEntries?: Prisma.HostLedgerUncheckedCreateNestedManyWithoutBookingInput
 }
 
 export type BookingCreateOrConnectWithoutRoomInput = {
@@ -866,22 +1433,190 @@ export type BookingUpdateManyWithWhereWithoutRoomInput = {
   data: Prisma.XOR<Prisma.BookingUpdateManyMutationInput, Prisma.BookingUncheckedUpdateManyWithoutRoomInput>
 }
 
-export type BookingCreateWithoutPaymentInput = {
+export type BookingCreateWithoutDatesInput = {
   id?: string
   checkIn: Date | string
   checkOut: Date | string
+  bookingCode: string
   nights: number
   guests: number
-  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: $Enums.BookingStatus
   guestName: string
   guestPhone: string
   guestEmail?: string | null
+  guestNotes?: string | null
+  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee: runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout: runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: $Enums.BookingStatus
+  expiredAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  checkedInAt?: Date | string | null
+  canceledAt?: Date | string | null
+  cancelReason?: string | null
+  roomSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isTest?: boolean
+  paymentId?: string | null
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutBookingsInput
   room: Prisma.RoomCreateNestedOneWithoutBookingsInput
+  canceledBy?: Prisma.UserCreateNestedOneWithoutCanceledBookingsInput
+  payment?: Prisma.PaymentCreateNestedOneWithoutBookingInput
   review?: Prisma.ReviewCreateNestedOneWithoutBookingInput
+  ledgerEntries?: Prisma.HostLedgerCreateNestedManyWithoutBookingInput
+}
+
+export type BookingUncheckedCreateWithoutDatesInput = {
+  id?: string
+  userId: string
+  roomId: string
+  checkIn: Date | string
+  checkOut: Date | string
+  bookingCode: string
+  nights: number
+  guests: number
+  guestName: string
+  guestPhone: string
+  guestEmail?: string | null
+  guestNotes?: string | null
+  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee: runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout: runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: $Enums.BookingStatus
+  expiredAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  checkedInAt?: Date | string | null
+  canceledAt?: Date | string | null
+  cancelReason?: string | null
+  canceledById?: string | null
+  roomSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isTest?: boolean
+  paymentId?: string | null
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  payment?: Prisma.PaymentUncheckedCreateNestedOneWithoutBookingInput
+  review?: Prisma.ReviewUncheckedCreateNestedOneWithoutBookingInput
+  ledgerEntries?: Prisma.HostLedgerUncheckedCreateNestedManyWithoutBookingInput
+}
+
+export type BookingCreateOrConnectWithoutDatesInput = {
+  where: Prisma.BookingWhereUniqueInput
+  create: Prisma.XOR<Prisma.BookingCreateWithoutDatesInput, Prisma.BookingUncheckedCreateWithoutDatesInput>
+}
+
+export type BookingUpsertWithoutDatesInput = {
+  update: Prisma.XOR<Prisma.BookingUpdateWithoutDatesInput, Prisma.BookingUncheckedUpdateWithoutDatesInput>
+  create: Prisma.XOR<Prisma.BookingCreateWithoutDatesInput, Prisma.BookingUncheckedCreateWithoutDatesInput>
+  where?: Prisma.BookingWhereInput
+}
+
+export type BookingUpdateToOneWithWhereWithoutDatesInput = {
+  where?: Prisma.BookingWhereInput
+  data: Prisma.XOR<Prisma.BookingUpdateWithoutDatesInput, Prisma.BookingUncheckedUpdateWithoutDatesInput>
+}
+
+export type BookingUpdateWithoutDatesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  checkIn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  checkOut?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bookingCode?: Prisma.StringFieldUpdateOperationsInput | string
+  nights?: Prisma.IntFieldUpdateOperationsInput | number
+  guests?: Prisma.IntFieldUpdateOperationsInput | number
+  guestName?: Prisma.StringFieldUpdateOperationsInput | string
+  guestPhone?: Prisma.StringFieldUpdateOperationsInput | string
+  guestEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  canceledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roomSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isTest?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  paymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutBookingsNestedInput
+  room?: Prisma.RoomUpdateOneRequiredWithoutBookingsNestedInput
+  canceledBy?: Prisma.UserUpdateOneWithoutCanceledBookingsNestedInput
+  payment?: Prisma.PaymentUpdateOneWithoutBookingNestedInput
+  review?: Prisma.ReviewUpdateOneWithoutBookingNestedInput
+  ledgerEntries?: Prisma.HostLedgerUpdateManyWithoutBookingNestedInput
+}
+
+export type BookingUncheckedUpdateWithoutDatesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  roomId?: Prisma.StringFieldUpdateOperationsInput | string
+  checkIn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  checkOut?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bookingCode?: Prisma.StringFieldUpdateOperationsInput | string
+  nights?: Prisma.IntFieldUpdateOperationsInput | number
+  guests?: Prisma.IntFieldUpdateOperationsInput | number
+  guestName?: Prisma.StringFieldUpdateOperationsInput | string
+  guestPhone?: Prisma.StringFieldUpdateOperationsInput | string
+  guestEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  canceledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  canceledById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roomSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isTest?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  paymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  payment?: Prisma.PaymentUncheckedUpdateOneWithoutBookingNestedInput
+  review?: Prisma.ReviewUncheckedUpdateOneWithoutBookingNestedInput
+  ledgerEntries?: Prisma.HostLedgerUncheckedUpdateManyWithoutBookingNestedInput
+}
+
+export type BookingCreateWithoutPaymentInput = {
+  id?: string
+  checkIn: Date | string
+  checkOut: Date | string
+  bookingCode: string
+  nights: number
+  guests: number
+  guestName: string
+  guestPhone: string
+  guestEmail?: string | null
+  guestNotes?: string | null
+  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee: runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout: runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: $Enums.BookingStatus
+  expiredAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  checkedInAt?: Date | string | null
+  canceledAt?: Date | string | null
+  cancelReason?: string | null
+  roomSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isTest?: boolean
+  paymentId?: string | null
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutBookingsInput
+  room: Prisma.RoomCreateNestedOneWithoutBookingsInput
+  canceledBy?: Prisma.UserCreateNestedOneWithoutCanceledBookingsInput
+  dates?: Prisma.BookingDateCreateNestedManyWithoutBookingInput
+  review?: Prisma.ReviewCreateNestedOneWithoutBookingInput
+  ledgerEntries?: Prisma.HostLedgerCreateNestedManyWithoutBookingInput
 }
 
 export type BookingUncheckedCreateWithoutPaymentInput = {
@@ -890,16 +1625,32 @@ export type BookingUncheckedCreateWithoutPaymentInput = {
   roomId: string
   checkIn: Date | string
   checkOut: Date | string
+  bookingCode: string
   nights: number
   guests: number
-  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: $Enums.BookingStatus
   guestName: string
   guestPhone: string
   guestEmail?: string | null
+  guestNotes?: string | null
+  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee: runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout: runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: $Enums.BookingStatus
+  expiredAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  checkedInAt?: Date | string | null
+  canceledAt?: Date | string | null
+  cancelReason?: string | null
+  canceledById?: string | null
+  roomSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isTest?: boolean
+  paymentId?: string | null
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  dates?: Prisma.BookingDateUncheckedCreateNestedManyWithoutBookingInput
   review?: Prisma.ReviewUncheckedCreateNestedOneWithoutBookingInput
+  ledgerEntries?: Prisma.HostLedgerUncheckedCreateNestedManyWithoutBookingInput
 }
 
 export type BookingCreateOrConnectWithoutPaymentInput = {
@@ -922,18 +1673,34 @@ export type BookingUpdateWithoutPaymentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   checkIn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   checkOut?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bookingCode?: Prisma.StringFieldUpdateOperationsInput | string
   nights?: Prisma.IntFieldUpdateOperationsInput | number
   guests?: Prisma.IntFieldUpdateOperationsInput | number
-  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   guestName?: Prisma.StringFieldUpdateOperationsInput | string
   guestPhone?: Prisma.StringFieldUpdateOperationsInput | string
   guestEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  canceledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roomSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isTest?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  paymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutBookingsNestedInput
   room?: Prisma.RoomUpdateOneRequiredWithoutBookingsNestedInput
+  canceledBy?: Prisma.UserUpdateOneWithoutCanceledBookingsNestedInput
+  dates?: Prisma.BookingDateUpdateManyWithoutBookingNestedInput
   review?: Prisma.ReviewUpdateOneWithoutBookingNestedInput
+  ledgerEntries?: Prisma.HostLedgerUpdateManyWithoutBookingNestedInput
 }
 
 export type BookingUncheckedUpdateWithoutPaymentInput = {
@@ -942,34 +1709,66 @@ export type BookingUncheckedUpdateWithoutPaymentInput = {
   roomId?: Prisma.StringFieldUpdateOperationsInput | string
   checkIn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   checkOut?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bookingCode?: Prisma.StringFieldUpdateOperationsInput | string
   nights?: Prisma.IntFieldUpdateOperationsInput | number
   guests?: Prisma.IntFieldUpdateOperationsInput | number
-  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   guestName?: Prisma.StringFieldUpdateOperationsInput | string
   guestPhone?: Prisma.StringFieldUpdateOperationsInput | string
   guestEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  canceledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  canceledById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roomSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isTest?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  paymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dates?: Prisma.BookingDateUncheckedUpdateManyWithoutBookingNestedInput
   review?: Prisma.ReviewUncheckedUpdateOneWithoutBookingNestedInput
+  ledgerEntries?: Prisma.HostLedgerUncheckedUpdateManyWithoutBookingNestedInput
 }
 
 export type BookingCreateWithoutReviewInput = {
   id?: string
   checkIn: Date | string
   checkOut: Date | string
+  bookingCode: string
   nights: number
   guests: number
-  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: $Enums.BookingStatus
   guestName: string
   guestPhone: string
   guestEmail?: string | null
+  guestNotes?: string | null
+  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee: runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout: runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: $Enums.BookingStatus
+  expiredAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  checkedInAt?: Date | string | null
+  canceledAt?: Date | string | null
+  cancelReason?: string | null
+  roomSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isTest?: boolean
+  paymentId?: string | null
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutBookingsInput
   room: Prisma.RoomCreateNestedOneWithoutBookingsInput
+  canceledBy?: Prisma.UserCreateNestedOneWithoutCanceledBookingsInput
   payment?: Prisma.PaymentCreateNestedOneWithoutBookingInput
+  dates?: Prisma.BookingDateCreateNestedManyWithoutBookingInput
+  ledgerEntries?: Prisma.HostLedgerCreateNestedManyWithoutBookingInput
 }
 
 export type BookingUncheckedCreateWithoutReviewInput = {
@@ -978,16 +1777,32 @@ export type BookingUncheckedCreateWithoutReviewInput = {
   roomId: string
   checkIn: Date | string
   checkOut: Date | string
+  bookingCode: string
   nights: number
   guests: number
-  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: $Enums.BookingStatus
   guestName: string
   guestPhone: string
   guestEmail?: string | null
+  guestNotes?: string | null
+  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee: runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout: runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: $Enums.BookingStatus
+  expiredAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  checkedInAt?: Date | string | null
+  canceledAt?: Date | string | null
+  cancelReason?: string | null
+  canceledById?: string | null
+  roomSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isTest?: boolean
+  paymentId?: string | null
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   payment?: Prisma.PaymentUncheckedCreateNestedOneWithoutBookingInput
+  dates?: Prisma.BookingDateUncheckedCreateNestedManyWithoutBookingInput
+  ledgerEntries?: Prisma.HostLedgerUncheckedCreateNestedManyWithoutBookingInput
 }
 
 export type BookingCreateOrConnectWithoutReviewInput = {
@@ -1010,18 +1825,34 @@ export type BookingUpdateWithoutReviewInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   checkIn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   checkOut?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bookingCode?: Prisma.StringFieldUpdateOperationsInput | string
   nights?: Prisma.IntFieldUpdateOperationsInput | number
   guests?: Prisma.IntFieldUpdateOperationsInput | number
-  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   guestName?: Prisma.StringFieldUpdateOperationsInput | string
   guestPhone?: Prisma.StringFieldUpdateOperationsInput | string
   guestEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  canceledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roomSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isTest?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  paymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutBookingsNestedInput
   room?: Prisma.RoomUpdateOneRequiredWithoutBookingsNestedInput
+  canceledBy?: Prisma.UserUpdateOneWithoutCanceledBookingsNestedInput
   payment?: Prisma.PaymentUpdateOneWithoutBookingNestedInput
+  dates?: Prisma.BookingDateUpdateManyWithoutBookingNestedInput
+  ledgerEntries?: Prisma.HostLedgerUpdateManyWithoutBookingNestedInput
 }
 
 export type BookingUncheckedUpdateWithoutReviewInput = {
@@ -1030,16 +1861,184 @@ export type BookingUncheckedUpdateWithoutReviewInput = {
   roomId?: Prisma.StringFieldUpdateOperationsInput | string
   checkIn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   checkOut?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bookingCode?: Prisma.StringFieldUpdateOperationsInput | string
   nights?: Prisma.IntFieldUpdateOperationsInput | number
   guests?: Prisma.IntFieldUpdateOperationsInput | number
-  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   guestName?: Prisma.StringFieldUpdateOperationsInput | string
   guestPhone?: Prisma.StringFieldUpdateOperationsInput | string
   guestEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  canceledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  canceledById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roomSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isTest?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  paymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   payment?: Prisma.PaymentUncheckedUpdateOneWithoutBookingNestedInput
+  dates?: Prisma.BookingDateUncheckedUpdateManyWithoutBookingNestedInput
+  ledgerEntries?: Prisma.HostLedgerUncheckedUpdateManyWithoutBookingNestedInput
+}
+
+export type BookingCreateWithoutLedgerEntriesInput = {
+  id?: string
+  checkIn: Date | string
+  checkOut: Date | string
+  bookingCode: string
+  nights: number
+  guests: number
+  guestName: string
+  guestPhone: string
+  guestEmail?: string | null
+  guestNotes?: string | null
+  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee: runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout: runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: $Enums.BookingStatus
+  expiredAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  checkedInAt?: Date | string | null
+  canceledAt?: Date | string | null
+  cancelReason?: string | null
+  roomSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isTest?: boolean
+  paymentId?: string | null
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutBookingsInput
+  room: Prisma.RoomCreateNestedOneWithoutBookingsInput
+  canceledBy?: Prisma.UserCreateNestedOneWithoutCanceledBookingsInput
+  payment?: Prisma.PaymentCreateNestedOneWithoutBookingInput
+  dates?: Prisma.BookingDateCreateNestedManyWithoutBookingInput
+  review?: Prisma.ReviewCreateNestedOneWithoutBookingInput
+}
+
+export type BookingUncheckedCreateWithoutLedgerEntriesInput = {
+  id?: string
+  userId: string
+  roomId: string
+  checkIn: Date | string
+  checkOut: Date | string
+  bookingCode: string
+  nights: number
+  guests: number
+  guestName: string
+  guestPhone: string
+  guestEmail?: string | null
+  guestNotes?: string | null
+  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee: runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout: runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: $Enums.BookingStatus
+  expiredAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  checkedInAt?: Date | string | null
+  canceledAt?: Date | string | null
+  cancelReason?: string | null
+  canceledById?: string | null
+  roomSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isTest?: boolean
+  paymentId?: string | null
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  payment?: Prisma.PaymentUncheckedCreateNestedOneWithoutBookingInput
+  dates?: Prisma.BookingDateUncheckedCreateNestedManyWithoutBookingInput
+  review?: Prisma.ReviewUncheckedCreateNestedOneWithoutBookingInput
+}
+
+export type BookingCreateOrConnectWithoutLedgerEntriesInput = {
+  where: Prisma.BookingWhereUniqueInput
+  create: Prisma.XOR<Prisma.BookingCreateWithoutLedgerEntriesInput, Prisma.BookingUncheckedCreateWithoutLedgerEntriesInput>
+}
+
+export type BookingUpsertWithoutLedgerEntriesInput = {
+  update: Prisma.XOR<Prisma.BookingUpdateWithoutLedgerEntriesInput, Prisma.BookingUncheckedUpdateWithoutLedgerEntriesInput>
+  create: Prisma.XOR<Prisma.BookingCreateWithoutLedgerEntriesInput, Prisma.BookingUncheckedCreateWithoutLedgerEntriesInput>
+  where?: Prisma.BookingWhereInput
+}
+
+export type BookingUpdateToOneWithWhereWithoutLedgerEntriesInput = {
+  where?: Prisma.BookingWhereInput
+  data: Prisma.XOR<Prisma.BookingUpdateWithoutLedgerEntriesInput, Prisma.BookingUncheckedUpdateWithoutLedgerEntriesInput>
+}
+
+export type BookingUpdateWithoutLedgerEntriesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  checkIn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  checkOut?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bookingCode?: Prisma.StringFieldUpdateOperationsInput | string
+  nights?: Prisma.IntFieldUpdateOperationsInput | number
+  guests?: Prisma.IntFieldUpdateOperationsInput | number
+  guestName?: Prisma.StringFieldUpdateOperationsInput | string
+  guestPhone?: Prisma.StringFieldUpdateOperationsInput | string
+  guestEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  canceledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roomSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isTest?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  paymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutBookingsNestedInput
+  room?: Prisma.RoomUpdateOneRequiredWithoutBookingsNestedInput
+  canceledBy?: Prisma.UserUpdateOneWithoutCanceledBookingsNestedInput
+  payment?: Prisma.PaymentUpdateOneWithoutBookingNestedInput
+  dates?: Prisma.BookingDateUpdateManyWithoutBookingNestedInput
+  review?: Prisma.ReviewUpdateOneWithoutBookingNestedInput
+}
+
+export type BookingUncheckedUpdateWithoutLedgerEntriesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  roomId?: Prisma.StringFieldUpdateOperationsInput | string
+  checkIn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  checkOut?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bookingCode?: Prisma.StringFieldUpdateOperationsInput | string
+  nights?: Prisma.IntFieldUpdateOperationsInput | number
+  guests?: Prisma.IntFieldUpdateOperationsInput | number
+  guestName?: Prisma.StringFieldUpdateOperationsInput | string
+  guestPhone?: Prisma.StringFieldUpdateOperationsInput | string
+  guestEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  canceledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  canceledById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roomSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isTest?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  paymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  payment?: Prisma.PaymentUncheckedUpdateOneWithoutBookingNestedInput
+  dates?: Prisma.BookingDateUncheckedUpdateManyWithoutBookingNestedInput
+  review?: Prisma.ReviewUncheckedUpdateOneWithoutBookingNestedInput
 }
 
 export type BookingCreateManyUserInput = {
@@ -1047,13 +2046,57 @@ export type BookingCreateManyUserInput = {
   roomId: string
   checkIn: Date | string
   checkOut: Date | string
+  bookingCode: string
   nights: number
   guests: number
-  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: $Enums.BookingStatus
   guestName: string
   guestPhone: string
   guestEmail?: string | null
+  guestNotes?: string | null
+  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee: runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout: runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: $Enums.BookingStatus
+  expiredAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  checkedInAt?: Date | string | null
+  canceledAt?: Date | string | null
+  cancelReason?: string | null
+  canceledById?: string | null
+  roomSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isTest?: boolean
+  paymentId?: string | null
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type BookingCreateManyCanceledByInput = {
+  id?: string
+  userId: string
+  roomId: string
+  checkIn: Date | string
+  checkOut: Date | string
+  bookingCode: string
+  nights: number
+  guests: number
+  guestName: string
+  guestPhone: string
+  guestEmail?: string | null
+  guestNotes?: string | null
+  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee: runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout: runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: $Enums.BookingStatus
+  expiredAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  checkedInAt?: Date | string | null
+  canceledAt?: Date | string | null
+  cancelReason?: string | null
+  roomSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isTest?: boolean
+  paymentId?: string | null
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1062,18 +2105,34 @@ export type BookingUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   checkIn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   checkOut?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bookingCode?: Prisma.StringFieldUpdateOperationsInput | string
   nights?: Prisma.IntFieldUpdateOperationsInput | number
   guests?: Prisma.IntFieldUpdateOperationsInput | number
-  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   guestName?: Prisma.StringFieldUpdateOperationsInput | string
   guestPhone?: Prisma.StringFieldUpdateOperationsInput | string
   guestEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  canceledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roomSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isTest?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  paymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   room?: Prisma.RoomUpdateOneRequiredWithoutBookingsNestedInput
+  canceledBy?: Prisma.UserUpdateOneWithoutCanceledBookingsNestedInput
   payment?: Prisma.PaymentUpdateOneWithoutBookingNestedInput
+  dates?: Prisma.BookingDateUpdateManyWithoutBookingNestedInput
   review?: Prisma.ReviewUpdateOneWithoutBookingNestedInput
+  ledgerEntries?: Prisma.HostLedgerUpdateManyWithoutBookingNestedInput
 }
 
 export type BookingUncheckedUpdateWithoutUserInput = {
@@ -1081,17 +2140,33 @@ export type BookingUncheckedUpdateWithoutUserInput = {
   roomId?: Prisma.StringFieldUpdateOperationsInput | string
   checkIn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   checkOut?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bookingCode?: Prisma.StringFieldUpdateOperationsInput | string
   nights?: Prisma.IntFieldUpdateOperationsInput | number
   guests?: Prisma.IntFieldUpdateOperationsInput | number
-  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   guestName?: Prisma.StringFieldUpdateOperationsInput | string
   guestPhone?: Prisma.StringFieldUpdateOperationsInput | string
   guestEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  canceledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  canceledById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roomSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isTest?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  paymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   payment?: Prisma.PaymentUncheckedUpdateOneWithoutBookingNestedInput
+  dates?: Prisma.BookingDateUncheckedUpdateManyWithoutBookingNestedInput
   review?: Prisma.ReviewUncheckedUpdateOneWithoutBookingNestedInput
+  ledgerEntries?: Prisma.HostLedgerUncheckedUpdateManyWithoutBookingNestedInput
 }
 
 export type BookingUncheckedUpdateManyWithoutUserInput = {
@@ -1099,13 +2174,125 @@ export type BookingUncheckedUpdateManyWithoutUserInput = {
   roomId?: Prisma.StringFieldUpdateOperationsInput | string
   checkIn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   checkOut?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bookingCode?: Prisma.StringFieldUpdateOperationsInput | string
   nights?: Prisma.IntFieldUpdateOperationsInput | number
   guests?: Prisma.IntFieldUpdateOperationsInput | number
-  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   guestName?: Prisma.StringFieldUpdateOperationsInput | string
   guestPhone?: Prisma.StringFieldUpdateOperationsInput | string
   guestEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  canceledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  canceledById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roomSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isTest?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  paymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type BookingUpdateWithoutCanceledByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  checkIn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  checkOut?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bookingCode?: Prisma.StringFieldUpdateOperationsInput | string
+  nights?: Prisma.IntFieldUpdateOperationsInput | number
+  guests?: Prisma.IntFieldUpdateOperationsInput | number
+  guestName?: Prisma.StringFieldUpdateOperationsInput | string
+  guestPhone?: Prisma.StringFieldUpdateOperationsInput | string
+  guestEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  canceledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roomSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isTest?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  paymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutBookingsNestedInput
+  room?: Prisma.RoomUpdateOneRequiredWithoutBookingsNestedInput
+  payment?: Prisma.PaymentUpdateOneWithoutBookingNestedInput
+  dates?: Prisma.BookingDateUpdateManyWithoutBookingNestedInput
+  review?: Prisma.ReviewUpdateOneWithoutBookingNestedInput
+  ledgerEntries?: Prisma.HostLedgerUpdateManyWithoutBookingNestedInput
+}
+
+export type BookingUncheckedUpdateWithoutCanceledByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  roomId?: Prisma.StringFieldUpdateOperationsInput | string
+  checkIn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  checkOut?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bookingCode?: Prisma.StringFieldUpdateOperationsInput | string
+  nights?: Prisma.IntFieldUpdateOperationsInput | number
+  guests?: Prisma.IntFieldUpdateOperationsInput | number
+  guestName?: Prisma.StringFieldUpdateOperationsInput | string
+  guestPhone?: Prisma.StringFieldUpdateOperationsInput | string
+  guestEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  canceledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roomSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isTest?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  paymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  payment?: Prisma.PaymentUncheckedUpdateOneWithoutBookingNestedInput
+  dates?: Prisma.BookingDateUncheckedUpdateManyWithoutBookingNestedInput
+  review?: Prisma.ReviewUncheckedUpdateOneWithoutBookingNestedInput
+  ledgerEntries?: Prisma.HostLedgerUncheckedUpdateManyWithoutBookingNestedInput
+}
+
+export type BookingUncheckedUpdateManyWithoutCanceledByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  roomId?: Prisma.StringFieldUpdateOperationsInput | string
+  checkIn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  checkOut?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bookingCode?: Prisma.StringFieldUpdateOperationsInput | string
+  nights?: Prisma.IntFieldUpdateOperationsInput | number
+  guests?: Prisma.IntFieldUpdateOperationsInput | number
+  guestName?: Prisma.StringFieldUpdateOperationsInput | string
+  guestPhone?: Prisma.StringFieldUpdateOperationsInput | string
+  guestEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  canceledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roomSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isTest?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  paymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1115,13 +2302,27 @@ export type BookingCreateManyRoomInput = {
   userId: string
   checkIn: Date | string
   checkOut: Date | string
+  bookingCode: string
   nights: number
   guests: number
-  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: $Enums.BookingStatus
   guestName: string
   guestPhone: string
   guestEmail?: string | null
+  guestNotes?: string | null
+  totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee: runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout: runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: $Enums.BookingStatus
+  expiredAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  checkedInAt?: Date | string | null
+  canceledAt?: Date | string | null
+  cancelReason?: string | null
+  canceledById?: string | null
+  roomSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isTest?: boolean
+  paymentId?: string | null
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1130,18 +2331,34 @@ export type BookingUpdateWithoutRoomInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   checkIn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   checkOut?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bookingCode?: Prisma.StringFieldUpdateOperationsInput | string
   nights?: Prisma.IntFieldUpdateOperationsInput | number
   guests?: Prisma.IntFieldUpdateOperationsInput | number
-  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   guestName?: Prisma.StringFieldUpdateOperationsInput | string
   guestPhone?: Prisma.StringFieldUpdateOperationsInput | string
   guestEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  canceledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roomSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isTest?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  paymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutBookingsNestedInput
+  canceledBy?: Prisma.UserUpdateOneWithoutCanceledBookingsNestedInput
   payment?: Prisma.PaymentUpdateOneWithoutBookingNestedInput
+  dates?: Prisma.BookingDateUpdateManyWithoutBookingNestedInput
   review?: Prisma.ReviewUpdateOneWithoutBookingNestedInput
+  ledgerEntries?: Prisma.HostLedgerUpdateManyWithoutBookingNestedInput
 }
 
 export type BookingUncheckedUpdateWithoutRoomInput = {
@@ -1149,17 +2366,33 @@ export type BookingUncheckedUpdateWithoutRoomInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   checkIn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   checkOut?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bookingCode?: Prisma.StringFieldUpdateOperationsInput | string
   nights?: Prisma.IntFieldUpdateOperationsInput | number
   guests?: Prisma.IntFieldUpdateOperationsInput | number
-  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   guestName?: Prisma.StringFieldUpdateOperationsInput | string
   guestPhone?: Prisma.StringFieldUpdateOperationsInput | string
   guestEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  canceledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  canceledById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roomSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isTest?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  paymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   payment?: Prisma.PaymentUncheckedUpdateOneWithoutBookingNestedInput
+  dates?: Prisma.BookingDateUncheckedUpdateManyWithoutBookingNestedInput
   review?: Prisma.ReviewUncheckedUpdateOneWithoutBookingNestedInput
+  ledgerEntries?: Prisma.HostLedgerUncheckedUpdateManyWithoutBookingNestedInput
 }
 
 export type BookingUncheckedUpdateManyWithoutRoomInput = {
@@ -1167,17 +2400,69 @@ export type BookingUncheckedUpdateManyWithoutRoomInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   checkIn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   checkOut?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bookingCode?: Prisma.StringFieldUpdateOperationsInput | string
   nights?: Prisma.IntFieldUpdateOperationsInput | number
   guests?: Prisma.IntFieldUpdateOperationsInput | number
-  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
   guestName?: Prisma.StringFieldUpdateOperationsInput | string
   guestPhone?: Prisma.StringFieldUpdateOperationsInput | string
   guestEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformFee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  hostPayout?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  checkedInAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  canceledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  canceledById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roomSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  isTest?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  paymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+
+/**
+ * Count Type BookingCountOutputType
+ */
+
+export type BookingCountOutputType = {
+  dates: number
+  ledgerEntries: number
+}
+
+export type BookingCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  dates?: boolean | BookingCountOutputTypeCountDatesArgs
+  ledgerEntries?: boolean | BookingCountOutputTypeCountLedgerEntriesArgs
+}
+
+/**
+ * BookingCountOutputType without action
+ */
+export type BookingCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BookingCountOutputType
+   */
+  select?: Prisma.BookingCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * BookingCountOutputType without action
+ */
+export type BookingCountOutputTypeCountDatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BookingDateWhereInput
+}
+
+/**
+ * BookingCountOutputType without action
+ */
+export type BookingCountOutputTypeCountLedgerEntriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.HostLedgerWhereInput
+}
 
 
 export type BookingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1186,19 +2471,37 @@ export type BookingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   roomId?: boolean
   checkIn?: boolean
   checkOut?: boolean
+  bookingCode?: boolean
   nights?: boolean
   guests?: boolean
-  totalPrice?: boolean
-  status?: boolean
   guestName?: boolean
   guestPhone?: boolean
   guestEmail?: boolean
+  guestNotes?: boolean
+  totalPrice?: boolean
+  platformFee?: boolean
+  hostPayout?: boolean
+  status?: boolean
+  expiredAt?: boolean
+  confirmedAt?: boolean
+  checkedInAt?: boolean
+  canceledAt?: boolean
+  cancelReason?: boolean
+  canceledById?: boolean
+  roomSnapshot?: boolean
+  isTest?: boolean
+  paymentId?: boolean
+  deletedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   room?: boolean | Prisma.RoomDefaultArgs<ExtArgs>
+  canceledBy?: boolean | Prisma.Booking$canceledByArgs<ExtArgs>
   payment?: boolean | Prisma.Booking$paymentArgs<ExtArgs>
+  dates?: boolean | Prisma.Booking$datesArgs<ExtArgs>
   review?: boolean | Prisma.Booking$reviewArgs<ExtArgs>
+  ledgerEntries?: boolean | Prisma.Booking$ledgerEntriesArgs<ExtArgs>
+  _count?: boolean | Prisma.BookingCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["booking"]>
 
 export type BookingSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1207,17 +2510,32 @@ export type BookingSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   roomId?: boolean
   checkIn?: boolean
   checkOut?: boolean
+  bookingCode?: boolean
   nights?: boolean
   guests?: boolean
-  totalPrice?: boolean
-  status?: boolean
   guestName?: boolean
   guestPhone?: boolean
   guestEmail?: boolean
+  guestNotes?: boolean
+  totalPrice?: boolean
+  platformFee?: boolean
+  hostPayout?: boolean
+  status?: boolean
+  expiredAt?: boolean
+  confirmedAt?: boolean
+  checkedInAt?: boolean
+  canceledAt?: boolean
+  cancelReason?: boolean
+  canceledById?: boolean
+  roomSnapshot?: boolean
+  isTest?: boolean
+  paymentId?: boolean
+  deletedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   room?: boolean | Prisma.RoomDefaultArgs<ExtArgs>
+  canceledBy?: boolean | Prisma.Booking$canceledByArgs<ExtArgs>
 }, ExtArgs["result"]["booking"]>
 
 export type BookingSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1226,17 +2544,32 @@ export type BookingSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   roomId?: boolean
   checkIn?: boolean
   checkOut?: boolean
+  bookingCode?: boolean
   nights?: boolean
   guests?: boolean
-  totalPrice?: boolean
-  status?: boolean
   guestName?: boolean
   guestPhone?: boolean
   guestEmail?: boolean
+  guestNotes?: boolean
+  totalPrice?: boolean
+  platformFee?: boolean
+  hostPayout?: boolean
+  status?: boolean
+  expiredAt?: boolean
+  confirmedAt?: boolean
+  checkedInAt?: boolean
+  canceledAt?: boolean
+  cancelReason?: boolean
+  canceledById?: boolean
+  roomSnapshot?: boolean
+  isTest?: boolean
+  paymentId?: boolean
+  deletedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   room?: boolean | Prisma.RoomDefaultArgs<ExtArgs>
+  canceledBy?: boolean | Prisma.Booking$canceledByArgs<ExtArgs>
 }, ExtArgs["result"]["booking"]>
 
 export type BookingSelectScalar = {
@@ -1245,31 +2578,51 @@ export type BookingSelectScalar = {
   roomId?: boolean
   checkIn?: boolean
   checkOut?: boolean
+  bookingCode?: boolean
   nights?: boolean
   guests?: boolean
-  totalPrice?: boolean
-  status?: boolean
   guestName?: boolean
   guestPhone?: boolean
   guestEmail?: boolean
+  guestNotes?: boolean
+  totalPrice?: boolean
+  platformFee?: boolean
+  hostPayout?: boolean
+  status?: boolean
+  expiredAt?: boolean
+  confirmedAt?: boolean
+  checkedInAt?: boolean
+  canceledAt?: boolean
+  cancelReason?: boolean
+  canceledById?: boolean
+  roomSnapshot?: boolean
+  isTest?: boolean
+  paymentId?: boolean
+  deletedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type BookingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "roomId" | "checkIn" | "checkOut" | "nights" | "guests" | "totalPrice" | "status" | "guestName" | "guestPhone" | "guestEmail" | "createdAt" | "updatedAt", ExtArgs["result"]["booking"]>
+export type BookingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "roomId" | "checkIn" | "checkOut" | "bookingCode" | "nights" | "guests" | "guestName" | "guestPhone" | "guestEmail" | "guestNotes" | "totalPrice" | "platformFee" | "hostPayout" | "status" | "expiredAt" | "confirmedAt" | "checkedInAt" | "canceledAt" | "cancelReason" | "canceledById" | "roomSnapshot" | "isTest" | "paymentId" | "deletedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["booking"]>
 export type BookingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   room?: boolean | Prisma.RoomDefaultArgs<ExtArgs>
+  canceledBy?: boolean | Prisma.Booking$canceledByArgs<ExtArgs>
   payment?: boolean | Prisma.Booking$paymentArgs<ExtArgs>
+  dates?: boolean | Prisma.Booking$datesArgs<ExtArgs>
   review?: boolean | Prisma.Booking$reviewArgs<ExtArgs>
+  ledgerEntries?: boolean | Prisma.Booking$ledgerEntriesArgs<ExtArgs>
+  _count?: boolean | Prisma.BookingCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type BookingIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   room?: boolean | Prisma.RoomDefaultArgs<ExtArgs>
+  canceledBy?: boolean | Prisma.Booking$canceledByArgs<ExtArgs>
 }
 export type BookingIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   room?: boolean | Prisma.RoomDefaultArgs<ExtArgs>
+  canceledBy?: boolean | Prisma.Booking$canceledByArgs<ExtArgs>
 }
 
 export type $BookingPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1277,8 +2630,11 @@ export type $BookingPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
     room: Prisma.$RoomPayload<ExtArgs>
+    canceledBy: Prisma.$UserPayload<ExtArgs> | null
     payment: Prisma.$PaymentPayload<ExtArgs> | null
+    dates: Prisma.$BookingDatePayload<ExtArgs>[]
     review: Prisma.$ReviewPayload<ExtArgs> | null
+    ledgerEntries: Prisma.$HostLedgerPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1286,13 +2642,27 @@ export type $BookingPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     roomId: string
     checkIn: Date
     checkOut: Date
+    bookingCode: string
     nights: number
     guests: number
-    totalPrice: runtime.Decimal
-    status: $Enums.BookingStatus
     guestName: string
     guestPhone: string
     guestEmail: string | null
+    guestNotes: string | null
+    totalPrice: runtime.Decimal
+    platformFee: runtime.Decimal
+    hostPayout: runtime.Decimal
+    status: $Enums.BookingStatus
+    expiredAt: Date | null
+    confirmedAt: Date | null
+    checkedInAt: Date | null
+    canceledAt: Date | null
+    cancelReason: string | null
+    canceledById: string | null
+    roomSnapshot: runtime.JsonValue
+    isTest: boolean
+    paymentId: string | null
+    deletedAt: Date | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["booking"]>
@@ -1691,8 +3061,11 @@ export interface Prisma__BookingClient<T, Null = never, ExtArgs extends runtime.
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   room<T extends Prisma.RoomDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.RoomDefaultArgs<ExtArgs>>): Prisma.Prisma__RoomClient<runtime.Types.Result.GetResult<Prisma.$RoomPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  canceledBy<T extends Prisma.Booking$canceledByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Booking$canceledByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   payment<T extends Prisma.Booking$paymentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Booking$paymentArgs<ExtArgs>>): Prisma.Prisma__PaymentClient<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  dates<T extends Prisma.Booking$datesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Booking$datesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookingDatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   review<T extends Prisma.Booking$reviewArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Booking$reviewArgs<ExtArgs>>): Prisma.Prisma__ReviewClient<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  ledgerEntries<T extends Prisma.Booking$ledgerEntriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Booking$ledgerEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$HostLedgerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1727,13 +3100,27 @@ export interface BookingFieldRefs {
   readonly roomId: Prisma.FieldRef<"Booking", 'String'>
   readonly checkIn: Prisma.FieldRef<"Booking", 'DateTime'>
   readonly checkOut: Prisma.FieldRef<"Booking", 'DateTime'>
+  readonly bookingCode: Prisma.FieldRef<"Booking", 'String'>
   readonly nights: Prisma.FieldRef<"Booking", 'Int'>
   readonly guests: Prisma.FieldRef<"Booking", 'Int'>
-  readonly totalPrice: Prisma.FieldRef<"Booking", 'Decimal'>
-  readonly status: Prisma.FieldRef<"Booking", 'BookingStatus'>
   readonly guestName: Prisma.FieldRef<"Booking", 'String'>
   readonly guestPhone: Prisma.FieldRef<"Booking", 'String'>
   readonly guestEmail: Prisma.FieldRef<"Booking", 'String'>
+  readonly guestNotes: Prisma.FieldRef<"Booking", 'String'>
+  readonly totalPrice: Prisma.FieldRef<"Booking", 'Decimal'>
+  readonly platformFee: Prisma.FieldRef<"Booking", 'Decimal'>
+  readonly hostPayout: Prisma.FieldRef<"Booking", 'Decimal'>
+  readonly status: Prisma.FieldRef<"Booking", 'BookingStatus'>
+  readonly expiredAt: Prisma.FieldRef<"Booking", 'DateTime'>
+  readonly confirmedAt: Prisma.FieldRef<"Booking", 'DateTime'>
+  readonly checkedInAt: Prisma.FieldRef<"Booking", 'DateTime'>
+  readonly canceledAt: Prisma.FieldRef<"Booking", 'DateTime'>
+  readonly cancelReason: Prisma.FieldRef<"Booking", 'String'>
+  readonly canceledById: Prisma.FieldRef<"Booking", 'String'>
+  readonly roomSnapshot: Prisma.FieldRef<"Booking", 'Json'>
+  readonly isTest: Prisma.FieldRef<"Booking", 'Boolean'>
+  readonly paymentId: Prisma.FieldRef<"Booking", 'String'>
+  readonly deletedAt: Prisma.FieldRef<"Booking", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Booking", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Booking", 'DateTime'>
 }
@@ -2132,6 +3519,25 @@ export type BookingDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
 }
 
 /**
+ * Booking.canceledBy
+ */
+export type Booking$canceledByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
+}
+
+/**
  * Booking.payment
  */
 export type Booking$paymentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2151,6 +3557,30 @@ export type Booking$paymentArgs<ExtArgs extends runtime.Types.Extensions.Interna
 }
 
 /**
+ * Booking.dates
+ */
+export type Booking$datesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BookingDate
+   */
+  select?: Prisma.BookingDateSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the BookingDate
+   */
+  omit?: Prisma.BookingDateOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BookingDateInclude<ExtArgs> | null
+  where?: Prisma.BookingDateWhereInput
+  orderBy?: Prisma.BookingDateOrderByWithRelationInput | Prisma.BookingDateOrderByWithRelationInput[]
+  cursor?: Prisma.BookingDateWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BookingDateScalarFieldEnum | Prisma.BookingDateScalarFieldEnum[]
+}
+
+/**
  * Booking.review
  */
 export type Booking$reviewArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2167,6 +3597,30 @@ export type Booking$reviewArgs<ExtArgs extends runtime.Types.Extensions.Internal
    */
   include?: Prisma.ReviewInclude<ExtArgs> | null
   where?: Prisma.ReviewWhereInput
+}
+
+/**
+ * Booking.ledgerEntries
+ */
+export type Booking$ledgerEntriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the HostLedger
+   */
+  select?: Prisma.HostLedgerSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the HostLedger
+   */
+  omit?: Prisma.HostLedgerOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.HostLedgerInclude<ExtArgs> | null
+  where?: Prisma.HostLedgerWhereInput
+  orderBy?: Prisma.HostLedgerOrderByWithRelationInput | Prisma.HostLedgerOrderByWithRelationInput[]
+  cursor?: Prisma.HostLedgerWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.HostLedgerScalarFieldEnum | Prisma.HostLedgerScalarFieldEnum[]
 }
 
 /**

@@ -1,0 +1,67 @@
+meta {
+  name: 01 Register Customer
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/api/auth/register
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "customer@test.com",
+    "password": "Test1234",
+    "name": "John Customer",
+    "phone": "081234567890",
+    "role": "CUSTOMER"
+  }
+}
+
+tests {
+  test("should return 201 status", function() {
+    expect(res.status).to.equal(201);
+  });
+
+  test("should return success true", function() {
+    const data = res.body;
+    expect(data.success).to.equal(true);
+  });
+
+  test("should return user and tokens", function() {
+    const data = res.body;
+    expect(data.data).to.have.property('user');
+    expect(data.data).to.have.property('tokens');
+    expect(data.data.user).to.have.property('id');
+    expect(data.data.user).to.have.property('email');
+    expect(data.data.tokens).to.have.property('accessToken');
+    expect(data.data.tokens).to.have.property('refreshToken');
+  });
+
+  test("should save tokens to environment", function() {
+    const data = res.body;
+    if (data.success && data.data.tokens) {
+      bru.setEnvVar('customer_access_token', data.data.tokens.accessToken);
+      bru.setEnvVar('customer_refresh_token', data.data.tokens.refreshToken);
+      bru.setEnvVar('customer_id', data.data.user.id);
+    }
+  });
+}
+
+docs {
+  # Register New Customer
+
+  Register a new customer account.
+
+  ## Request Body
+  - `email` (string, required): Valid email address
+  - `password` (string, required): Min 8 characters, must contain letter and number
+  - `name` (string, optional): User's full name
+  - `phone` (string, required): Phone number (10-15 digits)
+  - `role` (string, optional): Default is "CUSTOMER"
+
+  ## Response
+  Returns user object and JWT tokens (access & refresh).
+}

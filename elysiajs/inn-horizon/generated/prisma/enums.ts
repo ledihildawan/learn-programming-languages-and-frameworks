@@ -22,9 +22,12 @@ export const BookingStatus = {
   PENDING: 'PENDING',
   PAID: 'PAID',
   CONFIRMED: 'CONFIRMED',
-  CANCELLED: 'CANCELLED',
+  CHECKED_IN: 'CHECKED_IN',
+  CHECKED_OUT: 'CHECKED_OUT',
   COMPLETED: 'COMPLETED',
-  REFUNDED: 'REFUNDED'
+  CANCELLED: 'CANCELLED',
+  REFUNDED: 'REFUNDED',
+  EXPIRED: 'EXPIRED'
 } as const
 
 export type BookingStatus = (typeof BookingStatus)[keyof typeof BookingStatus]
@@ -32,8 +35,38 @@ export type BookingStatus = (typeof BookingStatus)[keyof typeof BookingStatus]
 
 export const PaymentProvider = {
   MIDTRANS: 'MIDTRANS',
-  XENDIT: 'XENDIT',
   MANUAL: 'MANUAL'
 } as const
 
 export type PaymentProvider = (typeof PaymentProvider)[keyof typeof PaymentProvider]
+
+
+export const PaymentStatus = {
+  PENDING: 'PENDING',
+  SETTLED: 'SETTLED',
+  FAILED: 'FAILED',
+  EXPIRED: 'EXPIRED',
+  REFUNDED: 'REFUNDED'
+} as const
+
+export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]
+
+
+export const PayoutStatus = {
+  PENDING: 'PENDING',
+  PROCESSING: 'PROCESSING',
+  COMPLETED: 'COMPLETED',
+  REJECTED: 'REJECTED'
+} as const
+
+export type PayoutStatus = (typeof PayoutStatus)[keyof typeof PayoutStatus]
+
+
+export const LedgerType = {
+  INCOME_BOOKING: 'INCOME_BOOKING',
+  PAYOUT_WITHDRAWAL: 'PAYOUT_WITHDRAWAL',
+  REFUND_DEDUCTION: 'REFUND_DEDUCTION',
+  PLATFORM_FEE_DEDUCTION: 'PLATFORM_FEE_DEDUCTION'
+} as const
+
+export type LedgerType = (typeof LedgerType)[keyof typeof LedgerType]

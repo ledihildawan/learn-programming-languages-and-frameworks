@@ -1,0 +1,66 @@
+meta {
+  name: 03 Login
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{base_url}}/api/auth/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "customer@test.com",
+    "password": "Test1234"
+  }
+}
+
+tests {
+  test("should return 200 status", function() {
+    expect(res.status).to.equal(200);
+  });
+
+  test("should return success true", function() {
+    const data = res.body;
+    expect(data.success).to.equal(true);
+  });
+
+  test("should return user and tokens", function() {
+    const data = res.body;
+    expect(data.data).to.have.property('user');
+    expect(data.data).to.have.property('tokens');
+    expect(data.data.user).to.have.property('id');
+    expect(data.data.user).to.have.property('email');
+    expect(data.data.tokens).to.have.property('accessToken');
+    expect(data.data.tokens).to.have.property('refreshToken');
+  });
+
+  test("should save tokens to environment", function() {
+    const data = res.body;
+    if (data.success && data.data.tokens) {
+      bru.setEnvVar('access_token', data.data.tokens.accessToken);
+      bru.setEnvVar('refresh_token', data.data.tokens.refreshToken);
+      bru.setEnvVar('user_id', data.data.user.id);
+    }
+  });
+}
+
+docs {
+  # Login User
+
+  Authenticate user and receive JWT tokens.
+
+  ## Request Body
+  - `email` (string, required): Registered email address
+  - `password` (string, required): User password
+
+  ## Response
+  Returns user object and JWT tokens (access & refresh).
+
+  ## Notes
+  - Access token expires in 7 days (default)
+  - Refresh token expires in 30 days (default)
+  - Tokens are saved to environment variables for subsequent requests
+}

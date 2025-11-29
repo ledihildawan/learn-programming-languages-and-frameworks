@@ -38,36 +38,45 @@ export type PayoutMinAggregateOutputType = {
   id: string | null
   hostId: string | null
   amount: runtime.Decimal | null
-  bankName: string | null
-  accountNo: string | null
-  accountName: string | null
-  status: string | null
+  status: $Enums.PayoutStatus | null
+  payoutCode: string | null
   requestedAt: Date | null
   processedAt: Date | null
+  note: string | null
+  proofOfTransfer: string | null
+  processorId: string | null
+  deletedAt: Date | null
+  createdAt: Date | null
 }
 
 export type PayoutMaxAggregateOutputType = {
   id: string | null
   hostId: string | null
   amount: runtime.Decimal | null
-  bankName: string | null
-  accountNo: string | null
-  accountName: string | null
-  status: string | null
+  status: $Enums.PayoutStatus | null
+  payoutCode: string | null
   requestedAt: Date | null
   processedAt: Date | null
+  note: string | null
+  proofOfTransfer: string | null
+  processorId: string | null
+  deletedAt: Date | null
+  createdAt: Date | null
 }
 
 export type PayoutCountAggregateOutputType = {
   id: number
   hostId: number
   amount: number
-  bankName: number
-  accountNo: number
-  accountName: number
   status: number
+  payoutCode: number
   requestedAt: number
   processedAt: number
+  note: number
+  proofOfTransfer: number
+  processorId: number
+  deletedAt: number
+  createdAt: number
   _all: number
 }
 
@@ -84,36 +93,45 @@ export type PayoutMinAggregateInputType = {
   id?: true
   hostId?: true
   amount?: true
-  bankName?: true
-  accountNo?: true
-  accountName?: true
   status?: true
+  payoutCode?: true
   requestedAt?: true
   processedAt?: true
+  note?: true
+  proofOfTransfer?: true
+  processorId?: true
+  deletedAt?: true
+  createdAt?: true
 }
 
 export type PayoutMaxAggregateInputType = {
   id?: true
   hostId?: true
   amount?: true
-  bankName?: true
-  accountNo?: true
-  accountName?: true
   status?: true
+  payoutCode?: true
   requestedAt?: true
   processedAt?: true
+  note?: true
+  proofOfTransfer?: true
+  processorId?: true
+  deletedAt?: true
+  createdAt?: true
 }
 
 export type PayoutCountAggregateInputType = {
   id?: true
   hostId?: true
   amount?: true
-  bankName?: true
-  accountNo?: true
-  accountName?: true
   status?: true
+  payoutCode?: true
   requestedAt?: true
   processedAt?: true
+  note?: true
+  proofOfTransfer?: true
+  processorId?: true
+  deletedAt?: true
+  createdAt?: true
   _all?: true
 }
 
@@ -207,12 +225,15 @@ export type PayoutGroupByOutputType = {
   id: string
   hostId: string
   amount: runtime.Decimal
-  bankName: string
-  accountNo: string
-  accountName: string
-  status: string
+  status: $Enums.PayoutStatus
+  payoutCode: string
   requestedAt: Date
   processedAt: Date | null
+  note: string | null
+  proofOfTransfer: string | null
+  processorId: string | null
+  deletedAt: Date | null
+  createdAt: Date
   _count: PayoutCountAggregateOutputType | null
   _avg: PayoutAvgAggregateOutputType | null
   _sum: PayoutSumAggregateOutputType | null
@@ -239,57 +260,75 @@ export type PayoutWhereInput = {
   AND?: Prisma.PayoutWhereInput | Prisma.PayoutWhereInput[]
   OR?: Prisma.PayoutWhereInput[]
   NOT?: Prisma.PayoutWhereInput | Prisma.PayoutWhereInput[]
-  id?: Prisma.StringFilter<"Payout"> | string
+  id?: Prisma.UuidFilter<"Payout"> | string
   hostId?: Prisma.StringFilter<"Payout"> | string
   amount?: Prisma.DecimalFilter<"Payout"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  bankName?: Prisma.StringFilter<"Payout"> | string
-  accountNo?: Prisma.StringFilter<"Payout"> | string
-  accountName?: Prisma.StringFilter<"Payout"> | string
-  status?: Prisma.StringFilter<"Payout"> | string
+  status?: Prisma.EnumPayoutStatusFilter<"Payout"> | $Enums.PayoutStatus
+  payoutCode?: Prisma.StringFilter<"Payout"> | string
   requestedAt?: Prisma.DateTimeFilter<"Payout"> | Date | string
   processedAt?: Prisma.DateTimeNullableFilter<"Payout"> | Date | string | null
+  note?: Prisma.StringNullableFilter<"Payout"> | string | null
+  proofOfTransfer?: Prisma.StringNullableFilter<"Payout"> | string | null
+  processorId?: Prisma.StringNullableFilter<"Payout"> | string | null
+  deletedAt?: Prisma.DateTimeNullableFilter<"Payout"> | Date | string | null
+  createdAt?: Prisma.DateTimeFilter<"Payout"> | Date | string
   host?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  processor?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  ledgerEntries?: Prisma.HostLedgerListRelationFilter
 }
 
 export type PayoutOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   hostId?: Prisma.SortOrder
   amount?: Prisma.SortOrder
-  bankName?: Prisma.SortOrder
-  accountNo?: Prisma.SortOrder
-  accountName?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  payoutCode?: Prisma.SortOrder
   requestedAt?: Prisma.SortOrder
   processedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  note?: Prisma.SortOrderInput | Prisma.SortOrder
+  proofOfTransfer?: Prisma.SortOrderInput | Prisma.SortOrder
+  processorId?: Prisma.SortOrderInput | Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
   host?: Prisma.UserOrderByWithRelationInput
+  processor?: Prisma.UserOrderByWithRelationInput
+  ledgerEntries?: Prisma.HostLedgerOrderByRelationAggregateInput
 }
 
 export type PayoutWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  payoutCode?: string
   AND?: Prisma.PayoutWhereInput | Prisma.PayoutWhereInput[]
   OR?: Prisma.PayoutWhereInput[]
   NOT?: Prisma.PayoutWhereInput | Prisma.PayoutWhereInput[]
   hostId?: Prisma.StringFilter<"Payout"> | string
   amount?: Prisma.DecimalFilter<"Payout"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  bankName?: Prisma.StringFilter<"Payout"> | string
-  accountNo?: Prisma.StringFilter<"Payout"> | string
-  accountName?: Prisma.StringFilter<"Payout"> | string
-  status?: Prisma.StringFilter<"Payout"> | string
+  status?: Prisma.EnumPayoutStatusFilter<"Payout"> | $Enums.PayoutStatus
   requestedAt?: Prisma.DateTimeFilter<"Payout"> | Date | string
   processedAt?: Prisma.DateTimeNullableFilter<"Payout"> | Date | string | null
+  note?: Prisma.StringNullableFilter<"Payout"> | string | null
+  proofOfTransfer?: Prisma.StringNullableFilter<"Payout"> | string | null
+  processorId?: Prisma.StringNullableFilter<"Payout"> | string | null
+  deletedAt?: Prisma.DateTimeNullableFilter<"Payout"> | Date | string | null
+  createdAt?: Prisma.DateTimeFilter<"Payout"> | Date | string
   host?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-}, "id">
+  processor?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  ledgerEntries?: Prisma.HostLedgerListRelationFilter
+}, "id" | "payoutCode">
 
 export type PayoutOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   hostId?: Prisma.SortOrder
   amount?: Prisma.SortOrder
-  bankName?: Prisma.SortOrder
-  accountNo?: Prisma.SortOrder
-  accountName?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  payoutCode?: Prisma.SortOrder
   requestedAt?: Prisma.SortOrder
   processedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  note?: Prisma.SortOrderInput | Prisma.SortOrder
+  proofOfTransfer?: Prisma.SortOrderInput | Prisma.SortOrder
+  processorId?: Prisma.SortOrderInput | Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
   _count?: Prisma.PayoutCountOrderByAggregateInput
   _avg?: Prisma.PayoutAvgOrderByAggregateInput
   _max?: Prisma.PayoutMaxOrderByAggregateInput
@@ -301,98 +340,125 @@ export type PayoutScalarWhereWithAggregatesInput = {
   AND?: Prisma.PayoutScalarWhereWithAggregatesInput | Prisma.PayoutScalarWhereWithAggregatesInput[]
   OR?: Prisma.PayoutScalarWhereWithAggregatesInput[]
   NOT?: Prisma.PayoutScalarWhereWithAggregatesInput | Prisma.PayoutScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"Payout"> | string
+  id?: Prisma.UuidWithAggregatesFilter<"Payout"> | string
   hostId?: Prisma.StringWithAggregatesFilter<"Payout"> | string
   amount?: Prisma.DecimalWithAggregatesFilter<"Payout"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  bankName?: Prisma.StringWithAggregatesFilter<"Payout"> | string
-  accountNo?: Prisma.StringWithAggregatesFilter<"Payout"> | string
-  accountName?: Prisma.StringWithAggregatesFilter<"Payout"> | string
-  status?: Prisma.StringWithAggregatesFilter<"Payout"> | string
+  status?: Prisma.EnumPayoutStatusWithAggregatesFilter<"Payout"> | $Enums.PayoutStatus
+  payoutCode?: Prisma.StringWithAggregatesFilter<"Payout"> | string
   requestedAt?: Prisma.DateTimeWithAggregatesFilter<"Payout"> | Date | string
   processedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Payout"> | Date | string | null
+  note?: Prisma.StringNullableWithAggregatesFilter<"Payout"> | string | null
+  proofOfTransfer?: Prisma.StringNullableWithAggregatesFilter<"Payout"> | string | null
+  processorId?: Prisma.StringNullableWithAggregatesFilter<"Payout"> | string | null
+  deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Payout"> | Date | string | null
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"Payout"> | Date | string
 }
 
 export type PayoutCreateInput = {
   id?: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
-  bankName: string
-  accountNo: string
-  accountName: string
-  status?: string
+  status?: $Enums.PayoutStatus
+  payoutCode: string
   requestedAt?: Date | string
   processedAt?: Date | string | null
+  note?: string | null
+  proofOfTransfer?: string | null
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
   host: Prisma.UserCreateNestedOneWithoutPayoutsInput
+  processor?: Prisma.UserCreateNestedOneWithoutProcessedPayoutsInput
+  ledgerEntries?: Prisma.HostLedgerCreateNestedManyWithoutPayoutInput
 }
 
 export type PayoutUncheckedCreateInput = {
   id?: string
   hostId: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
-  bankName: string
-  accountNo: string
-  accountName: string
-  status?: string
+  status?: $Enums.PayoutStatus
+  payoutCode: string
   requestedAt?: Date | string
   processedAt?: Date | string | null
+  note?: string | null
+  proofOfTransfer?: string | null
+  processorId?: string | null
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  ledgerEntries?: Prisma.HostLedgerUncheckedCreateNestedManyWithoutPayoutInput
 }
 
 export type PayoutUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  bankName?: Prisma.StringFieldUpdateOperationsInput | string
-  accountNo?: Prisma.StringFieldUpdateOperationsInput | string
-  accountName?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPayoutStatusFieldUpdateOperationsInput | $Enums.PayoutStatus
+  payoutCode?: Prisma.StringFieldUpdateOperationsInput | string
   requestedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proofOfTransfer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   host?: Prisma.UserUpdateOneRequiredWithoutPayoutsNestedInput
+  processor?: Prisma.UserUpdateOneWithoutProcessedPayoutsNestedInput
+  ledgerEntries?: Prisma.HostLedgerUpdateManyWithoutPayoutNestedInput
 }
 
 export type PayoutUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   hostId?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  bankName?: Prisma.StringFieldUpdateOperationsInput | string
-  accountNo?: Prisma.StringFieldUpdateOperationsInput | string
-  accountName?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPayoutStatusFieldUpdateOperationsInput | $Enums.PayoutStatus
+  payoutCode?: Prisma.StringFieldUpdateOperationsInput | string
   requestedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proofOfTransfer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  processorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ledgerEntries?: Prisma.HostLedgerUncheckedUpdateManyWithoutPayoutNestedInput
 }
 
 export type PayoutCreateManyInput = {
   id?: string
   hostId: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
-  bankName: string
-  accountNo: string
-  accountName: string
-  status?: string
+  status?: $Enums.PayoutStatus
+  payoutCode: string
   requestedAt?: Date | string
   processedAt?: Date | string | null
+  note?: string | null
+  proofOfTransfer?: string | null
+  processorId?: string | null
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
 }
 
 export type PayoutUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  bankName?: Prisma.StringFieldUpdateOperationsInput | string
-  accountNo?: Prisma.StringFieldUpdateOperationsInput | string
-  accountName?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPayoutStatusFieldUpdateOperationsInput | $Enums.PayoutStatus
+  payoutCode?: Prisma.StringFieldUpdateOperationsInput | string
   requestedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proofOfTransfer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type PayoutUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   hostId?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  bankName?: Prisma.StringFieldUpdateOperationsInput | string
-  accountNo?: Prisma.StringFieldUpdateOperationsInput | string
-  accountName?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPayoutStatusFieldUpdateOperationsInput | $Enums.PayoutStatus
+  payoutCode?: Prisma.StringFieldUpdateOperationsInput | string
   requestedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proofOfTransfer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  processorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type PayoutListRelationFilter = {
@@ -409,12 +475,15 @@ export type PayoutCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   hostId?: Prisma.SortOrder
   amount?: Prisma.SortOrder
-  bankName?: Prisma.SortOrder
-  accountNo?: Prisma.SortOrder
-  accountName?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  payoutCode?: Prisma.SortOrder
   requestedAt?: Prisma.SortOrder
   processedAt?: Prisma.SortOrder
+  note?: Prisma.SortOrder
+  proofOfTransfer?: Prisma.SortOrder
+  processorId?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
 }
 
 export type PayoutAvgOrderByAggregateInput = {
@@ -425,28 +494,39 @@ export type PayoutMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   hostId?: Prisma.SortOrder
   amount?: Prisma.SortOrder
-  bankName?: Prisma.SortOrder
-  accountNo?: Prisma.SortOrder
-  accountName?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  payoutCode?: Prisma.SortOrder
   requestedAt?: Prisma.SortOrder
   processedAt?: Prisma.SortOrder
+  note?: Prisma.SortOrder
+  proofOfTransfer?: Prisma.SortOrder
+  processorId?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
 }
 
 export type PayoutMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   hostId?: Prisma.SortOrder
   amount?: Prisma.SortOrder
-  bankName?: Prisma.SortOrder
-  accountNo?: Prisma.SortOrder
-  accountName?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  payoutCode?: Prisma.SortOrder
   requestedAt?: Prisma.SortOrder
   processedAt?: Prisma.SortOrder
+  note?: Prisma.SortOrder
+  proofOfTransfer?: Prisma.SortOrder
+  processorId?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
 }
 
 export type PayoutSumOrderByAggregateInput = {
   amount?: Prisma.SortOrder
+}
+
+export type PayoutNullableScalarRelationFilter = {
+  is?: Prisma.PayoutWhereInput | null
+  isNot?: Prisma.PayoutWhereInput | null
 }
 
 export type PayoutCreateNestedManyWithoutHostInput = {
@@ -456,10 +536,24 @@ export type PayoutCreateNestedManyWithoutHostInput = {
   connect?: Prisma.PayoutWhereUniqueInput | Prisma.PayoutWhereUniqueInput[]
 }
 
+export type PayoutCreateNestedManyWithoutProcessorInput = {
+  create?: Prisma.XOR<Prisma.PayoutCreateWithoutProcessorInput, Prisma.PayoutUncheckedCreateWithoutProcessorInput> | Prisma.PayoutCreateWithoutProcessorInput[] | Prisma.PayoutUncheckedCreateWithoutProcessorInput[]
+  connectOrCreate?: Prisma.PayoutCreateOrConnectWithoutProcessorInput | Prisma.PayoutCreateOrConnectWithoutProcessorInput[]
+  createMany?: Prisma.PayoutCreateManyProcessorInputEnvelope
+  connect?: Prisma.PayoutWhereUniqueInput | Prisma.PayoutWhereUniqueInput[]
+}
+
 export type PayoutUncheckedCreateNestedManyWithoutHostInput = {
   create?: Prisma.XOR<Prisma.PayoutCreateWithoutHostInput, Prisma.PayoutUncheckedCreateWithoutHostInput> | Prisma.PayoutCreateWithoutHostInput[] | Prisma.PayoutUncheckedCreateWithoutHostInput[]
   connectOrCreate?: Prisma.PayoutCreateOrConnectWithoutHostInput | Prisma.PayoutCreateOrConnectWithoutHostInput[]
   createMany?: Prisma.PayoutCreateManyHostInputEnvelope
+  connect?: Prisma.PayoutWhereUniqueInput | Prisma.PayoutWhereUniqueInput[]
+}
+
+export type PayoutUncheckedCreateNestedManyWithoutProcessorInput = {
+  create?: Prisma.XOR<Prisma.PayoutCreateWithoutProcessorInput, Prisma.PayoutUncheckedCreateWithoutProcessorInput> | Prisma.PayoutCreateWithoutProcessorInput[] | Prisma.PayoutUncheckedCreateWithoutProcessorInput[]
+  connectOrCreate?: Prisma.PayoutCreateOrConnectWithoutProcessorInput | Prisma.PayoutCreateOrConnectWithoutProcessorInput[]
+  createMany?: Prisma.PayoutCreateManyProcessorInputEnvelope
   connect?: Prisma.PayoutWhereUniqueInput | Prisma.PayoutWhereUniqueInput[]
 }
 
@@ -477,6 +571,20 @@ export type PayoutUpdateManyWithoutHostNestedInput = {
   deleteMany?: Prisma.PayoutScalarWhereInput | Prisma.PayoutScalarWhereInput[]
 }
 
+export type PayoutUpdateManyWithoutProcessorNestedInput = {
+  create?: Prisma.XOR<Prisma.PayoutCreateWithoutProcessorInput, Prisma.PayoutUncheckedCreateWithoutProcessorInput> | Prisma.PayoutCreateWithoutProcessorInput[] | Prisma.PayoutUncheckedCreateWithoutProcessorInput[]
+  connectOrCreate?: Prisma.PayoutCreateOrConnectWithoutProcessorInput | Prisma.PayoutCreateOrConnectWithoutProcessorInput[]
+  upsert?: Prisma.PayoutUpsertWithWhereUniqueWithoutProcessorInput | Prisma.PayoutUpsertWithWhereUniqueWithoutProcessorInput[]
+  createMany?: Prisma.PayoutCreateManyProcessorInputEnvelope
+  set?: Prisma.PayoutWhereUniqueInput | Prisma.PayoutWhereUniqueInput[]
+  disconnect?: Prisma.PayoutWhereUniqueInput | Prisma.PayoutWhereUniqueInput[]
+  delete?: Prisma.PayoutWhereUniqueInput | Prisma.PayoutWhereUniqueInput[]
+  connect?: Prisma.PayoutWhereUniqueInput | Prisma.PayoutWhereUniqueInput[]
+  update?: Prisma.PayoutUpdateWithWhereUniqueWithoutProcessorInput | Prisma.PayoutUpdateWithWhereUniqueWithoutProcessorInput[]
+  updateMany?: Prisma.PayoutUpdateManyWithWhereWithoutProcessorInput | Prisma.PayoutUpdateManyWithWhereWithoutProcessorInput[]
+  deleteMany?: Prisma.PayoutScalarWhereInput | Prisma.PayoutScalarWhereInput[]
+}
+
 export type PayoutUncheckedUpdateManyWithoutHostNestedInput = {
   create?: Prisma.XOR<Prisma.PayoutCreateWithoutHostInput, Prisma.PayoutUncheckedCreateWithoutHostInput> | Prisma.PayoutCreateWithoutHostInput[] | Prisma.PayoutUncheckedCreateWithoutHostInput[]
   connectOrCreate?: Prisma.PayoutCreateOrConnectWithoutHostInput | Prisma.PayoutCreateOrConnectWithoutHostInput[]
@@ -491,26 +599,68 @@ export type PayoutUncheckedUpdateManyWithoutHostNestedInput = {
   deleteMany?: Prisma.PayoutScalarWhereInput | Prisma.PayoutScalarWhereInput[]
 }
 
+export type PayoutUncheckedUpdateManyWithoutProcessorNestedInput = {
+  create?: Prisma.XOR<Prisma.PayoutCreateWithoutProcessorInput, Prisma.PayoutUncheckedCreateWithoutProcessorInput> | Prisma.PayoutCreateWithoutProcessorInput[] | Prisma.PayoutUncheckedCreateWithoutProcessorInput[]
+  connectOrCreate?: Prisma.PayoutCreateOrConnectWithoutProcessorInput | Prisma.PayoutCreateOrConnectWithoutProcessorInput[]
+  upsert?: Prisma.PayoutUpsertWithWhereUniqueWithoutProcessorInput | Prisma.PayoutUpsertWithWhereUniqueWithoutProcessorInput[]
+  createMany?: Prisma.PayoutCreateManyProcessorInputEnvelope
+  set?: Prisma.PayoutWhereUniqueInput | Prisma.PayoutWhereUniqueInput[]
+  disconnect?: Prisma.PayoutWhereUniqueInput | Prisma.PayoutWhereUniqueInput[]
+  delete?: Prisma.PayoutWhereUniqueInput | Prisma.PayoutWhereUniqueInput[]
+  connect?: Prisma.PayoutWhereUniqueInput | Prisma.PayoutWhereUniqueInput[]
+  update?: Prisma.PayoutUpdateWithWhereUniqueWithoutProcessorInput | Prisma.PayoutUpdateWithWhereUniqueWithoutProcessorInput[]
+  updateMany?: Prisma.PayoutUpdateManyWithWhereWithoutProcessorInput | Prisma.PayoutUpdateManyWithWhereWithoutProcessorInput[]
+  deleteMany?: Prisma.PayoutScalarWhereInput | Prisma.PayoutScalarWhereInput[]
+}
+
+export type EnumPayoutStatusFieldUpdateOperationsInput = {
+  set?: $Enums.PayoutStatus
+}
+
+export type PayoutCreateNestedOneWithoutLedgerEntriesInput = {
+  create?: Prisma.XOR<Prisma.PayoutCreateWithoutLedgerEntriesInput, Prisma.PayoutUncheckedCreateWithoutLedgerEntriesInput>
+  connectOrCreate?: Prisma.PayoutCreateOrConnectWithoutLedgerEntriesInput
+  connect?: Prisma.PayoutWhereUniqueInput
+}
+
+export type PayoutUpdateOneWithoutLedgerEntriesNestedInput = {
+  create?: Prisma.XOR<Prisma.PayoutCreateWithoutLedgerEntriesInput, Prisma.PayoutUncheckedCreateWithoutLedgerEntriesInput>
+  connectOrCreate?: Prisma.PayoutCreateOrConnectWithoutLedgerEntriesInput
+  upsert?: Prisma.PayoutUpsertWithoutLedgerEntriesInput
+  disconnect?: Prisma.PayoutWhereInput | boolean
+  delete?: Prisma.PayoutWhereInput | boolean
+  connect?: Prisma.PayoutWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PayoutUpdateToOneWithWhereWithoutLedgerEntriesInput, Prisma.PayoutUpdateWithoutLedgerEntriesInput>, Prisma.PayoutUncheckedUpdateWithoutLedgerEntriesInput>
+}
+
 export type PayoutCreateWithoutHostInput = {
   id?: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
-  bankName: string
-  accountNo: string
-  accountName: string
-  status?: string
+  status?: $Enums.PayoutStatus
+  payoutCode: string
   requestedAt?: Date | string
   processedAt?: Date | string | null
+  note?: string | null
+  proofOfTransfer?: string | null
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  processor?: Prisma.UserCreateNestedOneWithoutProcessedPayoutsInput
+  ledgerEntries?: Prisma.HostLedgerCreateNestedManyWithoutPayoutInput
 }
 
 export type PayoutUncheckedCreateWithoutHostInput = {
   id?: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
-  bankName: string
-  accountNo: string
-  accountName: string
-  status?: string
+  status?: $Enums.PayoutStatus
+  payoutCode: string
   requestedAt?: Date | string
   processedAt?: Date | string | null
+  note?: string | null
+  proofOfTransfer?: string | null
+  processorId?: string | null
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  ledgerEntries?: Prisma.HostLedgerUncheckedCreateNestedManyWithoutPayoutInput
 }
 
 export type PayoutCreateOrConnectWithoutHostInput = {
@@ -520,6 +670,46 @@ export type PayoutCreateOrConnectWithoutHostInput = {
 
 export type PayoutCreateManyHostInputEnvelope = {
   data: Prisma.PayoutCreateManyHostInput | Prisma.PayoutCreateManyHostInput[]
+  skipDuplicates?: boolean
+}
+
+export type PayoutCreateWithoutProcessorInput = {
+  id?: string
+  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: $Enums.PayoutStatus
+  payoutCode: string
+  requestedAt?: Date | string
+  processedAt?: Date | string | null
+  note?: string | null
+  proofOfTransfer?: string | null
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  host: Prisma.UserCreateNestedOneWithoutPayoutsInput
+  ledgerEntries?: Prisma.HostLedgerCreateNestedManyWithoutPayoutInput
+}
+
+export type PayoutUncheckedCreateWithoutProcessorInput = {
+  id?: string
+  hostId: string
+  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: $Enums.PayoutStatus
+  payoutCode: string
+  requestedAt?: Date | string
+  processedAt?: Date | string | null
+  note?: string | null
+  proofOfTransfer?: string | null
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  ledgerEntries?: Prisma.HostLedgerUncheckedCreateNestedManyWithoutPayoutInput
+}
+
+export type PayoutCreateOrConnectWithoutProcessorInput = {
+  where: Prisma.PayoutWhereUniqueInput
+  create: Prisma.XOR<Prisma.PayoutCreateWithoutProcessorInput, Prisma.PayoutUncheckedCreateWithoutProcessorInput>
+}
+
+export type PayoutCreateManyProcessorInputEnvelope = {
+  data: Prisma.PayoutCreateManyProcessorInput | Prisma.PayoutCreateManyProcessorInput[]
   skipDuplicates?: boolean
 }
 
@@ -543,140 +733,363 @@ export type PayoutScalarWhereInput = {
   AND?: Prisma.PayoutScalarWhereInput | Prisma.PayoutScalarWhereInput[]
   OR?: Prisma.PayoutScalarWhereInput[]
   NOT?: Prisma.PayoutScalarWhereInput | Prisma.PayoutScalarWhereInput[]
-  id?: Prisma.StringFilter<"Payout"> | string
+  id?: Prisma.UuidFilter<"Payout"> | string
   hostId?: Prisma.StringFilter<"Payout"> | string
   amount?: Prisma.DecimalFilter<"Payout"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  bankName?: Prisma.StringFilter<"Payout"> | string
-  accountNo?: Prisma.StringFilter<"Payout"> | string
-  accountName?: Prisma.StringFilter<"Payout"> | string
-  status?: Prisma.StringFilter<"Payout"> | string
+  status?: Prisma.EnumPayoutStatusFilter<"Payout"> | $Enums.PayoutStatus
+  payoutCode?: Prisma.StringFilter<"Payout"> | string
   requestedAt?: Prisma.DateTimeFilter<"Payout"> | Date | string
   processedAt?: Prisma.DateTimeNullableFilter<"Payout"> | Date | string | null
+  note?: Prisma.StringNullableFilter<"Payout"> | string | null
+  proofOfTransfer?: Prisma.StringNullableFilter<"Payout"> | string | null
+  processorId?: Prisma.StringNullableFilter<"Payout"> | string | null
+  deletedAt?: Prisma.DateTimeNullableFilter<"Payout"> | Date | string | null
+  createdAt?: Prisma.DateTimeFilter<"Payout"> | Date | string
+}
+
+export type PayoutUpsertWithWhereUniqueWithoutProcessorInput = {
+  where: Prisma.PayoutWhereUniqueInput
+  update: Prisma.XOR<Prisma.PayoutUpdateWithoutProcessorInput, Prisma.PayoutUncheckedUpdateWithoutProcessorInput>
+  create: Prisma.XOR<Prisma.PayoutCreateWithoutProcessorInput, Prisma.PayoutUncheckedCreateWithoutProcessorInput>
+}
+
+export type PayoutUpdateWithWhereUniqueWithoutProcessorInput = {
+  where: Prisma.PayoutWhereUniqueInput
+  data: Prisma.XOR<Prisma.PayoutUpdateWithoutProcessorInput, Prisma.PayoutUncheckedUpdateWithoutProcessorInput>
+}
+
+export type PayoutUpdateManyWithWhereWithoutProcessorInput = {
+  where: Prisma.PayoutScalarWhereInput
+  data: Prisma.XOR<Prisma.PayoutUpdateManyMutationInput, Prisma.PayoutUncheckedUpdateManyWithoutProcessorInput>
+}
+
+export type PayoutCreateWithoutLedgerEntriesInput = {
+  id?: string
+  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: $Enums.PayoutStatus
+  payoutCode: string
+  requestedAt?: Date | string
+  processedAt?: Date | string | null
+  note?: string | null
+  proofOfTransfer?: string | null
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  host: Prisma.UserCreateNestedOneWithoutPayoutsInput
+  processor?: Prisma.UserCreateNestedOneWithoutProcessedPayoutsInput
+}
+
+export type PayoutUncheckedCreateWithoutLedgerEntriesInput = {
+  id?: string
+  hostId: string
+  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: $Enums.PayoutStatus
+  payoutCode: string
+  requestedAt?: Date | string
+  processedAt?: Date | string | null
+  note?: string | null
+  proofOfTransfer?: string | null
+  processorId?: string | null
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+}
+
+export type PayoutCreateOrConnectWithoutLedgerEntriesInput = {
+  where: Prisma.PayoutWhereUniqueInput
+  create: Prisma.XOR<Prisma.PayoutCreateWithoutLedgerEntriesInput, Prisma.PayoutUncheckedCreateWithoutLedgerEntriesInput>
+}
+
+export type PayoutUpsertWithoutLedgerEntriesInput = {
+  update: Prisma.XOR<Prisma.PayoutUpdateWithoutLedgerEntriesInput, Prisma.PayoutUncheckedUpdateWithoutLedgerEntriesInput>
+  create: Prisma.XOR<Prisma.PayoutCreateWithoutLedgerEntriesInput, Prisma.PayoutUncheckedCreateWithoutLedgerEntriesInput>
+  where?: Prisma.PayoutWhereInput
+}
+
+export type PayoutUpdateToOneWithWhereWithoutLedgerEntriesInput = {
+  where?: Prisma.PayoutWhereInput
+  data: Prisma.XOR<Prisma.PayoutUpdateWithoutLedgerEntriesInput, Prisma.PayoutUncheckedUpdateWithoutLedgerEntriesInput>
+}
+
+export type PayoutUpdateWithoutLedgerEntriesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumPayoutStatusFieldUpdateOperationsInput | $Enums.PayoutStatus
+  payoutCode?: Prisma.StringFieldUpdateOperationsInput | string
+  requestedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proofOfTransfer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  host?: Prisma.UserUpdateOneRequiredWithoutPayoutsNestedInput
+  processor?: Prisma.UserUpdateOneWithoutProcessedPayoutsNestedInput
+}
+
+export type PayoutUncheckedUpdateWithoutLedgerEntriesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  hostId?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumPayoutStatusFieldUpdateOperationsInput | $Enums.PayoutStatus
+  payoutCode?: Prisma.StringFieldUpdateOperationsInput | string
+  requestedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proofOfTransfer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  processorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type PayoutCreateManyHostInput = {
   id?: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
-  bankName: string
-  accountNo: string
-  accountName: string
-  status?: string
+  status?: $Enums.PayoutStatus
+  payoutCode: string
   requestedAt?: Date | string
   processedAt?: Date | string | null
+  note?: string | null
+  proofOfTransfer?: string | null
+  processorId?: string | null
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+}
+
+export type PayoutCreateManyProcessorInput = {
+  id?: string
+  hostId: string
+  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: $Enums.PayoutStatus
+  payoutCode: string
+  requestedAt?: Date | string
+  processedAt?: Date | string | null
+  note?: string | null
+  proofOfTransfer?: string | null
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
 }
 
 export type PayoutUpdateWithoutHostInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  bankName?: Prisma.StringFieldUpdateOperationsInput | string
-  accountNo?: Prisma.StringFieldUpdateOperationsInput | string
-  accountName?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPayoutStatusFieldUpdateOperationsInput | $Enums.PayoutStatus
+  payoutCode?: Prisma.StringFieldUpdateOperationsInput | string
   requestedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proofOfTransfer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  processor?: Prisma.UserUpdateOneWithoutProcessedPayoutsNestedInput
+  ledgerEntries?: Prisma.HostLedgerUpdateManyWithoutPayoutNestedInput
 }
 
 export type PayoutUncheckedUpdateWithoutHostInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  bankName?: Prisma.StringFieldUpdateOperationsInput | string
-  accountNo?: Prisma.StringFieldUpdateOperationsInput | string
-  accountName?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPayoutStatusFieldUpdateOperationsInput | $Enums.PayoutStatus
+  payoutCode?: Prisma.StringFieldUpdateOperationsInput | string
   requestedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proofOfTransfer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  processorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ledgerEntries?: Prisma.HostLedgerUncheckedUpdateManyWithoutPayoutNestedInput
 }
 
 export type PayoutUncheckedUpdateManyWithoutHostInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  bankName?: Prisma.StringFieldUpdateOperationsInput | string
-  accountNo?: Prisma.StringFieldUpdateOperationsInput | string
-  accountName?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPayoutStatusFieldUpdateOperationsInput | $Enums.PayoutStatus
+  payoutCode?: Prisma.StringFieldUpdateOperationsInput | string
   requestedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proofOfTransfer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  processorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+export type PayoutUpdateWithoutProcessorInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumPayoutStatusFieldUpdateOperationsInput | $Enums.PayoutStatus
+  payoutCode?: Prisma.StringFieldUpdateOperationsInput | string
+  requestedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proofOfTransfer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  host?: Prisma.UserUpdateOneRequiredWithoutPayoutsNestedInput
+  ledgerEntries?: Prisma.HostLedgerUpdateManyWithoutPayoutNestedInput
+}
+
+export type PayoutUncheckedUpdateWithoutProcessorInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  hostId?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumPayoutStatusFieldUpdateOperationsInput | $Enums.PayoutStatus
+  payoutCode?: Prisma.StringFieldUpdateOperationsInput | string
+  requestedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proofOfTransfer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ledgerEntries?: Prisma.HostLedgerUncheckedUpdateManyWithoutPayoutNestedInput
+}
+
+export type PayoutUncheckedUpdateManyWithoutProcessorInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  hostId?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumPayoutStatusFieldUpdateOperationsInput | $Enums.PayoutStatus
+  payoutCode?: Prisma.StringFieldUpdateOperationsInput | string
+  requestedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proofOfTransfer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+
+/**
+ * Count Type PayoutCountOutputType
+ */
+
+export type PayoutCountOutputType = {
+  ledgerEntries: number
+}
+
+export type PayoutCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  ledgerEntries?: boolean | PayoutCountOutputTypeCountLedgerEntriesArgs
+}
+
+/**
+ * PayoutCountOutputType without action
+ */
+export type PayoutCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PayoutCountOutputType
+   */
+  select?: Prisma.PayoutCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * PayoutCountOutputType without action
+ */
+export type PayoutCountOutputTypeCountLedgerEntriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.HostLedgerWhereInput
+}
 
 
 export type PayoutSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   hostId?: boolean
   amount?: boolean
-  bankName?: boolean
-  accountNo?: boolean
-  accountName?: boolean
   status?: boolean
+  payoutCode?: boolean
   requestedAt?: boolean
   processedAt?: boolean
+  note?: boolean
+  proofOfTransfer?: boolean
+  processorId?: boolean
+  deletedAt?: boolean
+  createdAt?: boolean
   host?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  processor?: boolean | Prisma.Payout$processorArgs<ExtArgs>
+  ledgerEntries?: boolean | Prisma.Payout$ledgerEntriesArgs<ExtArgs>
+  _count?: boolean | Prisma.PayoutCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["payout"]>
 
 export type PayoutSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   hostId?: boolean
   amount?: boolean
-  bankName?: boolean
-  accountNo?: boolean
-  accountName?: boolean
   status?: boolean
+  payoutCode?: boolean
   requestedAt?: boolean
   processedAt?: boolean
+  note?: boolean
+  proofOfTransfer?: boolean
+  processorId?: boolean
+  deletedAt?: boolean
+  createdAt?: boolean
   host?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  processor?: boolean | Prisma.Payout$processorArgs<ExtArgs>
 }, ExtArgs["result"]["payout"]>
 
 export type PayoutSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   hostId?: boolean
   amount?: boolean
-  bankName?: boolean
-  accountNo?: boolean
-  accountName?: boolean
   status?: boolean
+  payoutCode?: boolean
   requestedAt?: boolean
   processedAt?: boolean
+  note?: boolean
+  proofOfTransfer?: boolean
+  processorId?: boolean
+  deletedAt?: boolean
+  createdAt?: boolean
   host?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  processor?: boolean | Prisma.Payout$processorArgs<ExtArgs>
 }, ExtArgs["result"]["payout"]>
 
 export type PayoutSelectScalar = {
   id?: boolean
   hostId?: boolean
   amount?: boolean
-  bankName?: boolean
-  accountNo?: boolean
-  accountName?: boolean
   status?: boolean
+  payoutCode?: boolean
   requestedAt?: boolean
   processedAt?: boolean
+  note?: boolean
+  proofOfTransfer?: boolean
+  processorId?: boolean
+  deletedAt?: boolean
+  createdAt?: boolean
 }
 
-export type PayoutOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "hostId" | "amount" | "bankName" | "accountNo" | "accountName" | "status" | "requestedAt" | "processedAt", ExtArgs["result"]["payout"]>
+export type PayoutOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "hostId" | "amount" | "status" | "payoutCode" | "requestedAt" | "processedAt" | "note" | "proofOfTransfer" | "processorId" | "deletedAt" | "createdAt", ExtArgs["result"]["payout"]>
 export type PayoutInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   host?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  processor?: boolean | Prisma.Payout$processorArgs<ExtArgs>
+  ledgerEntries?: boolean | Prisma.Payout$ledgerEntriesArgs<ExtArgs>
+  _count?: boolean | Prisma.PayoutCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type PayoutIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   host?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  processor?: boolean | Prisma.Payout$processorArgs<ExtArgs>
 }
 export type PayoutIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   host?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  processor?: boolean | Prisma.Payout$processorArgs<ExtArgs>
 }
 
 export type $PayoutPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Payout"
   objects: {
     host: Prisma.$UserPayload<ExtArgs>
+    processor: Prisma.$UserPayload<ExtArgs> | null
+    ledgerEntries: Prisma.$HostLedgerPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     hostId: string
     amount: runtime.Decimal
-    bankName: string
-    accountNo: string
-    accountName: string
-    status: string
+    status: $Enums.PayoutStatus
+    payoutCode: string
     requestedAt: Date
     processedAt: Date | null
+    note: string | null
+    proofOfTransfer: string | null
+    processorId: string | null
+    deletedAt: Date | null
+    createdAt: Date
   }, ExtArgs["result"]["payout"]>
   composites: {}
 }
@@ -1072,6 +1485,8 @@ readonly fields: PayoutFieldRefs;
 export interface Prisma__PayoutClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   host<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  processor<T extends Prisma.Payout$processorArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Payout$processorArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  ledgerEntries<T extends Prisma.Payout$ledgerEntriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Payout$ledgerEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$HostLedgerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1104,12 +1519,15 @@ export interface PayoutFieldRefs {
   readonly id: Prisma.FieldRef<"Payout", 'String'>
   readonly hostId: Prisma.FieldRef<"Payout", 'String'>
   readonly amount: Prisma.FieldRef<"Payout", 'Decimal'>
-  readonly bankName: Prisma.FieldRef<"Payout", 'String'>
-  readonly accountNo: Prisma.FieldRef<"Payout", 'String'>
-  readonly accountName: Prisma.FieldRef<"Payout", 'String'>
-  readonly status: Prisma.FieldRef<"Payout", 'String'>
+  readonly status: Prisma.FieldRef<"Payout", 'PayoutStatus'>
+  readonly payoutCode: Prisma.FieldRef<"Payout", 'String'>
   readonly requestedAt: Prisma.FieldRef<"Payout", 'DateTime'>
   readonly processedAt: Prisma.FieldRef<"Payout", 'DateTime'>
+  readonly note: Prisma.FieldRef<"Payout", 'String'>
+  readonly proofOfTransfer: Prisma.FieldRef<"Payout", 'String'>
+  readonly processorId: Prisma.FieldRef<"Payout", 'String'>
+  readonly deletedAt: Prisma.FieldRef<"Payout", 'DateTime'>
+  readonly createdAt: Prisma.FieldRef<"Payout", 'DateTime'>
 }
     
 
@@ -1503,6 +1921,49 @@ export type PayoutDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Limit how many Payouts to delete.
    */
   limit?: number
+}
+
+/**
+ * Payout.processor
+ */
+export type Payout$processorArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
+}
+
+/**
+ * Payout.ledgerEntries
+ */
+export type Payout$ledgerEntriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the HostLedger
+   */
+  select?: Prisma.HostLedgerSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the HostLedger
+   */
+  omit?: Prisma.HostLedgerOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.HostLedgerInclude<ExtArgs> | null
+  where?: Prisma.HostLedgerWhereInput
+  orderBy?: Prisma.HostLedgerOrderByWithRelationInput | Prisma.HostLedgerOrderByWithRelationInput[]
+  cursor?: Prisma.HostLedgerWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.HostLedgerScalarFieldEnum | Prisma.HostLedgerScalarFieldEnum[]
 }
 
 /**

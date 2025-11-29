@@ -1,0 +1,33 @@
+meta {
+  name: register - host
+  type: http
+  seq: 10
+}
+
+post {
+  url: {{host}}/api/auth/register
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "newhost@example.com",
+    "password": "rahasia123",
+    "name": "New Host User",
+    "role": "HOST"
+  }
+}
+
+tests {
+  test("should return 201 status", function() {
+    expect(res.status).to.equal(201);
+  });
+
+  test("should return user data with HOST role", function() {
+    expect(res.body.user).to.be.an('object');
+    expect(res.body.user.role).to.equal('HOST');
+    expect(res.body.user.email).to.equal('newhost@example.com');
+    expect(res.body.message).to.equal('User registered successfully');
+  });
+}

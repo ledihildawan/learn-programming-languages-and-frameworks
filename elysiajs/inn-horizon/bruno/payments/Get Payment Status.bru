@@ -1,0 +1,68 @@
+meta {
+  name: Get Payment Status
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{base_url}}/api/payments/:bookingId/status
+  body: none
+  auth: none
+}
+
+params:path {
+  bookingId: clx1234567890
+}
+
+headers {
+  Content-Type: application/json
+}
+
+docs {
+  # Get Payment Status
+
+  Retrieves the payment status for a specific booking.
+
+  ## Prerequisites
+  - Booking must exist
+  - Payment must have been created for this booking
+
+  ## Response
+  Returns payment details including:
+  - Payment ID
+  - Booking ID
+  - Amount
+  - Provider (MIDTRANS)
+  - Status (PENDING, SETTLED, FAILED, EXPIRED, REFUNDED)
+  - Paid at timestamp
+  - Expired at timestamp
+  - Booking details
+
+  ## Payment Statuses
+  - **PENDING**: Payment token created, waiting for payment
+  - **SETTLED**: Payment successful and confirmed
+  - **FAILED**: Payment failed or denied
+  - **EXPIRED**: Payment token expired (24 hours)
+  - **REFUNDED**: Payment refunded after cancellation
+}
+
+tests {
+  test("Status code is 200 or 404", function() {
+    const status = res.getStatus();
+    expect([200, 404]).to.include(status);
+  });
+
+  test("Response has success field", function() {
+    expect(res.getBody()).to.have.property('success');
+  });
+
+  test("If success, response has payment data", function() {
+    const body = res.getBody();
+    if (body.success) {
+      expect(body.data).to.have.property('payment_id');
+      expect(body.data).to.have.property('booking_id');
+      expect(body.data).to.have.property('amount');
+      expect(body.data).to.have.property('status');
+    }
+  });
+}

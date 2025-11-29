@@ -1,0 +1,88 @@
+meta {
+  name: 01 Get All Hotels
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url}}/api/hotels?page=1&limit=10
+  body: none
+  auth: none
+}
+
+params:query {
+  page: 1
+  limit: 10
+  ~search:
+  ~city:
+  ~province:
+  ~minRating:
+  ~isActive:
+  ~sortBy: avgRating
+  ~sortOrder: desc
+}
+
+tests {
+  test("should return 200 status", function() {
+    expect(res.status).to.equal(200);
+  });
+
+  test("should return success true", function() {
+    const data = res.body;
+    expect(data.success).to.equal(true);
+  });
+
+  test("should return hotels array", function() {
+    const data = res.body;
+    expect(data.data).to.have.property('hotels');
+    expect(data.data.hotels).to.be.an('array');
+  });
+
+  test("should have pagination info", function() {
+    const data = res.body;
+    expect(data.data).to.have.property('pagination');
+    expect(data.data.pagination).to.have.property('page');
+    expect(data.data.pagination).to.have.property('limit');
+    expect(data.data.pagination).to.have.property('total');
+    expect(data.data.pagination).to.have.property('totalPages');
+  });
+
+  test("should save first hotel ID to environment", function() {
+    const data = res.body;
+    if (data.success && data.data.hotels.length > 0) {
+      bru.setEnvVar('hotel_id', data.data.hotels[0].id);
+      bru.setEnvVar('hotel_slug', data.data.hotels[0].slug);
+    }
+  });
+}
+
+docs {
+  # Get All Hotels
+
+  Retrieve a paginated list of hotels with optional filters.
+
+  ## Query Parameters
+  - `page` (number, optional): Page number (default: 1)
+  - `limit` (number, optional): Items per page (default: 10, max: 100)
+  - `search` (string, optional): Search by name, city, address, or description
+  - `city` (string, optional): Filter by city
+  - `province` (string, optional): Filter by province
+  - `minRating` (number, optional): Minimum rating (0-5)
+  - `isActive` (boolean, optional): Filter active/inactive hotels
+  - `sortBy` (string, optional): Sort field (name, avgRating, createdAt, totalReview)
+  - `sortOrder` (string, optional): Sort order (asc, desc)
+
+  ## Response
+  Returns array of hotels with pagination info.
+
+  ## Examples
+  - Search: `?search=beach`
+  - By city: `?city=Bali`
+  - By rating: `?minRating=4`
+  - Combined: `?city=Jakarta&minRating=4&sortBy=avgRating&sortOrder=desc`
+
+  ## Notes
+  - This is a public endpoint (no authentication required)
+  - Results include hotel details, owner info, photos, amenities
+  - Each hotel includes minimum room price
+}

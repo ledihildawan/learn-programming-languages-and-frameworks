@@ -1,0 +1,33 @@
+meta {
+  name: Rooms
+  type: folder
+}
+
+docs {
+  # Room Management API
+
+  This folder contains all room-related endpoints for Phase 2.
+
+  ## Features
+  - Room CRUD operations
+  - Photo gallery management
+  - Real-time availability checking
+  - Room type listings
+  - Price and capacity filtering
+
+  ## Authentication
+  Protected endpoints require Bearer token authentication.
+  Use the token from login response.
+
+  ## Endpoints
+  - Public: View rooms, check availability, search
+  - Protected: Create, update, delete rooms (HOST/ADMIN only)
+  - Owner: Modify own hotel's rooms only
+
+  ## Key Features
+  - Multi-room inventory management
+  - Prevents double booking
+  - Dynamic pricing
+  - Guest capacity validation
+  - Date range availability
+}

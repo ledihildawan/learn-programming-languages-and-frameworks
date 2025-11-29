@@ -1,0 +1,16 @@
+meta {
+  name: home 123
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{host}}/health
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

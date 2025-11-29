@@ -1,0 +1,100 @@
+meta {
+  name: 02 Create Hotel
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/api/hotels
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "name": "Grand Paradise Hotel",
+    "address": "Jl. Sunset Boulevard No. 88, Seminyak",
+    "city": "Bali",
+    "province": "Bali",
+    "latitude": -8.6945,
+    "longitude": 115.1728,
+    "description": "Luxury beachfront hotel with stunning ocean views, infinity pool, and world-class amenities. Perfect for both business and leisure travelers.",
+    "checkInTime": "14:00",
+    "checkOutTime": "12:00",
+    "cancellationHours": 24
+  }
+}
+
+tests {
+  test("should return 201 status", function() {
+    expect(res.status).to.equal(201);
+  });
+
+  test("should return success true", function() {
+    const data = res.body;
+    expect(data.success).to.equal(true);
+  });
+
+  test("should return created hotel", function() {
+    const data = res.body;
+    expect(data.data).to.have.property('id');
+    expect(data.data).to.have.property('name');
+    expect(data.data).to.have.property('slug');
+    expect(data.data).to.have.property('address');
+    expect(data.data).to.have.property('city');
+  });
+
+  test("should have auto-generated slug", function() {
+    const data = res.body;
+    expect(data.data.slug).to.be.a('string');
+    expect(data.data.slug.length).to.be.greaterThan(0);
+  });
+
+  test("should save hotel ID to environment", function() {
+    const data = res.body;
+    if (data.success && data.data) {
+      bru.setEnvVar('new_hotel_id', data.data.id);
+      bru.setEnvVar('new_hotel_slug', data.data.slug);
+    }
+  });
+}
+
+docs {
+  # Create Hotel
+
+  Create a new hotel. Only available for HOST and ADMIN users.
+
+  ## Authentication
+  Requires Bearer token with HOST or ADMIN role.
+
+  ## Request Body
+  - `name` (string, required): Hotel name (3-200 characters)
+  - `address` (string, required): Full address (10-500 characters)
+  - `city` (string, required): City name (2-100 characters)
+  - `province` (string, optional): Province name (max 100 characters)
+  - `latitude` (number, optional): Latitude coordinate (-90 to 90)
+  - `longitude` (number, optional): Longitude coordinate (-180 to 180)
+  - `description` (string, optional): Hotel description (max 5000 characters)
+  - `checkInTime` (string, optional): Check-in time in HH:MM format (default: 14:00)
+  - `checkOutTime` (string, optional): Check-out time in HH:MM format (default: 12:00)
+  - `cancellationHours` (number, optional): Cancellation policy in hours (0-168)
+
+  ## Response
+  Returns the created hotel object with auto-generated slug and all details.
+
+  ## Features
+  - Auto-generates unique URL-friendly slug from hotel name
+  - Sets authenticated user as hotel owner
+  - Hotel is active by default
+  - Returns complete hotel object with owner info
+
+  ## Notes
+  - Slug is automatically generated: "Grand Paradise Hotel" → "grand-paradise-hotel"
+  - If slug exists, number is appended: "grand-paradise-hotel-1"
+  - Only HOST or ADMIN roles can create hotels
+  - CUSTOMER role will receive 403 Forbidden error
+}

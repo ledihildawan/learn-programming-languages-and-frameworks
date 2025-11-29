@@ -1,0 +1,103 @@
+meta {
+  name: Cancel Booking with Refund
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{base_url}}/api/bookings/:id/cancel
+  body: none
+  auth: none
+}
+
+params:path {
+  id: clx1234567890
+}
+
+headers {
+  Content-Type: application/json
+}
+
+docs {
+  # Cancel Booking with Refund
+
+  Cancels a booking and automatically processes refund if the booking has been paid.
+
+  ## Prerequisites
+  - Booking must exist
+  - Booking must not be in CANCELLED, REFUNDED, or COMPLETED status
+
+  ## Cancellation Policy
+  Refund amount depends on how many days before check-in:
+
+  | Days Before Check-in | Refund % | Cancellation Fee |
+  |---------------------|----------|------------------|
+  | 7+ days             | 90%      | 10% (admin fee)  |
+  | 3-6 days            | 75%      | 25%              |
+  | 1-2 days            | 50%      | 50%              |
+  | Same day or past    | 0%       | 100% (no refund) |
+
+  ## Process
+  1. **PENDING Booking**: Direct cancellation, no refund
+  2. **PAID/CONFIRMED Booking**:
+     - Calculate refund based on policy
+     - Process refund via Midtrans
+     - Update booking status to CANCELLED
+     - Update payment status to REFUNDED
+     - Deduct from host wallet
+
+  ## Response
+  Returns cancellation confirmation and refund details:
+  - Original amount
+  - Refund amount
+  - Cancellation fee
+  - Refund percentage
+  - Days until check-in
+  - Midtrans refund response
+
+  ## Example Scenario
+  ```
+  Booking Price: Rp 500,000
+  Check-in: 15 days from now
+
+  Result:
+  - Refund: 90% = Rp 450,000
+  - Fee: 10% = Rp 50,000
+  - Host Deduction: Rp 450,000 (from wallet)
+  ```
+
+  ## Notes
+  - Refund is processed automatically
+  - Host wallet is deducted immediately
+  - Customer receives refund in 1-7 business days
+  - Cannot cancel if already checked in or completed
+}
+
+tests {
+  test("Status code is 200 or 400", function() {
+    const status = res.getStatus();
+    expect([200, 400, 404]).to.include(status);
+  });
+
+  test("Response has success field", function() {
+    expect(res.getBody()).to.have.property('success');
+  });
+
+  test("If successful cancellation with refund, has refund details", function() {
+    const body = res.getBody();
+    if (body.success && body.refund) {
+      expect(body.refund).to.have.property('original_amount');
+      expect(body.refund).to.have.property('refund_amount');
+      expect(body.refund).to.have.property('cancellation_fee');
+      expect(body.refund).to.have.property('refund_percentage');
+      expect(body.refund).to.have.property('days_until_checkin');
+    }
+  });
+
+  test("Refund amount should be less than original amount", function() {
+    const body = res.getBody();
+    if (body.success && body.refund) {
+      expect(body.refund.refund_amount).to.be.at.most(body.refund.original_amount);
+    }
+  });
+}

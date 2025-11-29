@@ -1,0 +1,60 @@
+meta {
+  name: Create Payment Token
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{host}}/api/payments/create/:bookingId
+  body: none
+  auth: none
+}
+
+params:path {
+  bookingId: clx1234567890
+}
+
+headers {
+  Content-Type: application/json
+}
+
+tests {
+  test("Status code is 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+  
+  test("Response has success field", function() {
+    expect(res.getBody()).to.have.property('success');
+  });
+  
+  test("Response has data with token", function() {
+    const body = res.getBody();
+    expect(body.data).to.have.property('token');
+    expect(body.data).to.have.property('redirect_url');
+  });
+}
+
+docs {
+  # Create Payment Token
+  
+  Creates a Midtrans Snap payment token for a booking.
+  
+  ## Prerequisites
+  - Booking must exist
+  - Booking status must be PENDING
+  - Payment should not already exist for this booking
+  
+  ## Response
+  Returns payment token and redirect URL for completing payment.
+  
+  ## Steps
+  1. Create a booking first
+  2. Use the booking ID in this request
+  3. Use the redirect_url to complete payment
+  
+  ## Test Credit Card (Sandbox)
+  - Card: 4811 1111 1111 1114
+  - CVV: 123
+  - Exp: 01/25
+  - OTP: 112233
+}

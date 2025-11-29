@@ -55,6 +55,11 @@ export type Hotel = Prisma.HotelModel
  */
 export type HotelPhoto = Prisma.HotelPhotoModel
 /**
+ * Model HotelAmenity
+ * 
+ */
+export type HotelAmenity = Prisma.HotelAmenityModel
+/**
  * Model Room
  * 
  */
@@ -64,6 +69,11 @@ export type Room = Prisma.RoomModel
  * 
  */
 export type RoomPhoto = Prisma.RoomPhotoModel
+/**
+ * Model BookingDate
+ * 
+ */
+export type BookingDate = Prisma.BookingDateModel
 /**
  * Model Booking
  * 
@@ -85,7 +95,12 @@ export type Review = Prisma.ReviewModel
  */
 export type Payout = Prisma.PayoutModel
 /**
- * Model HotelAmenity
+ * Model HostLedger
  * 
  */
-export type HotelAmenity = Prisma.HotelAmenityModel
+export type HostLedger = Prisma.HostLedgerModel
+/**
+ * Model Setting
+ * 
+ */
+export type Setting = Prisma.SettingModel

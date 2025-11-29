@@ -5,7 +5,13 @@ import { __transformDate__ } from "./__transformDate__";
 import { __nullable__ } from "./__nullable__";
 
 export const RoomPhotoPlain = t.Object(
-  { id: t.String(), roomId: t.String(), url: t.String() },
+  {
+    id: t.String(),
+    roomId: t.String(),
+    url: t.String(),
+    order: t.Integer(),
+    createdAt: t.Date(),
+  },
   { additionalProperties: false },
 );
 
@@ -18,11 +24,17 @@ export const RoomPhotoRelations = t.Object(
         name: t.String(),
         type: t.String(),
         maxGuests: t.Integer(),
+        totalRooms: t.Integer(),
         size: __nullable__(t.Integer()),
         bedType: __nullable__(t.String()),
         price: t.Number(),
-        totalRooms: t.Integer(),
+        extraBedPrice: __nullable__(t.Number()),
+        extraBedAvailable: t.Boolean(),
+        isActive: t.Boolean(),
+        deletedAt: __nullable__(t.Date()),
         createdAt: t.Date(),
+        updatedAt: t.Date(),
+        order: t.Integer(),
       },
       { additionalProperties: false },
     ),
@@ -31,12 +43,12 @@ export const RoomPhotoRelations = t.Object(
 );
 
 export const RoomPhotoPlainInputCreate = t.Object(
-  { url: t.String() },
+  { url: t.String(), order: t.Optional(t.Integer()) },
   { additionalProperties: false },
 );
 
 export const RoomPhotoPlainInputUpdate = t.Object(
-  { url: t.Optional(t.String()) },
+  { url: t.Optional(t.String()), order: t.Optional(t.Integer()) },
   { additionalProperties: false },
 );
 
@@ -87,6 +99,8 @@ export const RoomPhotoWhere = t.Partial(
           id: t.String(),
           roomId: t.String(),
           url: t.String(),
+          order: t.Integer(),
+          createdAt: t.Date(),
         },
         { additionalProperties: false },
       ),
@@ -121,7 +135,13 @@ export const RoomPhotoWhereUnique = t.Recursive(
         ),
         t.Partial(
           t.Object(
-            { id: t.String(), roomId: t.String(), url: t.String() },
+            {
+              id: t.String(),
+              roomId: t.String(),
+              url: t.String(),
+              order: t.Integer(),
+              createdAt: t.Date(),
+            },
             { additionalProperties: false },
           ),
         ),
@@ -135,9 +155,11 @@ export const RoomPhotoSelect = t.Partial(
   t.Object(
     {
       id: t.Boolean(),
-      roomId: t.Boolean(),
       room: t.Boolean(),
+      roomId: t.Boolean(),
       url: t.Boolean(),
+      order: t.Boolean(),
+      createdAt: t.Boolean(),
       _count: t.Boolean(),
     },
     { additionalProperties: false },
@@ -161,6 +183,12 @@ export const RoomPhotoOrderBy = t.Partial(
         additionalProperties: false,
       }),
       url: t.Union([t.Literal("asc"), t.Literal("desc")], {
+        additionalProperties: false,
+      }),
+      order: t.Union([t.Literal("asc"), t.Literal("desc")], {
+        additionalProperties: false,
+      }),
+      createdAt: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
     },

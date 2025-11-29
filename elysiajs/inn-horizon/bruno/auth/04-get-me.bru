@@ -1,0 +1,60 @@
+meta {
+  name: 04 Get Me
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{base_url}}/api/auth/me
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+tests {
+  test("should return 200 status", function() {
+    expect(res.status).to.equal(200);
+  });
+
+  test("should return success true", function() {
+    const data = res.body;
+    expect(data.success).to.equal(true);
+  });
+
+  test("should return user profile", function() {
+    const data = res.body;
+    expect(data.data).to.have.property('id');
+    expect(data.data).to.have.property('email');
+    expect(data.data).to.have.property('role');
+    expect(data.data).to.have.property('isVerified');
+  });
+
+  test("should return wallet balance", function() {
+    const data = res.body;
+    expect(data.data).to.have.property('walletBalance');
+  });
+}
+
+docs {
+  # Get Current User Profile
+
+  Get authenticated user's profile information.
+
+  ## Authentication
+  Requires Bearer token in Authorization header.
+
+  ## Response
+  Returns complete user profile including:
+  - Basic information (id, email, name, phone)
+  - Role and verification status
+  - Bank information (for hosts)
+  - Wallet balance
+  - Timestamps
+
+  ## Error Responses
+  - 401: Missing or invalid token
+  - 404: User not found
+}

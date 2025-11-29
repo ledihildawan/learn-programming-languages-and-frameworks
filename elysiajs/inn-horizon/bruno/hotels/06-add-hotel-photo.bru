@@ -1,0 +1,93 @@
+meta {
+  name: 06 Add Hotel Photo
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{base_url}}/api/hotels/{{new_hotel_id}}/photos
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "url": "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800",
+    "order": 0
+  }
+}
+
+tests {
+  test("should return 201 status", function() {
+    expect(res.status).to.equal(201);
+  });
+
+  test("should return success true", function() {
+    const data = res.body;
+    expect(data.success).to.equal(true);
+  });
+
+  test("should return created photo", function() {
+    const data = res.body;
+    expect(data.data).to.have.property('id');
+    expect(data.data).to.have.property('hotelId');
+    expect(data.data).to.have.property('url');
+    expect(data.data).to.have.property('order');
+  });
+
+  test("should save photo ID to environment", function() {
+    const data = res.body;
+    if (data.success && data.data) {
+      bru.setEnvVar('hotel_photo_id', data.data.id);
+    }
+  });
+}
+
+docs {
+  # Add Hotel Photo
+
+  Add a photo to hotel gallery. Only hotel owner can add photos.
+
+  ## Authentication
+  Requires Bearer token. User must be the hotel owner.
+
+  ## Path Parameters
+  - `id` (string, required): Hotel UUID
+
+  ## Request Body
+  - `url` (string, required): Photo URL (must be valid URI)
+  - `order` (number, optional): Display order (default: 0)
+
+  ## Response
+  Returns the created photo object with ID, hotelId, url, order, and createdAt.
+
+  ## Features
+  - Multiple photos per hotel
+  - Custom display order
+  - Order can be changed later
+  - Photos shown in ascending order
+
+  ## Photo Management
+  - Add unlimited photos
+  - Reorder anytime
+  - Delete unwanted photos
+  - First photo often used as thumbnail
+
+  ## Notes
+  - Only hotel owner can add photos
+  - URL must be valid and accessible
+  - Lower order numbers display first
+  - Duplicate URLs are allowed
+  - Returns 403 if not owner
+  - Returns 404 if hotel not found
+
+  ## Best Practices
+  - Use high-quality images (1920x1080 or higher)
+  - Optimize images before uploading to external storage
+  - Use consistent aspect ratios
+  - Order: exterior (0), lobby (1), rooms (2+), facilities
+}

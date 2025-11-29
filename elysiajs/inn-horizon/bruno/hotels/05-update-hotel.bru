@@ -1,0 +1,101 @@
+meta {
+  name: 05 Update Hotel
+  type: http
+  seq: 5
+}
+
+put {
+  url: {{base_url}}/api/hotels/{{new_hotel_id}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "name": "Grand Paradise Hotel & Resort",
+    "description": "Updated: Luxury beachfront hotel with stunning ocean views, infinity pool, spa, and world-class amenities. Perfect for both business and leisure travelers. Now with renovated rooms!",
+    "checkInTime": "15:00",
+    "checkOutTime": "11:00",
+    "cancellationHours": 48,
+    "isActive": true
+  }
+}
+
+tests {
+  test("should return 200 status", function() {
+    expect(res.status).to.equal(200);
+  });
+
+  test("should return success true", function() {
+    const data = res.body;
+    expect(data.success).to.equal(true);
+  });
+
+  test("should return updated hotel", function() {
+    const data = res.body;
+    expect(data.data).to.have.property('id');
+    expect(data.data).to.have.property('name');
+    expect(data.data).to.have.property('description');
+  });
+
+  test("should have updated values", function() {
+    const data = res.body;
+    expect(data.data.name).to.include('Resort');
+    expect(data.data.description).to.include('Updated');
+  });
+
+  test("should update slug if name changed", function() {
+    const data = res.body;
+    expect(data.data.slug).to.be.a('string');
+    expect(data.data.slug.length).to.be.greaterThan(0);
+  });
+}
+
+docs {
+  # Update Hotel
+
+  Update hotel information. Only the hotel owner can update their hotel.
+
+  ## Authentication
+  Requires Bearer token. User must be the hotel owner.
+
+  ## Path Parameters
+  - `id` (string, required): Hotel UUID to update
+
+  ## Request Body (all fields optional)
+  - `name` (string): Hotel name (3-200 characters)
+  - `address` (string): Full address (10-500 characters)
+  - `city` (string): City name (2-100 characters)
+  - `province` (string): Province name
+  - `latitude` (number): Latitude coordinate
+  - `longitude` (number): Longitude coordinate
+  - `description` (string): Hotel description
+  - `checkInTime` (string): Check-in time (HH:MM format)
+  - `checkOutTime` (string): Check-out time (HH:MM format)
+  - `cancellationHours` (number): Cancellation policy hours
+  - `isActive` (boolean): Hotel active status
+
+  ## Response
+  Returns the updated hotel object.
+
+  ## Features
+  - Partial updates supported (send only fields to update)
+  - Slug auto-updates if name changes
+  - Ownership verification enforced
+  - Cannot update deleted hotels
+
+  ## Authorization
+  - Only hotel owner can update
+  - Admin cannot update other users' hotels
+  - Returns 403 if not owner
+
+  ## Notes
+  - All fields are optional (partial update)
+  - Slug regenerates if name changes
+  - Original owner cannot be changed
+  - Returns 404 if hotel not found
+}

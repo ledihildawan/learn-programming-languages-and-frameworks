@@ -1,0 +1,125 @@
+meta {
+  name: 01 Create Room
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/api/rooms
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "hotelId": "{{new_hotel_id}}",
+    "name": "Deluxe Ocean View",
+    "type": "Deluxe",
+    "maxGuests": 2,
+    "totalRooms": 10,
+    "size": 35,
+    "bedType": "King",
+    "price": 1500000,
+    "extraBedPrice": 300000,
+    "extraBedAvailable": true,
+    "order": 0
+  }
+}
+
+tests {
+  test("should return 201 status", function() {
+    expect(res.status).to.equal(201);
+  });
+
+  test("should return success true", function() {
+    const data = res.body;
+    expect(data.success).to.equal(true);
+  });
+
+  test("should return created room", function() {
+    const data = res.body;
+    expect(data.data).to.have.property('id');
+    expect(data.data).to.have.property('name');
+    expect(data.data).to.have.property('type');
+    expect(data.data).to.have.property('hotelId');
+    expect(data.data).to.have.property('hotel');
+  });
+
+  test("should have correct values", function() {
+    const data = res.body;
+    expect(data.data.maxGuests).to.equal(2);
+    expect(data.data.totalRooms).to.equal(10);
+    expect(data.data.isActive).to.equal(true);
+  });
+
+  test("should save room ID to environment", function() {
+    const data = res.body;
+    if (data.success && data.data) {
+      bru.setEnvVar('room_id', data.data.id);
+    }
+  });
+}
+
+docs {
+  # Create Room
+
+  Create a new room for a hotel. Only available for HOST and ADMIN users who own the hotel.
+
+  ## Authentication
+  Requires Bearer token with HOST or ADMIN role.
+  User must be the owner of the specified hotel.
+
+  ## Request Body
+  - `hotelId` (string, required): Hotel UUID where room belongs
+  - `name` (string, required): Room name (3-200 characters)
+  - `type` (string, required): Room type (2-100 characters)
+    - Examples: "Standard", "Deluxe", "Suite", "Presidential Suite"
+  - `maxGuests` (number, required): Maximum guests (1-20)
+  - `totalRooms` (number, required): Number of this room type (1-100)
+  - `size` (number, optional): Room size in square meters
+  - `bedType` (string, optional): Bed type (max 100 characters)
+    - Examples: "King", "Queen", "Twin", "Double"
+  - `price` (number, required): Room price per night (minimum 0)
+  - `extraBedPrice` (number, optional): Extra bed price (minimum 0)
+  - `extraBedAvailable` (boolean, optional): Extra bed availability (default: false)
+  - `order` (number, optional): Display order (default: 0)
+
+  ## Response
+  Returns the created room object with hotel details and photos array.
+
+  ## Features
+  - Multi-room inventory (totalRooms)
+  - Extra bed support
+  - Flexible pricing
+  - Custom display order
+  - Size and bed type specifications
+  - Active by default
+
+  ## Authorization
+  - Only hotel owner can create rooms
+  - Hotel must exist and not be deleted
+  - Returns 403 if not owner
+  - Returns 404 if hotel not found
+
+  ## Inventory Management
+  - `totalRooms`: How many units of this room type exist
+  - Example: 10 Deluxe Rooms means 10 separate rooms can be booked
+  - Availability checks count against this total
+
+  ## Pricing Strategy
+  - Set competitive base price
+  - Offer extra bed option for families
+  - Extra bed price is additional to room price
+  - Consider seasonal pricing adjustments
+
+  ## Notes
+  - Only HOST or ADMIN can create rooms
+  - Must own the hotel to add rooms
+  - Room is active by default
+  - Lower order numbers display first
+  - Returns complete room object with hotel info
+}

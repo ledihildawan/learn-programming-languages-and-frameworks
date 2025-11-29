@@ -9,9 +9,12 @@ export const BookingStatus = t.Union(
     t.Literal("PENDING"),
     t.Literal("PAID"),
     t.Literal("CONFIRMED"),
-    t.Literal("CANCELLED"),
+    t.Literal("CHECKED_IN"),
+    t.Literal("CHECKED_OUT"),
     t.Literal("COMPLETED"),
+    t.Literal("CANCELLED"),
     t.Literal("REFUNDED"),
+    t.Literal("EXPIRED"),
   ],
   { additionalProperties: false },
 );

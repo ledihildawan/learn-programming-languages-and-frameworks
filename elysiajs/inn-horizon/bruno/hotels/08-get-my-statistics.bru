@@ -1,0 +1,126 @@
+meta {
+  name: 08 Get My Hotel Statistics
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{base_url}}/api/hotels/my/statistics
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+tests {
+  test("should return 200 status", function() {
+    expect(res.status).to.equal(200);
+  });
+
+  test("should return success true", function() {
+    const data = res.body;
+    expect(data.success).to.equal(true);
+  });
+
+  test("should return statistics data", function() {
+    const data = res.body;
+    expect(data.data).to.have.property('totalHotels');
+    expect(data.data).to.have.property('activeHotels');
+    expect(data.data).to.have.property('inactiveHotels');
+    expect(data.data).to.have.property('totalRooms');
+    expect(data.data).to.have.property('totalReviews');
+    expect(data.data).to.have.property('avgRating');
+  });
+
+  test("statistics should be numbers", function() {
+    const data = res.body;
+    expect(data.data.totalHotels).to.be.a('number');
+    expect(data.data.activeHotels).to.be.a('number');
+    expect(data.data.inactiveHotels).to.be.a('number');
+    expect(data.data.totalRooms).to.be.a('number');
+    expect(data.data.totalReviews).to.be.a('number');
+    expect(data.data.avgRating).to.be.a('number');
+  });
+
+  test("active + inactive should equal total", function() {
+    const data = res.body;
+    const sum = data.data.activeHotels + data.data.inactiveHotels;
+    expect(sum).to.equal(data.data.totalHotels);
+  });
+}
+
+docs {
+  # Get My Hotel Statistics
+
+  Get statistics for all hotels owned by the authenticated user.
+
+  ## Authentication
+  Requires Bearer token with HOST or ADMIN role.
+
+  ## Response Fields
+  - `totalHotels` (number): Total number of hotels owned
+  - `activeHotels` (number): Number of active hotels
+  - `inactiveHotels` (number): Number of inactive hotels
+  - `totalRooms` (number): Total rooms across all hotels
+  - `totalReviews` (number): Total reviews across all hotels
+  - `avgRating` (number): Average rating across all hotels
+
+  ## Use Cases
+  - Host dashboard overview
+  - Performance metrics
+  - Portfolio summary
+  - Business analytics
+  - Quick status check
+
+  ## Example Response
+  ```json
+  {
+    "success": true,
+    "data": {
+      "totalHotels": 5,
+      "activeHotels": 4,
+      "inactiveHotels": 1,
+      "totalRooms": 50,
+      "totalReviews": 250,
+      "avgRating": 4.3
+    }
+  }
+  ```
+
+  ## Statistics Explained
+
+  ### Total Hotels
+  All hotels owned by the user (active + inactive).
+
+  ### Active Hotels
+  Hotels currently accepting bookings (isActive = true).
+
+  ### Inactive Hotels
+  Hotels temporarily closed (isActive = false).
+
+  ### Total Rooms
+  Sum of all rooms across all hotels owned.
+
+  ### Total Reviews
+  Count of all reviews for all hotels.
+
+  ### Average Rating
+  Mean rating across all hotels (0-5 scale).
+  Returns 0 if no reviews exist.
+
+  ## Access Control
+  - Only HOST or ADMIN can access
+  - CUSTOMER role receives 403 error
+  - Each user sees only their own statistics
+  - No access to other users' data
+
+  ## Notes
+  - Deleted hotels are excluded
+  - Deleted rooms are excluded
+  - Deleted reviews are excluded
+  - Real-time calculation (no caching)
+  - Useful for host dashboard
+  - Fast aggregation queries
+}

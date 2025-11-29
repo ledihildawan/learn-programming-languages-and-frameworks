@@ -9,7 +9,8 @@ export const HotelPhotoPlain = t.Object(
     id: t.String(),
     hotelId: t.String(),
     url: t.String(),
-    isCover: t.Boolean(),
+    order: t.Integer(),
+    createdAt: t.Date(),
   },
   { additionalProperties: false },
 );
@@ -24,13 +25,20 @@ export const HotelPhotoRelations = t.Object(
         slug: t.String(),
         address: t.String(),
         city: t.String(),
+        province: __nullable__(t.String()),
         latitude: __nullable__(t.Number()),
         longitude: __nullable__(t.Number()),
         description: __nullable__(t.String()),
         coverPhoto: __nullable__(t.String()),
+        checkInTime: t.String(),
+        checkOutTime: t.String(),
+        cancellationHours: __nullable__(t.Integer()),
         isActive: t.Boolean(),
+        deletedAt: __nullable__(t.Date()),
         createdAt: t.Date(),
         updatedAt: t.Date(),
+        avgRating: t.Number(),
+        totalReview: t.Integer(),
       },
       { additionalProperties: false },
     ),
@@ -39,12 +47,12 @@ export const HotelPhotoRelations = t.Object(
 );
 
 export const HotelPhotoPlainInputCreate = t.Object(
-  { url: t.String(), isCover: t.Optional(t.Boolean()) },
+  { url: t.String(), order: t.Optional(t.Integer()) },
   { additionalProperties: false },
 );
 
 export const HotelPhotoPlainInputUpdate = t.Object(
-  { url: t.Optional(t.String()), isCover: t.Optional(t.Boolean()) },
+  { url: t.Optional(t.String()), order: t.Optional(t.Integer()) },
   { additionalProperties: false },
 );
 
@@ -95,7 +103,8 @@ export const HotelPhotoWhere = t.Partial(
           id: t.String(),
           hotelId: t.String(),
           url: t.String(),
-          isCover: t.Boolean(),
+          order: t.Integer(),
+          createdAt: t.Date(),
         },
         { additionalProperties: false },
       ),
@@ -134,7 +143,8 @@ export const HotelPhotoWhereUnique = t.Recursive(
               id: t.String(),
               hotelId: t.String(),
               url: t.String(),
-              isCover: t.Boolean(),
+              order: t.Integer(),
+              createdAt: t.Date(),
             },
             { additionalProperties: false },
           ),
@@ -149,10 +159,11 @@ export const HotelPhotoSelect = t.Partial(
   t.Object(
     {
       id: t.Boolean(),
-      hotelId: t.Boolean(),
       hotel: t.Boolean(),
+      hotelId: t.Boolean(),
       url: t.Boolean(),
-      isCover: t.Boolean(),
+      order: t.Boolean(),
+      createdAt: t.Boolean(),
       _count: t.Boolean(),
     },
     { additionalProperties: false },
@@ -178,7 +189,10 @@ export const HotelPhotoOrderBy = t.Partial(
       url: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
-      isCover: t.Union([t.Literal("asc"), t.Literal("desc")], {
+      order: t.Union([t.Literal("asc"), t.Literal("desc")], {
+        additionalProperties: false,
+      }),
+      createdAt: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
     },

@@ -20,8 +20,18 @@ export type UserModel = runtime.Types.Result.DefaultSelection<Prisma.$UserPayloa
 
 export type AggregateUser = {
   _count: UserCountAggregateOutputType | null
+  _avg: UserAvgAggregateOutputType | null
+  _sum: UserSumAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
+}
+
+export type UserAvgAggregateOutputType = {
+  walletBalance: runtime.Decimal | null
+}
+
+export type UserSumAggregateOutputType = {
+  walletBalance: runtime.Decimal | null
 }
 
 export type UserMinAggregateOutputType = {
@@ -33,8 +43,14 @@ export type UserMinAggregateOutputType = {
   phone: string | null
   avatar: string | null
   isVerified: boolean | null
+  deletedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
+  bankName: string | null
+  bankCode: string | null
+  accountNumber: string | null
+  accountName: string | null
+  walletBalance: runtime.Decimal | null
 }
 
 export type UserMaxAggregateOutputType = {
@@ -46,8 +62,14 @@ export type UserMaxAggregateOutputType = {
   phone: string | null
   avatar: string | null
   isVerified: boolean | null
+  deletedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
+  bankName: string | null
+  bankCode: string | null
+  accountNumber: string | null
+  accountName: string | null
+  walletBalance: runtime.Decimal | null
 }
 
 export type UserCountAggregateOutputType = {
@@ -59,11 +81,25 @@ export type UserCountAggregateOutputType = {
   phone: number
   avatar: number
   isVerified: number
+  deletedAt: number
   createdAt: number
   updatedAt: number
+  bankName: number
+  bankCode: number
+  accountNumber: number
+  accountName: number
+  walletBalance: number
   _all: number
 }
 
+
+export type UserAvgAggregateInputType = {
+  walletBalance?: true
+}
+
+export type UserSumAggregateInputType = {
+  walletBalance?: true
+}
 
 export type UserMinAggregateInputType = {
   id?: true
@@ -74,8 +110,14 @@ export type UserMinAggregateInputType = {
   phone?: true
   avatar?: true
   isVerified?: true
+  deletedAt?: true
   createdAt?: true
   updatedAt?: true
+  bankName?: true
+  bankCode?: true
+  accountNumber?: true
+  accountName?: true
+  walletBalance?: true
 }
 
 export type UserMaxAggregateInputType = {
@@ -87,8 +129,14 @@ export type UserMaxAggregateInputType = {
   phone?: true
   avatar?: true
   isVerified?: true
+  deletedAt?: true
   createdAt?: true
   updatedAt?: true
+  bankName?: true
+  bankCode?: true
+  accountNumber?: true
+  accountName?: true
+  walletBalance?: true
 }
 
 export type UserCountAggregateInputType = {
@@ -100,8 +148,14 @@ export type UserCountAggregateInputType = {
   phone?: true
   avatar?: true
   isVerified?: true
+  deletedAt?: true
   createdAt?: true
   updatedAt?: true
+  bankName?: true
+  bankCode?: true
+  accountNumber?: true
+  accountName?: true
+  walletBalance?: true
   _all?: true
 }
 
@@ -143,6 +197,18 @@ export type UserAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: UserAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: UserSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: UserMinAggregateInputType
@@ -173,6 +239,8 @@ export type UserGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
   take?: number
   skip?: number
   _count?: UserCountAggregateInputType | true
+  _avg?: UserAvgAggregateInputType
+  _sum?: UserSumAggregateInputType
   _min?: UserMinAggregateInputType
   _max?: UserMaxAggregateInputType
 }
@@ -183,12 +251,20 @@ export type UserGroupByOutputType = {
   name: string | null
   email: string
   password: string
-  phone: string | null
+  phone: string
   avatar: string | null
   isVerified: boolean
+  deletedAt: Date | null
   createdAt: Date
   updatedAt: Date
+  bankName: string | null
+  bankCode: string | null
+  accountNumber: string | null
+  accountName: string | null
+  walletBalance: runtime.Decimal
   _count: UserCountAggregateOutputType | null
+  _avg: UserAvgAggregateOutputType | null
+  _sum: UserSumAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
 }
@@ -217,15 +293,24 @@ export type UserWhereInput = {
   name?: Prisma.StringNullableFilter<"User"> | string | null
   email?: Prisma.StringFilter<"User"> | string
   password?: Prisma.StringFilter<"User"> | string
-  phone?: Prisma.StringNullableFilter<"User"> | string | null
+  phone?: Prisma.StringFilter<"User"> | string
   avatar?: Prisma.StringNullableFilter<"User"> | string | null
   isVerified?: Prisma.BoolFilter<"User"> | boolean
+  deletedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  bankName?: Prisma.StringNullableFilter<"User"> | string | null
+  bankCode?: Prisma.StringNullableFilter<"User"> | string | null
+  accountNumber?: Prisma.StringNullableFilter<"User"> | string | null
+  accountName?: Prisma.StringNullableFilter<"User"> | string | null
+  walletBalance?: Prisma.DecimalFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   hotels?: Prisma.HotelListRelationFilter
-  bookings?: Prisma.BookingListRelationFilter
   reviews?: Prisma.ReviewListRelationFilter
+  bookings?: Prisma.BookingListRelationFilter
+  canceledBookings?: Prisma.BookingListRelationFilter
   payouts?: Prisma.PayoutListRelationFilter
+  processedPayouts?: Prisma.PayoutListRelationFilter
+  ledgerEntries?: Prisma.HostLedgerListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -234,15 +319,24 @@ export type UserOrderByWithRelationInput = {
   name?: Prisma.SortOrderInput | Prisma.SortOrder
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
-  phone?: Prisma.SortOrderInput | Prisma.SortOrder
+  phone?: Prisma.SortOrder
   avatar?: Prisma.SortOrderInput | Prisma.SortOrder
   isVerified?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  bankName?: Prisma.SortOrderInput | Prisma.SortOrder
+  bankCode?: Prisma.SortOrderInput | Prisma.SortOrder
+  accountNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  accountName?: Prisma.SortOrderInput | Prisma.SortOrder
+  walletBalance?: Prisma.SortOrder
   hotels?: Prisma.HotelOrderByRelationAggregateInput
-  bookings?: Prisma.BookingOrderByRelationAggregateInput
   reviews?: Prisma.ReviewOrderByRelationAggregateInput
+  bookings?: Prisma.BookingOrderByRelationAggregateInput
+  canceledBookings?: Prisma.BookingOrderByRelationAggregateInput
   payouts?: Prisma.PayoutOrderByRelationAggregateInput
+  processedPayouts?: Prisma.PayoutOrderByRelationAggregateInput
+  ledgerEntries?: Prisma.HostLedgerOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -257,12 +351,21 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   password?: Prisma.StringFilter<"User"> | string
   avatar?: Prisma.StringNullableFilter<"User"> | string | null
   isVerified?: Prisma.BoolFilter<"User"> | boolean
+  deletedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  bankName?: Prisma.StringNullableFilter<"User"> | string | null
+  bankCode?: Prisma.StringNullableFilter<"User"> | string | null
+  accountNumber?: Prisma.StringNullableFilter<"User"> | string | null
+  accountName?: Prisma.StringNullableFilter<"User"> | string | null
+  walletBalance?: Prisma.DecimalFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   hotels?: Prisma.HotelListRelationFilter
-  bookings?: Prisma.BookingListRelationFilter
   reviews?: Prisma.ReviewListRelationFilter
+  bookings?: Prisma.BookingListRelationFilter
+  canceledBookings?: Prisma.BookingListRelationFilter
   payouts?: Prisma.PayoutListRelationFilter
+  processedPayouts?: Prisma.PayoutListRelationFilter
+  ledgerEntries?: Prisma.HostLedgerListRelationFilter
 }, "id" | "email" | "phone">
 
 export type UserOrderByWithAggregationInput = {
@@ -271,14 +374,22 @@ export type UserOrderByWithAggregationInput = {
   name?: Prisma.SortOrderInput | Prisma.SortOrder
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
-  phone?: Prisma.SortOrderInput | Prisma.SortOrder
+  phone?: Prisma.SortOrder
   avatar?: Prisma.SortOrderInput | Prisma.SortOrder
   isVerified?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  bankName?: Prisma.SortOrderInput | Prisma.SortOrder
+  bankCode?: Prisma.SortOrderInput | Prisma.SortOrder
+  accountNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  accountName?: Prisma.SortOrderInput | Prisma.SortOrder
+  walletBalance?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
+  _avg?: Prisma.UserAvgOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
   _min?: Prisma.UserMinOrderByAggregateInput
+  _sum?: Prisma.UserSumOrderByAggregateInput
 }
 
 export type UserScalarWhereWithAggregatesInput = {
@@ -290,11 +401,17 @@ export type UserScalarWhereWithAggregatesInput = {
   name?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   email?: Prisma.StringWithAggregatesFilter<"User"> | string
   password?: Prisma.StringWithAggregatesFilter<"User"> | string
-  phone?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  phone?: Prisma.StringWithAggregatesFilter<"User"> | string
   avatar?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   isVerified?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
+  deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
+  bankName?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  bankCode?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  accountNumber?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  accountName?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  walletBalance?: Prisma.DecimalWithAggregatesFilter<"User"> | runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type UserCreateInput = {
@@ -303,15 +420,24 @@ export type UserCreateInput = {
   name?: string | null
   email: string
   password: string
-  phone?: string | null
+  phone: string
   avatar?: string | null
   isVerified?: boolean
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  bankName?: string | null
+  bankCode?: string | null
+  accountNumber?: string | null
+  accountName?: string | null
+  walletBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   hotels?: Prisma.HotelCreateNestedManyWithoutOwnerInput
-  bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
+  canceledBookings?: Prisma.BookingCreateNestedManyWithoutCanceledByInput
   payouts?: Prisma.PayoutCreateNestedManyWithoutHostInput
+  processedPayouts?: Prisma.PayoutCreateNestedManyWithoutProcessorInput
+  ledgerEntries?: Prisma.HostLedgerCreateNestedManyWithoutHostInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -320,15 +446,24 @@ export type UserUncheckedCreateInput = {
   name?: string | null
   email: string
   password: string
-  phone?: string | null
+  phone: string
   avatar?: string | null
   isVerified?: boolean
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  bankName?: string | null
+  bankCode?: string | null
+  accountNumber?: string | null
+  accountName?: string | null
+  walletBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   hotels?: Prisma.HotelUncheckedCreateNestedManyWithoutOwnerInput
-  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
+  canceledBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutCanceledByInput
   payouts?: Prisma.PayoutUncheckedCreateNestedManyWithoutHostInput
+  processedPayouts?: Prisma.PayoutUncheckedCreateNestedManyWithoutProcessorInput
+  ledgerEntries?: Prisma.HostLedgerUncheckedCreateNestedManyWithoutHostInput
 }
 
 export type UserUpdateInput = {
@@ -337,15 +472,24 @@ export type UserUpdateInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  walletBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   hotels?: Prisma.HotelUpdateManyWithoutOwnerNestedInput
-  bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
+  canceledBookings?: Prisma.BookingUpdateManyWithoutCanceledByNestedInput
   payouts?: Prisma.PayoutUpdateManyWithoutHostNestedInput
+  processedPayouts?: Prisma.PayoutUpdateManyWithoutProcessorNestedInput
+  ledgerEntries?: Prisma.HostLedgerUpdateManyWithoutHostNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -354,15 +498,24 @@ export type UserUncheckedUpdateInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  walletBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   hotels?: Prisma.HotelUncheckedUpdateManyWithoutOwnerNestedInput
-  bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
+  canceledBookings?: Prisma.BookingUncheckedUpdateManyWithoutCanceledByNestedInput
   payouts?: Prisma.PayoutUncheckedUpdateManyWithoutHostNestedInput
+  processedPayouts?: Prisma.PayoutUncheckedUpdateManyWithoutProcessorNestedInput
+  ledgerEntries?: Prisma.HostLedgerUncheckedUpdateManyWithoutHostNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -371,11 +524,17 @@ export type UserCreateManyInput = {
   name?: string | null
   email: string
   password: string
-  phone?: string | null
+  phone: string
   avatar?: string | null
   isVerified?: boolean
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  bankName?: string | null
+  bankCode?: string | null
+  accountNumber?: string | null
+  accountName?: string | null
+  walletBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type UserUpdateManyMutationInput = {
@@ -384,11 +543,17 @@ export type UserUpdateManyMutationInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  walletBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type UserUncheckedUpdateManyInput = {
@@ -397,11 +562,17 @@ export type UserUncheckedUpdateManyInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  walletBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type UserCountOrderByAggregateInput = {
@@ -413,8 +584,18 @@ export type UserCountOrderByAggregateInput = {
   phone?: Prisma.SortOrder
   avatar?: Prisma.SortOrder
   isVerified?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  bankName?: Prisma.SortOrder
+  bankCode?: Prisma.SortOrder
+  accountNumber?: Prisma.SortOrder
+  accountName?: Prisma.SortOrder
+  walletBalance?: Prisma.SortOrder
+}
+
+export type UserAvgOrderByAggregateInput = {
+  walletBalance?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
@@ -426,8 +607,14 @@ export type UserMaxOrderByAggregateInput = {
   phone?: Prisma.SortOrder
   avatar?: Prisma.SortOrder
   isVerified?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  bankName?: Prisma.SortOrder
+  bankCode?: Prisma.SortOrder
+  accountNumber?: Prisma.SortOrder
+  accountName?: Prisma.SortOrder
+  walletBalance?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
@@ -439,13 +626,28 @@ export type UserMinOrderByAggregateInput = {
   phone?: Prisma.SortOrder
   avatar?: Prisma.SortOrder
   isVerified?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  bankName?: Prisma.SortOrder
+  bankCode?: Prisma.SortOrder
+  accountNumber?: Prisma.SortOrder
+  accountName?: Prisma.SortOrder
+  walletBalance?: Prisma.SortOrder
+}
+
+export type UserSumOrderByAggregateInput = {
+  walletBalance?: Prisma.SortOrder
 }
 
 export type UserScalarRelationFilter = {
   is?: Prisma.UserWhereInput
   isNot?: Prisma.UserWhereInput
+}
+
+export type UserNullableScalarRelationFilter = {
+  is?: Prisma.UserWhereInput | null
+  isNot?: Prisma.UserWhereInput | null
 }
 
 export type StringFieldUpdateOperationsInput = {
@@ -464,8 +666,20 @@ export type BoolFieldUpdateOperationsInput = {
   set?: boolean
 }
 
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
+}
+
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
+}
+
+export type DecimalFieldUpdateOperationsInput = {
+  set?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type UserCreateNestedOneWithoutHotelsInput = {
@@ -488,12 +702,28 @@ export type UserCreateNestedOneWithoutBookingsInput = {
   connect?: Prisma.UserWhereUniqueInput
 }
 
+export type UserCreateNestedOneWithoutCanceledBookingsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCanceledBookingsInput, Prisma.UserUncheckedCreateWithoutCanceledBookingsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCanceledBookingsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
 export type UserUpdateOneRequiredWithoutBookingsNestedInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutBookingsInput, Prisma.UserUncheckedCreateWithoutBookingsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutBookingsInput
   upsert?: Prisma.UserUpsertWithoutBookingsInput
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutBookingsInput, Prisma.UserUpdateWithoutBookingsInput>, Prisma.UserUncheckedUpdateWithoutBookingsInput>
+}
+
+export type UserUpdateOneWithoutCanceledBookingsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCanceledBookingsInput, Prisma.UserUncheckedCreateWithoutCanceledBookingsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCanceledBookingsInput
+  upsert?: Prisma.UserUpsertWithoutCanceledBookingsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCanceledBookingsInput, Prisma.UserUpdateWithoutCanceledBookingsInput>, Prisma.UserUncheckedUpdateWithoutCanceledBookingsInput>
 }
 
 export type UserCreateNestedOneWithoutReviewsInput = {
@@ -516,6 +746,12 @@ export type UserCreateNestedOneWithoutPayoutsInput = {
   connect?: Prisma.UserWhereUniqueInput
 }
 
+export type UserCreateNestedOneWithoutProcessedPayoutsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutProcessedPayoutsInput, Prisma.UserUncheckedCreateWithoutProcessedPayoutsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutProcessedPayoutsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
 export type UserUpdateOneRequiredWithoutPayoutsNestedInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutPayoutsInput, Prisma.UserUncheckedCreateWithoutPayoutsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutPayoutsInput
@@ -524,20 +760,53 @@ export type UserUpdateOneRequiredWithoutPayoutsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPayoutsInput, Prisma.UserUpdateWithoutPayoutsInput>, Prisma.UserUncheckedUpdateWithoutPayoutsInput>
 }
 
+export type UserUpdateOneWithoutProcessedPayoutsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutProcessedPayoutsInput, Prisma.UserUncheckedCreateWithoutProcessedPayoutsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutProcessedPayoutsInput
+  upsert?: Prisma.UserUpsertWithoutProcessedPayoutsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutProcessedPayoutsInput, Prisma.UserUpdateWithoutProcessedPayoutsInput>, Prisma.UserUncheckedUpdateWithoutProcessedPayoutsInput>
+}
+
+export type UserCreateNestedOneWithoutLedgerEntriesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutLedgerEntriesInput, Prisma.UserUncheckedCreateWithoutLedgerEntriesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutLedgerEntriesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutLedgerEntriesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutLedgerEntriesInput, Prisma.UserUncheckedCreateWithoutLedgerEntriesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutLedgerEntriesInput
+  upsert?: Prisma.UserUpsertWithoutLedgerEntriesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutLedgerEntriesInput, Prisma.UserUpdateWithoutLedgerEntriesInput>, Prisma.UserUncheckedUpdateWithoutLedgerEntriesInput>
+}
+
 export type UserCreateWithoutHotelsInput = {
   id?: string
   role?: $Enums.UserRole
   name?: string | null
   email: string
   password: string
-  phone?: string | null
+  phone: string
   avatar?: string | null
   isVerified?: boolean
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
+  bankName?: string | null
+  bankCode?: string | null
+  accountNumber?: string | null
+  accountName?: string | null
+  walletBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
+  canceledBookings?: Prisma.BookingCreateNestedManyWithoutCanceledByInput
   payouts?: Prisma.PayoutCreateNestedManyWithoutHostInput
+  processedPayouts?: Prisma.PayoutCreateNestedManyWithoutProcessorInput
+  ledgerEntries?: Prisma.HostLedgerCreateNestedManyWithoutHostInput
 }
 
 export type UserUncheckedCreateWithoutHotelsInput = {
@@ -546,14 +815,23 @@ export type UserUncheckedCreateWithoutHotelsInput = {
   name?: string | null
   email: string
   password: string
-  phone?: string | null
+  phone: string
   avatar?: string | null
   isVerified?: boolean
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
+  bankName?: string | null
+  bankCode?: string | null
+  accountNumber?: string | null
+  accountName?: string | null
+  walletBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
+  canceledBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutCanceledByInput
   payouts?: Prisma.PayoutUncheckedCreateNestedManyWithoutHostInput
+  processedPayouts?: Prisma.PayoutUncheckedCreateNestedManyWithoutProcessorInput
+  ledgerEntries?: Prisma.HostLedgerUncheckedCreateNestedManyWithoutHostInput
 }
 
 export type UserCreateOrConnectWithoutHotelsInput = {
@@ -578,14 +856,23 @@ export type UserUpdateWithoutHotelsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  walletBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
+  canceledBookings?: Prisma.BookingUpdateManyWithoutCanceledByNestedInput
   payouts?: Prisma.PayoutUpdateManyWithoutHostNestedInput
+  processedPayouts?: Prisma.PayoutUpdateManyWithoutProcessorNestedInput
+  ledgerEntries?: Prisma.HostLedgerUpdateManyWithoutHostNestedInput
 }
 
 export type UserUncheckedUpdateWithoutHotelsInput = {
@@ -594,14 +881,23 @@ export type UserUncheckedUpdateWithoutHotelsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  walletBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
+  canceledBookings?: Prisma.BookingUncheckedUpdateManyWithoutCanceledByNestedInput
   payouts?: Prisma.PayoutUncheckedUpdateManyWithoutHostNestedInput
+  processedPayouts?: Prisma.PayoutUncheckedUpdateManyWithoutProcessorNestedInput
+  ledgerEntries?: Prisma.HostLedgerUncheckedUpdateManyWithoutHostNestedInput
 }
 
 export type UserCreateWithoutBookingsInput = {
@@ -610,14 +906,23 @@ export type UserCreateWithoutBookingsInput = {
   name?: string | null
   email: string
   password: string
-  phone?: string | null
+  phone: string
   avatar?: string | null
   isVerified?: boolean
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  bankName?: string | null
+  bankCode?: string | null
+  accountNumber?: string | null
+  accountName?: string | null
+  walletBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   hotels?: Prisma.HotelCreateNestedManyWithoutOwnerInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  canceledBookings?: Prisma.BookingCreateNestedManyWithoutCanceledByInput
   payouts?: Prisma.PayoutCreateNestedManyWithoutHostInput
+  processedPayouts?: Prisma.PayoutCreateNestedManyWithoutProcessorInput
+  ledgerEntries?: Prisma.HostLedgerCreateNestedManyWithoutHostInput
 }
 
 export type UserUncheckedCreateWithoutBookingsInput = {
@@ -626,19 +931,83 @@ export type UserUncheckedCreateWithoutBookingsInput = {
   name?: string | null
   email: string
   password: string
-  phone?: string | null
+  phone: string
   avatar?: string | null
   isVerified?: boolean
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  bankName?: string | null
+  bankCode?: string | null
+  accountNumber?: string | null
+  accountName?: string | null
+  walletBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   hotels?: Prisma.HotelUncheckedCreateNestedManyWithoutOwnerInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  canceledBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutCanceledByInput
   payouts?: Prisma.PayoutUncheckedCreateNestedManyWithoutHostInput
+  processedPayouts?: Prisma.PayoutUncheckedCreateNestedManyWithoutProcessorInput
+  ledgerEntries?: Prisma.HostLedgerUncheckedCreateNestedManyWithoutHostInput
 }
 
 export type UserCreateOrConnectWithoutBookingsInput = {
   where: Prisma.UserWhereUniqueInput
   create: Prisma.XOR<Prisma.UserCreateWithoutBookingsInput, Prisma.UserUncheckedCreateWithoutBookingsInput>
+}
+
+export type UserCreateWithoutCanceledBookingsInput = {
+  id?: string
+  role?: $Enums.UserRole
+  name?: string | null
+  email: string
+  password: string
+  phone: string
+  avatar?: string | null
+  isVerified?: boolean
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  bankName?: string | null
+  bankCode?: string | null
+  accountNumber?: string | null
+  accountName?: string | null
+  walletBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  hotels?: Prisma.HotelCreateNestedManyWithoutOwnerInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
+  payouts?: Prisma.PayoutCreateNestedManyWithoutHostInput
+  processedPayouts?: Prisma.PayoutCreateNestedManyWithoutProcessorInput
+  ledgerEntries?: Prisma.HostLedgerCreateNestedManyWithoutHostInput
+}
+
+export type UserUncheckedCreateWithoutCanceledBookingsInput = {
+  id?: string
+  role?: $Enums.UserRole
+  name?: string | null
+  email: string
+  password: string
+  phone: string
+  avatar?: string | null
+  isVerified?: boolean
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  bankName?: string | null
+  bankCode?: string | null
+  accountNumber?: string | null
+  accountName?: string | null
+  walletBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  hotels?: Prisma.HotelUncheckedCreateNestedManyWithoutOwnerInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
+  payouts?: Prisma.PayoutUncheckedCreateNestedManyWithoutHostInput
+  processedPayouts?: Prisma.PayoutUncheckedCreateNestedManyWithoutProcessorInput
+  ledgerEntries?: Prisma.HostLedgerUncheckedCreateNestedManyWithoutHostInput
+}
+
+export type UserCreateOrConnectWithoutCanceledBookingsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCanceledBookingsInput, Prisma.UserUncheckedCreateWithoutCanceledBookingsInput>
 }
 
 export type UserUpsertWithoutBookingsInput = {
@@ -658,14 +1027,23 @@ export type UserUpdateWithoutBookingsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  walletBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   hotels?: Prisma.HotelUpdateManyWithoutOwnerNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  canceledBookings?: Prisma.BookingUpdateManyWithoutCanceledByNestedInput
   payouts?: Prisma.PayoutUpdateManyWithoutHostNestedInput
+  processedPayouts?: Prisma.PayoutUpdateManyWithoutProcessorNestedInput
+  ledgerEntries?: Prisma.HostLedgerUpdateManyWithoutHostNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBookingsInput = {
@@ -674,14 +1052,84 @@ export type UserUncheckedUpdateWithoutBookingsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  walletBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   hotels?: Prisma.HotelUncheckedUpdateManyWithoutOwnerNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  canceledBookings?: Prisma.BookingUncheckedUpdateManyWithoutCanceledByNestedInput
   payouts?: Prisma.PayoutUncheckedUpdateManyWithoutHostNestedInput
+  processedPayouts?: Prisma.PayoutUncheckedUpdateManyWithoutProcessorNestedInput
+  ledgerEntries?: Prisma.HostLedgerUncheckedUpdateManyWithoutHostNestedInput
+}
+
+export type UserUpsertWithoutCanceledBookingsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCanceledBookingsInput, Prisma.UserUncheckedUpdateWithoutCanceledBookingsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCanceledBookingsInput, Prisma.UserUncheckedCreateWithoutCanceledBookingsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCanceledBookingsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCanceledBookingsInput, Prisma.UserUncheckedUpdateWithoutCanceledBookingsInput>
+}
+
+export type UserUpdateWithoutCanceledBookingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  walletBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  hotels?: Prisma.HotelUpdateManyWithoutOwnerNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
+  payouts?: Prisma.PayoutUpdateManyWithoutHostNestedInput
+  processedPayouts?: Prisma.PayoutUpdateManyWithoutProcessorNestedInput
+  ledgerEntries?: Prisma.HostLedgerUpdateManyWithoutHostNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCanceledBookingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  walletBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  hotels?: Prisma.HotelUncheckedUpdateManyWithoutOwnerNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
+  payouts?: Prisma.PayoutUncheckedUpdateManyWithoutHostNestedInput
+  processedPayouts?: Prisma.PayoutUncheckedUpdateManyWithoutProcessorNestedInput
+  ledgerEntries?: Prisma.HostLedgerUncheckedUpdateManyWithoutHostNestedInput
 }
 
 export type UserCreateWithoutReviewsInput = {
@@ -690,14 +1138,23 @@ export type UserCreateWithoutReviewsInput = {
   name?: string | null
   email: string
   password: string
-  phone?: string | null
+  phone: string
   avatar?: string | null
   isVerified?: boolean
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  bankName?: string | null
+  bankCode?: string | null
+  accountNumber?: string | null
+  accountName?: string | null
+  walletBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   hotels?: Prisma.HotelCreateNestedManyWithoutOwnerInput
   bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
+  canceledBookings?: Prisma.BookingCreateNestedManyWithoutCanceledByInput
   payouts?: Prisma.PayoutCreateNestedManyWithoutHostInput
+  processedPayouts?: Prisma.PayoutCreateNestedManyWithoutProcessorInput
+  ledgerEntries?: Prisma.HostLedgerCreateNestedManyWithoutHostInput
 }
 
 export type UserUncheckedCreateWithoutReviewsInput = {
@@ -706,14 +1163,23 @@ export type UserUncheckedCreateWithoutReviewsInput = {
   name?: string | null
   email: string
   password: string
-  phone?: string | null
+  phone: string
   avatar?: string | null
   isVerified?: boolean
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  bankName?: string | null
+  bankCode?: string | null
+  accountNumber?: string | null
+  accountName?: string | null
+  walletBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   hotels?: Prisma.HotelUncheckedCreateNestedManyWithoutOwnerInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
+  canceledBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutCanceledByInput
   payouts?: Prisma.PayoutUncheckedCreateNestedManyWithoutHostInput
+  processedPayouts?: Prisma.PayoutUncheckedCreateNestedManyWithoutProcessorInput
+  ledgerEntries?: Prisma.HostLedgerUncheckedCreateNestedManyWithoutHostInput
 }
 
 export type UserCreateOrConnectWithoutReviewsInput = {
@@ -738,14 +1204,23 @@ export type UserUpdateWithoutReviewsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  walletBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   hotels?: Prisma.HotelUpdateManyWithoutOwnerNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
+  canceledBookings?: Prisma.BookingUpdateManyWithoutCanceledByNestedInput
   payouts?: Prisma.PayoutUpdateManyWithoutHostNestedInput
+  processedPayouts?: Prisma.PayoutUpdateManyWithoutProcessorNestedInput
+  ledgerEntries?: Prisma.HostLedgerUpdateManyWithoutHostNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReviewsInput = {
@@ -754,14 +1229,23 @@ export type UserUncheckedUpdateWithoutReviewsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  walletBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   hotels?: Prisma.HotelUncheckedUpdateManyWithoutOwnerNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
+  canceledBookings?: Prisma.BookingUncheckedUpdateManyWithoutCanceledByNestedInput
   payouts?: Prisma.PayoutUncheckedUpdateManyWithoutHostNestedInput
+  processedPayouts?: Prisma.PayoutUncheckedUpdateManyWithoutProcessorNestedInput
+  ledgerEntries?: Prisma.HostLedgerUncheckedUpdateManyWithoutHostNestedInput
 }
 
 export type UserCreateWithoutPayoutsInput = {
@@ -770,14 +1254,23 @@ export type UserCreateWithoutPayoutsInput = {
   name?: string | null
   email: string
   password: string
-  phone?: string | null
+  phone: string
   avatar?: string | null
   isVerified?: boolean
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  bankName?: string | null
+  bankCode?: string | null
+  accountNumber?: string | null
+  accountName?: string | null
+  walletBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   hotels?: Prisma.HotelCreateNestedManyWithoutOwnerInput
-  bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
+  canceledBookings?: Prisma.BookingCreateNestedManyWithoutCanceledByInput
+  processedPayouts?: Prisma.PayoutCreateNestedManyWithoutProcessorInput
+  ledgerEntries?: Prisma.HostLedgerCreateNestedManyWithoutHostInput
 }
 
 export type UserUncheckedCreateWithoutPayoutsInput = {
@@ -786,19 +1279,83 @@ export type UserUncheckedCreateWithoutPayoutsInput = {
   name?: string | null
   email: string
   password: string
-  phone?: string | null
+  phone: string
   avatar?: string | null
   isVerified?: boolean
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  bankName?: string | null
+  bankCode?: string | null
+  accountNumber?: string | null
+  accountName?: string | null
+  walletBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   hotels?: Prisma.HotelUncheckedCreateNestedManyWithoutOwnerInput
-  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
+  canceledBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutCanceledByInput
+  processedPayouts?: Prisma.PayoutUncheckedCreateNestedManyWithoutProcessorInput
+  ledgerEntries?: Prisma.HostLedgerUncheckedCreateNestedManyWithoutHostInput
 }
 
 export type UserCreateOrConnectWithoutPayoutsInput = {
   where: Prisma.UserWhereUniqueInput
   create: Prisma.XOR<Prisma.UserCreateWithoutPayoutsInput, Prisma.UserUncheckedCreateWithoutPayoutsInput>
+}
+
+export type UserCreateWithoutProcessedPayoutsInput = {
+  id?: string
+  role?: $Enums.UserRole
+  name?: string | null
+  email: string
+  password: string
+  phone: string
+  avatar?: string | null
+  isVerified?: boolean
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  bankName?: string | null
+  bankCode?: string | null
+  accountNumber?: string | null
+  accountName?: string | null
+  walletBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  hotels?: Prisma.HotelCreateNestedManyWithoutOwnerInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
+  canceledBookings?: Prisma.BookingCreateNestedManyWithoutCanceledByInput
+  payouts?: Prisma.PayoutCreateNestedManyWithoutHostInput
+  ledgerEntries?: Prisma.HostLedgerCreateNestedManyWithoutHostInput
+}
+
+export type UserUncheckedCreateWithoutProcessedPayoutsInput = {
+  id?: string
+  role?: $Enums.UserRole
+  name?: string | null
+  email: string
+  password: string
+  phone: string
+  avatar?: string | null
+  isVerified?: boolean
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  bankName?: string | null
+  bankCode?: string | null
+  accountNumber?: string | null
+  accountName?: string | null
+  walletBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  hotels?: Prisma.HotelUncheckedCreateNestedManyWithoutOwnerInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
+  canceledBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutCanceledByInput
+  payouts?: Prisma.PayoutUncheckedCreateNestedManyWithoutHostInput
+  ledgerEntries?: Prisma.HostLedgerUncheckedCreateNestedManyWithoutHostInput
+}
+
+export type UserCreateOrConnectWithoutProcessedPayoutsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutProcessedPayoutsInput, Prisma.UserUncheckedCreateWithoutProcessedPayoutsInput>
 }
 
 export type UserUpsertWithoutPayoutsInput = {
@@ -818,14 +1375,23 @@ export type UserUpdateWithoutPayoutsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  walletBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   hotels?: Prisma.HotelUpdateManyWithoutOwnerNestedInput
-  bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
+  canceledBookings?: Prisma.BookingUpdateManyWithoutCanceledByNestedInput
+  processedPayouts?: Prisma.PayoutUpdateManyWithoutProcessorNestedInput
+  ledgerEntries?: Prisma.HostLedgerUpdateManyWithoutHostNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPayoutsInput = {
@@ -834,14 +1400,200 @@ export type UserUncheckedUpdateWithoutPayoutsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  walletBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   hotels?: Prisma.HotelUncheckedUpdateManyWithoutOwnerNestedInput
-  bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
+  canceledBookings?: Prisma.BookingUncheckedUpdateManyWithoutCanceledByNestedInput
+  processedPayouts?: Prisma.PayoutUncheckedUpdateManyWithoutProcessorNestedInput
+  ledgerEntries?: Prisma.HostLedgerUncheckedUpdateManyWithoutHostNestedInput
+}
+
+export type UserUpsertWithoutProcessedPayoutsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutProcessedPayoutsInput, Prisma.UserUncheckedUpdateWithoutProcessedPayoutsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutProcessedPayoutsInput, Prisma.UserUncheckedCreateWithoutProcessedPayoutsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutProcessedPayoutsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutProcessedPayoutsInput, Prisma.UserUncheckedUpdateWithoutProcessedPayoutsInput>
+}
+
+export type UserUpdateWithoutProcessedPayoutsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  walletBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  hotels?: Prisma.HotelUpdateManyWithoutOwnerNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
+  canceledBookings?: Prisma.BookingUpdateManyWithoutCanceledByNestedInput
+  payouts?: Prisma.PayoutUpdateManyWithoutHostNestedInput
+  ledgerEntries?: Prisma.HostLedgerUpdateManyWithoutHostNestedInput
+}
+
+export type UserUncheckedUpdateWithoutProcessedPayoutsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  walletBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  hotels?: Prisma.HotelUncheckedUpdateManyWithoutOwnerNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
+  canceledBookings?: Prisma.BookingUncheckedUpdateManyWithoutCanceledByNestedInput
+  payouts?: Prisma.PayoutUncheckedUpdateManyWithoutHostNestedInput
+  ledgerEntries?: Prisma.HostLedgerUncheckedUpdateManyWithoutHostNestedInput
+}
+
+export type UserCreateWithoutLedgerEntriesInput = {
+  id?: string
+  role?: $Enums.UserRole
+  name?: string | null
+  email: string
+  password: string
+  phone: string
+  avatar?: string | null
+  isVerified?: boolean
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  bankName?: string | null
+  bankCode?: string | null
+  accountNumber?: string | null
+  accountName?: string | null
+  walletBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  hotels?: Prisma.HotelCreateNestedManyWithoutOwnerInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
+  canceledBookings?: Prisma.BookingCreateNestedManyWithoutCanceledByInput
+  payouts?: Prisma.PayoutCreateNestedManyWithoutHostInput
+  processedPayouts?: Prisma.PayoutCreateNestedManyWithoutProcessorInput
+}
+
+export type UserUncheckedCreateWithoutLedgerEntriesInput = {
+  id?: string
+  role?: $Enums.UserRole
+  name?: string | null
+  email: string
+  password: string
+  phone: string
+  avatar?: string | null
+  isVerified?: boolean
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  bankName?: string | null
+  bankCode?: string | null
+  accountNumber?: string | null
+  accountName?: string | null
+  walletBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  hotels?: Prisma.HotelUncheckedCreateNestedManyWithoutOwnerInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
+  canceledBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutCanceledByInput
+  payouts?: Prisma.PayoutUncheckedCreateNestedManyWithoutHostInput
+  processedPayouts?: Prisma.PayoutUncheckedCreateNestedManyWithoutProcessorInput
+}
+
+export type UserCreateOrConnectWithoutLedgerEntriesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutLedgerEntriesInput, Prisma.UserUncheckedCreateWithoutLedgerEntriesInput>
+}
+
+export type UserUpsertWithoutLedgerEntriesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutLedgerEntriesInput, Prisma.UserUncheckedUpdateWithoutLedgerEntriesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutLedgerEntriesInput, Prisma.UserUncheckedCreateWithoutLedgerEntriesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutLedgerEntriesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutLedgerEntriesInput, Prisma.UserUncheckedUpdateWithoutLedgerEntriesInput>
+}
+
+export type UserUpdateWithoutLedgerEntriesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  walletBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  hotels?: Prisma.HotelUpdateManyWithoutOwnerNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
+  canceledBookings?: Prisma.BookingUpdateManyWithoutCanceledByNestedInput
+  payouts?: Prisma.PayoutUpdateManyWithoutHostNestedInput
+  processedPayouts?: Prisma.PayoutUpdateManyWithoutProcessorNestedInput
+}
+
+export type UserUncheckedUpdateWithoutLedgerEntriesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  walletBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  hotels?: Prisma.HotelUncheckedUpdateManyWithoutOwnerNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
+  canceledBookings?: Prisma.BookingUncheckedUpdateManyWithoutCanceledByNestedInput
+  payouts?: Prisma.PayoutUncheckedUpdateManyWithoutHostNestedInput
+  processedPayouts?: Prisma.PayoutUncheckedUpdateManyWithoutProcessorNestedInput
 }
 
 
@@ -851,16 +1603,22 @@ export type UserUncheckedUpdateWithoutPayoutsInput = {
 
 export type UserCountOutputType = {
   hotels: number
-  bookings: number
   reviews: number
+  bookings: number
+  canceledBookings: number
   payouts: number
+  processedPayouts: number
+  ledgerEntries: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   hotels?: boolean | UserCountOutputTypeCountHotelsArgs
-  bookings?: boolean | UserCountOutputTypeCountBookingsArgs
   reviews?: boolean | UserCountOutputTypeCountReviewsArgs
+  bookings?: boolean | UserCountOutputTypeCountBookingsArgs
+  canceledBookings?: boolean | UserCountOutputTypeCountCanceledBookingsArgs
   payouts?: boolean | UserCountOutputTypeCountPayoutsArgs
+  processedPayouts?: boolean | UserCountOutputTypeCountProcessedPayoutsArgs
+  ledgerEntries?: boolean | UserCountOutputTypeCountLedgerEntriesArgs
 }
 
 /**
@@ -883,13 +1641,6 @@ export type UserCountOutputTypeCountHotelsArgs<ExtArgs extends runtime.Types.Ext
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountBookingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.BookingWhereInput
-}
-
-/**
- * UserCountOutputType without action
- */
 export type UserCountOutputTypeCountReviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ReviewWhereInput
 }
@@ -897,8 +1648,36 @@ export type UserCountOutputTypeCountReviewsArgs<ExtArgs extends runtime.Types.Ex
 /**
  * UserCountOutputType without action
  */
+export type UserCountOutputTypeCountBookingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BookingWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCanceledBookingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BookingWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
 export type UserCountOutputTypeCountPayoutsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.PayoutWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountProcessedPayoutsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PayoutWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountLedgerEntriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.HostLedgerWhereInput
 }
 
 
@@ -911,12 +1690,21 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   phone?: boolean
   avatar?: boolean
   isVerified?: boolean
+  deletedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  bankName?: boolean
+  bankCode?: boolean
+  accountNumber?: boolean
+  accountName?: boolean
+  walletBalance?: boolean
   hotels?: boolean | Prisma.User$hotelsArgs<ExtArgs>
-  bookings?: boolean | Prisma.User$bookingsArgs<ExtArgs>
   reviews?: boolean | Prisma.User$reviewsArgs<ExtArgs>
+  bookings?: boolean | Prisma.User$bookingsArgs<ExtArgs>
+  canceledBookings?: boolean | Prisma.User$canceledBookingsArgs<ExtArgs>
   payouts?: boolean | Prisma.User$payoutsArgs<ExtArgs>
+  processedPayouts?: boolean | Prisma.User$processedPayoutsArgs<ExtArgs>
+  ledgerEntries?: boolean | Prisma.User$ledgerEntriesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -929,8 +1717,14 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   phone?: boolean
   avatar?: boolean
   isVerified?: boolean
+  deletedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  bankName?: boolean
+  bankCode?: boolean
+  accountNumber?: boolean
+  accountName?: boolean
+  walletBalance?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -942,8 +1736,14 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   phone?: boolean
   avatar?: boolean
   isVerified?: boolean
+  deletedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  bankName?: boolean
+  bankCode?: boolean
+  accountNumber?: boolean
+  accountName?: boolean
+  walletBalance?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
@@ -955,16 +1755,25 @@ export type UserSelectScalar = {
   phone?: boolean
   avatar?: boolean
   isVerified?: boolean
+  deletedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  bankName?: boolean
+  bankCode?: boolean
+  accountNumber?: boolean
+  accountName?: boolean
+  walletBalance?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "role" | "name" | "email" | "password" | "phone" | "avatar" | "isVerified" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "role" | "name" | "email" | "password" | "phone" | "avatar" | "isVerified" | "deletedAt" | "createdAt" | "updatedAt" | "bankName" | "bankCode" | "accountNumber" | "accountName" | "walletBalance", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   hotels?: boolean | Prisma.User$hotelsArgs<ExtArgs>
-  bookings?: boolean | Prisma.User$bookingsArgs<ExtArgs>
   reviews?: boolean | Prisma.User$reviewsArgs<ExtArgs>
+  bookings?: boolean | Prisma.User$bookingsArgs<ExtArgs>
+  canceledBookings?: boolean | Prisma.User$canceledBookingsArgs<ExtArgs>
   payouts?: boolean | Prisma.User$payoutsArgs<ExtArgs>
+  processedPayouts?: boolean | Prisma.User$processedPayoutsArgs<ExtArgs>
+  ledgerEntries?: boolean | Prisma.User$ledgerEntriesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -974,9 +1783,12 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   name: "User"
   objects: {
     hotels: Prisma.$HotelPayload<ExtArgs>[]
-    bookings: Prisma.$BookingPayload<ExtArgs>[]
     reviews: Prisma.$ReviewPayload<ExtArgs>[]
+    bookings: Prisma.$BookingPayload<ExtArgs>[]
+    canceledBookings: Prisma.$BookingPayload<ExtArgs>[]
     payouts: Prisma.$PayoutPayload<ExtArgs>[]
+    processedPayouts: Prisma.$PayoutPayload<ExtArgs>[]
+    ledgerEntries: Prisma.$HostLedgerPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -984,11 +1796,17 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     name: string | null
     email: string
     password: string
-    phone: string | null
+    phone: string
     avatar: string | null
     isVerified: boolean
+    deletedAt: Date | null
     createdAt: Date
     updatedAt: Date
+    bankName: string | null
+    bankCode: string | null
+    accountNumber: string | null
+    accountName: string | null
+    walletBalance: runtime.Decimal
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -1384,9 +2202,12 @@ readonly fields: UserFieldRefs;
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   hotels<T extends Prisma.User$hotelsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$hotelsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$HotelPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  bookings<T extends Prisma.User$bookingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$bookingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reviews<T extends Prisma.User$reviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  bookings<T extends Prisma.User$bookingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$bookingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  canceledBookings<T extends Prisma.User$canceledBookingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$canceledBookingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   payouts<T extends Prisma.User$payoutsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$payoutsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PayoutPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  processedPayouts<T extends Prisma.User$processedPayoutsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$processedPayoutsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PayoutPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  ledgerEntries<T extends Prisma.User$ledgerEntriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ledgerEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$HostLedgerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1424,8 +2245,14 @@ export interface UserFieldRefs {
   readonly phone: Prisma.FieldRef<"User", 'String'>
   readonly avatar: Prisma.FieldRef<"User", 'String'>
   readonly isVerified: Prisma.FieldRef<"User", 'Boolean'>
+  readonly deletedAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly bankName: Prisma.FieldRef<"User", 'String'>
+  readonly bankCode: Prisma.FieldRef<"User", 'String'>
+  readonly accountNumber: Prisma.FieldRef<"User", 'String'>
+  readonly accountName: Prisma.FieldRef<"User", 'String'>
+  readonly walletBalance: Prisma.FieldRef<"User", 'Decimal'>
 }
     
 
@@ -1838,30 +2665,6 @@ export type User$hotelsArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
 }
 
 /**
- * User.bookings
- */
-export type User$bookingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Booking
-   */
-  select?: Prisma.BookingSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Booking
-   */
-  omit?: Prisma.BookingOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.BookingInclude<ExtArgs> | null
-  where?: Prisma.BookingWhereInput
-  orderBy?: Prisma.BookingOrderByWithRelationInput | Prisma.BookingOrderByWithRelationInput[]
-  cursor?: Prisma.BookingWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.BookingScalarFieldEnum | Prisma.BookingScalarFieldEnum[]
-}
-
-/**
  * User.reviews
  */
 export type User$reviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1886,6 +2689,54 @@ export type User$reviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
 }
 
 /**
+ * User.bookings
+ */
+export type User$bookingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Booking
+   */
+  select?: Prisma.BookingSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Booking
+   */
+  omit?: Prisma.BookingOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BookingInclude<ExtArgs> | null
+  where?: Prisma.BookingWhereInput
+  orderBy?: Prisma.BookingOrderByWithRelationInput | Prisma.BookingOrderByWithRelationInput[]
+  cursor?: Prisma.BookingWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BookingScalarFieldEnum | Prisma.BookingScalarFieldEnum[]
+}
+
+/**
+ * User.canceledBookings
+ */
+export type User$canceledBookingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Booking
+   */
+  select?: Prisma.BookingSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Booking
+   */
+  omit?: Prisma.BookingOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BookingInclude<ExtArgs> | null
+  where?: Prisma.BookingWhereInput
+  orderBy?: Prisma.BookingOrderByWithRelationInput | Prisma.BookingOrderByWithRelationInput[]
+  cursor?: Prisma.BookingWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BookingScalarFieldEnum | Prisma.BookingScalarFieldEnum[]
+}
+
+/**
  * User.payouts
  */
 export type User$payoutsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1907,6 +2758,54 @@ export type User$payoutsArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
   take?: number
   skip?: number
   distinct?: Prisma.PayoutScalarFieldEnum | Prisma.PayoutScalarFieldEnum[]
+}
+
+/**
+ * User.processedPayouts
+ */
+export type User$processedPayoutsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Payout
+   */
+  select?: Prisma.PayoutSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Payout
+   */
+  omit?: Prisma.PayoutOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PayoutInclude<ExtArgs> | null
+  where?: Prisma.PayoutWhereInput
+  orderBy?: Prisma.PayoutOrderByWithRelationInput | Prisma.PayoutOrderByWithRelationInput[]
+  cursor?: Prisma.PayoutWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PayoutScalarFieldEnum | Prisma.PayoutScalarFieldEnum[]
+}
+
+/**
+ * User.ledgerEntries
+ */
+export type User$ledgerEntriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the HostLedger
+   */
+  select?: Prisma.HostLedgerSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the HostLedger
+   */
+  omit?: Prisma.HostLedgerOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.HostLedgerInclude<ExtArgs> | null
+  where?: Prisma.HostLedgerWhereInput
+  orderBy?: Prisma.HostLedgerOrderByWithRelationInput | Prisma.HostLedgerOrderByWithRelationInput[]
+  cursor?: Prisma.HostLedgerWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.HostLedgerScalarFieldEnum | Prisma.HostLedgerScalarFieldEnum[]
 }
 
 /**

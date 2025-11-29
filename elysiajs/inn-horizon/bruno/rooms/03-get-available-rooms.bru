@@ -1,0 +1,165 @@
+meta {
+  name: 03 Get Available Rooms
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{base_url}}/api/rooms/hotel/{{new_hotel_id}}/available?checkIn=2024-12-20&checkOut=2024-12-23&guests=2
+  body: none
+  auth: none
+}
+
+params:query {
+  checkIn: 2024-12-20
+  checkOut: 2024-12-23
+  guests: 2
+}
+
+tests {
+  test("should return 200 status", function() {
+    expect(res.status).to.equal(200);
+  });
+
+  test("should return success true", function() {
+    const data = res.body;
+    expect(data.success).to.equal(true);
+  });
+
+  test("should return rooms array", function() {
+    const data = res.body;
+    expect(data.data).to.have.property('rooms');
+    expect(data.data.rooms).to.be.an('array');
+  });
+
+  test("should have booking details", function() {
+    const data = res.body;
+    expect(data.data).to.have.property('hotelId');
+    expect(data.data).to.have.property('checkIn');
+    expect(data.data).to.have.property('checkOut');
+    expect(data.data).to.have.property('nights');
+    expect(data.data).to.have.property('guests');
+    expect(data.data).to.have.property('totalRooms');
+  });
+
+  test("each room should have availability info", function() {
+    const data = res.body;
+    if (data.data.rooms.length > 0) {
+      const room = data.data.rooms[0];
+      expect(room).to.have.property('isAvailable');
+      expect(room).to.have.property('availableRooms');
+      expect(room).to.have.property('nights');
+      expect(room).to.have.property('totalPrice');
+    }
+  });
+
+  test("should save first available room ID", function() {
+    const data = res.body;
+    if (data.success && data.data.rooms.length > 0) {
+      bru.setEnvVar('available_room_id', data.data.rooms[0].id);
+    }
+  });
+}
+
+docs {
+  # Get Available Rooms
+
+  Get all available rooms for a hotel on specified dates.
+
+  This endpoint checks availability for ALL rooms in the hotel and returns only those with available units.
+
+  ## Path Parameters
+  - `hotelId` (string, required): Hotel UUID
+
+  ## Query Parameters
+  - `checkIn` (string, required): Check-in date in YYYY-MM-DD format
+  - `checkOut` (string, required): Check-out date in YYYY-MM-DD format
+  - `guests` (number, optional): Number of guests (default: 1)
+
+  ## Response Fields
+  - `hotelId` (string): Hotel UUID
+  - `checkIn` (string): Check-in date
+  - `checkOut` (string): Check-out date
+  - `nights` (number): Number of nights
+  - `guests` (number): Number of guests
+  - `totalRooms` (number): Count of available room types
+  - `rooms` (array): List of available rooms
+
+  ## Room Object Fields
+  Each room in the array contains:
+  - Basic room info (id, name, type, maxGuests, price, etc.)
+  - `isAvailable` (boolean): Always true (only available rooms returned)
+  - `availableRooms` (number): Number of units available
+  - `nights` (number): Number of nights
+  - `totalPrice` (number): Total price for all nights
+  - `photos` (array): Room photos (first photo only)
+
+  ## How It Works
+  1. Fetches all active rooms for the hotel
+  2. Filters rooms by guest capacity (maxGuests >= guests)
+  3. Checks availability for each room
+  4. Calculates available units
+  5. Returns only rooms with availability > 0
+  6. Calculates total price (price × nights)
+
+  ## Validation Rules
+  - Check-in must be in the future
+  - Check-out must be after check-in
+  - Only returns rooms that can accommodate guest count
+  - Only active, non-deleted rooms included
+
+  ## Use Cases
+  - Hotel search results page
+  - Booking flow - room selection
+  - Availability calendar view
+  - Price comparison
+  - Room type filtering
+
+  ## Example Response
+  ```json
+  {
+    "success": true,
+    "data": {
+      "hotelId": "uuid",
+      "checkIn": "2024-12-20",
+      "checkOut": "2024-12-23",
+      "nights": 3,
+      "guests": 2,
+      "totalRooms": 3,
+      "rooms": [
+        {
+          "id": "room-id-1",
+          "name": "Deluxe Ocean View",
+          "type": "Deluxe",
+          "maxGuests": 2,
+          "price": "1500000",
+          "totalRooms": 10,
+          "isAvailable": true,
+          "availableRooms": 8,
+          "nights": 3,
+          "totalPrice": 4500000,
+          "photos": [...]
+        }
+      ]
+    }
+  }
+  ```
+
+  ## Sorting
+  - Rooms are sorted by display order (ascending)
+  - Lower order numbers appear first
+  - Owner can customize room order
+
+  ## Performance
+  - Efficient parallel availability checks
+  - Only returns necessary photo data (first photo)
+  - Filters before availability check for speed
+
+  ## Notes
+  - This is a public endpoint (no authentication required)
+  - Empty array if no rooms available
+  - Guest count filter applied before availability check
+  - Prices are current; may change before booking
+  - Check-out date is NOT included in booking period
+  - Only ACTIVE bookings (PENDING, PAID, CONFIRMED, CHECKED_IN) count
+}

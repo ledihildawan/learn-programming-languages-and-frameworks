@@ -1,0 +1,127 @@
+meta {
+  name: 02 Check Room Availability
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{base_url}}/api/rooms/{{room_id}}/availability?checkIn=2024-12-20&checkOut=2024-12-23&guests=2
+  body: none
+  auth: none
+}
+
+params:query {
+  checkIn: 2024-12-20
+  checkOut: 2024-12-23
+  guests: 2
+}
+
+tests {
+  test("should return 200 status", function() {
+    expect(res.status).to.equal(200);
+  });
+
+  test("should return success true", function() {
+    const data = res.body;
+    expect(data.success).to.equal(true);
+  });
+
+  test("should return availability data", function() {
+    const data = res.body;
+    expect(data.data).to.have.property('available');
+    expect(data.data).to.have.property('roomId');
+    expect(data.data).to.have.property('roomName');
+    expect(data.data).to.have.property('totalRooms');
+    expect(data.data).to.have.property('availableRooms');
+  });
+
+  test("should have booking details", function() {
+    const data = res.body;
+    expect(data.data).to.have.property('checkIn');
+    expect(data.data).to.have.property('checkOut');
+    expect(data.data).to.have.property('nights');
+    expect(data.data).to.have.property('guests');
+  });
+
+  test("should have pricing information", function() {
+    const data = res.body;
+    expect(data.data).to.have.property('price');
+    expect(data.data).to.have.property('totalPrice');
+  });
+
+  test("should have unavailable dates array", function() {
+    const data = res.body;
+    expect(data.data).to.have.property('unavailableDates');
+    expect(data.data.unavailableDates).to.be.an('array');
+  });
+}
+
+docs {
+  # Check Room Availability
+
+  Check if a specific room is available for booking on given dates.
+
+  ## Path Parameters
+  - `id` (string, required): Room UUID to check
+
+  ## Query Parameters
+  - `checkIn` (string, required): Check-in date in YYYY-MM-DD format
+  - `checkOut` (string, required): Check-out date in YYYY-MM-DD format
+  - `guests` (number, optional): Number of guests (default: 1)
+
+  ## Response Fields
+  - `available` (boolean): Whether room is available for all dates
+  - `roomId` (string): Room UUID
+  - `roomName` (string): Room name
+  - `totalRooms` (number): Total units of this room type
+  - `availableRooms` (number): Number of units available
+  - `checkIn` (string): Check-in date
+  - `checkOut` (string): Check-out date
+  - `nights` (number): Number of nights
+  - `guests` (number): Number of guests
+  - `price` (string): Room price per night
+  - `totalPrice` (number): Total price for all nights
+  - `unavailableDates` (array): List of dates that are fully booked
+
+  ## How It Works
+  1. Generates all dates between check-in and check-out (excluding checkout)
+  2. Counts existing bookings for each date
+  3. Compares with total room inventory
+  4. Returns availability status and remaining rooms
+
+  ## Validation Rules
+  - Check-in must be in the future (not past dates)
+  - Check-out must be after check-in
+  - Guest count must not exceed room's maxGuests
+  - Room must be active and not deleted
+
+  ## Availability Logic
+  - If ANY date is fully booked → available = false
+  - Returns number of available rooms (lowest across all dates)
+  - Lists all unavailable dates for transparency
+
+  ## Use Cases
+  - Pre-booking validation
+  - Real-time availability display
+  - Booking form validation
+  - Calendar blocking
+
+  ## Example Scenarios
+  - All dates available → available: true, availableRooms: 8
+  - Some rooms available → available: true, availableRooms: 2
+  - Fully booked → available: false, availableRooms: 0
+  - Partial dates booked → available: false, unavailableDates: [...]
+
+  ## Notes
+  - This is a public endpoint (no authentication required)
+  - Check-out date is NOT included in booking period
+  - Prices shown are current; may change before booking
+  - PENDING, PAID, CONFIRMED, CHECKED_IN bookings count as booked
+  - CANCELLED, COMPLETED bookings don't affect availability
+
+  ## Best Practices
+  - Always check availability before creating booking
+  - Show unavailable dates to users
+  - Update availability in real-time
+  - Cache results briefly to reduce load
+}

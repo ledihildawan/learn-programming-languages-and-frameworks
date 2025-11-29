@@ -80,12 +80,12 @@ export type PrismaVersion = {
 }
 
 /**
- * Prisma Client JS version: 7.0.0
- * Query Engine version: 0c19ccc313cf9911a90d99d2ac2eb0280c76c513
+ * Prisma Client JS version: 7.0.1
+ * Query Engine version: f09f2815f091dbba658cdcd2264306d88bb5bda6
  */
 export const prismaVersion: PrismaVersion = {
-  client: "7.0.0",
-  engine: "0c19ccc313cf9911a90d99d2ac2eb0280c76c513"
+  client: "7.0.1",
+  engine: "f09f2815f091dbba658cdcd2264306d88bb5bda6"
 }
 
 /**
@@ -387,13 +387,16 @@ export const ModelName = {
   User: 'User',
   Hotel: 'Hotel',
   HotelPhoto: 'HotelPhoto',
+  HotelAmenity: 'HotelAmenity',
   Room: 'Room',
   RoomPhoto: 'RoomPhoto',
+  BookingDate: 'BookingDate',
   Booking: 'Booking',
   Payment: 'Payment',
   Review: 'Review',
   Payout: 'Payout',
-  HotelAmenity: 'HotelAmenity'
+  HostLedger: 'HostLedger',
+  Setting: 'Setting'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -409,7 +412,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "hotel" | "hotelPhoto" | "room" | "roomPhoto" | "booking" | "payment" | "review" | "payout" | "hotelAmenity"
+    modelProps: "user" | "hotel" | "hotelPhoto" | "hotelAmenity" | "room" | "roomPhoto" | "bookingDate" | "booking" | "payment" | "review" | "payout" | "hostLedger" | "setting"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -635,6 +638,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    HotelAmenity: {
+      payload: Prisma.$HotelAmenityPayload<ExtArgs>
+      fields: Prisma.HotelAmenityFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.HotelAmenityFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HotelAmenityPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.HotelAmenityFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HotelAmenityPayload>
+        }
+        findFirst: {
+          args: Prisma.HotelAmenityFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HotelAmenityPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.HotelAmenityFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HotelAmenityPayload>
+        }
+        findMany: {
+          args: Prisma.HotelAmenityFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HotelAmenityPayload>[]
+        }
+        create: {
+          args: Prisma.HotelAmenityCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HotelAmenityPayload>
+        }
+        createMany: {
+          args: Prisma.HotelAmenityCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.HotelAmenityCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HotelAmenityPayload>[]
+        }
+        delete: {
+          args: Prisma.HotelAmenityDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HotelAmenityPayload>
+        }
+        update: {
+          args: Prisma.HotelAmenityUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HotelAmenityPayload>
+        }
+        deleteMany: {
+          args: Prisma.HotelAmenityDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.HotelAmenityUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.HotelAmenityUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HotelAmenityPayload>[]
+        }
+        upsert: {
+          args: Prisma.HotelAmenityUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HotelAmenityPayload>
+        }
+        aggregate: {
+          args: Prisma.HotelAmenityAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateHotelAmenity>
+        }
+        groupBy: {
+          args: Prisma.HotelAmenityGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.HotelAmenityGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.HotelAmenityCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.HotelAmenityCountAggregateOutputType> | number
+        }
+      }
+    }
     Room: {
       payload: Prisma.$RoomPayload<ExtArgs>
       fields: Prisma.RoomFieldRefs
@@ -780,6 +857,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.RoomPhotoCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.RoomPhotoCountAggregateOutputType> | number
+        }
+      }
+    }
+    BookingDate: {
+      payload: Prisma.$BookingDatePayload<ExtArgs>
+      fields: Prisma.BookingDateFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.BookingDateFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingDatePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.BookingDateFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingDatePayload>
+        }
+        findFirst: {
+          args: Prisma.BookingDateFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingDatePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.BookingDateFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingDatePayload>
+        }
+        findMany: {
+          args: Prisma.BookingDateFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingDatePayload>[]
+        }
+        create: {
+          args: Prisma.BookingDateCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingDatePayload>
+        }
+        createMany: {
+          args: Prisma.BookingDateCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.BookingDateCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingDatePayload>[]
+        }
+        delete: {
+          args: Prisma.BookingDateDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingDatePayload>
+        }
+        update: {
+          args: Prisma.BookingDateUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingDatePayload>
+        }
+        deleteMany: {
+          args: Prisma.BookingDateDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.BookingDateUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.BookingDateUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingDatePayload>[]
+        }
+        upsert: {
+          args: Prisma.BookingDateUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingDatePayload>
+        }
+        aggregate: {
+          args: Prisma.BookingDateAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateBookingDate>
+        }
+        groupBy: {
+          args: Prisma.BookingDateGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BookingDateGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.BookingDateCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BookingDateCountAggregateOutputType> | number
         }
       }
     }
@@ -1079,77 +1230,151 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    HotelAmenity: {
-      payload: Prisma.$HotelAmenityPayload<ExtArgs>
-      fields: Prisma.HotelAmenityFieldRefs
+    HostLedger: {
+      payload: Prisma.$HostLedgerPayload<ExtArgs>
+      fields: Prisma.HostLedgerFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.HotelAmenityFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$HotelAmenityPayload> | null
+          args: Prisma.HostLedgerFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HostLedgerPayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.HotelAmenityFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$HotelAmenityPayload>
+          args: Prisma.HostLedgerFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HostLedgerPayload>
         }
         findFirst: {
-          args: Prisma.HotelAmenityFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$HotelAmenityPayload> | null
+          args: Prisma.HostLedgerFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HostLedgerPayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.HotelAmenityFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$HotelAmenityPayload>
+          args: Prisma.HostLedgerFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HostLedgerPayload>
         }
         findMany: {
-          args: Prisma.HotelAmenityFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$HotelAmenityPayload>[]
+          args: Prisma.HostLedgerFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HostLedgerPayload>[]
         }
         create: {
-          args: Prisma.HotelAmenityCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$HotelAmenityPayload>
+          args: Prisma.HostLedgerCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HostLedgerPayload>
         }
         createMany: {
-          args: Prisma.HotelAmenityCreateManyArgs<ExtArgs>
+          args: Prisma.HostLedgerCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         createManyAndReturn: {
-          args: Prisma.HotelAmenityCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$HotelAmenityPayload>[]
+          args: Prisma.HostLedgerCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HostLedgerPayload>[]
         }
         delete: {
-          args: Prisma.HotelAmenityDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$HotelAmenityPayload>
+          args: Prisma.HostLedgerDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HostLedgerPayload>
         }
         update: {
-          args: Prisma.HotelAmenityUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$HotelAmenityPayload>
+          args: Prisma.HostLedgerUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HostLedgerPayload>
         }
         deleteMany: {
-          args: Prisma.HotelAmenityDeleteManyArgs<ExtArgs>
+          args: Prisma.HostLedgerDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.HotelAmenityUpdateManyArgs<ExtArgs>
+          args: Prisma.HostLedgerUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateManyAndReturn: {
-          args: Prisma.HotelAmenityUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$HotelAmenityPayload>[]
+          args: Prisma.HostLedgerUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HostLedgerPayload>[]
         }
         upsert: {
-          args: Prisma.HotelAmenityUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$HotelAmenityPayload>
+          args: Prisma.HostLedgerUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HostLedgerPayload>
         }
         aggregate: {
-          args: Prisma.HotelAmenityAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateHotelAmenity>
+          args: Prisma.HostLedgerAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateHostLedger>
         }
         groupBy: {
-          args: Prisma.HotelAmenityGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.HotelAmenityGroupByOutputType>[]
+          args: Prisma.HostLedgerGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.HostLedgerGroupByOutputType>[]
         }
         count: {
-          args: Prisma.HotelAmenityCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.HotelAmenityCountAggregateOutputType> | number
+          args: Prisma.HostLedgerCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.HostLedgerCountAggregateOutputType> | number
+        }
+      }
+    }
+    Setting: {
+      payload: Prisma.$SettingPayload<ExtArgs>
+      fields: Prisma.SettingFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SettingFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SettingPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SettingFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SettingPayload>
+        }
+        findFirst: {
+          args: Prisma.SettingFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SettingPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SettingFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SettingPayload>
+        }
+        findMany: {
+          args: Prisma.SettingFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SettingPayload>[]
+        }
+        create: {
+          args: Prisma.SettingCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SettingPayload>
+        }
+        createMany: {
+          args: Prisma.SettingCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SettingCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SettingPayload>[]
+        }
+        delete: {
+          args: Prisma.SettingDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SettingPayload>
+        }
+        update: {
+          args: Prisma.SettingUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SettingPayload>
+        }
+        deleteMany: {
+          args: Prisma.SettingDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SettingUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SettingUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SettingPayload>[]
+        }
+        upsert: {
+          args: Prisma.SettingUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SettingPayload>
+        }
+        aggregate: {
+          args: Prisma.SettingAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSetting>
+        }
+        groupBy: {
+          args: Prisma.SettingGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SettingGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SettingCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SettingCountAggregateOutputType> | number
         }
       }
     }
@@ -1201,8 +1426,14 @@ export const UserScalarFieldEnum = {
   phone: 'phone',
   avatar: 'avatar',
   isVerified: 'isVerified',
+  deletedAt: 'deletedAt',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  bankName: 'bankName',
+  bankCode: 'bankCode',
+  accountNumber: 'accountNumber',
+  accountName: 'accountName',
+  walletBalance: 'walletBalance'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -1215,13 +1446,20 @@ export const HotelScalarFieldEnum = {
   slug: 'slug',
   address: 'address',
   city: 'city',
+  province: 'province',
   latitude: 'latitude',
   longitude: 'longitude',
   description: 'description',
   coverPhoto: 'coverPhoto',
+  checkInTime: 'checkInTime',
+  checkOutTime: 'checkOutTime',
+  cancellationHours: 'cancellationHours',
   isActive: 'isActive',
+  deletedAt: 'deletedAt',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  avgRating: 'avgRating',
+  totalReview: 'totalReview'
 } as const
 
 export type HotelScalarFieldEnum = (typeof HotelScalarFieldEnum)[keyof typeof HotelScalarFieldEnum]
@@ -1231,10 +1469,21 @@ export const HotelPhotoScalarFieldEnum = {
   id: 'id',
   hotelId: 'hotelId',
   url: 'url',
-  isCover: 'isCover'
+  order: 'order',
+  createdAt: 'createdAt'
 } as const
 
 export type HotelPhotoScalarFieldEnum = (typeof HotelPhotoScalarFieldEnum)[keyof typeof HotelPhotoScalarFieldEnum]
+
+
+export const HotelAmenityScalarFieldEnum = {
+  id: 'id',
+  hotelId: 'hotelId',
+  name: 'name',
+  icon: 'icon'
+} as const
+
+export type HotelAmenityScalarFieldEnum = (typeof HotelAmenityScalarFieldEnum)[keyof typeof HotelAmenityScalarFieldEnum]
 
 
 export const RoomScalarFieldEnum = {
@@ -1243,11 +1492,17 @@ export const RoomScalarFieldEnum = {
   name: 'name',
   type: 'type',
   maxGuests: 'maxGuests',
+  totalRooms: 'totalRooms',
   size: 'size',
   bedType: 'bedType',
   price: 'price',
-  totalRooms: 'totalRooms',
-  createdAt: 'createdAt'
+  extraBedPrice: 'extraBedPrice',
+  extraBedAvailable: 'extraBedAvailable',
+  isActive: 'isActive',
+  deletedAt: 'deletedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  order: 'order'
 } as const
 
 export type RoomScalarFieldEnum = (typeof RoomScalarFieldEnum)[keyof typeof RoomScalarFieldEnum]
@@ -1256,10 +1511,22 @@ export type RoomScalarFieldEnum = (typeof RoomScalarFieldEnum)[keyof typeof Room
 export const RoomPhotoScalarFieldEnum = {
   id: 'id',
   roomId: 'roomId',
-  url: 'url'
+  url: 'url',
+  order: 'order',
+  createdAt: 'createdAt'
 } as const
 
 export type RoomPhotoScalarFieldEnum = (typeof RoomPhotoScalarFieldEnum)[keyof typeof RoomPhotoScalarFieldEnum]
+
+
+export const BookingDateScalarFieldEnum = {
+  id: 'id',
+  bookingId: 'bookingId',
+  roomId: 'roomId',
+  date: 'date'
+} as const
+
+export type BookingDateScalarFieldEnum = (typeof BookingDateScalarFieldEnum)[keyof typeof BookingDateScalarFieldEnum]
 
 
 export const BookingScalarFieldEnum = {
@@ -1268,13 +1535,27 @@ export const BookingScalarFieldEnum = {
   roomId: 'roomId',
   checkIn: 'checkIn',
   checkOut: 'checkOut',
+  bookingCode: 'bookingCode',
   nights: 'nights',
   guests: 'guests',
-  totalPrice: 'totalPrice',
-  status: 'status',
   guestName: 'guestName',
   guestPhone: 'guestPhone',
   guestEmail: 'guestEmail',
+  guestNotes: 'guestNotes',
+  totalPrice: 'totalPrice',
+  platformFee: 'platformFee',
+  hostPayout: 'hostPayout',
+  status: 'status',
+  expiredAt: 'expiredAt',
+  confirmedAt: 'confirmedAt',
+  checkedInAt: 'checkedInAt',
+  canceledAt: 'canceledAt',
+  cancelReason: 'cancelReason',
+  canceledById: 'canceledById',
+  roomSnapshot: 'roomSnapshot',
+  isTest: 'isTest',
+  paymentId: 'paymentId',
+  deletedAt: 'deletedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1287,9 +1568,15 @@ export const PaymentScalarFieldEnum = {
   bookingId: 'bookingId',
   amount: 'amount',
   provider: 'provider',
-  providerId: 'providerId',
+  providerRef: 'providerRef',
   status: 'status',
+  snapToken: 'snapToken',
+  paymentUrl: 'paymentUrl',
   paidAt: 'paidAt',
+  expiredAt: 'expiredAt',
+  failureReason: 'failureReason',
+  isTest: 'isTest',
+  deletedAt: 'deletedAt',
   createdAt: 'createdAt'
 } as const
 
@@ -1303,6 +1590,7 @@ export const ReviewScalarFieldEnum = {
   bookingId: 'bookingId',
   rating: 'rating',
   comment: 'comment',
+  deletedAt: 'deletedAt',
   createdAt: 'createdAt'
 } as const
 
@@ -1313,24 +1601,41 @@ export const PayoutScalarFieldEnum = {
   id: 'id',
   hostId: 'hostId',
   amount: 'amount',
-  bankName: 'bankName',
-  accountNo: 'accountNo',
-  accountName: 'accountName',
   status: 'status',
+  payoutCode: 'payoutCode',
   requestedAt: 'requestedAt',
-  processedAt: 'processedAt'
+  processedAt: 'processedAt',
+  note: 'note',
+  proofOfTransfer: 'proofOfTransfer',
+  processorId: 'processorId',
+  deletedAt: 'deletedAt',
+  createdAt: 'createdAt'
 } as const
 
 export type PayoutScalarFieldEnum = (typeof PayoutScalarFieldEnum)[keyof typeof PayoutScalarFieldEnum]
 
 
-export const HotelAmenityScalarFieldEnum = {
+export const HostLedgerScalarFieldEnum = {
   id: 'id',
-  hotelId: 'hotelId',
-  name: 'name'
+  hostId: 'hostId',
+  bookingId: 'bookingId',
+  payoutId: 'payoutId',
+  amount: 'amount',
+  type: 'type',
+  description: 'description',
+  balanceAfter: 'balanceAfter',
+  createdAt: 'createdAt'
 } as const
 
-export type HotelAmenityScalarFieldEnum = (typeof HotelAmenityScalarFieldEnum)[keyof typeof HotelAmenityScalarFieldEnum]
+export type HostLedgerScalarFieldEnum = (typeof HostLedgerScalarFieldEnum)[keyof typeof HostLedgerScalarFieldEnum]
+
+
+export const SettingScalarFieldEnum = {
+  key: 'key',
+  value: 'value'
+} as const
+
+export type SettingScalarFieldEnum = (typeof SettingScalarFieldEnum)[keyof typeof SettingScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1339,6 +1644,13 @@ export const SortOrder = {
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {
@@ -1355,6 +1667,15 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
 
@@ -1413,6 +1734,20 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
+ * Reference to a field of type 'Decimal'
+ */
+export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
+    
+
+
+/**
+ * Reference to a field of type 'Decimal[]'
+ */
+export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
+    
+
+
+/**
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -1441,20 +1776,6 @@ export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
 
 
 /**
- * Reference to a field of type 'Decimal'
- */
-export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
-    
-
-
-/**
- * Reference to a field of type 'Decimal[]'
- */
-export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
-    
-
-
-/**
  * Reference to a field of type 'BookingStatus'
  */
 export type EnumBookingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BookingStatus'>
@@ -1469,6 +1790,20 @@ export type ListEnumBookingStatusFieldRefInput<$PrismaModel> = FieldRefInputType
 
 
 /**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+/**
  * Reference to a field of type 'PaymentProvider'
  */
 export type EnumPaymentProviderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentProvider'>
@@ -1479,6 +1814,48 @@ export type EnumPaymentProviderFieldRefInput<$PrismaModel> = FieldRefInputType<$
  * Reference to a field of type 'PaymentProvider[]'
  */
 export type ListEnumPaymentProviderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentProvider[]'>
+    
+
+
+/**
+ * Reference to a field of type 'PaymentStatus'
+ */
+export type EnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'PaymentStatus[]'
+ */
+export type ListEnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'PayoutStatus'
+ */
+export type EnumPayoutStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PayoutStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'PayoutStatus[]'
+ */
+export type ListEnumPayoutStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PayoutStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'LedgerType'
+ */
+export type EnumLedgerTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LedgerType'>
+    
+
+
+/**
+ * Reference to a field of type 'LedgerType[]'
+ */
+export type ListEnumLedgerTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LedgerType[]'>
     
 
 /**
@@ -1563,13 +1940,16 @@ export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
   hotel?: Prisma.HotelOmit
   hotelPhoto?: Prisma.HotelPhotoOmit
+  hotelAmenity?: Prisma.HotelAmenityOmit
   room?: Prisma.RoomOmit
   roomPhoto?: Prisma.RoomPhotoOmit
+  bookingDate?: Prisma.BookingDateOmit
   booking?: Prisma.BookingOmit
   payment?: Prisma.PaymentOmit
   review?: Prisma.ReviewOmit
   payout?: Prisma.PayoutOmit
-  hotelAmenity?: Prisma.HotelAmenityOmit
+  hostLedger?: Prisma.HostLedgerOmit
+  setting?: Prisma.SettingOmit
 }
 
 /* Types for Logging */

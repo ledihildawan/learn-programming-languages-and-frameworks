@@ -3,7 +3,7 @@ import { format, type Locale } from 'date-fns';
 import { enUS } from 'date-fns/locale';
 import { compare, Operation } from 'fast-json-patch';
 import { omit } from 'radash';
-import { db } from '../../db';
+import { db } from '../../../prisma';
 
 // ============================================================
 // CONFIG & IGNORED_FIELDS

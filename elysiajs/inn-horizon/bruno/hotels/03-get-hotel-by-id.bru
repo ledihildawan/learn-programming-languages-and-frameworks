@@ -1,0 +1,83 @@
+meta {
+  name: 03 Get Hotel by ID
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{base_url}}/api/hotels/{{hotel_id}}
+  body: none
+  auth: none
+}
+
+tests {
+  test("should return 200 status", function() {
+    expect(res.status).to.equal(200);
+  });
+
+  test("should return success true", function() {
+    const data = res.body;
+    expect(data.success).to.equal(true);
+  });
+
+  test("should return hotel details", function() {
+    const data = res.body;
+    expect(data.data).to.have.property('id');
+    expect(data.data).to.have.property('name');
+    expect(data.data).to.have.property('slug');
+    expect(data.data).to.have.property('address');
+    expect(data.data).to.have.property('city');
+    expect(data.data).to.have.property('owner');
+  });
+
+  test("should include rooms", function() {
+    const data = res.body;
+    expect(data.data).to.have.property('rooms');
+    expect(data.data.rooms).to.be.an('array');
+  });
+
+  test("should include photos", function() {
+    const data = res.body;
+    expect(data.data).to.have.property('photos');
+    expect(data.data.photos).to.be.an('array');
+  });
+
+  test("should include amenities", function() {
+    const data = res.body;
+    expect(data.data).to.have.property('amenities');
+    expect(data.data.amenities).to.be.an('array');
+  });
+
+  test("should include reviews", function() {
+    const data = res.body;
+    expect(data.data).to.have.property('reviews');
+    expect(data.data.reviews).to.be.an('array');
+  });
+}
+
+docs {
+  # Get Hotel by ID
+
+  Retrieve detailed information about a specific hotel by its ID.
+
+  ## Path Parameters
+  - `id` (string, required): Hotel UUID
+
+  ## Response
+  Returns complete hotel details including:
+  - Basic information (name, address, description, etc.)
+  - Owner information
+  - All hotel photos (ordered)
+  - All amenities
+  - All active rooms with photos
+  - Recent reviews (up to 10)
+  - Room and review counts
+  - Minimum room price
+
+  ## Notes
+  - This is a public endpoint (no authentication required)
+  - Only returns active, non-deleted hotels
+  - Returns 404 if hotel not found or deleted
+  - Reviews are sorted by most recent first
+  - Rooms are sorted by display order
+}
