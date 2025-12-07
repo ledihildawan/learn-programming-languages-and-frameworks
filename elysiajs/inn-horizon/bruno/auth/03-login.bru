@@ -5,15 +5,15 @@ meta {
 }
 
 post {
-  url: {{base_url}}/api/auth/login
+  url: {{host}}/api/auth/login
   body: json
   auth: none
 }
 
 body:json {
   {
-    "email": "customer@test.com",
-    "password": "Test1234"
+    "email": "john.host@innhorizon.com",
+    "password": "password123"
   }
 }
 
@@ -21,12 +21,12 @@ tests {
   test("should return 200 status", function() {
     expect(res.status).to.equal(200);
   });
-
+  
   test("should return success true", function() {
     const data = res.body;
     expect(data.success).to.equal(true);
   });
-
+  
   test("should return user and tokens", function() {
     const data = res.body;
     expect(data.data).to.have.property('user');
@@ -36,7 +36,7 @@ tests {
     expect(data.data.tokens).to.have.property('accessToken');
     expect(data.data.tokens).to.have.property('refreshToken');
   });
-
+  
   test("should save tokens to environment", function() {
     const data = res.body;
     if (data.success && data.data.tokens) {
@@ -49,16 +49,16 @@ tests {
 
 docs {
   # Login User
-
+  
   Authenticate user and receive JWT tokens.
-
+  
   ## Request Body
   - `email` (string, required): Registered email address
   - `password` (string, required): User password
-
+  
   ## Response
   Returns user object and JWT tokens (access & refresh).
-
+  
   ## Notes
   - Access token expires in 7 days (default)
   - Refresh token expires in 30 days (default)

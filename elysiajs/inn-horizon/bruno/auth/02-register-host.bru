@@ -5,7 +5,7 @@ meta {
 }
 
 post {
-  url: {{base_url}}/api/auth/register
+  url: {{host}}/api/auth/register
   body: json
   auth: none
 }
@@ -28,18 +28,18 @@ tests {
   test("should return 201 status", function() {
     expect(res.status).to.equal(201);
   });
-
+  
   test("should return success true", function() {
     const data = res.body;
     expect(data.success).to.equal(true);
   });
-
+  
   test("should return user with HOST role", function() {
     const data = res.body;
     expect(data.data.user).to.have.property('role');
     expect(data.data.user.role).to.equal('HOST');
   });
-
+  
   test("should save tokens to environment", function() {
     const data = res.body;
     if (data.success && data.data.tokens) {
@@ -48,7 +48,7 @@ tests {
       bru.setEnvVar('host_id', data.data.user.id);
     }
   });
-
+  
   test("should have bank information", function() {
     const data = res.body;
     expect(data.data.user.bankName).to.equal('Bank Mandiri');
@@ -58,9 +58,9 @@ tests {
 
 docs {
   # Register New Host
-
+  
   Register a new host account with bank information for payouts.
-
+  
   ## Request Body
   - `email` (string, required): Valid email address
   - `password` (string, required): Min 8 characters, must contain letter and number
@@ -71,7 +71,7 @@ docs {
   - `bankCode` (string, optional): Bank code
   - `accountNumber` (string, optional): Bank account number
   - `accountName` (string, optional): Account holder name
-
+  
   ## Response
   Returns user object with bank information and JWT tokens.
 }
