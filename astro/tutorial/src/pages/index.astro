@@ -1,9 +1,8 @@
 ---
 import '../styles/global.css';
 
-import Footer from '../components/Footer.astro';
-import Header from '../components/Header.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Greeting from '../components/Greeting';
 
 const pageTitle = 'Home Page';
 ---
@@ -19,6 +18,7 @@ const pageTitle = 'Home Page';
   <body>
     <BaseLayout pageTitle={pageTitle}>
       <h2>My awesome blog subtitle</h2>
+      <Greeting client:load messages={['Hi', 'Hello', 'Howdy', 'Hey there']} />
     </BaseLayout>
 
     <script>
