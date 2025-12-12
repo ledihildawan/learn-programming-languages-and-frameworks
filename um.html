@@ -1,0 +1,1065 @@
+<!doctype html>
+<html lang="id" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Universal Marquee v5.2 – Auto-Remove on Destroy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+      /* --- GLOBAL STYLES & LAYOUT PRESERVATION --- */
+      body {
+        transition:
+          background-color 0.5s,
+          color 0.5s;
+      }
+      .card {
+        transition:
+          background-color 0.5s,
+          border-color 0.5s,
+          box-shadow 0.5s;
+      }
+      /* UTILITY LIGHT MODE UNTUK DEMO */
+      .light .bg-light-white {
+        background-color: white;
+      }
+      .light .text-light-gray-900 {
+        color: #111827; /* gray-900 */
+      }
+      .light .bg-light-gray-50 {
+        background-color: #f9fafb; /* gray-50 - Latar Belakang Sangat Cerah */
+      }
+      .light .border-light-gray-200 {
+        border-color: #e5e7eb; /* gray-200 */
+      }
+      .light .shadow-light-xl {
+        box-shadow:
+          0 20px 25px -5px rgba(0, 0, 0, 0.1),
+          0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      }
+      /* Default Backgrounds (Dark Mode) */
+      .bg-page-dark {
+        background-color: #111827;
+      }
+      .text-page-dark {
+        color: #f3f4f6;
+      }
+      /* Light Mode Overrides */
+      .light .bg-page-dark {
+        background-color: #f9fafb;
+      }
+      .light .text-page-dark {
+        color: #111827;
+      }
+      /* Marquee Backgrounds (Dark Mode Default) */
+      #marquee-berita {
+        background-color: rgb(127 29 29 / 0.2);
+        border-color: rgb(239 68 68 / 0.3);
+      }
+      #marquee-rtl {
+        background-color: rgb(49 46 129 / 0.2);
+        border-color: rgb(99 102 241 / 0.3);
+      }
+      #marquee-selamat {
+        background-color: rgb(22 163 74 / 0.2);
+        border-color: rgb(74 222 128 / 0.3);
+      }
+      #marquee-brands {
+        background-color: rgb(8 145 178 / 0.2);
+        border-color: rgb(34 211 238 / 0.3);
+      }
+      #marquee-brands-hard {
+        background-color: rgb(139 92 246 / 0.2);
+        border-color: rgb(167 139 250 / 0.3);
+      }
+      #marquee-autoreverse {
+        background-color: rgb(250 204 21 / 0.2);
+        border-color: rgb(253 224 71 / 0.3);
+      }
+      /* Marquee Backgrounds (Light Mode) */
+      .light #marquee-berita {
+        background-color: rgb(254 202 202 / 0.5);
+        border-color: rgb(252 165 165);
+      }
+      .light #marquee-rtl {
+        background-color: rgb(224 230 255 / 0.5);
+        border-color: rgb(129 140 248);
+      }
+      .light #marquee-selamat {
+        background-color: rgb(220 252 231 / 0.5);
+        border-color: rgb(134 239 172);
+      }
+      .light #marquee-brands {
+        background-color: rgb(207 250 254 / 0.5);
+        border-color: rgb(103 232 249);
+      }
+      .light #marquee-brands-hard {
+        background-color: rgb(233 213 255 / 0.5);
+        border-color: rgb(196 181 253);
+      }
+      .light #marquee-autoreverse {
+        background-color: rgb(254 243 199 / 0.5);
+        border-color: rgb(252 211 77);
+      }
+    </style>
+
+    <style>
+      /* --- CORE MARQUEE (OPTIMASI PERFORMA) --- */
+      .um-container {
+        display: flex;
+        overflow: hidden;
+        user-select: none;
+        width: 100%;
+        --um-duration: 0s;
+        --um-gap: 2rem;
+        --um-timing-function: linear;
+        contain: layout style paint;
+      }
+      .um-track {
+        display: flex;
+        align-items: center;
+        flex-wrap: nowrap;
+        gap: var(--um-gap);
+        will-change: transform;
+        padding-right: var(--um-gap);
+      }
+      .um-animate {
+        animation: um-scroll var(--um-duration) var(--um-timing-function) infinite;
+      }
+      .um-paused .um-animate {
+        animation-play-state: paused !important;
+      }
+      .um-pause-hover:hover .um-animate {
+        animation-play-state: paused;
+      }
+      .um-right {
+        animation-direction: reverse;
+      }
+      @keyframes um-scroll {
+        from {
+          transform: translate3d(0, 0, 0);
+        }
+        to {
+          transform: translate3d(calc(-100% / var(--um-num-cycles, 1)), 0, 0);
+        }
+      }
+      /* FADE MASK */
+      .um-fade-mask {
+        --um-fade-start: 5%;
+        --um-fade-end: 95%;
+        mask-image: linear-gradient(
+          to right,
+          transparent,
+          black var(--um-fade-start),
+          black var(--um-fade-end),
+          transparent
+        );
+        -webkit-mask-image: linear-gradient(
+          to right,
+          transparent,
+          black var(--um-fade-start),
+          black var(--um-fade-end),
+          transparent
+        );
+      }
+      /* RTL Support Fix (Memastikan posisi teks tetap benar saat di-translate) */
+      .um-container[dir='rtl'] .um-track {
+        direction: rtl;
+        text-align: right;
+      }
+      .um-container[dir='rtl'] {
+        direction: ltr; /* Memastikan translate3d bekerja dari kiri ke kanan (atau sebaliknya) pada container */
+      }
+      /* MONOCHROME DAN ANTI-GLITCH DENGAN PREFIX */
+      .um-logo-monochrome {
+        filter: grayscale(100%) brightness(0) invert(1);
+        transition: filter 0.4s ease;
+      }
+      .light .um-logo-monochrome {
+        filter: grayscale(100%) brightness(0);
+      }
+      .um-logo-svg path,
+      .um-logo-svg circle,
+      .um-logo-svg rect,
+      .um-logo-svg polygon {
+        fill: initial;
+      }
+      .um-logo-monochrome path,
+      .um-logo-monochrome circle,
+      .um-logo-monochrome rect,
+      .um-logo-monochrome polygon {
+        fill: currentColor;
+      }
+      /* ANTI-GLITCH WRAPPERS DENGAN PREFIX */
+      .um-logo-wrapper {
+        position: relative;
+        width: var(--um-logo-size);
+        height: var(--um-logo-size);
+        flex-shrink: 0;
+        padding: 0;
+        margin: 0;
+      }
+      .um-logo-raster,
+      .um-logo-svg {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+      .um-logo-error {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #333;
+        border: 1px dashed #777;
+        color: #ccc;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        font-family: sans-serif;
+        text-align: center;
+        box-sizing: border-box;
+      }
+      .um-logo-wrapper.um-has-error .um-logo-error {
+        display: flex;
+      }
+      .um-logo-wrapper.um-has-error .um-logo-raster,
+      .um-logo-wrapper.um-has-error .um-logo-svg {
+        display: none;
+      }
+      .light .um-logo-error {
+        background-color: #ccc;
+        border-color: #333;
+        color: #333;
+      }
+    </style>
+  </head>
+  <body class="bg-page-dark text-page-dark min-h-screen flex flex-col items-center py-10 px-4 font-sans">
+    <button
+      id="theme-toggle"
+      class="fixed top-6 right-6 z-50 bg-indigo-600 text-white rounded-full p-4 hover:bg-indigo-500 transition duration-300 shadow-xl light:bg-indigo-600 light:hover:bg-indigo-700"
+    >
+      <span id="theme-icon" class="text-2xl">☀️</span>
+    </button>
+
+    <main class="w-full max-w-6xl space-y-16 mt-16">
+      <h1 class="text-4xl font-extrabold text-center text-white light:text-gray-900">
+        Universal Marquee (v5.2 - Auto-Remove on Destroy)
+      </h1>
+
+      <p class="text-center text-gray-400 light:text-gray-600">
+        Implementasi dengan **Cleanup dan Penghapusan Elemen Root** di `destroy()`.
+      </p>
+
+      <div class="w-full max-w-5xl mx-auto space-y-4" id="marquee-berita-parent">
+        <h2 class="text-red-400 font-mono text-sm uppercase tracking-widest text-center light:text-red-600">
+          BERITA TERKINI (Adaptive Speed: 80px/s)
+        </h2>
+
+        <div id="marquee-berita" class="py-5 border-y"></div>
+
+        <div class="flex justify-center flex-wrap gap-2 md:gap-4 pt-4">
+          <button
+            id="pause-btn"
+            class="px-4 py-2 bg-yellow-500 text-gray-900 rounded-lg hover:bg-yellow-600 transition"
+          >
+            Pause()
+          </button>
+          <button id="play-btn" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
+            Play()
+          </button>
+          <button id="update-btn" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
+            UpdateItems()
+          </button>
+          <button id="destroy-btn" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">
+            Destroy() (Hapus dari DOM!)
+          </button>
+        </div>
+      </div>
+
+      <div class="w-full max-w-5xl mx-auto space-y-4 pt-8">
+        <h2 class="text-indigo-400 font-mono text-sm uppercase tracking-widest text-center light:text-indigo-600">
+          PENGUMUMAN BAHASA ARAB (RTL Direction)
+        </h2>
+
+        <div id="marquee-rtl" dir="rtl" class="py-5 border-y"></div>
+      </div>
+
+      <div class="w-full max-w-5xl mx-auto space-y-4 pt-8">
+        <h2 class="text-yellow-400 font-mono text-sm uppercase tracking-widest text-center light:text-yellow-600">
+          PROMO (Auto-Reverse Aktif)
+        </h2>
+
+        <div id="marquee-autoreverse" class="py-5 border-y"></div>
+      </div>
+
+      <div class="w-full max-w-5xl mx-auto space-y-4 pt-8">
+        <h2 class="text-green-400 font-mono text-sm uppercase tracking-widest text-center light:text-green-600">
+          SELAMAT DATANG (Easing Kustom + Event Hook)
+        </h2>
+
+        <div id="marquee-selamat" class="py-6 border-y"></div>
+      </div>
+
+      <div class="w-full max-w-7xl mx-auto space-y-6 pt-8">
+        <h2 class="text-cyan-400 font-mono text-lg uppercase tracking-widest text-center light:text-cyan-600">
+          Dipercaya Perusahaan Kelas Dunia (SVG - Monochrome ON)
+        </h2>
+
+        <div id="marquee-brands" class="py-12 border-y"></div>
+      </div>
+
+      <div class="w-full max-w-7xl mx-auto space-y-6 pt-8">
+        <h2 class="text-purple-400 font-mono text-lg uppercase tracking-widest text-center light:text-purple-600">
+          Partner Lainnya (PNG/JPG - Monochrome OFF + Test Error)
+        </h2>
+
+        <div id="marquee-brands-hard" class="py-12 border-y"></div>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-6 pt-10">
+        <div
+          class="card p-6 rounded-xl border bg-gray-800 border-gray-700 shadow-xl light:bg-light-white light:border-light-gray-200 light:shadow-light-xl"
+        >
+          <h2 class="text-2xl font-semibold mb-3 text-indigo-400 light:text-indigo-600">Adaptive Speed</h2>
+
+          <p class="text-gray-400 light:text-gray-600">
+            Marquee berjalan pada kecepatan visual yang konstan (misalnya, 80px/s) meskipun panjang konten berubah.
+          </p>
+        </div>
+        <div
+          class="card p-6 rounded-xl border bg-gray-800 border-gray-700 shadow-xl light:bg-light-white light:border-light-gray-200 light:shadow-light-xl"
+        >
+          <h2 class="text-2xl font-semibold mb-3 text-indigo-400 light:text-indigo-600">Full Cleanup</h2>
+
+          <p class="text-gray-400 light:text-gray-600">
+            Metode <code>destroy()</code> kini menghapus semua listeners *dan* elemen DOM root (untuk kasus sementara).
+          </p>
+        </div>
+      </div>
+    </main>
+    <footer class="mt-16 pt-4 text-center border-t border-gray-700 light:border-light-gray-200 w-full max-w-6xl">
+      <p class="text-sm text-gray-500 light:text-gray-600">Universal Marquee v5.2 - Final Stable Implementation.</p>
+    </footer>
+    <script>
+      class UniversalMarquee {
+        constructor(selector, options) {
+          this.root = typeof selector === 'string' ? document.querySelector(selector) : selector;
+          if (!this.root) throw new Error('Element not found');
+
+          this.opts = {
+            duration: options.duration ?? '40s',
+            speed: options.speed ?? null,
+            gap: options.gap ?? '2rem',
+            direction: options.direction ?? 'left',
+            pauseOnHover: options.pauseOnHover ?? true,
+            items: options.items ?? [],
+            renderItem: options.renderItem ?? ((i) => document.createTextNode(String(i))),
+            separator: options.separator ?? null,
+            monochrome: options.monochrome ?? false,
+            fadeMask: options.fadeMask ?? true,
+            disableMotion: options.disableMotion ?? false,
+            fadeStart: options.fadeStart ?? '5%',
+            fadeEnd: options.fadeEnd ?? '95%',
+            autoReverse: options.autoReverse ?? false,
+            timingFunction: options.timingFunction ?? 'linear',
+            onCycleStart: options.onCycleStart ?? (() => {}),
+            onPlay: options.onPlay ?? (() => {}),
+            onPause: options.onPause ?? (() => {}),
+          };
+
+          // --- Internal State Properties ---
+          this.isIntersecting = true;
+          this.isPageVisible = true;
+          this.isWindowFocused = true;
+          this.isManuallyPaused = false;
+          this.masterTrack = null;
+          this.currentDirection = this.opts.direction;
+          this.autoReverseInterval = null;
+          this.resizeTimer = null;
+
+          // --- Binded Handlers for Cleanup ---
+          this.handleVisibilityChange = this._handleVisibilityChange.bind(this);
+          this.handleBlur = this._handleBlur.bind(this);
+          this.handleFocus = this._handleFocus.bind(this);
+          this.handleAnimationIteration = this._handleAnimationIteration.bind(this);
+
+          // Penanganan RTL Awal
+          if (this.currentDirection === 'rtl') {
+            this.currentDirection = 'right';
+            this.root.dir = 'rtl';
+          } else {
+            this.root.dir = 'ltr';
+          }
+
+          this.init();
+        }
+
+        // --- API PUBLIK ---
+        updateItems(newItems) {
+          if (!Array.isArray(newItems)) {
+            console.error('updateItems() requires an array.');
+            return;
+          }
+          // Reset flag hasFailedLoading pada item lama (jika ada)
+          this.opts.items.forEach((item) => {
+            if (item.hasFailedLoading) delete item.hasFailedLoading;
+          });
+
+          this.opts.items = newItems;
+          this._fillScreen();
+          console.log(`Marquee updated with ${newItems.length} new item(s).`);
+        }
+
+        play() {
+          this.isManuallyPaused = false;
+          this._updatePauseState();
+        }
+
+        pause() {
+          this.isManuallyPaused = true;
+          this.root.classList.add('um-paused');
+          this.opts.onPause(this, { reason: 'manual-pause' });
+        }
+
+        setDirection(newDirection) {
+          let directionChanged = false;
+
+          if (newDirection === 'rtl') {
+            if (this.currentDirection !== 'right' || this.root.dir !== 'rtl') {
+              this.currentDirection = 'right';
+              this.root.dir = 'rtl';
+              directionChanged = true;
+            }
+          } else if (newDirection === 'left' || newDirection === 'right') {
+            if (this.currentDirection !== newDirection) {
+              this.currentDirection = newDirection;
+              this.root.dir = 'ltr';
+              directionChanged = true;
+            }
+          } else {
+            console.error("setDirection() requires 'left', 'right', or 'rtl'.");
+            return;
+          }
+
+          if (directionChanged) {
+            this._applyDirection();
+            // Hitung ulang durasi jika menggunakan speed adaptif
+            if (this.opts.speed) this._fillScreen();
+          }
+        }
+
+        setDuration(newDuration) {
+          if (typeof newDuration !== 'string' || !newDuration.endsWith('s')) {
+            console.error("setDuration() requires a string ending with 's', e.g., '15s'.");
+            return;
+          }
+          this.opts.speed = null; // Nonaktifkan Adaptive Speed
+          this._applyDuration(newDuration);
+
+          if (this.opts.autoReverse) {
+            this._stopAutoReverse();
+            this._startAutoReverse();
+          }
+          console.log(`Marquee duration updated to: ${newDuration}`);
+        }
+
+        // ** Diperbarui: CLEANUP & REMOVE ROOT METHOD **
+        destroy() {
+          this.pause(); // Hentikan animasi & set manual pause
+          this._stopAutoReverse();
+
+          // 1. Hapus Event Listeners & Observers
+          if (this.masterTrack) {
+            this.masterTrack.removeEventListener('animationiteration', this.handleAnimationIteration);
+          }
+          document.removeEventListener('visibilitychange', this.handleVisibilityChange);
+          window.removeEventListener('blur', this.handleBlur);
+          window.removeEventListener('focus', this.handleFocus);
+
+          if (this.resizeObserver) this.resizeObserver.disconnect();
+          if (this.intersectionObserver) this.intersectionObserver.disconnect();
+
+          // 2. Bersihkan DOM dan class/style
+          this.root.innerHTML = '';
+          this.root.classList.remove('um-container', 'um-pause-hover', 'um-fade-mask', 'um-paused');
+          this.root.removeAttribute('dir');
+          this.root.removeAttribute('style');
+
+          // 3. Hapus elemen root dari DOM
+          if (this.root.parentNode) {
+            this.root.parentNode.removeChild(this.root);
+          }
+
+          console.log(
+            `[UniversalMarquee] Instance destroyed and removed from DOM: ${this.root.id || this.root.className}`
+          );
+        }
+
+        // --- LOGIKA INTERNAL ---
+        init() {
+          // Set initial duration and reduced motion preference
+          let finalDuration = this.opts.duration;
+          if (this.opts.disableMotion || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            finalDuration = '0s';
+            this.opts.duration = finalDuration; // Update base duration
+          }
+
+          this.root.classList.add('um-container');
+          if (this.opts.pauseOnHover) this.root.classList.add('um-pause-hover');
+          if (this.opts.fadeMask) this.root.classList.add('um-fade-mask');
+
+          // Terapkan Styling Awal
+          this.root.style.setProperty('--um-timing-function', this.opts.timingFunction);
+          this._applyDuration(finalDuration);
+          this.root.style.setProperty('--um-gap', this.opts.gap);
+          this.root.style.setProperty('--um-fade-start', this.opts.fadeStart);
+          this.root.style.setProperty('--um-fade-end', this.opts.fadeEnd);
+
+          if (finalDuration === '0s') {
+            this.root.classList.add('um-paused');
+          }
+
+          this._setupContent();
+          this._registerObservers();
+          this._registerVisibilityObserver();
+          this._registerWindowFocus();
+          if (this.opts.autoReverse) {
+            this._startAutoReverse();
+          }
+        }
+
+        _applyDuration(duration) {
+          this.root.style.setProperty('--um-duration', duration);
+        }
+
+        _applyDirection() {
+          if (!this.masterTrack) return;
+          if (this.currentDirection === 'right') {
+            this.masterTrack.classList.add('um-right');
+          } else {
+            this.masterTrack.classList.remove('um-right');
+          }
+        }
+
+        _startAutoReverse() {
+          if (this.autoReverseInterval) this._stopAutoReverse();
+
+          const durationStyle = this.root.style.getPropertyValue('--um-duration');
+          const durationMatch = durationStyle.match(/(\d+\.?\d*)s/);
+          if (!durationMatch) return;
+
+          // Interval dihitung berdasarkan Durasi Marquee
+          const durationMs = parseFloat(durationMatch[1]) * 1000;
+
+          this.autoReverseInterval = setInterval(() => {
+            this.currentDirection = this.currentDirection === 'left' ? 'right' : 'left';
+            this._applyDirection();
+            console.log(`Auto Reverse: Direction changed to ${this.currentDirection}`);
+          }, durationMs);
+        }
+
+        _stopAutoReverse() {
+          if (this.autoReverseInterval) {
+            clearInterval(this.autoReverseInterval);
+            this.autoReverseInterval = null;
+          }
+        }
+
+        _handleAnimationIteration() {
+          this.opts.onCycleStart(this);
+        }
+
+        _setupContent() {
+          this.masterTrack = document.createElement('div');
+          this.masterTrack.className = 'um-track um-animate';
+          this._applyDirection();
+          this.root.innerHTML = '';
+          this.root.appendChild(this.masterTrack);
+
+          // Event Hook: onCycleStart
+          this.masterTrack.addEventListener('animationiteration', this.handleAnimationIteration);
+
+          requestAnimationFrame(this._fillScreen.bind(this));
+        }
+
+        _createCycle() {
+          const frag = document.createDocumentFragment();
+          const shouldBeMonochrome = this.opts.monochrome;
+
+          for (const item of this.opts.items) {
+            const node = this.opts.renderItem(item);
+
+            const targetElement = node.querySelector('.um-logo-svg') || node.querySelector('.um-logo-raster');
+
+            if (targetElement) {
+              targetElement.classList.toggle('um-logo-monochrome', shouldBeMonochrome);
+            }
+
+            const outerWrapper = document.createElement('div');
+            outerWrapper.style.flexShrink = '0';
+            outerWrapper.style.display = 'flex';
+            outerWrapper.style.alignItems = 'center';
+            outerWrapper.appendChild(node);
+            frag.appendChild(outerWrapper);
+
+            if (this.opts.separator) {
+              const sep = document.createElement('div');
+              sep.style.flexShrink = '0';
+              sep.style.display = 'flex';
+              sep.style.alignItems = 'center';
+
+              const sepNode =
+                this.opts.separator instanceof Node
+                  ? this.opts.separator.cloneNode(true)
+                  : Object.assign(document.createElement('span'), {
+                      textContent: String(this.opts.separator),
+                    });
+
+              sep.appendChild(sepNode);
+              frag.appendChild(sep);
+            }
+          }
+          return frag;
+        }
+
+        _fillScreen() {
+          if (!this.masterTrack || this.opts.items.length === 0) return;
+
+          // Pause untuk pengukuran yang akurat
+          this.root.classList.add('um-paused');
+          this.masterTrack.innerHTML = '';
+
+          // 1. Hitung lebar satu siklus konten (W).
+          const temp = document.createElement('div');
+          temp.className = 'um-track';
+          temp.style.position = 'absolute';
+          temp.style.visibility = 'hidden';
+          temp.style.setProperty('--um-gap', this.opts.gap);
+          temp.appendChild(this._createCycle().cloneNode(true));
+          document.body.appendChild(temp);
+
+          const cycleWidth = temp.offsetWidth; // Lebar satu cycle (W)
+          document.body.removeChild(temp);
+
+          if (cycleWidth === 0 || this.opts.items.length === 0) return;
+
+          // Handle Reduced Motion: Jangan animasikan dan tampilkan hanya satu siklus
+          if (this.opts.duration === '0s') {
+            this.masterTrack.appendChild(this._createCycle());
+            this.masterTrack.style.removeProperty('--um-num-cycles');
+            return;
+          }
+
+          // 2. Tentukan Jumlah Siklus Kloning yang dibutuhkan
+          let cycles = Math.ceil(this.root.offsetWidth / cycleWidth) + 2;
+          if (cycles < 3) cycles = 3;
+          if (cycles > 30) cycles = 30; // Batas agar DOM tidak terlalu besar
+
+          // 3. Kontrol Kecepatan Adaptif (jika diaktifkan)
+          if (this.opts.speed) {
+            const speedMatch = this.opts.speed.match(/(\d+\.?\d*)px\/s/);
+            if (speedMatch) {
+              const speedPxPerSecond = parseFloat(speedMatch[1]);
+              // Lebar total animasi adalah lebar semua cycle yang dikloning
+              const totalAnimationWidth = cycleWidth * cycles;
+              // Durasi = Jarak / Kecepatan
+              const newDuration = totalAnimationWidth / speedPxPerSecond;
+              this._applyDuration(`${newDuration.toFixed(2)}s`);
+
+              if (this.opts.autoReverse) {
+                this._stopAutoReverse();
+                this._startAutoReverse();
+              }
+            } else {
+              this._applyDuration(this.opts.duration);
+            }
+          } else {
+            this._applyDuration(this.opts.duration);
+          }
+
+          // 4. Bangun DOM (isi track dengan siklus yang sudah dihitung)
+          const content = document.createDocumentFragment();
+          for (let i = 0; i < cycles; i++) content.appendChild(this._createCycle().cloneNode(true));
+
+          this.masterTrack.appendChild(content);
+          this.masterTrack.style.setProperty('--um-num-cycles', cycles);
+
+          requestAnimationFrame(() => this._updatePauseState());
+        }
+
+        // Optimized resize observer with debounce
+        _registerObservers() {
+          const resizeCallback = () => {
+            if (this.resizeTimer) {
+              cancelAnimationFrame(this.resizeTimer);
+            }
+            this.resizeTimer = requestAnimationFrame(this._fillScreen.bind(this));
+          };
+          // Simpan referensi observer
+          this.resizeObserver = new ResizeObserver(resizeCallback);
+          this.resizeObserver.observe(this.root);
+        }
+
+        // Auto-pause functions
+        _updatePauseState() {
+          // Jika Marquee mati (disableMotion), jangan lakukan apa-apa
+          if (this.opts.duration === '0s') return;
+
+          if (this.isManuallyPaused) {
+            this.root.classList.add('um-paused');
+            return;
+          }
+
+          const shouldPause = !this.isIntersecting || !this.isPageVisible || !this.isWindowFocused;
+
+          const isCurrentlyPaused = this.root.classList.contains('um-paused');
+
+          this.root.classList.toggle('um-paused', shouldPause);
+
+          // Trigger hooks otomatis jika ada perubahan state
+          if (shouldPause && !isCurrentlyPaused) {
+            this.opts.onPause(this, { reason: 'auto-pause' });
+          } else if (!shouldPause && isCurrentlyPaused) {
+            this.opts.onPlay(this, { reason: 'auto-play' });
+          }
+        }
+
+        _registerVisibilityObserver() {
+          if ('IntersectionObserver' in window) {
+            // Simpan referensi observer
+            this.intersectionObserver = new IntersectionObserver(
+              (entries) => {
+                entries.forEach((entry) => {
+                  this.isIntersecting = entry.isIntersecting;
+                  this._updatePauseState();
+                });
+              },
+              {
+                rootMargin: '0px',
+                threshold: 0,
+              }
+            );
+            this.intersectionObserver.observe(this.root);
+          }
+        }
+
+        // Fungsi handler yang di-bind
+        _handleVisibilityChange() {
+          this.isPageVisible = document.visibilityState === 'visible';
+          this._updatePauseState();
+        }
+        _handleBlur() {
+          this.isWindowFocused = false;
+          this._updatePauseState();
+        }
+        _handleFocus() {
+          this.isWindowFocused = true;
+          this._updatePauseState();
+        }
+
+        _registerWindowFocus() {
+          // Gunakan fungsi handler yang sudah di-bind agar bisa di-remove
+          document.addEventListener('visibilitychange', this.handleVisibilityChange);
+          window.addEventListener('blur', this.handleBlur);
+          window.addEventListener('focus', this.handleFocus);
+        }
+      }
+
+      // --- RENDERER KHUSUS LOGO/GAMBAR ---
+
+      const createLogo = (data) => {
+        const size = data.size || '80px';
+        const wrapper = document.createElement('div');
+        wrapper.className = 'um-logo-wrapper';
+        wrapper.style.setProperty('--um-logo-size', size);
+        const div = document.createElement('div');
+        div.innerHTML = data.svg.trim();
+        const svg = div.firstChild;
+        svg.style.width = '100%';
+        svg.style.height = '100%';
+        svg.classList.add('um-logo-svg');
+        wrapper.appendChild(svg);
+        return wrapper;
+      };
+
+      const createRasterImage = (data) => {
+        const size = data.size || '80px';
+        const wrapper = document.createElement('div');
+        wrapper.className = 'um-logo-wrapper';
+        wrapper.style.setProperty('--um-logo-size', size);
+
+        if (data.hasFailedLoading) {
+          wrapper.classList.add('um-has-error');
+        }
+
+        const img = document.createElement('img');
+
+        if (!data.hasFailedLoading) {
+          img.src = data.src;
+        } else {
+          img.src = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAAALAAAAAABAAEAAAICTAEAOw==';
+        }
+
+        img.alt = data.alt || 'Logo';
+        img.classList.add('um-logo-raster');
+        const placeholder = document.createElement('div');
+        placeholder.className = 'um-logo-error';
+        placeholder.textContent = '❌ GAGAL';
+
+        img.onerror = function () {
+          if (data.hasFailedLoading) return;
+
+          console.error(`Gagal memuat gambar: ${this.src}`);
+          data.hasFailedLoading = true;
+          wrapper.classList.add('um-has-error');
+          this.src = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAAALAAAAAABAAEAAAICTAEAOw==';
+        };
+        wrapper.appendChild(img);
+        wrapper.appendChild(placeholder);
+        return wrapper;
+      };
+
+      const itemRenderer = (item) => {
+        if (item && item.svg) {
+          return createLogo(item);
+        } else if (item && item.src) {
+          return createRasterImage(item);
+        } else {
+          const el = document.createElement('span');
+          el.textContent = String(item);
+          return el;
+        }
+      };
+
+      // --- LOGIKA TEMA & INIT ---
+      const html = document.documentElement;
+      const toggleButton = document.getElementById('theme-toggle');
+      const icon = document.getElementById('theme-icon');
+
+      const DARK_CLASS = 'dark';
+      const LIGHT_CLASS = 'light';
+      const STORAGE_KEY = 'theme';
+
+      const updateIcon = () => {
+        if (html.classList.contains(DARK_CLASS)) {
+          icon.textContent = '☀️';
+          html.classList.remove(LIGHT_CLASS);
+        } else {
+          icon.textContent = '🌙';
+          html.classList.add(LIGHT_CLASS);
+        }
+      };
+
+      const setTheme = (theme) => {
+        if (theme === DARK_CLASS) {
+          html.classList.add(DARK_CLASS);
+          html.classList.remove(LIGHT_CLASS);
+          localStorage.setItem(STORAGE_KEY, DARK_CLASS);
+        } else {
+          html.classList.remove(DARK_CLASS);
+          html.classList.add(LIGHT_CLASS);
+          localStorage.setItem(STORAGE_KEY, LIGHT_CLASS);
+        }
+        updateIcon();
+      };
+
+      // Global variable for easy access to the first marquee instance
+      let beritaMarqueeInstance;
+
+      const initApp = () => {
+        const savedTheme = localStorage.getItem(STORAGE_KEY);
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        if (savedTheme) {
+          setTheme(savedTheme);
+        } else if (prefersDark) {
+          setTheme(DARK_CLASS);
+        } else {
+          setTheme(LIGHT_CLASS);
+        }
+        toggleButton.addEventListener('click', () => {
+          const currentTheme = html.classList.contains(DARK_CLASS) ? DARK_CLASS : LIGHT_CLASS;
+          const newTheme = currentTheme === DARK_CLASS ? LIGHT_CLASS : DARK_CLASS;
+          setTheme(newTheme);
+        });
+
+        // 1. Marquee Berita (Adaptive Speed)
+        // Pastikan elemen #marquee-berita ada sebelum membuat instance
+        if (document.getElementById('marquee-berita')) {
+          beritaMarqueeInstance = new UniversalMarquee('#marquee-berita', {
+            speed: '80px/s',
+            gap: '3rem',
+            direction: 'right',
+            fadeMask: true,
+            fadeStart: '15%',
+            fadeEnd: '85%',
+            items: [
+              'Tarif China Naik 50%',
+              'Fed Potong Suku Bunga',
+              'Oracle Laporan Jeblok (Konten Panjang)',
+              'COP30 Sukses',
+              'AI Mengubah Dunia',
+              'Saham Teknologi Meroket 10%',
+            ],
+            separator: ' | ',
+            renderItem: (t) => {
+              const el = document.createElement('span');
+              el.className =
+                'text-sm font-bold uppercase tracking-wider whitespace-nowrap text-red-300 light:text-red-700';
+              el.textContent = t;
+              return el;
+            },
+          });
+        }
+
+        // Uji Kontrol Dinamis
+        document.getElementById('pause-btn')?.addEventListener('click', () => {
+          if (beritaMarqueeInstance) beritaMarqueeInstance.pause();
+        });
+        document.getElementById('play-btn')?.addEventListener('click', () => {
+          if (beritaMarqueeInstance) beritaMarqueeInstance.play();
+        });
+        document.getElementById('update-btn')?.addEventListener('click', () => {
+          if (!beritaMarqueeInstance) return;
+          const newItems = ['✨ Konten Baru Pendek!', '🚀 Refresh Cepat!', '✅ Sukses!'];
+          beritaMarqueeInstance.updateItems(newItems);
+        });
+        document.getElementById('destroy-btn')?.addEventListener('click', (e) => {
+          if (beritaMarqueeInstance) {
+            beritaMarqueeInstance.destroy();
+            beritaMarqueeInstance = null;
+            // Setelah elemen hilang, nonaktifkan tombol lainnya
+            document.getElementById('pause-btn').disabled = true;
+            document.getElementById('play-btn').disabled = true;
+            document.getElementById('update-btn').disabled = true;
+            e.target.disabled = true;
+
+            // Tambahkan pesan konfirmasi ke parent container
+            const parent = document.getElementById('marquee-berita-parent');
+            if (parent) {
+              const message = document.createElement('p');
+              message.textContent = 'Marquee Berita telah dihapus sepenuhnya dari DOM.';
+              message.className = 'text-center text-red-500 font-bold mt-4';
+              parent.appendChild(message);
+            }
+          }
+        });
+
+        // 1.5. Marquee RTL (Dukungan Bahasa Arab/Ibrani)
+
+        new UniversalMarquee('#marquee-rtl', {
+          duration: '15s',
+          gap: '4rem',
+          direction: 'rtl',
+          fadeMask: false,
+          items: ['مرحبا بكم في عالم التكنولوجيا', 'آخر الأخبار الاقتصادية والعالمية', 'معلومات هامة لجميع الزوار'],
+          renderItem: (t) => {
+            const el = document.createElement('span');
+            el.className = 'text-lg font-extrabold whitespace-nowrap text-indigo-300 light:text-indigo-800';
+            el.textContent = t;
+            return el;
+          },
+        });
+
+        // 2. Marquee Auto-Reverse (Demonstrasi fitur baru)
+
+        new UniversalMarquee('#marquee-autoreverse', {
+          duration: '6s',
+          gap: '2rem',
+          fadeMask: false,
+          autoReverse: true,
+          items: [
+            '🔔 Segera Dapatkan Diskon 50% di sini!',
+            '⏰ Waktu Terbatas Hanya Hari Ini!',
+            '🔥 Penawaran Terbaik Tahun Ini!',
+          ],
+          renderItem: (t) => {
+            const el = document.createElement('span');
+            el.className = 'text-md font-extrabold whitespace-nowrap text-yellow-300 light:text-yellow-800';
+            el.textContent = t;
+            return el;
+          },
+        });
+
+        // 3. Selamat Datang (Timing Function + Event Hooks)
+
+        let cycleCount = 0;
+        new UniversalMarquee('#marquee-selamat', {
+          duration: '35s',
+          gap: '2.5rem',
+          fadeMask: false,
+          timingFunction: 'cubic-bezier(0.8, 0.0, 0.2, 1.0)', // Easing kustom
+          onCycleStart: () => {
+            cycleCount++;
+            console.log(`[Marquee Selamat] Siklus selesai ke-${cycleCount}`);
+          },
+          onPause: (instance, data) => {
+            if (data && data.reason === 'auto-pause') {
+              console.log(`[Marquee Selamat] Otomatis di-Pause (Tab/Off-screen)`);
+            }
+          },
+          items: ['Selamat Datang!', 'Halo Pengunjung Baru!', 'Sampai Jumpa Lagi!', 'Terima Kasih Telah Berkunjung!'],
+          renderItem: (t) => {
+            const el = document.createElement('div');
+            el.className =
+              'px-6 py-3 rounded-full text-lg font-medium whitespace-nowrap ' +
+              'bg-green-500/10 border border-green-500/30 text-green-300 ' +
+              'light:bg-green-100 light:border-green-300 light:text-green-800';
+            el.textContent = t;
+            return el;
+          },
+        });
+
+        // 4. LOGO SVG – Monochrome ON
+
+        new UniversalMarquee('#marquee-brands', {
+          duration: '5s',
+          gap: '8rem',
+          direction: 'left',
+          pauseOnHover: true,
+          monochrome: true,
+          fadeMask: true,
+          items: [
+            {
+              size: '80px',
+              svg: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="fill:#4285F4;"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" style="fill:#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" style="fill:#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" style="fill:#EA4335"/></svg>`,
+            },
+            {
+              size: '80px',
+              svg: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" style="fill:#4267B2"/></svg>`,
+            },
+            {
+              size: '80px',
+              svg: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.5L2.5 22h19L12 2.5z" style="fill:#000"/></svg>`,
+            },
+          ],
+          renderItem: itemRenderer,
+        });
+
+        // 5. LOGO RASTER – Monochrome OFF + Test Error
+
+        new UniversalMarquee('#marquee-brands-hard', {
+          duration: '8s',
+          gap: '6rem',
+          direction: 'right',
+          monochrome: false,
+          fadeMask: false,
+          items: [
+            { size: '70px', src: 'no-exist.png', alt: 'Error Logo' },
+            { size: '70px', src: 'logo-microsoft.png', alt: 'Microsoft Logo' },
+            { size: '70px', src: 'logo-amazon.png', alt: 'Amazon Logo' },
+          ],
+          renderItem: itemRenderer,
+        });
+      };
+
+      if (document.readyState === 'complete') initApp();
+      else window.addEventListener('load', initApp);
+    </script>
+  </body>
+</html>
