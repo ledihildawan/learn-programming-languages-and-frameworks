@@ -1,1381 +1,636 @@
 <!doctype html>
-<html lang="id" class="dark">
+<html lang="id">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Universal Marquee v6.2 - High Contrast Neumorphic Glass</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-      /* --- REVISED COLOR PALETTE & GLOBAL STYLES (High Contrast) --- */
+    <title>Universal Marquee v13.5 – Dashed Guides Everywhere</title>
+
+    <style data-label="UNIVERSAL_MARQUEE_CORE_STYLES">
       :root {
-        /* High Contrast Dark Mode */
-        --bg-page-dark: #12121e; /* Sangat gelap untuk kontras maksimum */
-        --text-page-dark: #f0f0f4; /* Putih off-white */
-        --shadow-light: rgba(255, 255, 255, 0.08); /* Sedikit lebih terang */
-        --shadow-dark: rgba(0, 0, 0, 0.7); /* Lebih gelap */
-        /* Glass Base Dark: Lebih buram (kurangi opacity) agar mudah dibaca */
-        --glass-base: rgba(255, 255, 255, 0.05); /* Latar belakang glass lebih transparan lagi, meniru mockup */
-        --card-bg-dark: #20202a; /* Warna latar belakang kartu yang solid dan kontras dengan BG utama */
-        --glass-border: rgba(255, 255, 255, 0.1);
-        /* High Contrast Light Mode */
-        --bg-page-light: #f5f5f9; /* Sangat terang */
-        --text-page-light: #12121e; /* Sangat gelap */
-        --card-bg-light: #ffffff;
+        --um-duration-default: 15s;
+        --um-gap-default: 2rem;
+        --um-color-primary: #1f2937;
+        --um-color-separator: #9ca3af;
+        --um-font-size: 1.25rem;
+        --um-font-weight: bold;
       }
-      .light {
-        --bg-page-dark: var(--bg-page-light);
-        --text-page-dark: var(--text-page-light);
-        --shadow-light: rgba(255, 255, 255, 0.8);
-        --shadow-dark: rgba(100, 100, 100, 0.3);
-        /* Glass Base Light: Transparan lebih rendah untuk kontras yang lebih baik */
-        --glass-base: rgba(255, 255, 255, 0.9);
-        --card-bg-dark: var(--card-bg-light);
-        --glass-border: rgba(100, 100, 100, 0.15);
-      }
-      body {
-        transition:
-          background-color 0.5s,
-          color 0.5s;
-        background-color: var(--bg-page-dark);
-        color: var(--text-page-dark);
-      }
-      /* 1. GLASSMORPHIC CARD STYLES - Diubah menjadi Solid/Soft Card (Sesuai Mockup) */
-      .glass-card {
-        background-color: var(--card-bg-dark);
-        border: 1px solid var(--glass-border);
-        border-radius: 1rem; /* Sudut lebih kecil (16px) */
-        box-shadow:
-          0 10px 30px var(--shadow-dark),
-          0 5px 15px rgba(0, 0, 0, 0.1);
-        transition: all 0.5s ease;
-      }
-      /* 2. NEUMORPHIC BUTTON STYLES (Override Tailwind) */
-      .neumorphic-button {
-        border-radius: 0.5rem; /* Sudut lebih tajam di tombol */
-        transition: all 0.3s ease;
-        padding: 0.5rem 1rem;
-        font-size: 0.875rem; /* text-sm */
-        font-weight: 700;
-        cursor: pointer;
-        /* Initial Outward Soft Shadow */
-        box-shadow:
-          2px 2px 4px var(--shadow-dark),
-          -2px -2px 4px var(--shadow-light);
-      }
-      .neumorphic-button:hover {
-        opacity: 0.9;
-      }
-      .neumorphic-button:active {
-        /* Pressed Inward Shadow */
-        box-shadow:
-          inset 1px 1px 3px var(--shadow-dark),
-          inset -1px -1px 3px var(--shadow-light);
-        transform: translateY(1px);
-      }
-      /* Marquee item colors (Kontras Tinggi) */
-      .text-red-300 {
-        color: #f87171;
-      }
-      .light .text-red-700 {
-        color: #b91c1c;
-      }
-      .text-indigo-300 {
-        color: #a5b4fc;
-      }
-      .light .text-indigo-700 {
-        color: #4338ca;
-      }
-      .text-cyan-300 {
-        color: #67e8f9;
-      }
-      .light .text-cyan-700 {
-        color: #0e7490;
-      }
-      .text-green-400 {
-        color: #4ade80;
-      }
-      .text-red-400 {
-        color: #f87171;
-      }
-      /* --- MARQUEE CORE STYLES (Penyesuaian Visual) --- */
-      #marquee-stock {
-        height: 180px;
-        padding: 0;
-        border: none;
-        display: flex; /* Aktifkan flex untuk menampung dua kolom */
-        gap: 1.5rem;
-        justify-content: space-around;
-      }
-      /* Stock items inside vertical marquee */
-      #marquee-stock .stock-item-container {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-      }
-      #marquee-stock .stock-item-container .um-track {
-        flex-direction: column;
-        padding-bottom: 0;
-      }
-      /* Fading mask adjustment for mockup style */
-      .um-fade-mask::before,
-      .um-fade-mask::after {
-        content: '';
-        position: absolute;
-        z-index: 10;
-        pointer-events: none;
-      }
-      /* Horizontal Fade */
-      .um-container:not(.um-vertical).um-fade-mask::before {
-        left: 0;
-        top: 0;
-        bottom: 0;
-        width: var(--um-fade-start);
-        background: linear-gradient(to right, var(--card-bg-dark) 0%, rgba(0, 0, 0, 0) 100%);
-      }
-      .um-container:not(.um-vertical).um-fade-mask::after {
-        right: 0;
-        top: 0;
-        bottom: 0;
-        width: calc(100% - var(--um-fade-end));
-        background: linear-gradient(to left, var(--card-bg-dark) 0%, rgba(0, 0, 0, 0) 100%);
-      }
-      /* Vertical Fade */
-      .um-container.um-vertical.um-fade-mask::before {
-        top: 0;
-        left: 0;
-        right: 0;
-        height: var(--um-fade-start);
-        background: linear-gradient(to bottom, var(--card-bg-dark) 0%, rgba(0, 0, 0, 0) 100%);
-      }
-      .um-container.um-vertical.um-fade-mask::after {
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: calc(100% - var(--um-fade-end));
-        background: linear-gradient(to top, var(--card-bg-dark) 0%, rgba(0, 0, 0, 0) 100%);
-      }
-      /* --- CORE MARQUEE (PRESERVATION) --- */
-      /* (Semua kode Marquee Core lainnya tetap tidak berubah untuk menjaga fungsionalitas) */
+
       .um-container {
         display: flex;
         overflow: hidden;
         user-select: none;
         width: 100%;
-        --um-duration: 0s;
-        --um-gap: 2rem;
-        --um-timing-function: linear;
-        contain: layout style paint;
-        position: relative;
+
+        --um-duration: var(--um-duration-default);
+        --um-gap: var(--um-gap-default);
       }
-      .um-container.um-vertical {
-        flex-direction: column;
-        width: 100%;
-      }
+
       .um-track {
         display: flex;
         align-items: center;
         flex-wrap: nowrap;
-        gap: var(--um-gap);
+        gap: 0;
         will-change: transform;
-        transition: transform 0.1s ease-out;
+        padding-left: 0;
+        padding-right: 0;
       }
-      .um-container.um-vertical .um-track {
-        flex-direction: column;
-        height: max-content;
-        padding-bottom: var(--um-gap);
-      }
-      .um-container:not(.um-vertical) .um-track {
-        padding-right: var(--um-gap);
-      }
-      @media (prefers-reduced-motion: reduce) {
-        .um-container .um-animate {
-          animation-duration: 0.001ms !important;
-          animation-iteration-count: 1 !important;
-          transition-duration: 0.001ms !important;
-        }
-      }
-      .um-animate {
-        animation: um-scroll var(--um-duration) var(--um-timing-function) infinite;
-      }
-      .um-paused .um-animate {
-        animation-play-state: paused !important;
-      }
-      .um-pause-hover:hover .um-animate {
-        animation-play-state: paused;
-      }
-      .um-right {
-        animation-direction: reverse;
-      }
-      @keyframes um-scroll {
-        from {
-          transform: translate3d(0, 0, 0);
-        }
-        to {
-          transform: translate3d(calc(-100% / var(--um-num-cycles, 1)), 0, 0);
-        }
-      }
-      .um-container.um-vertical .um-animate {
-        animation-name: um-scroll-vertical;
-      }
-      @keyframes um-scroll-vertical {
-        from {
-          transform: translate3d(0, 0, 0);
-        }
-        to {
-          transform: translate3d(0, calc(-100% / var(--um-num-cycles, 1)), 0);
-        }
-      }
-      .um-container.um-vertical .um-track.um-down {
-        animation-direction: reverse;
-      }
-      .um-fade-mask {
-        --um-fade-start: 5%;
-        --um-fade-end: 95%;
-      }
-      .um-logo-monochrome {
-        filter: grayscale(100%) brightness(0) invert(1);
-        transition: filter 0.4s ease;
-      }
-      .light .um-logo-monochrome {
-        filter: grayscale(100%) brightness(0);
-      }
-      .um-logo-wrapper {
-        position: relative;
-        width: var(--um-logo-size);
-        height: var(--um-logo-size);
+
+      .um-track > div {
+        display: flex;
+        align-items: center;
+        flex-wrap: nowrap;
+        gap: 0;
         flex-shrink: 0;
-        padding: 0;
-        margin: 0;
+
+        padding-left: 10px;
       }
-      .um-logo-raster,
-      .um-logo-svg {
-        width: 100%;
-        height: 100%;
+
+      .um-track > div > * {
+        font-size: var(--um-font-size);
+        font-weight: var(--um-font-weight);
+        color: var(--um-color-separator);
+        flex-shrink: 0;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        margin: 0;
+        padding: 0;
+        max-height: 1.5em;
+        width: auto;
         object-fit: contain;
       }
-      .um-logo-error {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: #333;
-        border: 1px dashed #777;
-        color: #ccc;
-        display: none;
-        align-items: center;
-        justify-content: center;
-        font-size: 10px;
-        font-family: sans-serif;
-        text-align: center;
-        box-sizing: border-box;
+
+      @media (prefers-reduced-motion: reduce) {
+        .um-track {
+          animation: none !important;
+        }
       }
-      .um-logo-wrapper.um-has-error .um-logo-error {
+    </style>
+
+    <style data-label="DEMO_PRESENTATION_STYLES">
+      :root {
+        --color-bg-page: #f9fafb;
+        --color-text-primary: #111827;
+        --color-accent-red: #dc2626;
+        --color-text-secondary: #d1d5db;
+        --color-container-bg: #111827;
+
+        --color-guide-border: #e5e7eb; /* Warna garis guide yang jelas */
+        --layout-guide-width: 1px;
+        --layout-guide-style: dashed; /* <--- PERUBAHAN UTAMA */
+
+        --layout-max-width: 1100px;
+        --layout-content-padding: 30px;
+        --layout-vertical-padding: 3rem;
+        --layout-footer-height: 3rem;
+      }
+
+      /* Base Body (Mengisi Viewport) */
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
         display: flex;
+        min-height: 100vh;
+        background-color: var(--color-bg-page);
+        color: var(--color-text-primary);
       }
-      .um-logo-wrapper.um-has-error .um-logo-raster,
-      .um-logo-wrapper.um-has-error .um-logo-svg {
-        display: none;
+
+      /* --- 2B. ROOT LAYOUT GUIDE STYLES --- */
+
+      .RootLayout {
+        position: relative;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        z-index: 0;
       }
-      .light .um-logo-error {
-        background-color: #ccc;
-        border-color: #333;
-        color: #333;
+
+      /* Horizontal Guides (Menggunakan ::before/::after pada RootLayout) */
+      .RootLayout::before,
+      .RootLayout::after {
+        content: '';
+        /* PENTING: Untuk dashed, kita gunakan border-top/bottom */
+        border-top: var(--layout-guide-width) var(--layout-guide-style) var(--color-guide-border);
+        height: 0; /* Tinggi 0 agar hanya border yang terlihat */
+        position: absolute;
+        left: 0;
+        right: 0;
+        z-index: 1;
+      }
+      .RootLayout::after {
+        border-bottom: var(--layout-guide-width) var(--layout-guide-style) var(--color-guide-border);
+        border-top: none; /* Hapus border-top jika menggunakan ::after untuk bottom */
+      }
+
+      .RootLayout::before {
+        top: var(--layout-vertical-padding);
+      }
+
+      .RootLayout::after {
+        bottom: var(--layout-vertical-padding);
+      }
+
+      /* CONTAINER DENGAN VERTICAL GUIDES */
+      .RootLayoutContainer {
+        width: 100%;
+        max-width: var(--layout-max-width);
+        min-height: 100vh;
+        position: relative;
+        padding-top: var(--layout-vertical-padding);
+        padding-bottom: var(--layout-footer-height);
+
+        /* Vertical Guides (Border Kiri & Kanan) */
+        border-left: var(--layout-guide-width) var(--layout-guide-style) var(--color-guide-border);
+        border-right: var(--layout-guide-width) var(--layout-guide-style) var(--color-guide-border);
+      }
+
+      /* Footer */
+      .RootLayoutFooter {
+        height: var(--layout-footer-height);
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        align-items: center;
+        padding: 0 var(--layout-content-padding);
+      }
+
+      /* --- 2C. KONTEN DEMO UTAMA --- */
+
+      .RootLayoutContent {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex-grow: 1;
+      }
+
+      /* Reset Judul agar rata kiri */
+      .RootLayoutContent > h1,
+      .RootLayoutContent > h2,
+      .RootLayoutContent > p,
+      .RootLayoutContent > hr {
+        width: 100%;
+        text-align: left;
+        margin: 0;
+      }
+
+      /* Wrapper Marquee */
+      .container-wrapper {
+        width: 100%;
+        max-width: 100%;
+      }
+
+      .news-wrapper {
+        background-color: var(--um-color-container-bg);
+      }
+
+      .marquee-content-row {
+        display: flex;
+        align-items: center;
+        width: 100%;
+      }
+
+      /* --- 2D. VERTICAL SEPARATOR/DIVIDER UNTUK LABEL --- */
+
+      /* 1. Breaking News Label (Di Latar Belakang Gelap) */
+      .breaking-news-label {
+        background-color: var(--color-accent-red);
+        color: white;
+        font-weight: 800;
+        font-size: 1.25rem;
+        padding: 10px 15px;
+        margin-right: 0;
+        flex-shrink: 0;
+        display: inline-flex;
+        align-items: center;
+        /* Menggunakan variabel guides untuk konsistensi */
+        border-right: var(--layout-guide-width) solid white;
+      }
+
+      #marquee-news,
+      #marquee-logo-left {
+        padding-left: 20px;
       }
     </style>
   </head>
-  <body class="bg-page-dark text-page-dark min-h-screen flex flex-col items-center py-10 px-4 font-sans">
-    <div class="w-full max-w-4xl flex flex-col items-center">
-      <h1 class="text-4xl font-extrabold text-center text-page-dark">UNIVERSAL MARQUEE</h1>
+  <body>
+    <div class="RootLayout">
+      <div class="RootLayoutContainer">
+        <div class="RootLayoutContent">
+          <h2>🚨 Breaking News Ticker</h2>
+
+          <div class="container-wrapper news-wrapper">
+            <div class="marquee-content-row">
+              <span class="breaking-news-label"> BREAKING NEWS </span>
+              <div id="marquee-news" style="flex-grow: 1"></div>
+            </div>
+          </div>
+
+          <h2>⭐ Partner Logo Pattern</h2>
+
+          <div class="container-wrapper logo-wrapper">
+            <div id="marquee-logo-left" style="flex-grow: 1"></div>
+            <div id="marquee-logo-right" style="flex-grow: 1"></div>
+          </div>
+        </div>
+        <span class="RootLayoutFooter"></span>
+      </div>
     </div>
-    <button
-      id="theme-toggle"
-      class="fixed top-6 right-6 z-50 rounded-full p-4 transition duration-300"
-      style="background-color: #4f46e5; color: white; box-shadow: 0 0 10px #4f46e5"
-      onclick="this.blur()"
-    >
-      <span id="theme-icon" class="text-2xl">☀️</span>
-    </button>
-    <main class="w-full max-w-4xl space-y-8 mt-10">
-      <div class="glass-card p-6" id="marquee-news-parent">
-        <h2 class="text-lg font-bold uppercase tracking-widest text-red-300 light:text-red-700 mb-4">
-          NEWS TICKER (HORIZONTAL)
-        </h2>
-        <div id="marquee-news" class="py-2 mb-4 border-y border-red-500/50"></div>
-        <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-3 pt-2">
-          <p id="status-display" class="text-sm text-page-dark opacity-70">
-            Status: <span id="is-paused-status" class="font-semibold">Berjalan</span>
-          </p>
-          <div class="flex justify-start flex-wrap gap-2">
-            <button id="toggle-btn" class="neumorphic-button bg-yellow-500 text-gray-900 hover:bg-yellow-400">
-              Toggle Pause()
-            </button>
-            <button id="stop-btn" class="neumorphic-button bg-red-600 text-white hover:bg-red-500">STOP (Reset)</button>
-            <button id="update-soft-btn" class="neumorphic-button bg-indigo-500 text-white hover:bg-indigo-400">
-              Update Items (Soft)
-            </button>
-            <button id="destroy-btn" class="neumorphic-button bg-purple-600 text-white hover:bg-purple-500">
-              Manual Destroy()
-            </button>
-            <button id="update-hard-btn" class="neumorphic-button bg-purple-500 text-white hover:bg-purple-400">
-              Update Items (Hard)
-            </button>
-          </div>
-        </div>
-      </div>
-      <div class="glass-card p-6">
-        <h2 class="text-lg font-bold uppercase tracking-widest text-indigo-300 light:text-indigo-700 mb-4">
-          REAL-TIME STOCK TICKER (VERTICAL)
-        </h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
-          <div class="md:col-span-2">
-            <div id="marquee-stock" class="px-2 py-2 overflow-hidden rounded-lg border border-indigo-500/30"></div>
-          </div>
-          <div class="md:col-span-1 space-y-3">
-            <button id="stock-update-btn" class="w-full neumorphic-button bg-green-600 text-white hover:bg-green-500">
-              Simulasi Update Data (Soft Update)
-            </button>
-            <p class="text-xs text-page-dark opacity-70">
-              Marquee ini bergerak vertikal, menampilkan dua set data yang diperbarui secara *soft* (tanpa hitung ulang
-              animasi).
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="glass-card p-6">
-        <h2 class="text-lg font-bold uppercase tracking-widest text-cyan-300 light:text-cyan-700 mb-4">
-          BRAND PARTNER (IMAGE LOAD OPTIMIZATION)
-        </h2>
-        <div id="marquee-brands" class="py-6 border-y border-cyan-500/50"></div>
-      </div>
-    </main>
-    <script>
-      // Class UniversalMarquee dan Renderer Functions (UNMODIFIED)
-      class UniversalMarquee {
-        constructor(selector, options) {
-          this.root = typeof selector === 'string' ? document.querySelector(selector) : selector;
-          if (!this.root) throw new Error('Element not found');
-          this.id = this.root.id || 'UM_Instance_' + Math.random().toString(36).substring(2, 6);
-          this.opts = {
-            duration: options.duration ?? '40s',
-            speed: options.speed ?? null,
-            speedPreset: options.speedPreset ?? null,
-            gap: options.gap ?? '2rem',
-            direction: options.direction ?? 'left',
-            pauseOnHover: options.pauseOnHover ?? true,
-            items: options.items ?? [],
-            renderItem: options.renderItem ?? ((i) => document.createTextNode(String(i))),
-            separator: options.separator ?? null,
-            monochrome: options.monochrome ?? false,
-            fadeMask: options.fadeMask ?? true,
-            disableMotion: options.disableMotion ?? false,
-            fadeStart: options.fadeStart ?? '5%',
-            fadeEnd: options.fadeEnd ?? '95%',
-            autoReverse: options.autoReverse ?? false,
-            timingFunction: options.timingFunction ?? 'linear',
-            onCycleStart: options.onCycleStart ?? (() => {}),
-            onPlay: options.onPlay ?? (() => {}),
-            onPause: options.onPause ?? (() => {}),
-            onDestroy: options.onDestroy ?? (() => {}),
-            onRecalculate: options.onRecalculate ?? (() => {}),
-            maxCycles: options.maxCycles ?? null,
-          };
-          this.isVertical = this.opts.direction === 'up' || this.opts.direction === 'down';
-          this.isIntersecting = true;
-          this.isPageVisible = true;
-          this.isWindowFocused = true;
-          this.isManuallyPaused = false;
-          this._isAutoPausedState = false;
-          this.masterTrack = null;
-          this.currentDirection = this.opts.direction;
-          this.autoReverseInterval = null;
-          this.resizeTimer = null;
-          this.currentCycleCount = 0;
-          this._isDestroyed = false;
-          this._dimensions = { cycleDimension: 0, containerDimension: 0, cycles: 0, calculatedDuration: '0s' };
-          this.handleVisibilityChange = this._handleVisibilityChange.bind(this);
-          this.handleBlur = this._handleBlur.bind(this);
-          this.handleFocus = this._handleFocus.bind(this);
-          this.handleAnimationIteration = this._handleAnimationIteration.bind(this);
-          this.handleTouchStart = this._handleTouchStart.bind(this);
-          this.handleTouchEnd = this._handleTouchEnd.bind(this);
-          if (this.currentDirection === 'rtl' && !this.isVertical) {
-            this.currentDirection = 'right';
-            this.root.dir = 'rtl';
-          } else {
-            this.root.dir = 'ltr';
-          }
-          this.root.setAttribute('role', 'marquee');
-          this.root.setAttribute('aria-live', 'off');
-          this.init();
-        }
-        get isPaused() {
-          return this.root.classList.contains('um-paused');
-        }
-        get isPlaying() {
-          return !this.isPaused;
-        }
-        get isAutoPaused() {
-          return this._isAutoPausedState;
-        }
-        getDimension() {
-          return this._dimensions;
-        }
-        togglePause() {
-          if (this._isDestroyed) return;
-          if (this.isPaused) {
-            this.play();
-          } else {
-            this.pause();
-          }
-        }
-        stop() {
-          if (this._isDestroyed) return;
-          this.pause();
-          this._resetPosition();
-          console.log(`[UniversalMarquee ${this.id}] Stopped and reset position.`);
-        }
-        updateItems(newItems, options = {}) {
-          if (this._isDestroyed) {
-            console.warn(`[UniversalMarquee ${this.id}] Cannot call updateItems(): Instance has been destroyed.`);
-            return;
-          }
-          if (!Array.isArray(newItems)) {
-            console.error(`[UniversalMarquee ${this.id}] updateItems() requires an array.`);
-            return;
-          }
-          if (newItems.length === 0) {
-            console.warn(`[UniversalMarquee ${this.id}] Items diupdate menjadi kosong. Marquee akan berhenti.`);
-          }
+    <script type="module" data-label="UNIVERSAL_MARQUEE_CORE_JS">
+      /**
+       * Sub-module 1: ContentBuilder
+       * Bertanggung jawab untuk membuat elemen DOM dan mengukur lebar siklus.
+       */
+      class ContentBuilder {
+        #opts;
 
-          this.opts.items.forEach((item) => {
-            if (item.hasFailedLoading) delete item.hasFailedLoading;
-          });
+        constructor(options) {
+          this.#opts = options;
+        }
 
-          this.opts.items = newItems;
-          this.currentCycleCount = 0;
-
-          const isSoftUpdate = options.soft && this.masterTrack && this._dimensions.cycles > 0;
-
-          if (isSoftUpdate) {
-            this.root.classList.add('um-paused');
-            this.masterTrack.innerHTML = '';
-
-            const cycles = this._dimensions.cycles;
-            const content = document.createDocumentFragment();
-
-            content.appendChild(this._createCycle([]));
-            for (let i = 1; i < cycles; i++) content.appendChild(this._createCycle([]).cloneNode(true));
-
-            this.masterTrack.appendChild(content);
-            this.masterTrack.style.setProperty('--um-num-cycles', cycles);
-
-            requestAnimationFrame(() => this._updatePauseState());
-
-            this.opts.onRecalculate(this, { reason: 'soft-update' });
-            console.log(
-              `[UniversalMarquee ${this.id}] updated (SOFT) with ${newItems.length} new item(s). Preserved ${cycles} cycles.`
-            );
-          } else {
-            this._fillScreen('update');
-            console.log(`[UniversalMarquee ${this.id}] updated (HARD) with ${newItems.length} new item(s).`);
-          }
-        }
-        play() {
-          if (this._isDestroyed) return;
-          this.isManuallyPaused = false;
-          this._updatePauseState();
-        }
-        pause() {
-          if (this._isDestroyed) return;
-          this.isManuallyPaused = true;
-          this._isAutoPausedState = false;
-          this.root.classList.add('um-paused');
-          this.opts.onPause(this, { reason: 'manual-pause' });
-        }
-        setDirection(newDirection) {
-          /* ... */
-          if (this._isDestroyed) return;
-          let directionChanged = false;
-          const isNewVertical = newDirection === 'up' || newDirection === 'down';
-          const isNewHorizontal = newDirection === 'left' || newDirection === 'right' || newDirection === 'rtl';
-
-          if ((this.isVertical && isNewHorizontal) || (!this.isVertical && isNewVertical)) {
-            console.error(
-              `[UniversalMarquee ${this.id}] Cannot change from ${this.isVertical ? 'vertical' : 'horizontal'} to the opposite orientation.`
-            );
-            return;
-          }
-
-          if (isNewHorizontal) {
-            if (newDirection === 'rtl') {
-              if (this.currentDirection !== 'right' || this.root.dir !== 'rtl') {
-                this.currentDirection = 'right';
-                this.root.dir = 'rtl';
-                directionChanged = true;
-              }
-            } else if (this.currentDirection !== newDirection) {
-              this.currentDirection = newDirection;
-              this.root.dir = 'ltr';
-              directionChanged = true;
-            }
-          } else if (isNewVertical) {
-            if (this.currentDirection !== newDirection) {
-              this.currentDirection = newDirection;
-              directionChanged = true;
-            }
-          } else {
-            console.error(
-              `[UniversalMarquee ${this.id}] setDirection() requires 'left', 'right', 'rtl', 'up', or 'down'.`
-            );
-            return;
-          }
-
-          if (directionChanged) {
-            this._applyDirection();
-            if (this.opts.speed) this._fillScreen();
-          }
-        }
-        setDuration(newDuration) {
-          /* ... */
-          if (this._isDestroyed) return;
-          if (typeof newDuration !== 'string' || !newDuration.endsWith('s')) {
-            console.error(
-              `[UniversalMarquee ${this.id}] setDuration() requires a string ending with 's', e.g., '15s'.`
-            );
-            return;
-          }
-          this.opts.speed = null;
-          this._applyDuration(newDuration);
-
-          if (this.opts.autoReverse) {
-            this._stopAutoReverse();
-            this._startAutoReverse();
-          }
-          console.log(`[UniversalMarquee ${this.id}] duration updated to: ${newDuration}`);
-        }
-        destroy(removeRoot = true) {
-          /* ... */
-          if (this._isDestroyed) return;
-          this._isDestroyed = true;
-          this.pause();
-          this._stopAutoReverse();
-          this._resetPosition(0);
-          if (this.masterTrack) {
-            this.masterTrack.removeEventListener('animationiteration', this.handleAnimationIteration);
-          }
-          document.removeEventListener('visibilitychange', this.handleVisibilityChange);
-          window.removeEventListener('blur', this.handleBlur);
-          window.removeEventListener('focus', this.handleFocus);
-          if (this.resizeObserver) this.resizeObserver.disconnect();
-          if (this.intersectionObserver) this.intersectionObserver.disconnect();
-          this.root.removeAttribute('role');
-          this.root.removeAttribute('aria-live');
-          this.root.innerHTML = '';
-          this.root.classList.remove('um-container', 'um-pause-hover', 'um-fade-mask', 'um-paused', 'um-vertical');
-          this.root.removeAttribute('dir');
-          this.root.removeAttribute('style');
-          this.opts.onDestroy(this, { rootRemoved: removeRoot });
-          if (removeRoot && this.root.parentNode) {
-            const rootId = this.root.id || this.root.className;
-            this.root.parentNode.removeChild(this.root);
-            console.log(`[UniversalMarquee ${this.id}] Instance destroyed and removed from DOM: ${rootId}`);
-          } else {
-            console.log(
-              `[UniversalMarquee ${this.id}] Instance destroyed (listeners removed), but DOM element preserved: ${this.root.id || this.root.className}`
-            );
-          }
-        }
-        _applyDuration(duration) {
-          this.root.style.setProperty('--um-duration', duration);
-        }
-        _applyDirection() {
-          if (!this.masterTrack) return;
-          this.masterTrack.classList.remove('um-right', 'um-down');
-          if (this.isVertical) {
-            if (this.currentDirection === 'down') {
-              this.masterTrack.classList.add('um-down');
-            }
-          } else {
-            if (this.currentDirection === 'right' || this.currentDirection === 'rtl') {
-              this.masterTrack.classList.add('um-right');
-            }
-          }
-        }
-        _resetPosition(delayMs = 100) {
-          if (!this.masterTrack) return;
-          this.masterTrack.classList.remove('um-animate');
-          this.masterTrack.style.transform = 'translate3d(0, 0, 0)';
-          setTimeout(() => {
-            if (this.masterTrack) {
-              this.masterTrack.classList.add('um-animate');
-            }
-          }, delayMs);
-        }
-        _startAutoReverse() {
-          /* ... */
-          if (this.autoReverseInterval) this._stopAutoReverse();
-          const durationStyle = this.root.style.getPropertyValue('--um-duration');
-          const durationMatch = durationStyle.match(/(\d+\.?\d*)s/);
-          if (!durationMatch) return;
-          const durationMs = parseFloat(durationMatch[1]) * 1000;
-          this.autoReverseInterval = setInterval(() => {
-            if (this.isVertical) {
-              this.currentDirection = this.currentDirection === 'up' ? 'down' : 'up';
-            } else {
-              this.currentDirection = this.currentDirection === 'left' ? 'right' : 'left';
-            }
-            this._applyDirection();
-          }, durationMs);
-        }
-        _stopAutoReverse() {
-          if (this.autoReverseInterval) {
-            clearInterval(this.autoReverseInterval);
-            this.autoReverseInterval = null;
-          }
-        }
-        init() {
-          /* ... */
-          const SPEED_MAP = { slow: '60s', normal: '40s', fast: '20s' };
-          let finalDuration = this.opts.duration;
-          if (this.opts.speedPreset && SPEED_MAP[this.opts.speedPreset]) {
-            finalDuration = SPEED_MAP[this.opts.speedPreset];
-            this.opts.duration = finalDuration;
-          }
-          if (this.opts.disableMotion || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            finalDuration = '0s';
-            this.opts.duration = finalDuration;
-            this.root.classList.add('um-paused');
-            this.root.setAttribute('aria-live', 'assertive');
-            console.warn(`[UniversalMarquee ${this.id}] Motion disabled via config/OS preference. Marquee is static.`);
-          }
-          this.root.classList.add('um-container');
-          if (this.isVertical) this.root.classList.add('um-vertical');
-          if (this.opts.pauseOnHover) this.root.classList.add('um-pause-hover');
-          if (this.opts.fadeMask) this.root.classList.add('um-fade-mask');
-          this.root.style.setProperty('--um-timing-function', this.opts.timingFunction);
-          this._applyDuration(finalDuration);
-          this.root.style.setProperty('--um-gap', this.opts.gap);
-          this.root.style.setProperty('--um-fade-start', this.opts.fadeStart);
-          this.root.style.setProperty('--um-fade-end', this.opts.fadeEnd);
-          this._setupContent();
-          this._registerObservers();
-          this._registerVisibilityObserver();
-          this._registerWindowFocus();
-          this._registerTouchHandlers();
-          if (this.opts.autoReverse) {
-            this._startAutoReverse();
-          }
-        }
-        _setupContent() {
-          /* ... */
-          this.masterTrack = document.createElement('div');
-          this.masterTrack.className = 'um-track um-animate';
-          this._applyDirection();
-          this.root.innerHTML = '';
-          this.root.appendChild(this.masterTrack);
-          this.masterTrack.addEventListener('animationiteration', this.handleAnimationIteration);
-          requestAnimationFrame(this._fillScreen.bind(this, 'initial'));
-        }
-        _createCycle(imagePromises) {
-          /* ... */
+        buildCycleContent() {
           const frag = document.createDocumentFragment();
-          const shouldBeMonochrome = this.opts.monochrome;
-          let isFirstCycle = imagePromises.length === 0 && this.masterTrack.children.length === 0;
 
-          for (let i = 0; i < this.opts.items.length; i++) {
-            const item = this.opts.items[i];
-            const node = this.opts.renderItem(item);
+          const sepStyle = `
+              color: var(--um-color-separator); 
+              flex-shrink: 0;
+              display: flex;
+              align-items: center;
+              font-size: 0.9em;
+          `;
 
-            const imgElement = node.querySelector('.um-logo-raster');
+          // Margin Horizontal Separator = setengah dari --um-gap. Ini yang menyediakan jarak.
+          const marginStyle = `margin: 0 calc(var(--um-gap) / 2);`;
 
-            if (imgElement) {
-              if (isFirstCycle) {
-                const imgLoadPromise = new Promise((resolve) => {
-                  if (imgElement.complete && imgElement.naturalWidth !== 0) {
-                    resolve();
-                  } else {
-                    imgElement.addEventListener('load', resolve, { once: true });
-                    imgElement.addEventListener('error', resolve, { once: true });
-                  }
-                });
-                imagePromises.push(imgLoadPromise);
-              }
+          for (const item of this.#opts.items) {
+            let node = this.#opts.renderItem(item);
+
+            if (!(node instanceof Element)) {
+              const wrapper = document.createElement('span');
+              wrapper.appendChild(node);
+              node = wrapper;
             }
 
-            const targetElement = node.querySelector('.um-logo-svg') || node.querySelector('.um-logo-raster');
+            frag.appendChild(node);
 
-            if (targetElement) {
-              targetElement.classList.toggle('um-logo-monochrome', shouldBeMonochrome);
-            }
-
-            const outerWrapper = document.createElement('div');
-            outerWrapper.style.flexShrink = '0';
-            outerWrapper.style.display = 'flex';
-            outerWrapper.style.alignItems = 'center';
-            if (this.isVertical) outerWrapper.style.width = '100%';
-
-            if (!isFirstCycle) {
-              outerWrapper.setAttribute('aria-hidden', 'true');
-            }
-
-            outerWrapper.appendChild(node);
-            frag.appendChild(outerWrapper);
-
-            if (this.opts.separator) {
-              const sep = document.createElement('div');
-              sep.style.flexShrink = '0';
-              sep.style.display = 'flex';
-              sep.style.alignItems = 'center';
-              if (this.isVertical) sep.style.width = '100%';
-
-              const sepNode =
-                this.opts.separator instanceof Node
-                  ? this.opts.separator.cloneNode(true)
-                  : Object.assign(document.createElement('span'), {
-                      textContent: String(this.opts.separator),
-                    });
-
-              if (!isFirstCycle) {
-                sep.setAttribute('aria-hidden', 'true');
-              }
-
-              sep.appendChild(sepNode);
+            // Hanya buat elemen separator jika separator adalah string (termasuk string kosong)
+            if (typeof this.#opts.separator === 'string') {
+              const sep = document.createElement('span');
+              sep.textContent = this.#opts.separator;
+              sep.style.cssText = sepStyle + marginStyle;
               frag.appendChild(sep);
             }
           }
           return frag;
         }
-        _waitForImagesToLoad(tempElement) {
-          /* ... */
-          const images = tempElement.querySelectorAll('img');
-          const promises = Array.from(images).map(
-            (img) =>
-              new Promise((resolve) => {
-                if (img.complete) {
-                  resolve();
-                } else {
-                  img.addEventListener('load', resolve, { once: true });
-                  img.addEventListener('error', resolve, { once: true });
-                }
-              })
-          );
-          return Promise.all(promises);
+
+        buildCycleContainer() {
+          const cycleContainer = document.createElement('div');
+          cycleContainer.appendChild(this.buildCycleContent());
+          return cycleContainer;
         }
-        async _fillScreen(reason) {
-          /* ... */
-          if (this._isDestroyed) return;
 
-          if (this.opts.items.length === 0) {
-            if (this.masterTrack) this.masterTrack.innerHTML = '';
-            this._dimensions = { cycleDimension: 0, containerDimension: 0, cycles: 0, calculatedDuration: '0s' };
-            this._updatePauseState();
-            return;
-          }
-
-          this.root.classList.add('um-paused');
-          this.masterTrack.innerHTML = '';
-          this.currentCycleCount = 0;
-          let imagePromises = [];
+        measureCycleWidth(root, masterTrack) {
+          if (this.#opts.items.length === 0) return 0;
 
           const temp = document.createElement('div');
           temp.className = 'um-track';
-          temp.style.position = 'absolute';
-          temp.style.visibility = 'hidden';
-          temp.style.setProperty('--um-gap', this.opts.gap);
-          if (this.isVertical) {
-            temp.classList.add('um-vertical');
-            temp.style.flexDirection = 'column';
-          }
+          Object.assign(temp.style, { position: 'absolute', visibility: 'hidden' });
+          temp.style.setProperty('--um-gap', this.#opts.gap);
 
-          temp.appendChild(this._createCycle(imagePromises));
-          document.body.appendChild(temp);
+          const measurementCycle = this.buildCycleContainer();
+          temp.appendChild(measurementCycle);
 
-          if (imagePromises.length > 0) {
-            console.log(`[UniversalMarquee ${this.id}] Menunggu ${imagePromises.length} gambar untuk dimuat...`);
-            await this._waitForImagesToLoad(temp);
-          }
+          root.appendChild(temp);
+          const cycleWidth = measurementCycle.offsetWidth;
+          root.removeChild(temp);
 
-          const cycleDimension = this.isVertical ? temp.offsetHeight : temp.offsetWidth;
-          const containerDimension = this.isVertical ? this.root.offsetHeight : this.root.offsetWidth;
-
-          document.body.removeChild(temp);
-
-          // BARU: Fail-Fast Error Handling
-          if (cycleDimension === 0 || containerDimension === 0) {
-            const errorType = cycleDimension === 0 ? 'Cycle Dimension Zero' : 'Container Dimension Zero';
-            console.error(
-              `[UniversalMarquee Error - ${this.id}] Cannot run marquee: Measured dimension is 0. Attempting soft destroy.`
-            );
-            this.destroy(false);
-            this.isManuallyPaused = true;
-            this.root.classList.add('um-paused');
-            return;
-          }
-
-          let finalDuration = this.opts.duration;
-
-          if (
-            finalDuration === '0s' ||
-            this.opts.disableMotion ||
-            window.matchMedia('(prefers-reduced-motion: reduce)').matches
-          ) {
-            this.masterTrack.appendChild(this._createCycle([]));
-            this.masterTrack.style.removeProperty('--um-num-cycles');
-            this._dimensions = { cycleDimension, containerDimension, cycles: 1, calculatedDuration: '0s' };
-            this.root.setAttribute('aria-live', 'assertive');
-            this.root.classList.add('um-paused');
-            return;
-          } else {
-            this.root.setAttribute('aria-live', 'off');
-          }
-
-          let cycles = Math.ceil(containerDimension / cycleDimension) + 2;
-          if (cycles < 3) cycles = 3;
-          if (cycles > 30) cycles = 30;
-
-          if (this.opts.speed) {
-            const speedMatch = this.opts.speed.match(/(\d+\.?\d*)px\/s/);
-            if (speedMatch) {
-              const speedPxPerSecond = parseFloat(speedMatch[1]);
-              const totalAnimationDimension = cycleDimension * cycles;
-              const newDuration = totalAnimationDimension / speedPxPerSecond;
-              finalDuration = `${newDuration.toFixed(2)}s`;
-              this._applyDuration(finalDuration);
-
-              if (this.opts.autoReverse) {
-                this._stopAutoReverse();
-                this._startAutoReverse();
-              }
-            } else {
-              this._applyDuration(this.opts.duration);
-            }
-          } else {
-            this._applyDuration(this.opts.duration);
-          }
-
-          this._dimensions = { cycleDimension, containerDimension, cycles, calculatedDuration: finalDuration };
-
-          this.opts.onRecalculate(this, { reason, dimensions: this._dimensions });
-          console.log(`[UniversalMarquee ${this.id}] Recalculate complete. Output:`, this._dimensions);
-
-          const content = document.createDocumentFragment();
-          content.appendChild(this._createCycle([]));
-          for (let i = 1; i < cycles; i++) content.appendChild(this._createCycle([]).cloneNode(true));
-
-          this.masterTrack.appendChild(content);
-          this.masterTrack.style.setProperty('--um-num-cycles', cycles);
-
-          requestAnimationFrame(() => this._updatePauseState());
+          return cycleWidth;
         }
-        _registerObservers() {
-          /* ... */
-          const resizeCallback = () => {
-            if (this.resizeTimer) {
-              cancelAnimationFrame(this.resizeTimer);
-            }
-            this.resizeTimer = requestAnimationFrame(() => this._fillScreen('resize'));
+      }
+
+      /**
+       * Sub-module 2: AnimationController
+       * Bertanggung jawab untuk WAAPI dan logic loop.
+       */
+      class AnimationController {
+        #masterTrack;
+        #opts;
+        #animation = null;
+
+        constructor(masterTrack, options) {
+          this.#masterTrack = masterTrack;
+          this.#opts = options;
+        }
+
+        startAnimation(cycleWidth) {
+          if (this.#animation) this.#animation.cancel();
+
+          const totalAnimationDistance = cycleWidth;
+          const durationSeconds = totalAnimationDistance / this.#opts.speed;
+
+          const keyframes = [
+            { transform: 'translate3d(0px, 0, 0)' },
+            { transform: `translate3d(-${totalAnimationDistance}px, 0, 0)` },
+          ];
+
+          const options = {
+            duration: durationSeconds * 1000,
+            iterations: 1,
+            easing: 'linear',
+            direction: this.#opts.direction === 'right' ? 'reverse' : 'normal',
           };
-          this.resizeObserver = new ResizeObserver(resizeCallback);
-          this.resizeObserver.observe(this.root);
-        }
-        _updatePauseState() {
-          /* ... */
-          if (this.opts.duration === '0s' || this._isDestroyed) return;
 
-          if (this.isManuallyPaused) {
-            this.root.classList.add('um-paused');
-            this._isAutoPausedState = false;
-            return;
-          }
+          this.#animation = this.#masterTrack.animate(keyframes, options);
 
-          const shouldPause = !this.isIntersecting || !this.isPageVisible || !this.isWindowFocused;
-          const isCurrentlyPaused = this.root.classList.contains('um-paused');
+          this.#animation.play();
 
-          this.root.classList.toggle('um-paused', shouldPause);
+          this.#animation.onfinish = () => {
+            this.#animation.commitStyles();
+            this.#animation.cancel();
 
-          this._isAutoPausedState = shouldPause;
+            this.#masterTrack.style.transform = `translate3d(0px, 0, 0)`;
 
-          if (shouldPause) {
-            this.root.setAttribute('aria-live', 'assertive');
-          } else {
-            this.root.setAttribute('aria-live', 'off');
-          }
+            this.startAnimation(cycleWidth);
+          };
+        }
 
-          if (shouldPause && !isCurrentlyPaused) {
-            this.opts.onPause(this, { reason: 'auto-pause' });
-          } else if (!shouldPause && isCurrentlyPaused) {
-            this.opts.onPlay(this, { reason: 'auto-play' });
-          }
+        stop() {
+          if (this.#animation) this.#animation.cancel();
         }
-        _registerVisibilityObserver() {
-          /* ... */
-          if ('IntersectionObserver' in window) {
-            this.intersectionObserver = new IntersectionObserver(
-              (entries) => {
-                entries.forEach((entry) => {
-                  this.isIntersecting = entry.isIntersecting;
-                  this._updatePauseState();
-                });
-              },
-              { rootMargin: '0px', threshold: 0 }
-            );
-            this.intersectionObserver.observe(this.root);
-          }
+      }
+
+      /**
+       * Sub-module 3: ObserverManager
+       * Bertanggung jawab untuk ResizeObserver.
+       */
+      class ObserverManager {
+        #root;
+        #resizeObserver;
+        #resizeTimer = null;
+        #reflowCallback;
+
+        constructor(root, reflowCallback) {
+          this.#root = root;
+          this.#reflowCallback = reflowCallback;
         }
-        _handleVisibilityChange() {
-          this.isPageVisible = document.visibilityState === 'visible';
-          this._updatePauseState();
-        }
-        _handleBlur() {
-          this.isWindowFocused = false;
-          this._updatePauseState();
-        }
-        _handleFocus() {
-          this.isWindowFocused = true;
-          this._updatePauseState();
-        }
-        _registerWindowFocus() {
-          document.addEventListener('visibilitychange', this.handleVisibilityChange);
-          window.addEventListener('blur', this.handleBlur);
-          window.addEventListener('focus', this.handleFocus);
-        }
-        _registerTouchHandlers() {
-          if ('ontouchstart' in window) {
-            this.root.addEventListener('touchstart', this.handleTouchStart);
-            this.root.addEventListener('touchend', this.handleTouchEnd);
-            this.root.addEventListener('touchcancel', this.handleTouchEnd);
-          }
-        }
-        _handleTouchStart() {
-          if (!this.isManuallyPaused) this.pause();
-        }
-        _handleTouchEnd() {
-          if (this.isManuallyPaused) this.play();
-        }
-        _handleAnimationIteration() {
-          /* ... */
-          this.opts.onCycleStart(this);
-          if (this.opts.maxCycles !== null) {
-            this.currentCycleCount++;
-            console.log(
-              `[UniversalMarquee ${this.id}] Siklus ke-${this.currentCycleCount} dari ${this.opts.maxCycles}`
-            );
-            if (this.currentCycleCount >= this.opts.maxCycles) {
-              this.destroy(true);
+
+        start() {
+          if (!('ResizeObserver' in window)) return;
+
+          const resizeCallback = () => {
+            if (this.#resizeTimer) {
+              cancelAnimationFrame(this.#resizeTimer);
             }
+            this.#resizeTimer = requestAnimationFrame(this.#reflowCallback);
+          };
+
+          this.#resizeObserver = new ResizeObserver(resizeCallback);
+          this.#resizeObserver.observe(this.#root);
+        }
+
+        stop() {
+          if (this.#resizeObserver) {
+            this.#resizeObserver.unobserve(this.#root);
           }
         }
       }
 
-      const createRasterImage = (data) => {
-        /* ... (UNMODIFIED FUNCTION) ... */
-        const size = data.size || '80px';
-        const wrapper = document.createElement('div');
-        wrapper.className = 'um-logo-wrapper';
-        wrapper.style.setProperty('--um-logo-size', size);
+      /**
+       * Core Class: UniversalMarquee
+       */
+      class UniversalMarquee {
+        #root;
+        #opts;
+        #masterTrack = null;
 
-        if (data.hasFailedLoading) {
-          wrapper.classList.add('um-has-error');
+        #contentBuilder;
+        #animationController;
+        #observerManager;
+
+        constructor(selector, options) {
+          this.#root = typeof selector === 'string' ? document.querySelector(selector) : selector;
+          if (!this.#root) throw new Error('Element not found');
+
+          const {
+            speed = 30,
+            gap = '2rem',
+            direction = 'left',
+            items = [],
+            separator = '',
+            renderItem = (item) => document.createTextNode(String(item)),
+          } = options;
+
+          this.#opts = {
+            speed,
+            gap,
+            direction,
+            items,
+            separator,
+            renderItem,
+          };
+
+          this.#root.dir = direction === 'rtl' ? 'rtl' : 'ltr';
+          this.#root.style.setProperty('--um-gap', this.#opts.gap);
+          this.#root.classList.add('um-container');
+
+          this.#initModules();
         }
 
-        const img = document.createElement('img');
-        if (!data.hasFailedLoading) {
-          img.src = data.src;
-        } else {
-          img.src = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAAALAAAAAABAAEAAAICTAEAOw==';
+        #initModules() {
+          this.#contentBuilder = new ContentBuilder(this.#opts);
+
+          this.#_setupContent();
+
+          this.#animationController = new AnimationController(this.#masterTrack, this.#opts);
+
+          this.#observerManager = new ObserverManager(this.#root, this.#_reflowAndRestart.bind(this));
+          this.#observerManager.start();
         }
 
-        img.alt = data.alt || 'Logo';
-        img.classList.add('um-logo-raster');
-        const placeholder = document.createElement('div');
-        placeholder.className = 'um-logo-error';
-        placeholder.textContent = '❌ GAGAL';
+        #_setupContent() {
+          this.#masterTrack = document.createElement('div');
+          this.#masterTrack.className = 'um-track';
 
-        img.onerror = function () {
-          if (data.hasFailedLoading) return;
-          console.error(`Gagal memuat gambar: ${this.src}`);
-          data.hasFailedLoading = true;
-          wrapper.classList.add('um-has-error');
-          this.src = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAAALAAAAAABAAEAAAICTAEAOw==';
-        };
-        wrapper.appendChild(img);
-        wrapper.appendChild(placeholder);
-        return wrapper;
-      };
-
-      const createLogo = (data) => {
-        const size = data.size || '80px';
-        const wrapper = document.createElement('div');
-        wrapper.className = 'um-logo-wrapper';
-        wrapper.style.setProperty('--um-logo-size', size);
-        const div = document.createElement('div');
-        div.innerHTML = data.svg.trim();
-        const svg = div.firstChild;
-        svg.style.width = '100%';
-        svg.style.height = '100%';
-        svg.classList.add('um-logo-svg');
-        wrapper.appendChild(svg);
-        return wrapper;
-      };
-
-      const itemRenderer = (item) => {
-        if (item && item.src) {
-          return createRasterImage(item);
-        } else if (item && item.svg) {
-          return createLogo(item);
-        } else {
-          const el = document.createElement('span');
-          el.textContent = String(item);
-          return el;
-        }
-      };
-
-      // --- LOGIKA TEMA & INIT ---
-      const html = document.documentElement;
-      const toggleButton = document.getElementById('theme-toggle');
-      const icon = document.getElementById('theme-icon');
-      const statusDisplay = document.getElementById('is-paused-status');
-
-      const DARK_CLASS = 'dark';
-      const LIGHT_CLASS = 'light';
-      const STORAGE_KEY = 'theme';
-
-      const updateIcon = () => {
-        if (!icon) return;
-
-        if (html.classList.contains(DARK_CLASS)) {
-          icon.textContent = '☀️';
-          html.classList.remove(LIGHT_CLASS);
-        } else {
-          icon.textContent = '🌙';
-          html.classList.add(LIGHT_CLASS);
-        }
-      };
-
-      const setTheme = (theme) => {
-        if (theme === DARK_CLASS) {
-          html.classList.add(DARK_CLASS);
-          html.classList.remove(LIGHT_CLASS);
-          localStorage.setItem(STORAGE_KEY, DARK_CLASS);
-        } else {
-          html.classList.remove(DARK_CLASS);
-          html.classList.add(LIGHT_CLASS);
-          localStorage.setItem(STORAGE_KEY, LIGHT_CLASS);
-        }
-        updateIcon();
-      };
-
-      let beritaMarqueeInstance;
-      let stockMarqueeInstance; // Ensure stock instance is tracked
-      let intervalId;
-
-      const updateMarqueeStatus = () => {
-        if (statusDisplay && beritaMarqueeInstance) {
-          let statusText = 'Running (Auto: false)';
-          let statusColor = '#4ade80'; // Green
-
-          if (beritaMarqueeInstance.isPaused) {
-            statusText = beritaMarqueeInstance.isAutoPaused
-              ? 'Auto Paused (Auto: true)'
-              : 'Manually Paused (Auto: false)';
-            statusColor = beritaMarqueeInstance.isAutoPaused ? '#fcd34d' : '#fef08a'; // Orange/Yellow
+          if (this.#opts.direction === 'right') {
+            this.#masterTrack.classList.add('um-right');
+          } else {
+            this.#masterTrack.classList.remove('um-right');
           }
 
-          statusDisplay.textContent = statusText;
-          statusDisplay.style.color = statusColor;
-        } else if (statusDisplay) {
-          statusDisplay.textContent = 'DESTROYED';
-          statusDisplay.style.color = '#9ca3af';
-          clearInterval(intervalId);
+          this.#root.innerHTML = '';
+          this.#root.appendChild(this.#masterTrack);
+
+          requestAnimationFrame(this.#_reflowAndRestart.bind(this));
         }
+
+        #_reflowAndRestart() {
+          const cycleWidth = this.#contentBuilder.measureCycleWidth(this.#root, this.#masterTrack);
+
+          if (cycleWidth === 0 || this.#opts.items.length === 0) {
+            this.#animationController.stop();
+            return;
+          }
+
+          let cyclesNeeded = Math.ceil(this.#root.offsetWidth / cycleWidth) + 2;
+          cyclesNeeded = Math.max(3, cyclesNeeded);
+
+          this.#masterTrack.innerHTML = '';
+          const content = document.createDocumentFragment();
+          for (let i = 0; i < cyclesNeeded; i++) {
+            content.appendChild(this.#contentBuilder.buildCycleContainer());
+          }
+          this.#masterTrack.appendChild(content);
+
+          const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          if (!prefersReduced) {
+            this.#animationController.startAnimation(cycleWidth);
+          } else {
+            this.#animationController.stop();
+          }
+        }
+      }
+
+      window.UniversalMarquee = UniversalMarquee;
+    </script>
+
+    <script type="module" data-label="DEMO_CONFIGURATION_JS">
+      // --- 1. DATA UNTUK KEDUA DEMO ---
+      const LOGO_URLS = {
+        google: 'https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg',
+        amazon: 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg',
+        microsoft: 'https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg',
+        apple: 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg',
+        tesla: 'https://upload.wikimedia.org/wikipedia/commons/e/e8/Tesla_logo.png',
+        spotify: 'https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg',
+        github: 'https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg',
+        slack: 'https://upload.wikimedia.org/wikipedia/commons/d/d5/Slack_icon_2019.svg',
       };
 
-      // Data simulasi untuk Marquee Vertikal
-      let stockData = [
-        { ticker: 'GOOG', price: 175.4, change: 0.85, up: true, desc: 'Cuacks' },
-        { ticker: 'APPL', price: 210.15, change: -0.4, up: false, desc: 'Foxtrot' },
-        { ticker: 'NVDA', price: 880.9, change: 1.25, up: true, desc: 'Hotel' },
-        { ticker: 'TSLA', price: 185.33, change: -0.15, up: false, desc: 'Lima' },
-        { ticker: 'AMZN', price: 190.2, change: 0.5, up: true, desc: 'Zulu' },
+      const LOGO_ITEMS = [
+        { type: 'image', src: LOGO_URLS.google, alt: 'Google Logo' },
+        { type: 'image', src: LOGO_URLS.amazon, alt: 'Amazon Logo' },
+        { type: 'image', src: LOGO_URLS.microsoft, alt: 'Microsoft Logo' },
+        { type: 'image', src: LOGO_URLS.apple, alt: 'Apple Logo' },
+        { type: 'image', src: LOGO_URLS.tesla, alt: 'Tesla Logo' },
+        { type: 'image', src: LOGO_URLS.spotify, alt: 'Spotify Logo' },
+        { type: 'image', src: LOGO_URLS.github, alt: 'GitHub Logo' },
+        { type: 'image', src: LOGO_URLS.slack, alt: 'Slack Logo' },
       ];
 
-      let stockDataCol2 = [
-        { ticker: 'UGY', price: 175.4, change: 0.2, up: true, desc: 'Coorasilrel' },
-        { ticker: 'NKE', price: 210.15, change: -0.8, up: false, desc: 'Xray' },
-        { ticker: 'SIA', price: 880.9, change: 0.45, up: true, desc: 'Kilo' },
-        { ticker: 'TLM', price: 185.33, change: -0.05, up: false, desc: 'Golf' },
-        { ticker: 'YTY', price: 190.2, change: 0.15, up: true, desc: 'Papa' },
+      const NEWS_ITEMS = [
+        'tunjukkan Trump, Clinton, dan tokoh lain',
+        {
+          type: 'image',
+          src: 'https://cdn.iconscout.com/icon/free/png-256/ukraine-1815893-1538356.png',
+          alt: 'Bendera Ukraina',
+        },
+        'Rusia serang Ukraina dengan 450 drone dan 30 rudal, jutaan rumah gelap gulita',
+        {
+          type: 'image',
+          src: 'https://cdn.iconscout.com/icon/free/png-256/syria-1815915-1538378.png',
+          alt: 'Bendera Suriah',
+        },
+        'Dua tentara AS tewas dibunuh penembak ISIS di Suriah',
+        'Netflix beli Warner Bros. dalam kesepakatan miliaran dolar',
+        { type: 'html', content: '<span style="color: gold; margin-left: 5px;">⭐ NEW</span>' },
+        'Uni Eropa denda X (Twitter) atas pelanggaran privasi',
+        'Gempa 7,6 SR guncang Jepang, peringatan tsunami dikeluarkan',
       ];
 
-      // Wrapper untuk dua kolom dalam Marquee Vertikal
-      const renderVerticalColumns = (data1, data2) => {
-        const container = document.createElement('div');
-        container.className = 'flex w-full justify-between items-start gap-4';
+      // --- 2. RENDERER KUSTOM ---
 
-        const col1 = document.createElement('div');
-        col1.className = 'stock-item-container w-1/2';
-
-        const col2 = document.createElement('div');
-        col2.className = 'stock-item-container w-1/2';
-
-        data1.forEach((item) => col1.appendChild(renderStockItem(item)));
-        data2.forEach((item) => col2.appendChild(renderStockItem(item)));
-
-        container.appendChild(col1);
-        container.appendChild(col2);
-        return container;
-      };
-
-      const renderStockItem = (item) => {
-        const el = document.createElement('div');
-        const color = item.up ? 'text-green-400' : 'text-red-400';
-        const indicator = item.up ? '▲' : '▼';
-        el.className = `flex flex-col w-full px-1 py-1 ${color} text-xs border-b border-gray-700/50`;
-        el.innerHTML = `
-            <div class="flex justify-between items-center w-full">
-                    <span class="font-bold text-base text-page-dark opacity-90">${item.ticker}</span>
-              <span class="text-sm font-mono">${item.price.toFixed(2)}</span>
-            </div>
-            <div class="flex justify-between items-center w-full mt-0.5">
-              <span class="text-xs opacity-60">${item.desc}</span>
-                    <span class="text-sm font-mono">${indicator} ${Math.abs(item.change).toFixed(2)}</span>
-            </div>
-                `;
-        return el;
-      };
-
-      const simulateStockUpdate = (marqueeInstance) => {
-        // Simulasi perubahan data untuk kedua kolom
-        const updateData = (data) =>
-          data.map((stock) => {
-            const delta = Math.random() * 0.5 - 0.25;
-            const newPrice = Math.max(0.01, stock.price + delta);
-            const newChange = newPrice - stock.price;
-            return {
-              ticker: stock.ticker,
-              price: newPrice,
-              change: newChange,
-              up: newChange >= 0,
-              desc: stock.desc,
-            };
+      const customItemRenderer = (item) => {
+        if (typeof item === 'string') {
+          const el = document.createElement('a');
+          el.href = '#';
+          el.textContent = item;
+          el.tabIndex = -1;
+          Object.assign(el.style, {
+            color: 'var(--um-color-separator)',
+            textDecoration: 'none',
+            padding: '0 5px',
+            fontWeight: 'normal',
+            transition: 'color 0.3s ease',
           });
+          el.onmouseover = () => (el.style.color = 'var(--um-color-accent)');
+          el.onmouseout = () => (el.style.color = 'var(--um-color-separator)');
+          return el;
+        } else if (item && item.type === 'image') {
+          const img = document.createElement('img');
+          img.src = item.src;
+          img.alt = item.alt || 'Content Image';
+          img.tabIndex = -1;
 
-        stockData = updateData(stockData);
-        stockDataCol2 = updateData(stockDataCol2); // Update kolom 2
-
-        // Menggunakan Soft Update dengan gabungan data
-        if (marqueeInstance && !marqueeInstance._isDestroyed) {
-          marqueeInstance.updateItems([{ col1: stockData, col2: stockDataCol2 }], { soft: true });
+          Object.assign(img.style, {
+            verticalAlign: 'middle',
+            margin: '0 5px',
+          });
+          return img;
+        } else if (item && item.type === 'html') {
+          const span = document.createElement('span');
+          span.innerHTML = item.content;
+          span.tabIndex = -1;
+          return span;
         }
+        return document.createTextNode(String(item));
       };
+
+      // --- 3. INISIALISASI ---
 
       const initApp = () => {
-        const savedTheme = localStorage.getItem(STORAGE_KEY);
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const newsMarqueeRoot = document.getElementById('marquee-news');
+        const logoMarqueeLeftRoot = document.getElementById('marquee-logo-left');
+        const logoMarqueeRightRoot = document.getElementById('marquee-logo-right');
 
-        if (savedTheme) {
-          setTheme(savedTheme);
-        } else if (prefersDark) {
-          setTheme(DARK_CLASS);
-        } else {
-          setTheme(LIGHT_CLASS);
-        }
-
-        if (toggleButton) {
-          toggleButton.addEventListener('click', () => {
-            const currentTheme = html.classList.contains(DARK_CLASS) ? DARK_CLASS : LIGHT_CLASS;
-            const newTheme = currentTheme === DARK_CLASS ? LIGHT_CLASS : DARK_CLASS;
-            setTheme(newTheme);
-          });
-        }
-
-        // --- 1. NEWS TICKER (Auto Destroy) ---
-        if (document.getElementById('marquee-news')) {
-          beritaMarqueeInstance = new UniversalMarquee('#marquee-news', {
-            speed: '80px/s',
+        if (newsMarqueeRoot) {
+          // Konfigurasi Marquee Breaking News: Simbol diperlukan
+          new window.UniversalMarquee('#marquee-news', {
+            speed: 40,
             gap: '3rem',
+            direction: 'left',
+            items: NEWS_ITEMS,
+            separator: ' • ', // SIMBOL VISUAL
+            renderItem: customItemRenderer,
+          });
+        }
+
+        if (logoMarqueeLeftRoot) {
+          // Konfigurasi Marquee Logo Pattern: Tidak perlu simbol (menggunakan default '')
+
+          // Atur ukuran dan gap spesifik logo melalui CSS Variable Override
+          logoMarqueeLeftRoot.style.setProperty('--um-font-size', '1.5rem');
+          logoMarqueeLeftRoot.style.setProperty('--um-gap', '6rem');
+
+          new window.UniversalMarquee('#marquee-logo-left', {
+            speed: 10,
+            gap: '6rem',
             direction: 'right',
-            maxCycles: 3,
-            items: [
-              'F871 Pauses',
-              'F831 Scavenge Hunt',
-              'Naflege Bebtcee',
-              'Furtatr Men',
-              'Nee Deritcrs Neayceee F871',
-            ],
-            separator: ' | ',
-            onDestroy: (instance, data) => {
-              beritaMarqueeInstance = null;
-              updateMarqueeStatus();
-              updateButtonStates(true);
-              const parent = document.getElementById('marquee-news-parent');
-              if (parent) {
-                const message = document.createElement('p');
-                message.textContent = 'Marquee has been DESTROYED (Auto Stop: 3 Cycles).';
-                message.className = 'text-center font-bold mt-4 text-xl text-red-500';
-                parent.appendChild(message);
-              }
-            },
-            renderItem: (t) => {
-              const el = document.createElement('span');
-              el.className =
-                'text-base font-bold uppercase tracking-wider whitespace-nowrap text-red-300 light:text-red-700';
-              el.textContent = t;
-              return el;
-            },
-          });
-          intervalId = setInterval(updateMarqueeStatus, 50);
-        }
-
-        // --- 2. STOCK TICKER (Vertical, Two Columns) ---
-        if (document.getElementById('marquee-stock')) {
-          // Kita menggabungkan data menjadi satu array item wrapper {col1, col2}
-          // agar Marquee hanya menghitung satu item per siklus pergerakan vertikal.
-          const initialCombinedData = [{ col1: stockData, col2: stockDataCol2 }];
-
-          stockMarqueeInstance = new UniversalMarquee('#marquee-stock', {
-            speedPreset: 'normal',
-            gap: '0.1rem',
-            direction: 'up',
-            fadeMask: true,
-            items: initialCombinedData,
-            // Renderer untuk Marquee Vertikal
-            renderItem: (data) => renderVerticalColumns(data.col1, data.col2),
-            onRecalculate: (instance, data) => {
-              console.log(`[UniversalMarquee ${instance.id}] Recalculated due to: ${data.reason}`);
-            },
-          });
-
-          document.getElementById('stock-update-btn')?.addEventListener('click', () => {
-            simulateStockUpdate(stockMarqueeInstance);
+            items: LOGO_ITEMS,
+            renderItem: customItemRenderer,
           });
         }
 
-        // --- 3. BRAND LOGO ROLL (Horizontal, Raster + SVG) ---
-        if (document.getElementById('marquee-brands')) {
-          new UniversalMarquee('#marquee-brands', {
-            duration: '20s',
+        if (logoMarqueeRightRoot) {
+          // Konfigurasi Marquee Logo Pattern: Tidak perlu simbol (menggunakan default '')
+
+          // Atur ukuran dan gap spesifik logo melalui CSS Variable Override
+          logoMarqueeRightRoot.style.setProperty('--um-font-size', '1.5rem');
+          logoMarqueeRightRoot.style.setProperty('--um-gap', '6rem');
+
+          new window.UniversalMarquee('#marquee-logo-right', {
+            speed: 10,
             gap: '6rem',
             direction: 'left',
-            pauseOnHover: true,
-            monochrome: true,
-            fadeMask: true,
-            items: [
-              {
-                size: '50px',
-                svg: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>`,
-                label: 'SVC',
-              },
-              {
-                size: '50px',
-                src: 'https://via.placeholder.com/150/8b5cf6/FFFFFF?Text=AVICL',
-                alt: 'AVICL',
-                label: 'AVICL',
-              },
-              {
-                size: '50px',
-                src: 'https://via.placeholder.com/150/06b6d4/FFFFFF?Text=NEEST',
-                alt: 'NEEST',
-                label: 'NEEST',
-              },
-              {
-                size: '50px',
-                svg: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>`,
-                label: 'DOnPoico',
-              },
-              {
-                size: '50px',
-                src: 'https://via.placeholder.com/150/ef4444/FFFFFF?Text=GAGAL',
-                alt: 'GAGAL',
-                hasFailedLoading: true,
-                label: 'GAGAL',
-              },
-              { size: '50px', src: 'non-existent-image.png', alt: 'Error Logo', label: 'Fail-Fast' },
-            ],
-            renderItem: (item) => {
-              const element = itemRenderer(item);
-              if (item.label) {
-                const label = document.createElement('span');
-                label.textContent = item.label;
-                label.className = 'text-xs opacity-70 mt-1';
-
-                const wrapper = document.createElement('div');
-                wrapper.className = 'flex flex-col items-center justify-center';
-                wrapper.appendChild(element);
-                wrapper.appendChild(label);
-                return wrapper;
-              }
-              return element;
-            },
+            items: LOGO_ITEMS,
+            renderItem: customItemRenderer,
           });
         }
-
-        // Uji Kontrol Dinamis
-        const updateButtonStates = (isDisabled) => {
-          const buttons = [
-            document.getElementById('toggle-btn'),
-            document.getElementById('update-hard-btn'),
-            document.getElementById('update-soft-btn'),
-            document.getElementById('stop-btn'),
-            document.getElementById('destroy-btn'),
-          ];
-
-          buttons.forEach((btn) => {
-            if (btn) {
-              btn.disabled = isDisabled;
-              btn.style.opacity = isDisabled ? '0.5' : '1';
-              if (isDisabled) {
-                btn.style.boxShadow = 'none';
-              } else {
-                btn.style.boxShadow = '2px 2px 4px var(--shadow-dark), -2px -2px 4px var(--shadow-light)';
-              }
-            }
-          });
-        };
-
-        if (!beritaMarqueeInstance) updateButtonStates(true);
-        else updateMarqueeStatus();
-
-        document.getElementById('toggle-btn')?.addEventListener('click', () => {
-          if (beritaMarqueeInstance) beritaMarqueeInstance.togglePause();
-        });
-
-        document.getElementById('update-hard-btn')?.addEventListener('click', () => {
-          if (!beritaMarqueeInstance) return;
-          const newItems = ['✨ New Hard Content 1', '🚀 Full Recalculation!', '✅ Hard Update Done'];
-          beritaMarqueeInstance.updateItems(newItems, { soft: false });
-        });
-
-        document.getElementById('update-soft-btn')?.addEventListener('click', () => {
-          if (!beritaMarqueeInstance) return;
-          const newItems = ['⭐ Soft Update A', '🔥 Soft Update B', '👍 Soft Update C'];
-          beritaMarqueeInstance.updateItems(newItems, { soft: true });
-        });
-
-        document.getElementById('stop-btn')?.addEventListener('click', () => {
-          if (beritaMarqueeInstance) beritaMarqueeInstance.stop();
-        });
-
-        document.getElementById('destroy-btn')?.addEventListener('click', (e) => {
-          if (beritaMarqueeInstance) {
-            beritaMarqueeInstance.destroy(false);
-            beritaMarqueeInstance = null;
-            updateButtonStates(true);
-
-            const parent = document.getElementById('marquee-news-parent');
-            if (parent) {
-              const message = document.createElement('p');
-              message.textContent = 'Marquee Manually Destroyed (Listeners removed).';
-              message.className = 'text-center text-purple-400 font-bold mt-4';
-              parent.appendChild(message);
-            }
-          }
-        });
       };
 
-      if (document.readyState === 'complete') initApp();
-      else window.addEventListener('load', initApp);
+      document.addEventListener('DOMContentLoaded', initApp);
     </script>
   </body>
 </html>
