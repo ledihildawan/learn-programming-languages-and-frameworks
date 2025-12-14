@@ -3,101 +3,124 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Universal Marquee v13.5 – Dashed Guides Everywhere</title>
+    <title>Universal Marquee v14.3 – RootLayout Edition</title>
 
-    <style data-label="UNIVERSAL_MARQUEE_CORE_STYLES">
+    <style data-label="CORE_STYLES">
       :root {
         --um-duration-default: 15s;
         --um-gap-default: 2rem;
-        --um-color-primary: #1f2937;
         --um-color-separator: #9ca3af;
-        --um-font-size: 1.25rem;
-        --um-font-weight: bold;
+        --um-separator-height: 1.25em;
       }
-
       .um-container {
         display: flex;
         overflow: hidden;
         user-select: none;
         width: 100%;
-
-        --um-duration: var(--um-duration-default);
-        --um-gap: var(--um-gap-default);
+        min-width: 0;
+        position: relative;
+        transform: translate3d(0, 0, 0);
       }
-
-      .um-track {
+      .um-sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        border-width: 0;
+      }
+      /* Track Logic */
+      .um-container .um-track {
+        display: none;
+      }
+      .um-container.js-enabled .um-track {
         display: flex;
+      }
+      .um-track {
         align-items: center;
         flex-wrap: nowrap;
-        gap: 0;
+        gap: var(--um-gap);
         will-change: transform;
-        padding-left: 0;
-        padding-right: 0;
+        backface-visibility: hidden;
+        perspective: 1000px;
       }
-
       .um-track > div {
         display: flex;
         align-items: center;
         flex-wrap: nowrap;
-        gap: 0;
         flex-shrink: 0;
-
-        padding-left: 10px;
+        gap: var(--um-gap);
       }
-
       .um-track > div > * {
-        font-size: var(--um-font-size);
-        font-weight: var(--um-font-weight);
-        color: var(--um-color-separator);
         flex-shrink: 0;
         white-space: nowrap;
         display: flex;
         align-items: center;
-        margin: 0;
-        padding: 0;
-        max-height: 1.5em;
         width: auto;
         object-fit: contain;
       }
 
-      @media (prefers-reduced-motion: reduce) {
-        .um-track {
-          animation: none !important;
-        }
+      /* Skeleton & Image Handling */
+      .um-img-skeleton {
+        position: relative;
+        background-color: #e5e7eb;
+        overflow: hidden;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+      }
+      .um-img-skeleton img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        opacity: 0;
+        transition: opacity 0.5s ease-out;
+      }
+      .um-img-skeleton img.loaded {
+        opacity: 1;
+      }
+
+      /* Separator Specifics */
+      .um-item-separator {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .um-item-separator .um-img-skeleton {
+        display: inline-block;
+        height: var(--um-separator-height);
+        width: auto;
+        min-width: var(--um-separator-height);
+        aspect-ratio: 1/1;
+        background-color: transparent;
       }
     </style>
 
-    <style data-label="DEMO_PRESENTATION_STYLES">
+    <style data-label="ROOT_LAYOUT">
       :root {
         --color-bg-page: #f9fafb;
         --color-text-primary: #111827;
-        --color-accent-red: #dc2626;
-        --color-text-secondary: #d1d5db;
-        --color-container-bg: #111827;
-
-        --color-guide-border: #e5e7eb; /* Warna garis guide yang jelas */
+        --color-guide-border: #ef4444; /* Merah estetik */
         --layout-guide-width: 1px;
-        --layout-guide-style: dashed; /* <--- PERUBAHAN UTAMA */
-
+        --layout-guide-style: dashed;
         --layout-max-width: 1100px;
-        --layout-content-padding: 30px;
         --layout-vertical-padding: 3rem;
         --layout-footer-height: 3rem;
       }
 
-      /* Base Body (Mengisi Viewport) */
       body {
         margin: 0;
         padding: 0;
-        font-family: Arial, sans-serif;
+        font-family: 'Segoe UI', Arial, sans-serif;
         display: flex;
-        min-height: 100vh;
         background-color: var(--color-bg-page);
         color: var(--color-text-primary);
       }
 
-      /* --- 2B. ROOT LAYOUT GUIDE STYLES --- */
-
+      /* --- RootLayout Structure --- */
       .RootLayout {
         position: relative;
         width: 100%;
@@ -106,47 +129,50 @@
         z-index: 0;
       }
 
-      /* Horizontal Guides (Menggunakan ::before/::after pada RootLayout) */
+      /* Garis Horizontal Atas & Bawah (Full Width) */
       .RootLayout::before,
       .RootLayout::after {
         content: '';
-        /* PENTING: Untuk dashed, kita gunakan border-top/bottom */
         border-top: var(--layout-guide-width) var(--layout-guide-style) var(--color-guide-border);
-        height: 0; /* Tinggi 0 agar hanya border yang terlihat */
+        height: 0;
         position: absolute;
         left: 0;
         right: 0;
         z-index: 1;
+        opacity: 0.4;
       }
-      .RootLayout::after {
-        border-bottom: var(--layout-guide-width) var(--layout-guide-style) var(--color-guide-border);
-        border-top: none; /* Hapus border-top jika menggunakan ::after untuk bottom */
-      }
-
       .RootLayout::before {
         top: var(--layout-vertical-padding);
       }
-
       .RootLayout::after {
         bottom: var(--layout-vertical-padding);
+        border-bottom: var(--layout-guide-width) var(--layout-guide-style) var(--color-guide-border);
+        border-top: none;
       }
 
-      /* CONTAINER DENGAN VERTICAL GUIDES */
+      /* Container Tengah */
       .RootLayoutContainer {
         width: 100%;
         max-width: var(--layout-max-width);
-        min-height: 100vh;
+        min-height: calc(100dvh - var(--layout-footer-height) - var(--layout-vertical-padding));
         position: relative;
         padding-top: var(--layout-vertical-padding);
         padding-bottom: var(--layout-footer-height);
 
-        /* Vertical Guides (Border Kiri & Kanan) */
+        /* Garis Vertikal Kiri & Kanan */
         border-left: var(--layout-guide-width) var(--layout-guide-style) var(--color-guide-border);
         border-right: var(--layout-guide-width) var(--layout-guide-style) var(--color-guide-border);
       }
 
-      /* Footer */
+      .RootLayoutContent {
+        display: flex;
+        flex-direction: column;
+        padding: 2rem;
+        gap: 3rem; /* Jarak antar demo */
+      }
+
       .RootLayoutFooter {
+        width: 100%;
         height: var(--layout-footer-height);
         position: absolute;
         bottom: 0;
@@ -154,480 +180,328 @@
         right: 0;
         display: flex;
         align-items: center;
-        padding: 0 var(--layout-content-padding);
+        justify-content: center;
+        font-size: 0.85rem;
+        color: #6b7280;
+        border-top: 1px dashed rgba(239, 68, 68, 0.3);
       }
 
-      /* --- 2C. KONTEN DEMO UTAMA --- */
-
-      .RootLayoutContent {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        flex-grow: 1;
+      /* Typo Helpers */
+      h2.demo-title {
+        margin: 0 0 0.5rem 0;
+        font-size: 1.1rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        text-align: center;
+        color: #374151;
       }
-
-      /* Reset Judul agar rata kiri */
-      .RootLayoutContent > h1,
-      .RootLayoutContent > h2,
-      .RootLayoutContent > p,
-      .RootLayoutContent > hr {
-        width: 100%;
-        text-align: left;
-        margin: 0;
-      }
-
-      /* Wrapper Marquee */
-      .container-wrapper {
-        width: 100%;
-        max-width: 100%;
-      }
-
-      .news-wrapper {
-        background-color: var(--um-color-container-bg);
-      }
-
-      .marquee-content-row {
-        display: flex;
-        align-items: center;
-        width: 100%;
-      }
-
-      /* --- 2D. VERTICAL SEPARATOR/DIVIDER UNTUK LABEL --- */
-
-      /* 1. Breaking News Label (Di Latar Belakang Gelap) */
-      .breaking-news-label {
-        background-color: var(--color-accent-red);
-        color: white;
-        font-weight: 800;
-        font-size: 1.25rem;
-        padding: 10px 15px;
-        margin-right: 0;
-        flex-shrink: 0;
-        display: inline-flex;
-        align-items: center;
-        /* Menggunakan variabel guides untuk konsistensi */
-        border-right: var(--layout-guide-width) solid white;
-      }
-
-      #marquee-news,
-      #marquee-logo-left {
-        padding-left: 20px;
+      p.demo-desc {
+        text-align: center;
+        margin: 0 0 1rem 0;
+        font-size: 0.85rem;
+        color: #9ca3af;
       }
     </style>
   </head>
+
   <body>
     <div class="RootLayout">
       <div class="RootLayoutContainer">
         <div class="RootLayoutContent">
-          <h2>🚨 Breaking News Ticker</h2>
-
-          <div class="container-wrapper news-wrapper">
-            <div class="marquee-content-row">
-              <span class="breaking-news-label"> BREAKING NEWS </span>
-              <div id="marquee-news" style="flex-grow: 1"></div>
+          <div>
+            <h2 class="demo-title">Area 1: Custom Image Separator</h2>
+            <p class="demo-desc">Gap: 6rem | Speed: Slow | Separator: MD Pabel Logo</p>
+            <div
+              id="marquee-demo-1"
+              style="
+                background: #fff;
+                border: 1px solid #eee;
+                border-radius: 6px;
+                padding: 1rem 0;
+                --um-font-size: 1.5rem;
+                --um-gap: 6rem;
+                --um-separator-height: 24px;
+              "
+            >
+              <noscript>Javascript Required.</noscript>
             </div>
           </div>
 
-          <h2>⭐ Partner Logo Pattern</h2>
+          <div>
+            <h2 class="demo-title">Area 2: News Ticker</h2>
+            <p class="demo-desc">Gap: 2rem | Speed: Fast | Dark Theme</p>
+            <div
+              id="marquee-demo-2"
+              style="background: #111827; color: white; padding: 0.8rem 0; --um-font-size: 1rem; --um-gap: 2rem"
+            ></div>
+          </div>
 
-          <div class="container-wrapper logo-wrapper">
-            <div id="marquee-logo-left" style="flex-grow: 1"></div>
-            <div id="marquee-logo-right" style="flex-grow: 1"></div>
+          <div>
+            <h2 class="demo-title">Area 3: Full Lazy Loading Gallery</h2>
+            <p class="demo-desc">Items & Separators are Images with Skeleton Loaders</p>
+            <div id="marquee-full-lazy" style="--um-gap: 3rem; --um-separator-height: 40px"></div>
           </div>
         </div>
-        <span class="RootLayoutFooter"></span>
+
+        <div class="RootLayoutFooter">
+          <span>Universal Marquee Demo &copy; 2025 – Layout System Preserved</span>
+        </div>
       </div>
     </div>
-    <script type="module" data-label="UNIVERSAL_MARQUEE_CORE_JS">
-      /**
-       * Sub-module 1: ContentBuilder
-       * Bertanggung jawab untuk membuat elemen DOM dan mengukur lebar siklus.
-       */
-      class ContentBuilder {
-        #opts;
 
+    <script type="module">
+      class ContentBuilder {
+        _opts;
         constructor(options) {
-          this.#opts = options;
+          this._opts = options;
         }
 
-        buildCycleContent() {
+        #buildSeparatorNode(separator) {
+          const sepContainer = document.createElement('span');
+          sepContainer.classList.add('um-item-separator');
+          sepContainer.setAttribute('aria-hidden', 'true');
+
+          if (typeof separator === 'string') {
+            sepContainer.textContent = separator;
+          } else if (separator instanceof Node) {
+            sepContainer.appendChild(separator.cloneNode(true));
+          } else if (typeof separator === 'object' && separator?.type === 'image') {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'um-img-skeleton';
+            const img = document.createElement('img');
+            img.src = separator.src;
+            img.alt = separator.alt || '';
+            img.loading = 'lazy';
+
+            const handleLoad = () => img.classList.add('loaded');
+            img.onload = handleLoad;
+            if (img.complete) handleLoad();
+
+            wrapper.appendChild(img);
+            sepContainer.appendChild(wrapper);
+          }
+          return sepContainer;
+        }
+
+        buildCycleContent(forSR = false) {
           const frag = document.createDocumentFragment();
+          const items = this._opts.items;
 
-          const sepStyle = `
-              color: var(--um-color-separator); 
-              flex-shrink: 0;
-              display: flex;
-              align-items: center;
-              font-size: 0.9em;
-          `;
+          for (let i = 0; i < items.length; i++) {
+            const item = items[i];
+            if (forSR) {
+              const li = document.createElement('li');
+              li.textContent = item.alt || item;
+              frag.appendChild(li);
+            } else {
+              let node = this._opts.renderItem(item);
+              if (!(node instanceof Element)) {
+                const w = document.createElement('span');
+                w.appendChild(node);
+                node = w;
+              }
+              const cloned = node.cloneNode(true);
+              const img = cloned.querySelector('img');
+              if (img) {
+                if (img.complete) img.classList.add('loaded');
+                else img.onload = () => img.classList.add('loaded');
+              }
+              // Cleanup attributes
+              if (cloned.id) cloned.removeAttribute('id');
+              cloned.querySelectorAll('*').forEach((el) => {
+                if (el.id) el.removeAttribute('id');
+                el.setAttribute('tabindex', '-1');
+              });
 
-          // Margin Horizontal Separator = setengah dari --um-gap. Ini yang menyediakan jarak.
-          const marginStyle = `margin: 0 calc(var(--um-gap) / 2);`;
-
-          for (const item of this.#opts.items) {
-            let node = this.#opts.renderItem(item);
-
-            if (!(node instanceof Element)) {
-              const wrapper = document.createElement('span');
-              wrapper.appendChild(node);
-              node = wrapper;
-            }
-
-            frag.appendChild(node);
-
-            // Hanya buat elemen separator jika separator adalah string (termasuk string kosong)
-            if (typeof this.#opts.separator === 'string') {
-              const sep = document.createElement('span');
-              sep.textContent = this.#opts.separator;
-              sep.style.cssText = sepStyle + marginStyle;
-              frag.appendChild(sep);
+              frag.appendChild(cloned);
+              const sep = this.#buildSeparatorNode(this._opts.separator);
+              if (sep) frag.appendChild(sep);
             }
           }
           return frag;
         }
-
         buildCycleContainer() {
-          const cycleContainer = document.createElement('div');
-          cycleContainer.appendChild(this.buildCycleContent());
-          return cycleContainer;
+          const c = document.createElement('div');
+          c.appendChild(this.buildCycleContent(false));
+          return c;
         }
-
-        measureCycleWidth(root, masterTrack) {
-          if (this.#opts.items.length === 0) return 0;
-
+        buildSRList() {
+          const ul = document.createElement('ul');
+          ul.className = 'um-sr-only';
+          ul.appendChild(this.buildCycleContent(true));
+          return ul;
+        }
+        measureCycleMetrics(root, track) {
+          if (this._opts.items.length === 0) return { width: 0, gap: 0 };
           const temp = document.createElement('div');
           temp.className = 'um-track';
           Object.assign(temp.style, { position: 'absolute', visibility: 'hidden' });
-          temp.style.setProperty('--um-gap', this.#opts.gap);
-
-          const measurementCycle = this.buildCycleContainer();
-          temp.appendChild(measurementCycle);
-
+          temp.style.setProperty('--um-gap', this._opts.gap);
+          const cycle = this.buildCycleContainer();
+          temp.appendChild(cycle);
           root.appendChild(temp);
-          const cycleWidth = measurementCycle.offsetWidth;
+          const width = cycle.offsetWidth;
+          const style = getComputedStyle(temp);
+          const gap = parseFloat(style.columnGap || style.gap || '0');
           root.removeChild(temp);
-
-          return cycleWidth;
+          return { width, gap };
         }
       }
 
-      /**
-       * Sub-module 2: AnimationController
-       * Bertanggung jawab untuk WAAPI dan logic loop.
-       */
       class AnimationController {
-        #masterTrack;
-        #opts;
-        #animation = null;
-
-        constructor(masterTrack, options) {
-          this.#masterTrack = masterTrack;
-          this.#opts = options;
+        _track;
+        _opts;
+        _anim = null;
+        constructor(track, opts) {
+          this._track = track;
+          this._opts = opts;
         }
+        start(width, gap) {
+          if (this._anim) this._anim.cancel();
+          const dist = width + gap;
+          const duration = (dist / this._opts.speed) * 1000;
+          let from = 'translate3d(0,0,0)',
+            to = `translate3d(-${dist}px,0,0)`;
+          if (this._opts.direction === 'right') {
+            from = `translate3d(-${dist}px,0,0)`;
+            to = 'translate3d(0,0,0)';
+          }
 
-        startAnimation(cycleWidth) {
-          if (this.#animation) this.#animation.cancel();
-
-          const totalAnimationDistance = cycleWidth;
-          const durationSeconds = totalAnimationDistance / this.#opts.speed;
-
-          const keyframes = [
-            { transform: 'translate3d(0px, 0, 0)' },
-            { transform: `translate3d(-${totalAnimationDistance}px, 0, 0)` },
-          ];
-
-          const options = {
-            duration: durationSeconds * 1000,
-            iterations: 1,
+          this._anim = this._track.animate([{ transform: from }, { transform: to }], {
+            duration,
+            iterations: Infinity,
             easing: 'linear',
-            direction: this.#opts.direction === 'right' ? 'reverse' : 'normal',
-          };
-
-          this.#animation = this.#masterTrack.animate(keyframes, options);
-
-          this.#animation.play();
-
-          this.#animation.onfinish = () => {
-            this.#animation.commitStyles();
-            this.#animation.cancel();
-
-            this.#masterTrack.style.transform = `translate3d(0px, 0, 0)`;
-
-            this.startAnimation(cycleWidth);
-          };
-        }
-
-        stop() {
-          if (this.#animation) this.#animation.cancel();
+          });
         }
       }
 
-      /**
-       * Sub-module 3: ObserverManager
-       * Bertanggung jawab untuk ResizeObserver.
-       */
-      class ObserverManager {
-        #root;
-        #resizeObserver;
-        #resizeTimer = null;
-        #reflowCallback;
-
-        constructor(root, reflowCallback) {
-          this.#root = root;
-          this.#reflowCallback = reflowCallback;
-        }
-
-        start() {
-          if (!('ResizeObserver' in window)) return;
-
-          const resizeCallback = () => {
-            if (this.#resizeTimer) {
-              cancelAnimationFrame(this.#resizeTimer);
-            }
-            this.#resizeTimer = requestAnimationFrame(this.#reflowCallback);
-          };
-
-          this.#resizeObserver = new ResizeObserver(resizeCallback);
-          this.#resizeObserver.observe(this.#root);
-        }
-
-        stop() {
-          if (this.#resizeObserver) {
-            this.#resizeObserver.unobserve(this.#root);
-          }
-        }
-      }
-
-      /**
-       * Core Class: UniversalMarquee
-       */
       class UniversalMarquee {
-        #root;
-        #opts;
-        #masterTrack = null;
-
-        #contentBuilder;
-        #animationController;
-        #observerManager;
-
-        constructor(selector, options) {
-          this.#root = typeof selector === 'string' ? document.querySelector(selector) : selector;
-          if (!this.#root) throw new Error('Element not found');
-
-          const {
-            speed = 30,
-            gap = '2rem',
-            direction = 'left',
-            items = [],
-            separator = '',
-            renderItem = (item) => document.createTextNode(String(item)),
-          } = options;
-
-          this.#opts = {
-            speed,
-            gap,
-            direction,
-            items,
-            separator,
-            renderItem,
+        constructor(selector, opts) {
+          this._root = document.querySelector(selector);
+          if (!this._root) return;
+          this._opts = {
+            speed: 50,
+            gap: '2rem',
+            direction: 'left',
+            items: [],
+            separator: '',
+            renderItem: (i) => document.createTextNode(i),
+            ...opts,
           };
-
-          this.#root.dir = direction === 'rtl' ? 'rtl' : 'ltr';
-          this.#root.style.setProperty('--um-gap', this.#opts.gap);
-          this.#root.classList.add('um-container');
-
-          this.#initModules();
+          this._root.classList.add('um-container', 'js-enabled');
+          this._builder = new ContentBuilder(this._opts);
+          this.#setup();
+          new ResizeObserver(() => requestAnimationFrame(this.#reflow.bind(this))).observe(this._root);
         }
-
-        #initModules() {
-          this.#contentBuilder = new ContentBuilder(this.#opts);
-
-          this.#_setupContent();
-
-          this.#animationController = new AnimationController(this.#masterTrack, this.#opts);
-
-          this.#observerManager = new ObserverManager(this.#root, this.#_reflowAndRestart.bind(this));
-          this.#observerManager.start();
+        #setup() {
+          this._root.innerHTML = '';
+          this._track = document.createElement('div');
+          this._track.className = 'um-track';
+          this._track.setAttribute('aria-hidden', 'true');
+          this._root.appendChild(this._builder.buildSRList());
+          this._root.appendChild(this._track);
+          this.#reflow();
         }
-
-        #_setupContent() {
-          this.#masterTrack = document.createElement('div');
-          this.#masterTrack.className = 'um-track';
-
-          if (this.#opts.direction === 'right') {
-            this.#masterTrack.classList.add('um-right');
-          } else {
-            this.#masterTrack.classList.remove('um-right');
-          }
-
-          this.#root.innerHTML = '';
-          this.#root.appendChild(this.#masterTrack);
-
-          requestAnimationFrame(this.#_reflowAndRestart.bind(this));
-        }
-
-        #_reflowAndRestart() {
-          const cycleWidth = this.#contentBuilder.measureCycleWidth(this.#root, this.#masterTrack);
-
-          if (cycleWidth === 0 || this.#opts.items.length === 0) {
-            this.#animationController.stop();
-            return;
-          }
-
-          let cyclesNeeded = Math.ceil(this.#root.offsetWidth / cycleWidth) + 2;
-          cyclesNeeded = Math.max(3, cyclesNeeded);
-
-          this.#masterTrack.innerHTML = '';
-          const content = document.createDocumentFragment();
-          for (let i = 0; i < cyclesNeeded; i++) {
-            content.appendChild(this.#contentBuilder.buildCycleContainer());
-          }
-          this.#masterTrack.appendChild(content);
-
-          const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-          if (!prefersReduced) {
-            this.#animationController.startAnimation(cycleWidth);
-          } else {
-            this.#animationController.stop();
-          }
+        #reflow() {
+          const m = this._builder.measureCycleMetrics(this._root, this._track);
+          if (m.width === 0) return;
+          const cycles = Math.ceil(this._root.offsetWidth / (m.width + m.gap)) + 2;
+          this._track.innerHTML = '';
+          const frag = document.createDocumentFragment();
+          for (let i = 0; i < Math.max(3, cycles); i++) frag.appendChild(this._builder.buildCycleContainer());
+          this._track.appendChild(frag);
+          if (!this._anim) this._anim = new AnimationController(this._track, this._opts);
+          this._anim.start(m.width, m.gap);
         }
       }
-
       window.UniversalMarquee = UniversalMarquee;
     </script>
 
-    <script type="module" data-label="DEMO_CONFIGURATION_JS">
-      // --- 1. DATA UNTUK KEDUA DEMO ---
-      const LOGO_URLS = {
-        google: 'https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg',
-        amazon: 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg',
-        microsoft: 'https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg',
-        apple: 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg',
-        tesla: 'https://upload.wikimedia.org/wikipedia/commons/e/e8/Tesla_logo.png',
-        spotify: 'https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg',
-        github: 'https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg',
-        slack: 'https://upload.wikimedia.org/wikipedia/commons/d/d5/Slack_icon_2019.svg',
-      };
+    <script type="module">
+      const initApp = () => {
+        // --- DATA SETUP ---
+        const ITEMS_DEMO_1 = ['Web Design', 'App Development', 'SEO Audit', 'Cloud Server', 'Consulting'];
 
-      const LOGO_ITEMS = [
-        { type: 'image', src: LOGO_URLS.google, alt: 'Google Logo' },
-        { type: 'image', src: LOGO_URLS.amazon, alt: 'Amazon Logo' },
-        { type: 'image', src: LOGO_URLS.microsoft, alt: 'Microsoft Logo' },
-        { type: 'image', src: LOGO_URLS.apple, alt: 'Apple Logo' },
-        { type: 'image', src: LOGO_URLS.tesla, alt: 'Tesla Logo' },
-        { type: 'image', src: LOGO_URLS.spotify, alt: 'Spotify Logo' },
-        { type: 'image', src: LOGO_URLS.github, alt: 'GitHub Logo' },
-        { type: 'image', src: LOGO_URLS.slack, alt: 'Slack Logo' },
-      ];
-
-      const NEWS_ITEMS = [
-        'tunjukkan Trump, Clinton, dan tokoh lain',
-        {
+        // Menggunakan gambar dari memori Anda
+        const SEPARATOR_DEMO_1 = {
           type: 'image',
-          src: 'https://cdn.iconscout.com/icon/free/png-256/ukraine-1815893-1538356.png',
-          alt: 'Bendera Ukraina',
-        },
-        'Rusia serang Ukraina dengan 450 drone dan 30 rudal, jutaan rumah gelap gulita',
-        {
-          type: 'image',
-          src: 'https://cdn.iconscout.com/icon/free/png-256/syria-1815915-1538378.png',
-          alt: 'Bendera Suriah',
-        },
-        'Dua tentara AS tewas dibunuh penembak ISIS di Suriah',
-        'Netflix beli Warner Bros. dalam kesepakatan miliaran dolar',
-        { type: 'html', content: '<span style="color: gold; margin-left: 5px;">⭐ NEW</span>' },
-        'Uni Eropa denda X (Twitter) atas pelanggaran privasi',
-        'Gempa 7,6 SR guncang Jepang, peringatan tsunami dikeluarkan',
-      ];
+          src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTntAEGelAdIFNL7BoFXsTKzEzj19Cww_ow9A&s',
+          alt: 'Logo MDPabel',
+        };
 
-      // --- 2. RENDERER KUSTOM ---
+        const ITEMS_DEMO_2 = ['LOREM IPSUM', 'DOLOR SIT AMET', 'CONSECTETUR ADIPISCING', 'ELIT SED DO'];
 
-      const customItemRenderer = (item) => {
-        if (typeof item === 'string') {
-          const el = document.createElement('a');
-          el.href = '#';
-          el.textContent = item;
-          el.tabIndex = -1;
-          Object.assign(el.style, {
-            color: 'var(--um-color-separator)',
-            textDecoration: 'none',
-            padding: '0 5px',
-            fontWeight: 'normal',
-            transition: 'color 0.3s ease',
-          });
-          el.onmouseover = () => (el.style.color = 'var(--um-color-accent)');
-          el.onmouseout = () => (el.style.color = 'var(--um-color-separator)');
-          return el;
-        } else if (item && item.type === 'image') {
+        const GALLERY_ITEMS = [
+          { src: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80', alt: 'Red Shoe' },
+          { src: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=400&q=80', alt: 'White Sneaker' },
+          { src: 'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=400&q=80', alt: 'Green Shoe' },
+        ];
+
+        // --- RENDERERS ---
+        const textRenderer = (txt) => {
+          const s = document.createElement('span');
+          s.textContent = txt;
+          s.style.fontWeight = '600';
+          return s;
+        };
+
+        const imageRenderer = (item) => {
+          const wrapper = document.createElement('div');
+          wrapper.className = 'um-img-skeleton';
+          wrapper.style.width = '140px';
+          wrapper.style.height = '90px';
+
           const img = document.createElement('img');
           img.src = item.src;
-          img.alt = item.alt || 'Content Image';
-          img.tabIndex = -1;
+          img.alt = item.alt;
+          img.loading = 'lazy';
 
-          Object.assign(img.style, {
-            verticalAlign: 'middle',
-            margin: '0 5px',
-          });
-          return img;
-        } else if (item && item.type === 'html') {
-          const span = document.createElement('span');
-          span.innerHTML = item.content;
-          span.tabIndex = -1;
-          return span;
-        }
-        return document.createTextNode(String(item));
-      };
+          const onLoad = () => img.classList.add('loaded');
+          img.onload = onLoad;
+          if (img.complete) onLoad();
 
-      // --- 3. INISIALISASI ---
+          wrapper.appendChild(img);
+          return wrapper;
+        };
 
-      const initApp = () => {
-        const newsMarqueeRoot = document.getElementById('marquee-news');
-        const logoMarqueeLeftRoot = document.getElementById('marquee-logo-left');
-        const logoMarqueeRightRoot = document.getElementById('marquee-logo-right');
+        // --- INSTANCES ---
 
-        if (newsMarqueeRoot) {
-          // Konfigurasi Marquee Breaking News: Simbol diperlukan
-          new window.UniversalMarquee('#marquee-news', {
-            speed: 40,
-            gap: '3rem',
-            direction: 'left',
-            items: NEWS_ITEMS,
-            separator: ' • ', // SIMBOL VISUAL
-            renderItem: customItemRenderer,
-          });
-        }
+        // 1. Demo Logo Pribadi
+        new window.UniversalMarquee('#marquee-demo-1', {
+          speed: 60,
+          gap: '6rem',
+          items: ITEMS_DEMO_1,
+          separator: SEPARATOR_DEMO_1,
+          renderItem: textRenderer,
+        });
 
-        if (logoMarqueeLeftRoot) {
-          // Konfigurasi Marquee Logo Pattern: Tidak perlu simbol (menggunakan default '')
+        // 2. Demo News Ticker
+        new window.UniversalMarquee('#marquee-demo-2', {
+          speed: 100,
+          gap: '2rem',
+          direction: 'right',
+          items: ITEMS_DEMO_2,
+          separator: ' • ',
+          renderItem: (t) => {
+            const s = document.createElement('span');
+            s.textContent = t;
+            s.style.color = '#e5e7eb';
+            return s;
+          },
+        });
 
-          // Atur ukuran dan gap spesifik logo melalui CSS Variable Override
-          logoMarqueeLeftRoot.style.setProperty('--um-font-size', '1.5rem');
-          logoMarqueeLeftRoot.style.setProperty('--um-gap', '6rem');
-
-          new window.UniversalMarquee('#marquee-logo-left', {
-            speed: 10,
-            gap: '6rem',
-            direction: 'right',
-            items: LOGO_ITEMS,
-            renderItem: customItemRenderer,
-          });
-        }
-
-        if (logoMarqueeRightRoot) {
-          // Konfigurasi Marquee Logo Pattern: Tidak perlu simbol (menggunakan default '')
-
-          // Atur ukuran dan gap spesifik logo melalui CSS Variable Override
-          logoMarqueeRightRoot.style.setProperty('--um-font-size', '1.5rem');
-          logoMarqueeRightRoot.style.setProperty('--um-gap', '6rem');
-
-          new window.UniversalMarquee('#marquee-logo-right', {
-            speed: 10,
-            gap: '6rem',
-            direction: 'left',
-            items: LOGO_ITEMS,
-            renderItem: customItemRenderer,
-          });
-        }
+        // 3. Full Lazy Gallery
+        new window.UniversalMarquee('#marquee-full-lazy', {
+          speed: 50,
+          gap: '3rem',
+          items: GALLERY_ITEMS,
+          separator: {
+            type: 'image',
+            src: 'https://cdn-icons-png.flaticon.com/512/766/766029.png',
+            alt: '',
+          },
+          renderItem: imageRenderer,
+        });
       };
 
       document.addEventListener('DOMContentLoaded', initApp);
