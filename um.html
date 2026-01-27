@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Universal Marquee v14.3 – RootLayout Edition</title>
+    <title>Universal Marquee v14.3 – Stable Edition</title>
 
     <style data-label="CORE_STYLES">
       :root {
@@ -129,7 +129,6 @@
         z-index: 0;
       }
 
-      /* Garis Horizontal Atas & Bawah (Full Width) */
       .RootLayout::before,
       .RootLayout::after {
         content: '';
@@ -150,7 +149,6 @@
         border-top: none;
       }
 
-      /* Container Tengah */
       .RootLayoutContainer {
         width: 100%;
         max-width: var(--layout-max-width);
@@ -159,7 +157,6 @@
         padding-top: var(--layout-vertical-padding);
         padding-bottom: var(--layout-footer-height);
 
-        /* Garis Vertikal Kiri & Kanan */
         border-left: var(--layout-guide-width) var(--layout-guide-style) var(--color-guide-border);
         border-right: var(--layout-guide-width) var(--layout-guide-style) var(--color-guide-border);
       }
@@ -168,7 +165,7 @@
         display: flex;
         flex-direction: column;
         padding: 2rem;
-        gap: 3rem; /* Jarak antar demo */
+        gap: 3rem;
       }
 
       .RootLayoutFooter {
@@ -186,7 +183,6 @@
         border-top: 1px dashed rgba(239, 68, 68, 0.3);
       }
 
-      /* Typo Helpers */
       h2.demo-title {
         margin: 0 0 0.5rem 0;
         font-size: 1.1rem;
@@ -209,7 +205,7 @@
       <div class="RootLayoutContainer">
         <div class="RootLayoutContent">
           <div>
-            <h2 class="demo-title">Area 1: Custom Image Separator</h2>
+            <h2 class="demo-title">Area 1: Services & Branding</h2>
             <p class="demo-desc">Gap: 6rem | Speed: Slow | Separator: MD Pabel Logo</p>
             <div
               id="marquee-demo-1"
@@ -244,7 +240,7 @@
         </div>
 
         <div class="RootLayoutFooter">
-          <span>Universal Marquee Demo &copy; 2025 – Layout System Preserved</span>
+          <span>Universal Marquee Demo &copy; 2025 – RootLayout Edition</span>
         </div>
       </div>
     </div>
@@ -286,6 +282,8 @@
         buildCycleContent(forSR = false) {
           const frag = document.createDocumentFragment();
           const items = this._opts.items;
+          // FIX: Safety check if items empty
+          if (!items || items.length === 0) return frag;
 
           for (let i = 0; i < items.length; i++) {
             const item = items[i];
@@ -306,7 +304,7 @@
                 if (img.complete) img.classList.add('loaded');
                 else img.onload = () => img.classList.add('loaded');
               }
-              // Cleanup attributes
+              // Cleanup
               if (cloned.id) cloned.removeAttribute('id');
               cloned.querySelectorAll('*').forEach((el) => {
                 if (el.id) el.removeAttribute('id');
@@ -331,20 +329,31 @@
           ul.appendChild(this.buildCycleContent(true));
           return ul;
         }
+
         measureCycleMetrics(root, track) {
-          if (this._opts.items.length === 0) return { width: 0, gap: 0 };
+          if (!this._opts.items || this._opts.items.length === 0) return { width: 0, gap: 0 };
+
           const temp = document.createElement('div');
           temp.className = 'um-track';
           Object.assign(temp.style, { position: 'absolute', visibility: 'hidden' });
-          temp.style.setProperty('--um-gap', this._opts.gap);
+
+          let gapVal = this._opts.gap;
+          if (typeof gapVal === 'number') gapVal = `${gapVal}px`;
+          temp.style.setProperty('--um-gap', gapVal);
+
           const cycle = this.buildCycleContainer();
           temp.appendChild(cycle);
           root.appendChild(temp);
-          const width = cycle.offsetWidth;
+
+          const width = cycle.offsetWidth || 0;
           const style = getComputedStyle(temp);
-          const gap = parseFloat(style.columnGap || style.gap || '0');
+
+          // FIX: Mencegah NaN pada Gap
+          let parsedGap = parseFloat(style.columnGap || style.gap || '0');
+          if (isNaN(parsedGap)) parsedGap = 0;
+
           root.removeChild(temp);
-          return { width, gap };
+          return { width, gap: parsedGap };
         }
       }
 
@@ -356,12 +365,23 @@
           this._track = track;
           this._opts = opts;
         }
+
         start(width, gap) {
           if (this._anim) this._anim.cancel();
-          const dist = width + gap;
-          const duration = (dist / this._opts.speed) * 1000;
-          let from = 'translate3d(0,0,0)',
-            to = `translate3d(-${dist}px,0,0)`;
+
+          // FIX: Validasi Matematika (Mencegah dist: NaN, duration: NaN)
+          const safeWidth = Number.isFinite(width) ? width : 0;
+          const safeGap = Number.isFinite(gap) ? gap : 0;
+          const safeSpeed = this._opts.speed && this._opts.speed > 0 ? this._opts.speed : 50;
+
+          const dist = safeWidth + safeGap;
+          if (dist <= 0) return;
+
+          const duration = (dist / safeSpeed) * 1000;
+
+          let from = 'translate3d(0,0,0)';
+          let to = `translate3d(-${dist}px,0,0)`;
+
           if (this._opts.direction === 'right') {
             from = `translate3d(-${dist}px,0,0)`;
             to = 'translate3d(0,0,0)';
@@ -422,10 +442,10 @@
         // --- DATA SETUP ---
         const ITEMS_DEMO_1 = ['Web Design', 'App Development', 'SEO Audit', 'Cloud Server', 'Consulting'];
 
-        // Menggunakan gambar dari memori Anda
+        // Logo Personal Anda
         const SEPARATOR_DEMO_1 = {
           type: 'image',
-          src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTntAEGelAdIFNL7BoFXsTKzEzj19Cww_ow9A&s',
+          src: 'https://www.mdpabel.com/md-pabel.png',
           alt: 'Logo MDPabel',
         };
 
@@ -504,7 +524,11 @@
         });
       };
 
-      document.addEventListener('DOMContentLoaded', initApp);
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initApp);
+      } else {
+        initApp();
+      }
     </script>
   </body>
 </html>

@@ -1,0 +1,18 @@
+/* Card - Use Tailwind Classes Instead */
+/* Keep only for legacy widget support */
+
+.card {
+  @apply bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-200;
+}
+
+.card:hover {
+  @apply -translate-y-0.5;
+}
+
+.card-body {
+  @apply p-4;
+}
+
+.card-img {
+  @apply w-full h-auto object-cover;
+}

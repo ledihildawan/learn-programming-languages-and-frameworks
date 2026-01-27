@@ -1,0 +1,1059 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Universal Marquee - Seamless Infinite Horizontal Marquee JavaScript Library</title>
+    <meta
+      name="description"
+      content="Create smooth, accessible, infinite scrolling marquees with Universal Marquee. A lightweight Vanilla JS library with zero dependencies."
+    />
+    <meta name="author" content="Ledi Hildawan" />
+    <meta property="og:type" content="website" />
+
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💫</text></svg>"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Luckiest+Guy&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        /* Colors & Themes */
+        --color-bg-page: #030712;
+        --color-bg-surface: rgba(15, 23, 42, 0.6); /* Glassy */
+        --color-text-primary: #f1f5f9;
+        --color-text-secondary: #94a3b8;
+
+        --color-accent-primary: #22d3ee;
+        --color-accent-secondary: #a78bfa;
+        --gradient-glow: linear-gradient(135deg, #22d3ee 0%, #818cf8 50%, #c084fc 100%);
+
+        --border-light: rgba(255, 255, 255, 0.1);
+        --border-hover: rgba(255, 255, 255, 0.2);
+
+        /* Spacing & Layout */
+        --layout-max-width: 1200px;
+        --layout-gutter: 1.5rem;
+        --layout-vertical-spacing: 5rem;
+
+        /* Fonts */
+        --font-family-primary: 'Outfit', system-ui, sans-serif;
+        --font-family-heading: 'Space Grotesk', sans-serif;
+        --font-family-mono: 'Space Mono', monospace;
+        --font-family-fun: 'Luckiest Guy', cursive;
+
+        /* Radius */
+        --radius-sm: 8px;
+        --radius-md: 16px;
+        --radius-lg: 24px;
+        --radius-pill: 9999px;
+
+        /* Shadows */
+        --shadow-glow: 0 0 40px -10px rgba(99, 102, 241, 0.3);
+        --shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
+      }
+
+      /* --- GLOBAL RESET & CORE --- */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: var(--font-family-primary);
+        background-color: var(--color-bg-page);
+        color: var(--color-text-primary);
+        min-height: 100vh;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+      }
+
+      /* Custom Scrollbar */
+      body::-webkit-scrollbar {
+        width: 8px;
+      }
+      body::-webkit-scrollbar-track {
+        background: var(--color-bg-page);
+      }
+      body::-webkit-scrollbar-thumb {
+        background-color: #334155;
+        border-radius: 4px;
+      }
+      body::-webkit-scrollbar-thumb:hover {
+        background-color: #475569;
+      }
+
+      ::selection {
+        background: var(--color-accent-primary);
+        color: #000;
+      }
+
+      /* --- AMBIENT BACKGROUND & NOISE --- */
+      .ambient-layer {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        overflow: hidden;
+      }
+
+      /* Grid Pattern for Tech Feel */
+      .bg-grid {
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        background-size: 50px 50px;
+        mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+      }
+
+      /* Animated Blobs */
+      .blob {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        opacity: 0.4;
+        animation: floatBlob 20s infinite alternate ease-in-out;
+      }
+      .blob-1 {
+        top: -10%;
+        left: -10%;
+        width: 50vw;
+        height: 50vw;
+        background: radial-gradient(circle, #4f46e5, transparent 60%);
+      }
+      .blob-2 {
+        bottom: -10%;
+        right: -10%;
+        width: 60vw;
+        height: 60vw;
+        background: radial-gradient(circle, #0891b2, transparent 60%);
+        animation-delay: -5s;
+      }
+      .blob-3 {
+        top: 40%;
+        left: 30%;
+        width: 30vw;
+        height: 30vw;
+        background: radial-gradient(circle, #c026d3, transparent 60%);
+        animation-delay: -10s;
+        opacity: 0.25;
+      }
+
+      @keyframes floatBlob {
+        0% {
+          transform: translate(0, 0) scale(1);
+        }
+        100% {
+          transform: translate(30px, 50px) scale(1.1);
+        }
+      }
+
+      /* Noise Texture */
+      .noise-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        opacity: 0.04;
+        pointer-events: none;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      }
+
+      /* --- LAYOUT STRUCTURE --- */
+      .root-layout {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+        position: relative;
+      }
+
+      .root-layout-container {
+        width: 100%;
+        max-width: var(--layout-max-width);
+        padding: 0 var(--layout-gutter);
+        padding-top: var(--layout-vertical-spacing);
+        padding-bottom: var(--layout-vertical-spacing);
+      }
+
+      .root-header {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .root-footer {
+        padding: 2rem 0;
+        text-align: center;
+        font-size: 0.9rem;
+        color: var(--color-text-secondary);
+        border-top: 1px solid var(--border-light);
+        width: 100%;
+        margin-top: auto;
+      }
+      .root-footer a {
+        color: var(--color-text-primary);
+        text-decoration: none;
+        border-bottom: 1px dotted var(--color-accent-primary);
+        transition: 0.2s;
+      }
+      .root-footer a:hover {
+        color: var(--color-accent-primary);
+        border-bottom-style: solid;
+      }
+
+      /* --- TYPOGRAPHY & HERO --- */
+      .main-title {
+        text-align: center;
+        font-family: var(--font-family-heading);
+        font-size: clamp(3rem, 8vw, 5.5rem);
+        font-weight: 800;
+        letter-spacing: -0.04em;
+        line-height: 1.1;
+        margin: 0;
+
+        /* Animated Gradient Text */
+        background: linear-gradient(to right, #ffffff 20%, #a5b4fc 50%, #22d3ee 80%);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: shine 5s linear infinite;
+        filter: drop-shadow(0 0 30px rgba(34, 211, 238, 0.2));
+      }
+
+      @keyframes shine {
+        to {
+          background-position: 200% center;
+        }
+      }
+
+      .intro {
+        text-align: center;
+        max-width: 680px;
+        margin: 1.5rem auto 0;
+        font-size: 1.25rem;
+        line-height: 1.6;
+        color: var(--color-text-secondary);
+      }
+
+      .section {
+        margin: 6rem 0;
+        scroll-margin-top: 4rem;
+      }
+      .section h2 {
+        text-align: center;
+        font-family: var(--font-family-heading);
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 3rem;
+        color: var(--color-text-primary);
+      }
+
+      /* --- CODE BLOCKS --- */
+      .inline-code-wrapper {
+        display: flex;
+        justify-content: center;
+        margin-top: 2rem;
+      }
+      .inline-code {
+        background: rgba(15, 23, 42, 0.8);
+        border: 1px solid var(--border-light);
+        padding: 1rem 1.5rem;
+        border-radius: var(--radius-md);
+        font-family: var(--font-family-mono);
+        font-size: 0.95rem;
+        color: #e2e8f0;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(10px);
+        transition:
+          transform 0.2s,
+          border-color 0.2s;
+      }
+      .inline-code:hover {
+        transform: translateY(-2px);
+        border-color: var(--color-accent-primary);
+      }
+      .inline-code span {
+        color: var(--color-accent-secondary);
+        margin-right: 8px;
+        user-select: none;
+      }
+
+      .code-window {
+        background: #1e1e1e;
+        border-radius: var(--radius-md);
+        border: 1px solid #333;
+        overflow: hidden;
+        margin-top: 1.5rem;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+      }
+      .code-header {
+        background: #252526;
+        padding: 0.75rem 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #333;
+      }
+      .window-dots {
+        display: flex;
+        gap: 6px;
+      }
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+      }
+      .dot.red {
+        background: #ff5f56;
+      }
+      .dot.yellow {
+        background: #ffbd2e;
+      }
+      .dot.green {
+        background: #27c93f;
+      }
+      .filename {
+        font-family: var(--font-family-primary);
+        font-size: 0.85rem;
+        color: #888;
+      }
+
+      .copy-btn {
+        background: transparent;
+        border: 1px solid transparent;
+        color: #888;
+        cursor: pointer;
+        padding: 4px;
+        border-radius: 4px;
+        transition: 0.2s;
+        display: flex;
+      }
+      .copy-btn:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .code-content {
+        margin: 0;
+        padding: 1.5rem;
+        overflow-x: auto;
+        font-family: var(--font-family-mono);
+        font-size: 0.9rem;
+        line-height: 1.6;
+        color: #d4d4d4;
+      }
+
+      /* --- DEMO 1: FEATURES (Fun Style) --- */
+      #features {
+        margin: 0 auto;
+        max-width: 95%;
+        padding: 3rem 0;
+        background: linear-gradient(90deg, #6366f1, #ec4899, #8b5cf6, #6366f1);
+        background-size: 300% 100%;
+        border-radius: 30px;
+        transform: rotate(-1deg);
+        box-shadow: 0 20px 50px rgba(124, 58, 237, 0.3);
+        animation: rainbowShift 10s linear infinite;
+        opacity: 0; /* JS FadeIn */
+      }
+      @keyframes rainbowShift {
+        0% {
+          background-position: 0% 50%;
+        }
+        100% {
+          background-position: 300% 50%;
+        }
+      }
+
+      .um-item-feature {
+        font-family: var(--font-family-fun);
+        font-size: 2.5rem;
+        text-transform: uppercase;
+        color: #fff;
+        text-shadow: 3px 3px 0 #000;
+        margin: 0 1rem;
+        white-space: nowrap;
+      }
+      .um-separator-feature {
+        font-size: 2rem;
+      }
+
+      /* --- DEMO 2: TESTIMONIALS (Glassy) --- */
+      .examples-grid {
+        display: grid;
+        gap: 5rem;
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+      .example-card {
+        background: var(--color-bg-surface);
+        border: 1px solid var(--border-light);
+        border-radius: var(--radius-lg);
+        padding: 2.5rem;
+        backdrop-filter: blur(12px);
+      }
+      .example-card h3 {
+        margin-top: 0;
+        font-size: 1.5rem;
+        color: #fff;
+      }
+      .example-card p {
+        color: var(--color-text-secondary);
+        margin-bottom: 2rem;
+      }
+
+      #demo-testimonials {
+        mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+      }
+
+      .testimonial-card {
+        width: 380px;
+        padding: 1.5rem;
+        border-radius: 16px;
+        background: rgba(30, 41, 59, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        white-space: normal; /* Important for text wrapping inside marquee items */
+      }
+      .t-header {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+      .t-avatar {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 2px solid rgba(255, 255, 255, 0.1);
+      }
+      .t-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .t-info h4 {
+        margin: 0;
+        font-size: 0.95rem;
+        color: #fff;
+      }
+      .t-info span {
+        font-size: 0.8rem;
+        color: #94a3b8;
+      }
+      .t-body {
+        font-size: 0.9rem;
+        line-height: 1.5;
+        color: #cbd5e1;
+      }
+      .t-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: auto;
+        padding-top: 10px;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        font-size: 0.8rem;
+        color: #64748b;
+      }
+      .t-icon {
+        width: 16px;
+        height: 16px;
+        fill: currentColor;
+      }
+
+      /* --- DEMO 3: PRODUCTS (Clean) --- */
+      #demo-products {
+        background: rgba(255, 255, 255, 0.02);
+        border-top: 1px solid var(--border-light);
+        border-bottom: 1px solid var(--border-light);
+        padding: 3rem 0;
+      }
+      .product-card {
+        width: 300px;
+        height: 220px;
+        border-radius: 12px;
+        overflow: hidden;
+        position: relative;
+        background: #0f172a;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        transition: transform 0.3s ease;
+      }
+      .product-card:hover {
+        transform: translateY(-5px);
+      }
+      .product-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0;
+        transition: opacity 0.5s;
+      }
+      .product-card img.loaded {
+        opacity: 1;
+      }
+      .product-label {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(4px);
+        color: #fff;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        font-weight: 700;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      /* --- DEMO 4: TICKER (Financial) --- */
+      #demo-ticker {
+        background: #020617;
+        border: 1px solid #1e293b;
+        border-left: 4px solid #22d3ee;
+        padding: 0.8rem 0;
+        font-family: var(--font-family-mono);
+        font-size: 0.9rem;
+      }
+      .ticker-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #e2e8f0;
+      }
+      .ticker-sym {
+        font-weight: 700;
+        color: #94a3b8;
+      }
+      .ticker-change {
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 700;
+      }
+      .t-up {
+        color: #4ade80;
+        background: rgba(74, 222, 128, 0.1);
+      }
+      .t-down {
+        color: #f87171;
+        background: rgba(248, 113, 113, 0.1);
+      }
+      .ticker-sep {
+        color: #334155;
+      }
+
+      /* --- CORE MARQUEE STYLES (Required) --- */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      .um-container {
+        display: flex;
+        overflow: hidden;
+        user-select: none;
+        width: 100%;
+        position: relative;
+        opacity: 0;
+        animation: fadeIn 0.5s ease-out forwards;
+      }
+      .um-track {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+        gap: var(--um-gap, 2rem);
+        will-change: transform;
+      }
+      .um-track > div {
+        display: flex;
+        align-items: center;
+        gap: var(--um-gap, 2rem);
+        flex-shrink: 0;
+      }
+      .um-sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        border: 0;
+      }
+
+      /* Gradient Masks for Marquee */
+      .um-container.um-mask::before,
+      .um-container.um-mask::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100px;
+        z-index: 2;
+        pointer-events: none;
+      }
+      .um-container.um-mask::before {
+        left: 0;
+        background: linear-gradient(to right, var(--mask-color, var(--color-bg-page)), transparent);
+      }
+      .um-container.um-mask::after {
+        right: 0;
+        background: linear-gradient(to left, var(--mask-color, var(--color-bg-page)), transparent);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .um-container {
+          overflow-x: auto;
+        }
+        .um-track {
+          animation: none !important;
+          transform: none !important;
+          width: max-content;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .main-title {
+          font-size: 3rem;
+        }
+        .testimonial-card {
+          width: 300px;
+        }
+        .section {
+          margin: 4rem 0;
+        }
+        .intro br {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="noise-overlay"></div>
+    <div class="ambient-layer">
+      <div class="bg-grid"></div>
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+      <div class="blob blob-3"></div>
+    </div>
+
+    <div class="root-layout">
+      <header class="root-header">
+        <svg
+          width="48"
+          height="48"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          style="color: var(--color-accent-primary); filter: drop-shadow(0 0 10px rgba(34, 211, 238, 0.5))"
+        >
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+        </svg>
+      </header>
+
+      <div class="root-layout-container">
+        <main>
+          <section class="section">
+            <h1 class="main-title">Universal Marquee</h1>
+            <p class="intro">
+              The ultimate zero-dependency Vanilla JS library for smooth, accessible, infinite scrolling.
+              <br />Works with text, images, or any custom HTML.
+            </p>
+
+            <div class="inline-code-wrapper">
+              <div class="inline-code">
+                <span>$</span>npm i universal-marquee
+                <span style="color: #64748b; margin-left: 8px">(coming soon)</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="section" aria-label="Features Demo">
+            <h2 style="opacity: 0.9">Why use it?</h2>
+            <div id="features" role="region" aria-label="Features List"></div>
+          </section>
+
+          <section class="section">
+            <h2>Get Started</h2>
+            <p style="text-align: center; color: var(--color-text-secondary)">Initialize with one line of code.</p>
+            <div style="max-width: 600px; margin: 0 auto">
+              <div class="inline-code" style="display: block; text-align: center">
+                <span style="color: var(--color-accent-secondary)">new</span> UniversalMarquee('#my-element', { speed:
+                50 });
+              </div>
+            </div>
+          </section>
+
+          <section class="section">
+            <h2>Production Examples</h2>
+            <div class="examples-grid">
+              <article class="example-card">
+                <h3>Social Proof</h3>
+                <p>Perfect for client testimonials. Pause on hover enabled.</p>
+                <div id="demo-testimonials" class="um-container um-mask" style="--mask-color: transparent"></div>
+
+                <div class="code-window">
+                  <div class="code-header">
+                    <div class="window-dots">
+                      <div class="dot red"></div>
+                      <div class="dot yellow"></div>
+                      <div class="dot green"></div>
+                    </div>
+                    <span class="filename">testimonials.js</span>
+                    <button class="copy-btn" aria-label="Copy Code">
+                      <svg
+                        width="16"
+                        height="16"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                      >
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                    </button>
+                  </div>
+                  <pre class="code-content"><code>new UniversalMarquee('#demo-testimonials', {
+  items: testimonialsData, // Array of objects
+  renderItem: (item) => buildCardHTML(item),
+  speed: 25,
+  gap: '2rem',
+  pauseOnHover: true
+});</code></pre>
+                </div>
+              </article>
+
+              <article class="example-card">
+                <h3>Product Gallery</h3>
+                <p>Showcase angles or collection items. Includes lazy loading skeleton.</p>
+                <div id="demo-products" class="um-container um-mask"></div>
+
+                <div class="code-window">
+                  <div class="code-header">
+                    <div class="window-dots">
+                      <div class="dot red"></div>
+                      <div class="dot yellow"></div>
+                      <div class="dot green"></div>
+                    </div>
+                    <span class="filename">gallery.js</span>
+                    <button class="copy-btn">
+                      <svg
+                        width="16"
+                        height="16"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                      >
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                    </button>
+                  </div>
+                  <pre class="code-content"><code>new UniversalMarquee('#demo-products', {
+  items: productImages,
+  renderItem: (img) => `&lt;img src="${img.src}" ... /&gt;`,
+  speed: 30,
+  gap: '1rem'
+});</code></pre>
+                </div>
+              </article>
+
+              <article class="example-card">
+                <h3>Live Ticker</h3>
+                <p>High density information stream.</p>
+                <div id="demo-ticker" class="um-container"></div>
+              </article>
+            </div>
+          </section>
+        </main>
+      </div>
+
+      <footer class="root-footer">
+        <p>&copy; 2025 Universal Marquee. Crafted by <a href="#" target="_blank">Ledi Hildawan</a>.</p>
+      </footer>
+    </div>
+
+    <script>
+      /* * UNIVERSAL MARQUEE LIBRARY
+       * (Inline for demo)
+       */
+      class UniversalMarquee {
+        constructor(selector, options = {}) {
+          this.root = document.querySelector(selector);
+          if (!this.root) return;
+
+          this.opts = {
+            speed: 50, // px per sec
+            gap: '2rem',
+            direction: 'left',
+            items: [],
+            renderItem: (i) => document.createTextNode(String(i)),
+            separator: '',
+            pauseOnHover: true,
+            ...options,
+          };
+
+          this.init();
+        }
+
+        init() {
+          this.root.innerHTML = '';
+          this.track = document.createElement('div');
+          this.track.className = 'um-track';
+          this.track.style.setProperty('--um-gap', this.opts.gap);
+          this.root.appendChild(this.track);
+
+          // 1. Measure single cycle
+          const frag = document.createDocumentFragment();
+          this.opts.items.forEach((item, idx) => {
+            let node = this.opts.renderItem(item, idx);
+            if (typeof node === 'string') {
+              const temp = document.createElement('div');
+              temp.innerHTML = node;
+              node = temp.firstElementChild || temp;
+            }
+            frag.appendChild(node);
+            if (this.opts.separator && idx < this.opts.items.length) {
+              const sep = document.createElement('span');
+              sep.className = 'um-separator';
+              sep.innerHTML = this.opts.separator;
+              frag.appendChild(sep);
+            }
+          });
+
+          // Create a measurement wrapper
+          const measureBox = document.createElement('div');
+          measureBox.style.display = 'flex';
+          measureBox.style.gap = this.opts.gap;
+          measureBox.style.position = 'absolute';
+          measureBox.style.visibility = 'hidden';
+          measureBox.appendChild(frag.cloneNode(true));
+          this.root.appendChild(measureBox);
+
+          const contentWidth = measureBox.scrollWidth;
+          this.root.removeChild(measureBox);
+
+          // 2. Fill Track based on viewport
+          const viewportWidth = this.root.clientWidth;
+          // Ensure we have enough copies to fill screen + buffer
+          const copiesNeeded = Math.ceil(viewportWidth / contentWidth) + 2;
+
+          for (let i = 0; i < copiesNeeded; i++) {
+            const cycle = document.createElement('div');
+            cycle.appendChild(frag.cloneNode(true)); // Use clone
+            this.track.appendChild(cycle);
+          }
+
+          // 3. Animate
+          const dist = contentWidth + parseFloat(getComputedStyle(this.track).gap || 0); // approx logic
+          // More accurate: Measure one cycle div in the track
+          const cycleNode = this.track.firstElementChild;
+          const totalCycleWidth =
+            cycleNode.offsetWidth +
+            parseFloat(getComputedStyle(this.track).rowGap || this.opts.gap.replace('rem', '') * 16 || 20); // rough conversion if rem used, ideally use px in logic
+
+          // Simplified Animation Logic for Demo
+          const duration = (contentWidth / this.opts.speed) * 1000;
+
+          const start = this.opts.direction === 'left' ? '0' : `-${contentWidth}px`;
+          const end = this.opts.direction === 'left' ? `-${contentWidth}px` : '0';
+
+          const anim = this.track.animate(
+            [{ transform: `translate3d(${start}, 0, 0)` }, { transform: `translate3d(${end}, 0, 0)` }],
+            {
+              duration: duration,
+              iterations: Infinity,
+              easing: 'linear',
+            }
+          );
+
+          if (this.opts.pauseOnHover) {
+            this.root.addEventListener('mouseenter', () => anim.pause());
+            this.root.addEventListener('mouseleave', () => anim.play());
+          }
+
+          // Observer for lazy loading images inside
+          this.observeImages();
+        }
+
+        observeImages() {
+          const imgs = this.track.querySelectorAll('img');
+          imgs.forEach((img) => {
+            img.onload = () => img.classList.add('loaded');
+            if (img.complete) img.classList.add('loaded');
+          });
+        }
+      }
+    </script>
+
+    <script>
+      // 1. Features
+      const features = [
+        'Zero Dependencies',
+        'Accessible',
+        'Infinite Scroll',
+        'Lightweight',
+        'Custom HTML',
+        'Responsive',
+        'Performance',
+        'Touch Friendly',
+      ];
+      new UniversalMarquee('#features', {
+        items: features,
+        renderItem: (txt) => {
+          const d = document.createElement('span');
+          d.className = 'um-item-feature';
+          d.textContent = txt;
+          return d;
+        },
+        separator: '<span class="um-item-feature um-separator-feature">✦</span>',
+        speed: 60,
+        gap: '0rem',
+      });
+
+      // 2. Testimonials
+      const reviews = [
+        {
+          name: 'Sarah J.',
+          role: 'Frontend Dev',
+          text: 'This library saved me hours. The accessibility features are top notch.',
+          avatar: 'https://i.pravatar.cc/100?img=1',
+          icon: 'twitter',
+        },
+        {
+          name: 'Mike T.',
+          role: 'Designer',
+          text: "Smooth as butter. Finally a marquee that doesn't jitter on mobile.",
+          avatar: 'https://i.pravatar.cc/100?img=3',
+          icon: 'dribbble',
+        },
+        {
+          name: 'Alex R.',
+          role: 'CTO',
+          text: 'Integrated this into our marketing site in 5 minutes. Highly recommended.',
+          avatar: 'https://i.pravatar.cc/100?img=8',
+          icon: 'github',
+        },
+      ];
+
+      const iconPaths = {
+        twitter:
+          '<path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>',
+        dribbble:
+          '<circle cx="12" cy="12" r="10"></circle><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-5.38c-3.72-.38-8.01-.38-11.8.03C8.66 6.5 4.06 6.06 2.49 5.75m2.41 12.45c3.54-2.33 6.78-5.34 8.7-10.43"></path>',
+        github:
+          '<path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>',
+      };
+
+      new UniversalMarquee('#demo-testimonials', {
+        items: reviews,
+        renderItem: (item) => {
+          return `
+            <div class="testimonial-card">
+              <div class="t-header">
+                <div class="t-avatar"><img src="${item.avatar}" alt="${item.name}"></div>
+                <div class="t-info">
+                  <h4>${item.name}</h4>
+                  <span>${item.role}</span>
+                </div>
+              </div>
+              <div class="t-body">"${item.text}"</div>
+              <div class="t-footer">
+                <span>Verified User</span>
+                <svg class="t-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${iconPaths[item.icon] || iconPaths.twitter}</svg>
+              </div>
+            </div>
+          `;
+        },
+        speed: 30,
+        gap: '2.5rem',
+      });
+
+      // 3. Products
+      const products = [
+        { src: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80', label: 'Sneaker Red' },
+        { src: 'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=400&q=80', label: 'Sneaker Green' },
+        { src: 'https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=400&q=80', label: 'Sneaker Retro' },
+        { src: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&q=80', label: 'Sneaker Grey' },
+      ];
+      new UniversalMarquee('#demo-products', {
+        items: products,
+        renderItem: (item) => `
+          <div class="product-card">
+            <img src="${item.src}" loading="lazy" alt="${item.label}" />
+            <div class="product-label">${item.label}</div>
+          </div>
+        `,
+        speed: 40,
+        direction: 'right',
+        gap: '1.5rem',
+      });
+
+      // 4. Ticker
+      const stocks = [
+        { s: 'BTC', v: '$88,234', c: '+2.4%', up: true },
+        { s: 'ETH', v: '$3,100', c: '-1.2%', up: false },
+        { s: 'NVDA', v: '$145.20', c: '+0.5%', up: true },
+        { s: 'AAPL', v: '$225.00', c: '+0.1%', up: true },
+        { s: 'TSLA', v: '$350.10', c: '-3.5%', up: false },
+      ];
+      new UniversalMarquee('#demo-ticker', {
+        items: stocks,
+        renderItem: (st) => `
+          <div class="ticker-item">
+            <span class="ticker-sym">${st.s}</span>
+            <span>${st.v}</span>
+            <span class="ticker-change ${st.up ? 't-up' : 't-down'}">${st.c}</span>
+          </div>
+        `,
+        separator: '<span class="ticker-sep">|</span>',
+        speed: 80,
+        gap: '2rem',
+      });
+
+      // Copy Logic
+      document.querySelectorAll('.copy-btn').forEach((btn) => {
+        btn.addEventListener('click', function () {
+          const code = this.closest('.code-window').querySelector('code').innerText;
+          navigator.clipboard.writeText(code);
+          const original = this.innerHTML;
+          this.innerHTML = `<svg width="16" height="16" fill="none" stroke="#4ade80" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+          setTimeout(() => (this.innerHTML = original), 2000);
+        });
+      });
+    </script>
+  </body>
+</html>

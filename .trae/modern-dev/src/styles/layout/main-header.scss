@@ -1,0 +1,951 @@
+@layer components {
+  .header {
+    @apply relative z-50;
+
+    &--thematic-active {
+      .header__thematic {
+        @apply block;
+      }
+    }
+
+    &__container {
+      @apply w-full;
+    }
+
+    &__wrapper {
+      @apply relative;
+    }
+
+    &__thematic {
+      @apply relative border-b;
+    }
+
+    &__topnav {
+      @apply border-b pt-4 px-4 pb-2 overflow-hidden bg-bg-card;
+
+      @screen sm {
+        display: none;
+      }
+    }
+
+    &__main {
+      @apply bg-primary-white border-b;
+
+      @screen tablet {
+        display: none;
+      }
+    }
+
+    &__nav {
+      @apply flex items-center justify-between h-16 max-w-7xl mx-auto px-4;
+    }
+
+    &__logo {
+      @apply flex items-center gap-4;
+    }
+
+    &__mobile {
+      @apply bg-primary-white border-b p-4;
+
+      @screen desktop {
+        display: none;
+      }
+    }
+
+    // Scoped components within header
+    .thematic {
+      &__banner {
+        @apply w-full;
+
+        &--desktop {
+          @screen sm {
+            display: none;
+          }
+        }
+
+        &--mobile {
+          @screen md {
+            display: none;
+          }
+        }
+      }
+
+      &__link {
+        @apply block;
+      }
+
+      &__image {
+        @apply w-full h-auto;
+        height: 60px;
+        object-fit: cover;
+      }
+
+      &__title {
+        @apply absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-primary-white font-medium text-sm md:text-base;
+      }
+
+      &__widget {
+        @apply flex items-center gap-4 p-4 bg-gradient-light;
+
+        &--row {
+          @apply flex-row;
+
+          @screen sm {
+            @apply flex-col gap-2 text-center;
+          }
+        }
+
+        &--col {
+          @apply flex-col;
+        }
+      }
+
+      &__side {
+        &--left {
+          @apply flex items-center gap-2;
+        }
+
+        &--center {
+          @apply flex-1;
+        }
+
+        &--right {
+          @apply flex items-center;
+        }
+      }
+
+      &__icons {
+        @apply flex gap-2;
+
+        &--desktop {
+          @screen sm {
+            display: none;
+          }
+        }
+      }
+
+      &__icon {
+        @apply w-12 h-12 object-contain;
+
+        &--mobile {
+          @screen md {
+            display: none;
+          }
+        }
+      }
+
+      &__heading {
+        @apply text-sm md:text-base font-medium text-gray-80;
+      }
+    }
+
+    .countdown {
+      @apply relative;
+
+      &__data {
+        display: none;
+
+        &--end,
+        &--start {
+          display: none;
+        }
+      }
+
+      &__display {
+        @apply flex items-center gap-2;
+      }
+
+      &__item {
+        @apply flex flex-col items-center;
+      }
+
+      &__value {
+        @apply text-lg font-bold bg-primary-white rounded px-2 py-1 text-center text-primary-red;
+        min-width: 2.5rem;
+      }
+
+      &__label {
+        @apply text-xs mt-1;
+      }
+
+      &__separator {
+        @apply text-lg font-bold mx-1 text-primary-red;
+      }
+    }
+
+    .floating {
+      @apply relative border-b flex items-center gap-3 p-3 bg-accent-gold;
+
+      &__side {
+        &--left {
+          @apply flex items-center gap-3;
+        }
+
+        &--center {
+          @apply flex-1 px-3;
+
+          @screen sm {
+            @apply text-center;
+          }
+        }
+
+        &--right {
+          @apply flex items-center px-3;
+        }
+      }
+
+      &__close-wrapper {
+        @apply absolute top-2 right-2;
+      }
+
+      &__close {
+        @apply w-6 h-6 flex items-center justify-center rounded-full cursor-pointer bg-transparent transition-colors border-0;
+
+        &:hover {
+          @apply bg-gray-20;
+        }
+      }
+
+      &__close-icon {
+        @apply w-4 h-4;
+      }
+
+      &__icon-wrapper {
+        @apply flex-shrink-0;
+      }
+
+      &__icon {
+        @apply w-10 h-10 object-contain;
+      }
+
+      &__url {
+        display: none;
+      }
+
+      &__title {
+        @apply font-medium mb-1 text-primary-blue;
+      }
+
+      &__description {
+        @apply text-sm text-gray-80;
+      }
+
+      &__button {
+        @apply text-primary-white px-4 py-2 rounded text-sm font-medium transition-colors bg-primary-red;
+
+        &:hover {
+          @apply bg-active-red;
+        }
+      }
+
+      &__progress {
+        @apply absolute bottom-0 left-0 right-0 h-1 bg-secondary-yellow;
+      }
+
+      &__progress-bar {
+        @apply h-full transition-all duration-1000 ease-linear bg-secondary-yellow;
+      }
+
+      &__timer {
+        display: none;
+      }
+    }
+
+    .topnav {
+      &__left {
+        @apply float-left;
+      }
+
+      &__right {
+        @apply float-right;
+      }
+
+      &__list {
+        @apply flex gap-6 m-0 p-0 list-none;
+
+        .topnav__right & {
+          @apply items-center gap-4;
+        }
+      }
+
+      &__item {
+        @apply inline-block uppercase;
+
+        &--language {
+          @apply flex items-center gap-2;
+        }
+      }
+
+      &__link {
+        @apply text-sm transition-colors text-primary-blue;
+
+        &:hover {
+          @apply text-primary-red;
+        }
+
+        &--active {
+          @apply text-primary-red font-medium;
+        }
+      }
+
+      &__lang-btn {
+        @apply flex items-center py-2 text-sm bg-transparent border-0 cursor-pointer transition-colors text-primary-blue;
+
+        &:hover {
+          @apply text-primary-red;
+        }
+
+        &--active {
+          border-bottom: solid 1px theme("colors.primary.red");
+          @apply font-medium;
+        }
+      }
+
+      &__lang-icon {
+        @apply w-4 pb-[5px] rounded-full cursor-pointer block opacity-70 transition-opacity;
+      }
+
+      &__separator {
+        @apply text-border-light;
+      }
+    }
+
+    .logo {
+      @apply block;
+
+      &--thematic {
+        @apply block;
+      }
+
+      &__image {
+        @apply h-8 w-auto object-contain;
+
+        &--thematic {
+          @apply object-contain;
+        }
+
+        &--small {
+          @apply h-6;
+        }
+      }
+    }
+
+    .nav {
+      @apply flex-1 mx-8;
+
+      &__list {
+        @apply flex items-center gap-8 m-0 p-0 list-none;
+      }
+
+      &__item {
+        @apply relative;
+
+        &--dropdown {
+          @apply relative;
+        }
+
+        &--search {
+          @apply relative;
+        }
+
+        &--cta {
+          @apply ml-auto;
+        }
+      }
+
+      &__toggle {
+        @apply flex items-center gap-2 bg-transparent border-0 cursor-pointer transition-colors text-primary-blue;
+
+        &:hover {
+          @apply text-primary-red;
+        }
+      }
+
+      &__link {
+        @apply transition-colors text-primary-blue;
+
+        &:hover {
+          @apply text-primary-red;
+        }
+      }
+
+      &__icon {
+        @apply w-4 h-4;
+      }
+    }
+
+    .dropdown {
+      @apply absolute top-full left-0 mt-2 w-64 bg-primary-white border rounded-lg shadow-lg opacity-0 invisible transition-all duration-200 z-50;
+      display: none !important;
+
+      &.show {
+        @apply opacity-100 visible;
+        display: block !important;
+      }
+
+      &__list {
+        @apply p-2 m-0 list-none;
+      }
+
+      &__item {
+        @apply block;
+      }
+
+      &__link {
+        @apply block px-3 py-2 text-sm rounded;
+
+        &:hover {
+          @apply bg-gray-20;
+        }
+      }
+    }
+
+    .search {
+      &__toggle {
+        @apply w-10 h-10 flex items-center justify-center cursor-pointer rounded-full transition-colors bg-gray-20;
+
+        &:hover {
+          @apply bg-gray-40;
+        }
+      }
+
+      &__icon {
+        @apply w-5 h-5;
+
+        // For <i> tag with mask
+        &:not(img) {
+          @apply bg-current;
+          mask: url("/assets/icons/search.svg") no-repeat center;
+          mask-size: contain;
+        }
+
+        // For <img> tag
+        &[src] {
+          @apply object-contain;
+        }
+      }
+
+      &__dropdown {
+        @apply absolute top-full right-0 mt-2 w-96 bg-primary-white border rounded-lg shadow-lg opacity-0 invisible transition-all duration-200 z-50;
+
+        &.show {
+          @apply block opacity-100 visible;
+        }
+      }
+
+      &__form {
+        @apply p-4 border-b;
+      }
+
+      &__input {
+        @apply w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 bg-gray-20;
+
+        &:focus {
+          border-color: theme("colors.primary.red");
+          box-shadow: 0 0 0 2px rgba(237, 2, 38, 0.2);
+        }
+      }
+
+      &__section {
+        @apply p-4;
+      }
+
+      &__label {
+        @apply text-sm font-medium mb-3 text-primary-blue;
+      }
+
+      &__list {
+        @apply space-y-1 m-0 p-0 list-none;
+      }
+
+      &__item {
+        @apply block;
+      }
+
+      &__link {
+        @apply block px-2 py-1 text-sm rounded text-primary-blue;
+
+        &:hover {
+          @apply bg-gray-20 text-primary-red;
+        }
+      }
+
+      &__products {
+        @apply grid grid-cols-2 gap-3;
+      }
+
+      &__categories {
+        @apply grid grid-cols-2 gap-3;
+      }
+    }
+
+    .product {
+      @apply block;
+
+      &__image {
+        @apply w-full h-20 object-cover rounded;
+      }
+    }
+
+    .category {
+      @apply flex items-center gap-2 p-2 rounded;
+
+      &:hover {
+        @apply bg-gray-20;
+      }
+
+      &__icon {
+        @apply w-8 h-8 object-contain;
+      }
+
+      &__label {
+        @apply text-sm font-medium;
+      }
+    }
+
+    .profile {
+      @apply relative;
+
+      &__trigger {
+        @apply flex items-center gap-2 cursor-pointer;
+      }
+
+      &__avatar {
+        @apply w-8 h-8 rounded-full object-cover;
+        border: 2px solid theme("colors.secondary.red");
+      }
+
+      &__icon {
+        @apply w-4 h-4 bg-current;
+        mask: url("/assets/icons/chevron-down.svg") no-repeat center;
+        mask-size: contain;
+      }
+
+      &__dropdown {
+        @apply absolute top-full right-0 mt-2 w-64 bg-primary-white border rounded-lg shadow-lg opacity-0 invisible transition-all duration-200 z-50;
+
+        &.show {
+          @apply block opacity-100 visible;
+        }
+      }
+
+      &__info {
+        @apply border-b pb-3 mb-3 text-center p-4;
+      }
+
+      &__name {
+        @apply block font-medium text-primary-blue;
+      }
+
+      &__status {
+        @apply block text-sm text-gray-80;
+      }
+
+      &__menu {
+        @apply space-y-1 m-0 p-0 list-none px-4 pb-4;
+      }
+
+      &__menu-item {
+        @apply block;
+      }
+
+      &__menu-link {
+        @apply block px-3 py-2 text-sm rounded;
+
+        &:hover {
+          @apply bg-gray-20;
+        }
+      }
+    }
+
+    .mobile-nav {
+      @apply flex items-center justify-between;
+
+      &__logo {
+        @apply flex items-center gap-2 flex-1;
+      }
+
+      &__actions {
+        @apply flex items-center gap-3 justify-end;
+      }
+
+      &__btn {
+        @apply w-10 h-10 flex items-center justify-center bg-transparent border-0 cursor-pointer;
+      }
+
+      &__icon {
+        @apply w-5 h-5 bg-current;
+
+        &--search {
+          mask: url("/assets/icons/search.svg") no-repeat center;
+          mask-size: contain;
+        }
+      }
+
+      &__burger {
+        @apply block w-5 h-0.5 bg-current mb-1;
+
+        &:last-child {
+          @apply mb-0;
+        }
+      }
+    }
+
+    .btn {
+      @apply px-4 py-2 rounded text-sm font-medium transition-colors;
+
+      &--primary {
+        @apply text-primary-white bg-primary-red;
+
+        &:hover {
+          @apply bg-active-red;
+        }
+      }
+
+      &--secondary {
+        @apply text-primary-white bg-secondary-red;
+
+        &:hover {
+          @apply bg-active-red;
+        }
+      }
+    }
+
+    .lazyload {
+      @apply opacity-0 transition-opacity duration-300;
+
+      &.loaded {
+        @apply opacity-100;
+      }
+    }
+  }
+
+  // Modal components (outside header but scoped to header widget)
+  .modal {
+    @apply fixed inset-0 z-50 transition-opacity duration-300;
+    display: none;
+
+    &--menu,
+    &--search {
+      @apply fixed inset-0 z-50;
+      display: none;
+    }
+
+    &.show {
+      @apply block;
+    }
+
+    &__dialog {
+      @apply w-full h-full m-0;
+    }
+
+    &__content {
+      @apply w-full h-full bg-primary-white flex flex-col;
+    }
+
+    &__header {
+      @apply flex items-center justify-between p-4 border-b;
+    }
+
+    &__close {
+      @apply w-8 h-8 flex items-center justify-center bg-transparent border-0 cursor-pointer;
+    }
+
+    &__close-icon {
+      @apply w-5 h-5;
+    }
+
+    &__profile {
+      @apply p-4 border-b;
+    }
+
+    &__body {
+      @apply flex-1 overflow-y-auto p-4;
+
+      &--search {
+        @apply p-4;
+      }
+    }
+
+    &__footer-links {
+      @apply p-4 border-t;
+    }
+
+    &__footer {
+      @apply p-4 border-t;
+    }
+
+    &__language {
+      @apply flex gap-4 mb-4;
+    }
+
+    &__lang-btn {
+      @apply text-sm bg-transparent border-0 cursor-pointer transition-colors text-primary-blue;
+
+      &:hover {
+        @apply text-primary-red;
+      }
+
+      &--active {
+        @apply text-primary-red font-medium;
+      }
+    }
+
+    &__cta {
+      @apply block;
+    }
+
+    .profile-mobile {
+      &__info {
+        @apply flex items-center gap-3;
+      }
+
+      &__avatar {
+        @apply w-10 h-10 rounded-full object-cover;
+      }
+
+      &__details {
+        @apply flex-1 flex items-center justify-between;
+      }
+
+      &__name {
+        @apply font-medium text-primary-blue;
+      }
+
+      &__toggle {
+        @apply bg-transparent border-0 cursor-pointer;
+      }
+
+      &__icon {
+        @apply w-4 h-4 bg-current;
+        mask: url("/assets/icons/chevron-down.svg") no-repeat center;
+        mask-size: contain;
+      }
+
+      &__dropdown {
+        @apply mt-3;
+
+        &.hidden {
+          display: none;
+        }
+      }
+
+      &__menu {
+        @apply space-y-1 m-0 p-0 list-none;
+      }
+
+      &__menu-item {
+        @apply block;
+      }
+
+      &__menu-link {
+        @apply block p-2 text-sm rounded;
+
+        &:hover {
+          @apply bg-gray-20;
+        }
+      }
+    }
+
+    .mobile-menu {
+      @apply space-y-2 m-0 p-0 list-none;
+
+      &__item {
+        @apply border-b pb-2;
+      }
+
+      &__toggle {
+        @apply flex items-center justify-between w-full p-3 bg-transparent border-0 text-left cursor-pointer;
+      }
+
+      &__link {
+        @apply block p-3 text-primary-blue;
+      }
+
+      &__icon {
+        @apply w-4 h-4 bg-current;
+        mask: url("/assets/icons/chevron-down.svg") no-repeat center;
+        mask-size: contain;
+      }
+
+      &__submenu {
+        @apply pl-4 space-y-1 m-0 list-none;
+
+        &.hidden {
+          display: none;
+        }
+      }
+
+      &__submenu-item {
+        @apply block;
+      }
+
+      &__submenu-link {
+        @apply block p-2 text-sm text-primary-blue;
+
+        &:hover {
+          @apply text-primary-red;
+        }
+      }
+    }
+
+    .footer-links {
+      @apply flex gap-4 m-0 p-0 list-none;
+
+      &__item {
+        @apply block;
+      }
+
+      &__link {
+        @apply text-sm text-primary-blue;
+
+        &:hover {
+          @apply text-primary-red;
+        }
+      }
+    }
+
+    .search-mobile {
+      @apply mb-6;
+
+      &__input {
+        @apply w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 bg-gray-20;
+
+        &:focus {
+          border-color: theme("colors.primary.red");
+          box-shadow: 0 0 0 2px rgba(237, 2, 38, 0.2);
+        }
+      }
+
+      &__content {
+        @apply space-y-6;
+      }
+
+      &__section {
+        @apply block;
+      }
+
+      &__label {
+        @apply text-sm font-medium mb-3 text-primary-blue;
+      }
+
+      &__list {
+        @apply space-y-2 m-0 p-0 list-none;
+      }
+
+      &__item {
+        @apply block;
+      }
+
+      &__link {
+        @apply block p-2 text-sm rounded;
+
+        &:hover {
+          @apply bg-gray-20;
+        }
+      }
+
+      &__products {
+        @apply grid grid-cols-2 gap-3;
+      }
+
+      &__categories {
+        @apply grid grid-cols-2 gap-3;
+      }
+    }
+
+    .product-mobile {
+      @apply block;
+
+      &__image {
+        @apply w-full h-20 object-cover rounded;
+      }
+    }
+
+    .category-mobile {
+      @apply flex items-center gap-2 p-2 rounded;
+
+      &:hover {
+        @apply bg-gray-20;
+      }
+
+      &__icon {
+        @apply w-6 h-6 object-contain;
+      }
+
+      &__label {
+        @apply text-sm;
+      }
+    }
+  }
+
+  // Other header-related components
+  .cookies {
+    @apply fixed bottom-0 left-0 right-0 bg-primary-white border-t shadow-lg z-40;
+
+    &__content {
+      @apply flex items-center justify-between p-4 max-w-7xl mx-auto;
+    }
+
+    &__text {
+      @apply text-sm mr-4 text-gray-80;
+    }
+
+    &__accept {
+      @apply text-primary-white px-4 py-2 rounded text-sm font-medium transition-colors bg-primary-red;
+
+      &:hover {
+        @apply bg-active-red;
+      }
+    }
+  }
+
+  .user-modal {
+    @apply fixed inset-0 z-50 flex items-center justify-center bg-overlay-dark;
+
+    &.hidden {
+      display: none;
+    }
+
+    &__content {
+      @apply bg-primary-white rounded-lg p-6 max-w-md w-full mx-4 relative;
+    }
+
+    &__close {
+      @apply absolute top-4 right-4 text-2xl cursor-pointer bg-transparent border-0 text-gray-80;
+
+      &:hover {
+        @apply text-gray-100;
+      }
+    }
+
+    &__body {
+      @apply block;
+    }
+
+    &__section {
+      @apply mb-4;
+    }
+
+    &__title {
+      @apply text-lg font-medium mb-3;
+    }
+
+    &__input {
+      @apply w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2;
+
+      &:focus {
+        border-color: theme("colors.primary.red");
+        box-shadow: 0 0 0 2px rgba(237, 2, 38, 0.2);
+      }
+    }
+
+    &__info {
+      @apply block;
+    }
+
+    &__text {
+      @apply text-sm text-gray-80;
+    }
+  }
+}

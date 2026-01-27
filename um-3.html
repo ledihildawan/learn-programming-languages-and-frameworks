@@ -1,0 +1,1043 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Universal Marquee - Seamless Infinite Horizontal Marquee</title>
+    <meta
+      name="description"
+      content="Create smooth, accessible, infinite scrolling marquees with Universal Marquee. A lightweight Vanilla JS library."
+    />
+    <meta name="author" content="Ledi Hildawan" />
+
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💫</text></svg>"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Luckiest+Guy&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        /* Color Palette - Modern Dark Theme */
+        --bg-deep: #02040a;
+        --bg-surface: #0b0f17;
+        --bg-surface-hover: #121826;
+        --border-subtle: rgba(255, 255, 255, 0.08);
+        --border-highlight: rgba(255, 255, 255, 0.15);
+
+        --text-primary: #ffffff;
+        --text-secondary: #94a3b8;
+        --text-muted: #64748b;
+
+        --accent-primary: #3b82f6;
+        --accent-glow: rgba(59, 130, 246, 0.5);
+        --accent-gradient: linear-gradient(135deg, #60a5fa, #a78bfa);
+
+        /* Radius & Spacing */
+        --radius-sm: 8px;
+        --radius-md: 16px;
+        --radius-lg: 24px;
+        --radius-pill: 9999px;
+
+        /* Fonts */
+        --font-sans: 'Outfit', sans-serif;
+        --font-heading: 'Space Grotesk', sans-serif;
+        --font-mono: 'Space Mono', monospace;
+        --font-fun: 'Luckiest Guy', cursive;
+      }
+
+      /* Base Reset & Setup */
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background-color: var(--bg-deep);
+        color: var(--text-primary);
+        font-family: var(--font-sans);
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+        min-height: 100vh;
+      }
+
+      /* Noise Texture - Premium Feel */
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        z-index: 999;
+        pointer-events: none;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+      }
+
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--bg-deep);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #334155;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #475569;
+      }
+
+      ::selection {
+        background: rgba(167, 139, 250, 0.3);
+        color: #fff;
+      }
+
+      /* Layout */
+      .layout-container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+        position: relative;
+        z-index: 1;
+      }
+
+      /* Ambient Background Blobs */
+      .ambient-glow {
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        overflow: hidden;
+        background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, var(--bg-deep) 60%);
+      }
+      .blob {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(90px);
+        opacity: 0.4;
+        animation: float 20s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .blob-1 {
+        top: -10%;
+        left: -10%;
+        width: 50vw;
+        height: 50vw;
+        background: #4f46e5;
+      }
+      .blob-2 {
+        bottom: -10%;
+        right: -10%;
+        width: 40vw;
+        height: 40vw;
+        background: #ec4899;
+        animation-delay: -5s;
+      }
+
+      @keyframes float {
+        0% {
+          transform: translate(0, 0) scale(1);
+        }
+        100% {
+          transform: translate(40px, -40px) scale(1.1);
+        }
+      }
+
+      /* Header */
+      header {
+        padding: 2rem 0;
+        display: flex;
+        justify-content: center;
+      }
+      .logo-svg {
+        width: 48px;
+        color: white;
+        filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.3));
+      }
+
+      /* Hero Section */
+      .hero {
+        text-align: center;
+        padding: 4rem 0 6rem;
+      }
+
+      h1.main-title {
+        font-family: var(--font-heading);
+        font-size: clamp(3rem, 8vw, 5.5rem);
+        line-height: 1;
+        font-weight: 700;
+        margin: 0 0 1.5rem;
+        letter-spacing: -0.04em;
+        background: linear-gradient(to bottom right, #ffffff 40%, #94a3b8 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: titleFade 1s ease-out;
+      }
+
+      @keyframes titleFade {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .hero p {
+        font-size: 1.25rem;
+        color: var(--text-secondary);
+        max-width: 600px;
+        margin: 0 auto;
+        line-height: 1.6;
+        text-wrap: balance;
+      }
+
+      /* Section Styling */
+      section {
+        margin-bottom: 8rem;
+      }
+
+      h2.section-title {
+        font-family: var(--font-heading);
+        font-size: 2.5rem;
+        text-align: center;
+        margin-bottom: 3rem;
+        color: var(--text-primary);
+        letter-spacing: -0.02em;
+      }
+
+      /* --- FEATURE MARQUEE STYLING (The Colorful One) --- */
+      #features {
+        background: linear-gradient(90deg, #6366f1, #ec4899, #8b5cf6, #6366f1);
+        background-size: 300% 100%;
+        animation: rainbowMove 15s linear infinite;
+        padding: 2.5rem 0;
+        transform: rotate(-2deg) scale(1.02);
+        margin: 3rem 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 20px 40px -10px rgba(99, 102, 241, 0.3);
+      }
+      @keyframes rainbowMove {
+        0% {
+          background-position: 0% 50%;
+        }
+        100% {
+          background-position: 100% 50%;
+        }
+      }
+
+      #features .um-item {
+        font-family: var(--font-fun);
+        font-size: 3rem;
+        color: white;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        -webkit-text-stroke: 1.5px rgba(0, 0, 0, 0.2);
+        text-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
+      }
+
+      /* --- CODE WINDOW (Mac Style) --- */
+      .code-window {
+        background: #1e1e1e;
+        border-radius: 12px;
+        border: 1px solid var(--border-highlight);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        overflow: hidden;
+        margin-top: 2rem;
+        position: relative;
+      }
+      .window-bar {
+        background: #252526;
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid #000;
+      }
+      .dots {
+        display: flex;
+        gap: 8px;
+      }
+      .dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+      }
+      .dot.red {
+        background: #ff5f56;
+      }
+      .dot.yellow {
+        background: #ffbd2e;
+      }
+      .dot.green {
+        background: #27c93f;
+      }
+      .filename {
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 0.8rem;
+        color: #888;
+        font-family: var(--font-sans);
+      }
+
+      .code-content {
+        margin: 0;
+        padding: 1.5rem;
+        overflow-x: auto;
+        font-family: 'Space Mono', monospace; /* FONT FIX */
+        font-size: 0.9rem;
+        line-height: 1.6;
+        color: #d4d4d4;
+      }
+
+      /* Fake Syntax Highlighting Classes */
+      .tok-k {
+        color: #569cd6;
+      } /* keyword */
+      .tok-s {
+        color: #ce9178;
+      } /* string */
+      .tok-f {
+        color: #dcdcaa;
+      } /* function */
+      .tok-c {
+        color: #6a9955;
+      } /* comment */
+      .tok-n {
+        color: #b5cea8;
+      } /* number */
+      .tok-p {
+        color: #da70d6;
+      } /* property */
+
+      .copy-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: rgba(255, 255, 255, 0.1);
+        border: none;
+        color: white;
+        border-radius: 6px;
+        padding: 6px;
+        cursor: pointer;
+        opacity: 0;
+        transition: 0.2s;
+      }
+      .code-window:hover .copy-btn {
+        opacity: 1;
+      }
+      .copy-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+
+      /* --- EXAMPLES GRID --- */
+      .example-card {
+        background: var(--bg-surface);
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--radius-lg);
+        padding: 2rem;
+        margin-bottom: 4rem;
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+      }
+      .example-card:hover {
+        border-color: var(--border-highlight);
+        box-shadow:
+          0 0 0 1px var(--border-highlight),
+          0 20px 40px -10px rgba(0, 0, 0, 0.5);
+      }
+      .example-card h3 {
+        margin-top: 0;
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+      }
+      .example-card p.desc {
+        color: var(--text-secondary);
+        margin-bottom: 1.5rem;
+      }
+
+      /* Testimonial Card Styling */
+      .t-card {
+        background: linear-gradient(145deg, #161b22, #0d1117);
+        border: 1px solid var(--border-subtle);
+        padding: 1.5rem;
+        border-radius: 16px;
+        width: 320px;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      }
+      .t-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .t-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid rgba(255, 255, 255, 0.1);
+      }
+      .t-info h4 {
+        margin: 0;
+        font-size: 0.95rem;
+        color: white;
+      }
+      .t-info span {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+      }
+      .t-body {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        line-height: 1.5;
+      }
+
+      /* Product Card Styling */
+      .p-card {
+        width: 300px;
+        height: 200px;
+        border-radius: 12px;
+        overflow: hidden;
+        position: relative;
+        background: #222;
+        border: 1px solid var(--border-subtle);
+      }
+      .p-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: 0.5s;
+      }
+      .p-card:hover img {
+        transform: scale(1.1);
+      }
+      .p-badge {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(4px);
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: white;
+        text-transform: uppercase;
+      }
+
+      /* Ticker Styling */
+      .ticker-strip {
+        background: #000;
+        border-top: 1px solid var(--border-subtle);
+        border-bottom: 1px solid var(--border-subtle);
+        padding: 1rem 0;
+        font-family: var(--font-mono);
+      }
+      .tick-item {
+        display: flex;
+        gap: 10px;
+        color: var(--text-secondary);
+      }
+      .tick-val {
+        color: white;
+        font-weight: bold;
+      }
+      .tick-up {
+        color: #4ade80;
+      }
+      .tick-down {
+        color: #f87171;
+      }
+
+      /* Footer */
+      footer {
+        padding: 3rem 0;
+        text-align: center;
+        border-top: 1px solid var(--border-subtle);
+        margin-top: 4rem;
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+      }
+      .footer-profile {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        color: var(--text-primary);
+        font-weight: 500;
+        transition: opacity 0.2s;
+      }
+      .footer-profile:hover {
+        opacity: 0.8;
+      }
+      .footer-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 1px solid var(--border-highlight);
+      }
+
+      /* Inline Code */
+      .inline-code-box {
+        background: #1e293b;
+        padding: 1rem 1.5rem;
+        border-radius: 12px;
+        font-family: var(--font-mono);
+        color: #a5b4fc;
+        border: 1px solid var(--border-highlight);
+        display: inline-block;
+        margin-top: 1rem;
+      }
+
+      /* Universal Marquee Required CSS (Minified mostly) */
+      .um-container {
+        display: flex;
+        overflow: hidden;
+        user-select: none;
+        width: 100%;
+        position: relative;
+        opacity: 0;
+        animation: fadeIn 0.5s forwards;
+      }
+      .um-track {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+        gap: var(--um-gap, 2rem);
+        will-change: transform;
+      }
+      .um-track > div {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+        gap: var(--um-gap, 2rem);
+      }
+      .um-container.um-overflow-left::before,
+      .um-container.um-overflow-right::after {
+        content: '';
+        position: absolute;
+        inset: 0 0 0 auto;
+        width: 100px;
+        z-index: 2;
+        pointer-events: none;
+      }
+      .um-container.um-overflow-left::before {
+        left: 0;
+        background: linear-gradient(to right, var(--bg-deep), transparent);
+      }
+      .um-container.um-overflow-right::after {
+        right: 0;
+        background: linear-gradient(to left, var(--bg-deep), transparent);
+      }
+      @keyframes fadeIn {
+        to {
+          opacity: 1;
+        }
+      }
+      .um-sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        border: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="ambient-glow">
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+    </div>
+
+    <div class="layout-container">
+      <header>
+        <svg class="logo-svg" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M12 2L2 7l10 5 10-5-10-5zm0 9l2.5-1.25L12 8.5l-2.5 1.25L12 11zm0 2.5l-5-2.5-5 2.5 10 5 10-5-5-2.5-5 2.5z"
+          />
+        </svg>
+      </header>
+
+      <main>
+        <div class="hero">
+          <h1 class="main-title">Universal Marquee</h1>
+          <p>
+            A zero-dependency Vanilla JS library for smooth, accessible, infinite scrolling.<br />
+            Works with any content. Lightweight. Performance focused.
+          </p>
+          <div style="margin-top: 2rem">
+            <code class="inline-code-box">npm i universal-marquee</code>
+          </div>
+        </div>
+
+        <section>
+          <h2 class="section-title">Why Use It?</h2>
+          <div id="features" role="region" aria-label="Features"></div>
+        </section>
+
+        <section>
+          <h2 class="section-title">Real-World Examples</h2>
+
+          <article class="example-card">
+            <h3>Scrolling Testimonials</h3>
+            <p class="desc">Build social proof with a smooth, pausable review stream.</p>
+
+            <div id="demo-testimonials" style="height: 220px"></div>
+
+            <div class="code-window">
+              <div class="window-bar">
+                <div class="dots">
+                  <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                </div>
+                <span class="filename">main.js</span>
+                <button class="copy-btn" aria-label="Copy">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                </button>
+              </div>
+              <pre
+                class="code-content"
+              ><code><span class="tok-k">new</span> UniversalMarquee(<span class="tok-s">'#testimonials'</span>, {
+  <span class="tok-p">items</span>: reviews,
+  <span class="tok-p">renderItem</span>: (<span class="tok-n">item</span>) => {
+    <span class="tok-k">const</span> el = document.createElement(<span class="tok-s">'div'</span>);
+    el.className = <span class="tok-s">'t-card'</span>; 
+    <span class="tok-c">// ... build card html</span>
+    <span class="tok-k">return</span> el;
+  },
+  <span class="tok-p">speed</span>: <span class="tok-n">30</span>,
+  <span class="tok-p">pauseOnHover</span>: <span class="tok-k">true</span>
+});</code></pre>
+            </div>
+          </article>
+
+          <article class="example-card">
+            <h3>Product Gallery</h3>
+            <p class="desc">Showcase images with skeleton loading support.</p>
+
+            <div id="demo-products" style="height: 250px"></div>
+
+            <div class="code-window">
+              <div class="window-bar">
+                <div class="dots">
+                  <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                </div>
+                <span class="filename">gallery.js</span>
+              </div>
+              <pre
+                class="code-content"
+              ><code><span class="tok-k">new</span> UniversalMarquee(<span class="tok-s">'#products'</span>, {
+  <span class="tok-p">items</span>: productImages,
+  <span class="tok-p">gap</span>: <span class="tok-s">'1rem'</span>,
+  <span class="tok-p">speed</span>: <span class="tok-n">50</span>,
+  <span class="tok-p">renderItem</span>: (<span class="tok-n">img</span>) => <span class="tok-s">`&lt;img src="${img.src}" /&gt;`</span>
+});</code></pre>
+            </div>
+          </article>
+
+          <article class="example-card" style="padding: 0; overflow: hidden; border: none; background: transparent">
+            <h3 style="padding: 0 0 1rem 0; margin-left: 2rem">Stock Ticker</h3>
+            <div class="ticker-strip">
+              <div id="demo-ticker"></div>
+            </div>
+          </article>
+        </section>
+      </main>
+
+      <footer>
+        <div>&copy; 2025 Universal Marquee. Released under MIT License.</div>
+        <a href="https://www.mdpabel.com" class="footer-profile" target="_blank">
+          <span>Created by</span>
+          <img src="https://www.mdpabel.com/md-pabel.png" alt="Md Pabel" class="footer-avatar" />
+          <span>Md Pabel</span>
+        </a>
+      </footer>
+    </div>
+
+    <script type="module">
+      /* --- 1. THE LIBRARY LOGIC (Condensed for aesthetics) --- */
+      class ContentBuilder {
+        constructor(t) {
+          this._opts = t;
+        }
+        #t(t) {
+          if (null == t || '' === t) return null;
+          const e = document.createElement('span');
+          return (
+            e.classList.add('um-item-separator'),
+            e.setAttribute('aria-hidden', 'true'),
+            'string' == typeof t
+              ? (e.innerHTML = t)
+              : t instanceof Node
+                ? e.appendChild(t.cloneNode(!0))
+                : (e.textContent = String(t)),
+            e.querySelectorAll('*').forEach((t) => {
+              (t.id && t.removeAttribute('id'), t.setAttribute('tabindex', '-1'));
+            }),
+            e
+          );
+        }
+        buildCycleContent(t = !1, e = !0) {
+          const i = document.createDocumentFragment(),
+            r = this._opts.items;
+          if (!r?.length) return i;
+          for (let s = 0; s < r.length; s++) {
+            const n = r[s];
+            if (t) {
+              const t = document.createElement('li');
+              ((t.textContent = n.alt || n.text || n), i.appendChild(t));
+            } else {
+              let t = this._opts.renderItem(n);
+              t instanceof Element ||
+                ((window.tempWrapper = document.createElement('span')),
+                window.tempWrapper.appendChild(t),
+                (t = window.tempWrapper));
+              const o = t.cloneNode(!0),
+                a = o.querySelector('img');
+              if (a) {
+                const t = () => {
+                  (a.classList.add('loaded'), o.classList.add('loaded'));
+                };
+                ((a.onload = t), (a.onerror = t), a.complete && a.naturalWidth > 0 && t());
+              }
+              (o.querySelectorAll('*').forEach((t) => {
+                (t.id && t.removeAttribute('id'), t.setAttribute('tabindex', '-1'));
+              }),
+                i.appendChild(o),
+                (s < r.length - 1 || e) &&
+                  this.#t(this._opts.separator) &&
+                  i.appendChild(this.#t(this._opts.separator)));
+            }
+          }
+          return i;
+        }
+        buildCycleContainer(t = !0) {
+          const e = document.createElement('div');
+          return (e.appendChild(this.buildCycleContent(!1, t)), e);
+        }
+        buildSRList() {
+          const t = this._opts.screenReaderMode || 'ordered',
+            e = this._opts.items;
+          if (!e?.length) {
+            const t = document.createElement('div');
+            return ((t.className = 'um-sr-only'), t);
+          }
+          let i;
+          ('ordered' === t
+            ? (i = document.createElement('ol'))
+            : 'unordered' === t
+              ? (i = document.createElement('ul'))
+              : ((i = document.createElement('div')), (i.className = 'um-sr-only')),
+            (i.className = 'um-sr-only'));
+          return (
+            'plain' === t
+              ? e.forEach((t) => {
+                  const e = document.createElement('p');
+                  ((e.textContent = t.alt || t.text || t), i.appendChild(e));
+                })
+              : i.appendChild(this.buildCycleContent(!0)),
+            i
+          );
+        }
+        measureCycleMetrics(t) {
+          if (!this._opts.items?.length) return { width: 0, gap: 0 };
+          const e = document.createElement('div');
+          ((e.className = 'um-track'), (e.style.position = 'absolute'), (e.style.visibility = 'hidden'));
+          let i = this._opts.gap;
+          ('number' == typeof i && (i = `${i}px`), e.style.setProperty('--um-gap', i));
+          const r = this.buildCycleContainer(!0);
+          (e.appendChild(r), t.appendChild(e));
+          const s = r.offsetWidth || 0,
+            n = parseFloat(getComputedStyle(e).gap || '0');
+          return (t.removeChild(e), { width: s, gap: n });
+        }
+      }
+      class AnimationController {
+        constructor(t, e) {
+          ((this._track = t), (this._opts = e));
+        }
+        start(t, e) {
+          if ((this._anim && this._anim.cancel(), window.matchMedia('(prefers-reduced-motion: reduce)').matches))
+            return;
+          const i = t + e;
+          if (i <= 0) return;
+          let r = this._opts.duration
+            ? 1e3 * this._opts.duration
+            : (i / (this._opts.speed > 0 ? this._opts.speed : 50)) * 1e3;
+          const s = 'translate3d(0,0,0)',
+            n = `translate3d(-${i}px,0,0)`,
+            o =
+              'right' === this._opts.direction
+                ? [{ transform: n }, { transform: s }]
+                : [{ transform: s }, { transform: n }];
+          this._anim = this._track.animate(o, { duration: r, iterations: 1 / 0, easing: 'linear' });
+        }
+        pause() {
+          this._anim?.playState === 'running' && this._anim.pause();
+        }
+        play() {
+          this._anim?.playState !== 'running' && this._anim.play();
+        }
+        cancel() {
+          this._anim && this._anim.cancel();
+        }
+      }
+      class UniversalMarquee {
+        constructor(t, e) {
+          ((this._root = document.querySelector(t)),
+            this._root &&
+              ((this._opts = {
+                speed: 50,
+                duration: null,
+                gap: '2rem',
+                direction: 'left',
+                items: [],
+                separator: '',
+                renderItem: (t) => document.createTextNode('object' == typeof t ? t.text || t.alt || t : t),
+                pauseOnHover: !0,
+                ariaLabel: 'Marquee',
+                screenReader: !0,
+                screenReaderMode: 'ordered',
+                gradientOverlay: 'auto',
+                gradientColor: null,
+                ...e,
+              }),
+              this._root.classList.add('um-container', 'js-enabled'),
+              this._opts.screenReader &&
+                (this._root.setAttribute('role', 'region'),
+                this._root.setAttribute('aria-label', this._opts.ariaLabel)),
+              (this._builder = new ContentBuilder(this._opts)),
+              this.#setup(),
+              this.#initObservers(),
+              this.#initInteractivity()));
+        }
+        #setup() {
+          ((this._root.innerHTML = ''),
+            (this._track = document.createElement('div')),
+            (this._track.className = 'um-track'),
+            this._track.setAttribute('aria-hidden', 'true'),
+            'inert' in this._track && (this._track.inert = !0),
+            this._opts.screenReader && this._root.appendChild(this._builder.buildSRList()),
+            this._root.appendChild(this._track),
+            this.#reflow());
+        }
+        #reflow() {
+          const t = this._builder.measureCycleMetrics(this._root);
+          if (0 === t.width) return;
+          this._anim && this._anim.cancel();
+          const e = window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+            i = Math.ceil(this._root.offsetWidth / (t.width + t.gap)) + 2,
+            r = e ? 1 : Math.max(3, i);
+          this._track.innerHTML = '';
+          const s = document.createDocumentFragment();
+          for (let t = 0; t < r; t++) s.appendChild(this._builder.buildCycleContainer(!e));
+          this._track.appendChild(s);
+          let n = !1;
+          !0 === this._opts.gradientOverlay
+            ? (n = !0)
+            : 'auto' === this._opts.gradientOverlay && e && (n = this._track.scrollWidth > this._root.offsetWidth);
+          if (n) {
+            this._root.classList.add('um-overflow-left', 'um-overflow-right');
+            let t = this._opts.gradientColor || getComputedStyle(this._root).backgroundColor;
+            this._root.style.setProperty('--gradient-overlay-color', t);
+          } else
+            (this._root.classList.remove('um-overflow-left', 'um-overflow-right'),
+              this._root.style.removeProperty('--gradient-overlay-color'));
+          e || ((this._anim = new AnimationController(this._track, this._opts)), this._anim.start(t.width, t.gap));
+        }
+        #initInteractivity() {
+          !1 !== this._opts.pauseOnHover &&
+            (this._root.addEventListener('mouseenter', () => this._anim?.pause()),
+            this._root.addEventListener('mouseleave', () => this._anim?.play()),
+            this._root.addEventListener('focusin', () => this._anim?.pause()),
+            this._root.addEventListener('focusout', () => this._anim?.play()));
+        }
+        #initObservers() {
+          const t = () => {
+            (clearTimeout(this._resizeTimer),
+              (this._resizeTimer = setTimeout(() => requestAnimationFrame(() => this.#reflow()), 200)));
+          };
+          (new ResizeObserver(t).observe(this._root),
+            'IntersectionObserver' in window &&
+              ((this._observer = new IntersectionObserver(
+                (t) => {
+                  t.forEach((t) => {
+                    if (!this._anim) return;
+                    ((this._isInViewport = t.isIntersecting),
+                      t.isIntersecting && !document.hidden ? this._anim.play() : this._anim.pause());
+                  });
+                },
+                { rootMargin: '50px 0px' }
+              )),
+              this._observer.observe(this._root)),
+            document.addEventListener('visibilitychange', () => {
+              if (!this._anim) return;
+              document.hidden ? this._anim.pause() : this._isInViewport && this._anim.play();
+            }),
+            window
+              .matchMedia('(prefers-reduced-motion: reduce)')
+              .addEventListener('change', () => requestAnimationFrame(() => this.#reflow())));
+        }
+      }
+      window.UniversalMarquee = UniversalMarquee;
+
+      /* --- 2. DEMO INITIALIZATION --- */
+
+      // Feature Marquee (Top)
+      new UniversalMarquee('#features', {
+        speed: 55,
+        gap: 0,
+        items: [
+          'Zero Dependencies',
+          'Lightweight',
+          'Accessible',
+          'Performance Focused',
+          'Touch Friendly',
+          'RTL Support',
+          'Responsive',
+          'Customizable',
+          'Vanilla JS',
+          'Open Source',
+          'Smooth Scroll',
+        ],
+        separator: ' ✦ ',
+        renderItem: (text, i) => {
+          const div = document.createElement('div');
+          div.className = 'um-item';
+          div.textContent = text;
+          return div;
+        },
+      });
+
+      // Testimonials
+      const reviews = [
+        {
+          name: 'Sarah J.',
+          role: 'CTO at Vercel',
+          text: 'Silky smooth performance.',
+          img: 'https://i.pravatar.cc/150?u=1',
+        },
+        {
+          name: 'Mike C.',
+          role: 'Designer',
+          text: 'Finally, accessibility done right.',
+          img: 'https://i.pravatar.cc/150?u=2',
+        },
+        { name: 'Alex R.', role: 'Developer', text: 'The API is so intuitive.', img: 'https://i.pravatar.cc/150?u=3' },
+        { name: 'Jessica', role: 'Product', text: 'Love the pause on hover.', img: 'https://i.pravatar.cc/150?u=4' },
+      ];
+
+      new UniversalMarquee('#demo-testimonials', {
+        items: reviews,
+        gap: '1.5rem',
+        speed: 25,
+        renderItem: (data) => {
+          const card = document.createElement('div');
+          card.className = 't-card';
+          card.innerHTML = `
+            <div class="t-header">
+              <img src="${data.img}" class="t-avatar" loading="lazy" />
+              <div class="t-info">
+                <h4>${data.name}</h4>
+                <span>${data.role}</span>
+              </div>
+            </div>
+            <div class="t-body">"${data.text}"</div>
+          `;
+          return card;
+        },
+      });
+
+      // Products
+      const products = [
+        {
+          src: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=300&q=80',
+          tag: 'Nike',
+        },
+        {
+          src: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=300&q=80',
+          tag: 'Adidas',
+        },
+        {
+          src: 'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?auto=format&fit=crop&w=300&q=80',
+          tag: 'Puma',
+        },
+        {
+          src: 'https://images.unsplash.com/photo-1608231387042-66d1773070a5?auto=format&fit=crop&w=300&q=80',
+          tag: 'Reebok',
+        },
+      ];
+
+      new UniversalMarquee('#demo-products', {
+        items: products,
+        speed: 40,
+        gap: '1.5rem',
+        direction: 'right',
+        renderItem: (p) => {
+          const el = document.createElement('div');
+          el.className = 'p-card';
+          el.innerHTML = `<img src="${p.src}" loading="lazy"><span class="p-badge">${p.tag}</span>`;
+          return el;
+        },
+      });
+
+      // Ticker
+      const stocks = [
+        { s: 'BTC', v: '$86,234', c: '+2.4%', up: true },
+        { s: 'ETH', v: '$3,102', c: '-1.2%', up: false },
+        { s: 'NVDA', v: '$145', c: '+0.5%', up: true },
+        { s: 'AAPL', v: '$230', c: '-0.1%', up: false },
+        { s: 'TSLA', v: '$450', c: '+5.1%', up: true },
+      ];
+      new UniversalMarquee('#demo-ticker', {
+        items: stocks,
+        speed: 60,
+        gap: '3rem',
+        renderItem: (s) => {
+          const cls = s.up ? 'tick-up' : 'tick-down';
+          const arr = s.up ? '↗' : '↘';
+          const div = document.createElement('div');
+          div.className = 'tick-item';
+          div.innerHTML = `<span>${s.s}</span><span class="tick-val">${s.v}</span><span class="${cls}">${arr} ${s.c}</span>`;
+          return div;
+        },
+      });
+
+      // Simple copy script
+      document.querySelectorAll('.copy-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const code = btn.closest('.code-window').querySelector('pre').textContent;
+          navigator.clipboard.writeText(code);
+          const original = btn.innerHTML;
+          btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>`;
+          setTimeout(() => (btn.innerHTML = original), 2000);
+        });
+      });
+    </script>
+  </body>
+</html>
